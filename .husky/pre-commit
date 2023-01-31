@@ -3,9 +3,9 @@
 
 branch="$(git rev-parse --abbrev-ref HEAD)"
 
-if [ "$branch" = "main" ]; then
-  echo "You can't commit directly to main branch. Please create your own branch and use PR"
+if [ "$branch" = "develop" ]; then
+  echo "You can't commit directly to develop branch. Please create your own branch and use PR"
   exit 1
 fi
 
-# npm test
+npm run lintstaged
