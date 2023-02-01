@@ -3,6 +3,7 @@ import Avatar from './avatar/avatar';
 import HeaderIcon from './icon/icon';
 import NavigationLink from './link/link';
 import Logo from './logo/logo';
+import './header.css';
 
 export default class Header extends BaseComponent<'header'> {
   private logo = new Logo(this.element);
@@ -17,5 +18,26 @@ export default class Header extends BaseComponent<'header'> {
 
   constructor(root: HTMLElement) {
     super('header', root, 'header');
+    this.openMenu();
+    this.changeLanguage();
+    this.changeTheme();
+  }
+
+  public openMenu(): void {
+    this.avatar.element.addEventListener('click', () => {
+      console.log('open avatar menu');
+    });
+  }
+
+  public changeLanguage(): void {
+    this.laguageIcon.element.addEventListener('click', () => {
+      console.log('change language');
+    });
+  }
+
+  public changeTheme(): void {
+    this.themeIcon.element.addEventListener('click', () => {
+      console.log('change theme');
+    });
   }
 }
