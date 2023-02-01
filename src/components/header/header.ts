@@ -16,8 +16,8 @@ export default class Header extends BaseComponent<'header'> {
 
   private themeIcon = new HeaderIcon(this.element, 'header-icon_theme');
 
-  constructor(root: HTMLElement) {
-    super('header', root, 'header');
+  constructor(parent: HTMLElement) {
+    super('header', parent, 'header');
     this.openMenu();
     this.changeLanguage();
     this.changeTheme();
