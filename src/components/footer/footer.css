@@ -1,0 +1,10 @@
+.footer {
+  height: 100px;
+  display: flex;
+  border: 1px solid black;
+}
+
+.footer > div {
+  display: flex;
+  flex-direction: column;
+}
