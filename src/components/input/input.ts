@@ -17,7 +17,7 @@ export default class Input extends BaseComponent<'div'> {
     const classes = getClassNames('input', additionalClasses);
     super('div', parent, classes, undefined);
     this.label = new BaseComponent('label', this.element, '', text);
-    this.input = new BaseComponent('input', this.label.element, '', undefined, attributes);
+    this.input = new BaseComponent('input', this.label.element, '', '', attributes);
   }
 
   public verify(): boolean {
