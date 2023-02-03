@@ -1,0 +1,15 @@
+.login-form,
+.signup-form {
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 863px;
+  padding: 30px 200px 40px 180px;
+  background-color: white;
+}
+
+.login-form-message,
+.signup-form-message {
+  align-self: center;
+}

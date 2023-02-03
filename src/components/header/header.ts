@@ -12,7 +12,7 @@ export default class Header extends BaseComponent<'header'> {
 
   private avatar = new Avatar(this.element);
 
-  private laguageIcon = new HeaderIcon(this.element, 'header-icon_lang');
+  private languageIcon = new HeaderIcon(this.element, 'header-icon_lang');
 
   private themeIcon = new HeaderIcon(this.element, 'header-icon_theme');
 
@@ -30,7 +30,7 @@ export default class Header extends BaseComponent<'header'> {
   }
 
   public changeLanguage(): void {
-    this.laguageIcon.element.addEventListener('click', () => {
+    this.languageIcon.element.addEventListener('click', () => {
       console.log('change language');
     });
   }
