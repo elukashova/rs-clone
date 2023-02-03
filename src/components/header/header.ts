@@ -4,12 +4,12 @@ import HeaderIcon from './icon/icon';
 import NavigationLink from '../link/link';
 import Logo from './logo/logo';
 import './header.css';
-import Routes from '../../app/apptypes';
+import Routes from '../../app/app.types';
 
 export default class Header extends BaseComponent<'header'> {
   private logo = new Logo(this.element);
 
-  private challenges = new NavigationLink(this.callback, { text: 'challenges', parent: this.element });
+  private challenges = new NavigationLink(this.replaceMainCallback, { text: 'challenges', parent: this.element });
 
   private avatar = new Avatar(this.element);
 
@@ -17,7 +17,7 @@ export default class Header extends BaseComponent<'header'> {
 
   private themeIcon = new HeaderIcon(this.element, 'header-icon_theme');
 
-  constructor(parent: HTMLElement, private callback: () => Promise<void>) {
+  constructor(parent: HTMLElement, private replaceMainCallback: () => Promise<void>) {
     super('header', parent, 'header');
     this.challenges.element.setAttribute('href', Routes.Challenges);
     this.openMenu();

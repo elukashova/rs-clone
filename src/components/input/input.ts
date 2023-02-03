@@ -23,4 +23,8 @@ export default class Input extends BaseComponent<'div'> {
   public verify(): boolean {
     return this.input.element.value !== '';
   }
+
+  public getValue(): string {
+    return this.input.element.value;
+  }
 }

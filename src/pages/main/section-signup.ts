@@ -3,9 +3,9 @@ import SignupForm from '../../components/forms/signup-form';
 import './main-page.css';
 
 export default class SignupPage extends BaseComponent<'section'> {
-  private signupForm: SignupForm = new SignupForm(this.element, this.callback);
+  private signupForm: SignupForm = new SignupForm(this.element, this.replaceMainCallback);
 
-  constructor(private callback: () => Promise<void>) {
+  constructor(private replaceMainCallback: () => Promise<void>) {
     super('section', undefined, 'signup-page');
   }
 }

@@ -3,9 +3,9 @@ import LoginForm from '../../components/forms/login-form';
 import './main-page.css';
 
 export default class LoginPage extends BaseComponent<'section'> {
-  private loginForm: LoginForm = new LoginForm(this.element);
+  private loginForm: LoginForm = new LoginForm(this.element, this.replaceMainCallback);
 
-  constructor() {
+  constructor(private replaceMainCallback: () => Promise<void>) {
     super('section', undefined, 'login-page');
   }
 }

@@ -3,7 +3,7 @@ import Header from '../components/header/header';
 import Main from '../pages/main/main-page';
 import LoginPage from '../pages/main/section-login';
 import SignupPage from '../pages/main/section-signup';
-import Routes from './apptypes';
+import Routes from './app.types';
 
 export default class App {
   private header: Header;
@@ -37,8 +37,11 @@ export default class App {
         this.main.setContent(this.signupPage);
         break;
       case Routes.LogIn:
-        this.loginPage = new LoginPage();
+        this.loginPage = new LoginPage(this.locationHandler);
         this.main.setContent(this.loginPage);
+        break;
+      case Routes.Dashboard:
+        console.log('dashboard page');
         break;
       default:
         console.log('will be 404 page'); // temporary placeholder
