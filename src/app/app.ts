@@ -1,22 +1,30 @@
 import Footer from '../components/footer/footer';
 import Header from '../components/header/header';
-import LoginPage from '../pages/main/login-page';
-import SignupPage from '../pages/main/signup-page';
+import Main from '../pages/main/main-page';
+import Router from './loader/router/router';
 
 export default class App {
-  private header: Header = new Header(this.parent);
+  private header: Header;
 
-  public loginPage: LoginPage = new LoginPage(this.parent);
+  private main: Main = new Main();
 
-  public signupPage: SignupPage = new SignupPage(this.parent);
+  private footer: Footer;
 
-  private footer: Footer = new Footer(this.parent);
+  private router: Router = new Router(this.main);
 
   constructor(private readonly parent: HTMLElement) {
     this.parent.classList.add('root');
+    this.header = new Header(this.parent, this.router.locationHandler);
+    this.parent.append(this.main.element);
+    this.footer = new Footer(this.parent);
   }
 
   public init(): void {
     this.parent.style.backgroundColor = 'grey';
+    this.handleRouting();
+  }
+
+  public handleRouting(): void {
+    this.router.locationHandler();
   }
 }

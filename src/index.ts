@@ -2,4 +2,10 @@ import App from './app/app';
 
 const app = new App(document.body);
 
-app.init();
+window.onload = (): void => {
+  app.init();
+};
+
+window.onpopstate = (): void => {
+  app.handleRouting();
+};
