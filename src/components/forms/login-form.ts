@@ -1,6 +1,6 @@
 import Routes from '../../app/loader/router/router.types';
 import { LogIn, Token } from '../../app/loader/loader.types';
-import { loginUser } from '../../app/loader/services/user-services';
+import { getUser, loginUser } from '../../app/loader/services/user-services';
 import BaseComponent from '../base-component/base-component';
 import Button from '../button/button';
 import Input from '../input/input';
@@ -57,11 +57,17 @@ export default class LoginForm extends BaseComponent<'form'> {
     e.preventDefault();
     try {
       const userToken: Token = await loginUser(this.user);
-      console.log(userToken); // temporary console.log
+      LoginForm.getUser(userToken);
       window.history.pushState({}, '', Routes.Dashboard);
       this.replaceMainCallback();
     } catch (err) {
       console.log(err); // temporary console.log
     }
   };
+
+  // этот метод потом будет вынесен в загрузку dashboard
+  private static async getUser(token: Token): Promise<void> {
+    const user = await getUser(token);
+    console.log(user);
+  }
 }

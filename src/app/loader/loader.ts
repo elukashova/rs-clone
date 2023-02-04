@@ -1,6 +1,8 @@
-import { RequestData } from './loader.types';
+import { RequestData, Token, LoadRequest } from './loader.types';
 
 export default class Loader {
+  // http://localhost:3000
+  // https://the-big-bug-theory-be.onrender.com'
   private static server: string = 'https://the-big-bug-theory-be.onrender.com';
 
   private static errorHandler(res: Response): Response {
@@ -10,20 +12,30 @@ export default class Loader {
     return res;
   }
 
-  private static async load(url: URL, method: string, params?: RequestData): Promise<Response> {
-    return fetch(url, {
+  private static async load(request: LoadRequest): Promise<Response> {
+    const headers: HeadersInit | undefined = !request.token
+      ? { 'Content-Type': 'application/json' }
+      : { 'Content-Type': 'application/json', Authorization: `Bearer ${request.token}` };
+
+    const { method } = request;
+
+    return fetch(request.url, {
       method,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: params ? JSON.stringify(params) : undefined,
+      headers,
+      body: request.params ? JSON.stringify(request.params) : undefined,
     }).then((res: Response) => this.errorHandler(res));
   }
 
   public static async postData<T>(method: string, view: string, params?: RequestData): Promise<T> {
     const url: URL = Loader.createURL(view);
 
-    return this.load(url, method, params).then((res: Response) => res.json());
+    return this.load({ url, method, params }).then((res: Response) => res.json());
+  }
+
+  public static async getUserData<T>(method: string, view: string, jwtObj: Token): Promise<T> {
+    const url: URL = Loader.createURL(view);
+    const { token } = jwtObj;
+    return this.load({ url, method, token }).then((res: Response) => res.json());
   }
 
   private static createURL = (view: string): URL => {
