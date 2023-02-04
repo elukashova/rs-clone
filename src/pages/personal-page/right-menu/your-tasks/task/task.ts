@@ -1,6 +1,5 @@
 import './task.css';
 import BaseComponent from '../../../../../components/base-component/base-component';
-import Button from '../../../../../components/button/button';
 
 export default class Task extends BaseComponent<'div'> {
   public photo = new BaseComponent('img', undefined, 'task__photo');
@@ -8,8 +7,6 @@ export default class Task extends BaseComponent<'div'> {
   public name = new BaseComponent('span', undefined, 'task__name');
 
   public participants = new BaseComponent('span', undefined, 'tasl__participants');
-
-  private allTasksButton: Button | undefined;
 
   constructor(photo: string, name: string, participants: string) {
     super('div', undefined, 'task');
