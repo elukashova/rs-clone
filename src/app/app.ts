@@ -1,5 +1,4 @@
 import BaseComponent from '../components/base-component/base-component';
-import GoogleMapsApi from '../map/custom-map';
 /* import Footer from '../components/footer/footer';
 import Header from '../components/header/header'; */
 
@@ -24,11 +23,15 @@ export default class App {
 
   // скрипт с ключом для гугл апи
   public static addKey(parent: HTMLElement): BaseComponent<'script'> {
-    console.log(GoogleMapsApi);
+    const apiKey = 'AIzaSyC90BCUHG7PI6cW9XNex-5bY3Dd44Rqhgs';
+    // получать язык из указанной страны или менять русский/английский при переводе
+    const language = 'en';
+    // eslint-disable-next-line operator-linebreak
+    const srcString = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap&language=${language}&libraries=geometry`;
     const script = new BaseComponent('script', parent, '', '', {
       async: '',
       defer: '',
-      src: 'https://maps.googleapis.com/maps/api/js?key=AIzaSyC90BCUHG7PI6cW9XNex-5bY3Dd44Rqhgs&callback=initMap',
+      src: srcString,
     });
     return script;
   }

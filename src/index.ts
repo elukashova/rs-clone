@@ -8,7 +8,7 @@ app.init();
 // добавляем скрипт с ключом апи в конец верстки
 App.addKey(document.body);
 
-// делаем initMap GoogleMapsApi метод глобальным, чтобы избежать
+// делаем метод initMap класса GoogleMapsApi глобальным, чтобы избежать
 // ошибки TypeError: window.initMap is not a function
 declare global {
   interface Window {
