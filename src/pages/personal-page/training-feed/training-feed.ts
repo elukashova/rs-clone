@@ -10,7 +10,7 @@ export default class TrainingFeed extends BaseComponent<'article'> {
   public findFriendsButton: Button | undefined;
 
   constructor(parent: HTMLElement) {
-    super('article', parent);
+    super('article', parent, 'training-feed');
     this.showGreetingMessage();
   }
 

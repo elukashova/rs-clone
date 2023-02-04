@@ -1,6 +1,7 @@
 import BaseComponent from '../../../components/base-component/base-component';
 import ProfileCard from './profile-card/profile-card';
 import TrainingJournal from './training-journal/training-journal';
+import './left-menu.css';
 
 export default class LeftMenu extends BaseComponent<'aside'> {
   public profileCard = new ProfileCard(this.element, '', 'new user', 'here would be your description');
@@ -8,6 +9,6 @@ export default class LeftMenu extends BaseComponent<'aside'> {
   public trainingJournal = new TrainingJournal(this.element);
 
   constructor(parent: HTMLElement) {
-    super('aside', parent);
+    super('aside', parent, 'left-menu');
   }
 }

@@ -23,7 +23,6 @@ export default class App {
   }
 
   public init(): void {
-    this.parent.style.backgroundColor = 'grey';
     this.handleRouting();
   }
 
