@@ -1,4 +1,5 @@
 import BaseComponent from '../components/base-component/base-component';
+import GoogleMapsApi from '../map/custom-map';
 /* import Footer from '../components/footer/footer';
 import Header from '../components/header/header'; */
 
@@ -14,7 +15,6 @@ export default class App {
 
   constructor(private readonly parent: HTMLElement) {
     this.parent.classList.add('root');
-    App.addKey(this.parent);
   }
 
   public init(): void {
@@ -22,9 +22,12 @@ export default class App {
     this.parent.style.height = '100%';
   }
 
+  // скрипт с ключом для гугл апи
   public static addKey(parent: HTMLElement): BaseComponent<'script'> {
+    console.log(GoogleMapsApi);
     const script = new BaseComponent('script', parent, '', '', {
       async: '',
+      defer: '',
       src: 'https://maps.googleapis.com/maps/api/js?key=AIzaSyC90BCUHG7PI6cW9XNex-5bY3Dd44Rqhgs&callback=initMap',
     });
     return script;
