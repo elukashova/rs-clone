@@ -11,12 +11,18 @@ export default class TrainingFeed extends BaseComponent<'article'> {
 
   constructor(parent: HTMLElement) {
     super('article', parent);
-    this.showMessage();
+    this.showGreetingMessage();
   }
 
-  public showMessage(): void {
+  public showGreetingMessage(): void {
     this.element.append(this.message.element);
     this.addTrainingButton = new Button(this.element, 'Добавить Тренировку', 'btn_main');
     this.addTrainingButton = new Button(this.element, 'Найти Друзей', 'btn_main');
+  }
+
+  public deleteGreetingMessage(): void {
+    this.message.element.remove();
+    this.addTrainingButton?.element.remove();
+    this.findFriendsButton?.element.remove();
   }
 }
