@@ -1,7 +1,7 @@
 import BaseComponent from '../../components/base-component/base-component';
 
 export default class Main extends BaseComponent<'main'> {
-  constructor(parent: HTMLElement) {
+  constructor(parent?: HTMLElement) {
     super('main', parent, 'main');
   }
 

@@ -7,5 +7,5 @@ window.onload = (): void => {
 };
 
 window.onpopstate = (): void => {
-  app.locationHandler();
+  app.handleRouting();
 };

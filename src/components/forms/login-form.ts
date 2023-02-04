@@ -1,6 +1,6 @@
-import Routes from '../../app/app.types';
+import Routes from '../../app/loader/router/router.types';
 import { LogIn, Token } from '../../app/loader/loader.types';
-import { loginUser } from '../../app/loader/services/user.services';
+import { loginUser } from '../../app/loader/services/user-services';
 import BaseComponent from '../base-component/base-component';
 import Button from '../button/button';
 import Input from '../input/input';

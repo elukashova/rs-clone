@@ -3,9 +3,9 @@ import Button from '../button/button';
 import NavigationLink from '../link/link';
 import Input from '../input/input';
 import './form.css';
-import Routes from '../../app/app.types';
+import Routes from '../../app/loader/router/router.types';
 import { SignUp, Token } from '../../app/loader/loader.types';
-import { createUser } from '../../app/loader/services/user.services';
+import { createUser } from '../../app/loader/services/user-services';
 
 export default class SignupForm extends BaseComponent<'form'> {
   private formHeader: BaseComponent<'h4'> = new BaseComponent(

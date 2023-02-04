@@ -4,7 +4,7 @@ import HeaderIcon from './icon/icon';
 import NavigationLink from '../link/link';
 import Logo from './logo/logo';
 import './header.css';
-import Routes from '../../app/app.types';
+import Routes from '../../app/loader/router/router.types';
 
 export default class Header extends BaseComponent<'header'> {
   private logo = new Logo(this.element);
