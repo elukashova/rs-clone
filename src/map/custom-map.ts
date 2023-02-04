@@ -32,28 +32,17 @@ export default class GoogleMapsApi {
         center: { lat: 40, lng: 0 },
       });
 
-      /*
-      Для маркера
-      draggable: true,
-      title: 'Start route!', */
-
       /* map.addListener('click', (event: { LatLng: google.maps.LatLng }) => {
         console.log(event.LatLng);
         console.log(GoogleMapsApi.geocoder);
         GoogleMapsApi.placeMarkerAndPanTo(event.LatLng, map);
       }); */
 
-      /* GoogleMapsApi.marker = new google.maps.Marker({
-        map,
-      }); */
-
       map.addListener('click', (event: google.maps.MapMouseEvent) => {
-        GoogleMapsApi.placeMarker(event.latLng, map);
+        if (GoogleMapsApi.markers.length < 2) {
+          GoogleMapsApi.placeMarker(event.latLng, map);
+        }
       });
-
-      /*  map.addListener('click', (e: google.maps.MapMouseEvent) => {
-        GoogleMapsApi.geocode({ location: e.latLng });
-      }); */
 
       // переменные и слушатель для определения местоположения пользователя по геолокации
       const infoWindow = new google.maps.InfoWindow();
@@ -63,7 +52,8 @@ export default class GoogleMapsApi {
       map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
       locationButton.addEventListener('click', () => GoogleMapsApi.geoLocationButton(infoWindow, map));
     }
-    /* google.maps.geometry.spherical.computeDistanceBetween (latLngA, latLngB);
+    /* Посчитать дистанцию между точками
+    google.maps.geometry.spherical.computeDistanceBetween (latLngA, latLngB);
 
     function calcDistance(p1, p2) {
           var d = (google.maps.geometry.spherical.computeDistanceBetween(p1, p2) / 1000).toFixed(2);
@@ -73,53 +63,38 @@ export default class GoogleMapsApi {
 
   public static placeMarker(location: google.maps.LatLng | null, map: google.maps.Map): void {
     if (location) {
-      GoogleMapsApi.marker = new google.maps.Marker({
-        position: location,
-        map,
-        draggable: true,
-        animation: google.maps.Animation.DROP,
-      });
-      map.panTo(location);
+      GoogleMapsApi.marker = GoogleMapsApi.placeMarkerAndPanTo(location, map);
+      map.setZoom(9);
+      map.setCenter(GoogleMapsApi.marker.getPosition() as google.maps.LatLng);
+
+      GoogleMapsApi.markers.push(GoogleMapsApi.marker);
+      console.log(GoogleMapsApi.markers);
+
       GoogleMapsApi.marker.addListener('click', (e: google.maps.MapMouseEvent) => {
-        console.log(e);
-        console.log(GoogleMapsApi.marker);
-        /* marker = markers[id];
-        marker.setMap(null); */
+        GoogleMapsApi.deleteMarker(e);
       });
     }
   }
 
-  /* public static geocode(request: google.maps.GeocoderRequest): void {
-    GoogleMapsApi.clear();
-
-    GoogleMapsApi.geocoder = new google.maps.Geocoder();
-    GoogleMapsApi.geocoder
-      .geocode(request)
-      .then((result) => {
-        const { results } = result;
-
-        GoogleMapsApi.map.setCenter(results[0].geometry.location);
-        GoogleMapsApi.marker.setPosition(results[0].geometry.location);
-        GoogleMapsApi.marker.setMap(GoogleMapsApi.map);
-        GoogleMapsApi.response.innerText = JSON.stringify(result, null, 2);
-        return results;
-      })
-      .catch((e) => {
-        console.log(`Geocode was not successful ${e}`);
-      });
+  public static deleteMarker(e: google.maps.MapMouseEvent): void {
+    GoogleMapsApi.markers.forEach((marker) => {
+      if (marker.getPosition() === e.latLng) {
+        marker.setMap(null);
+        GoogleMapsApi.markers.splice(GoogleMapsApi.markers.indexOf(marker), 1);
+      }
+    });
   }
 
-  public static clear(): void {
-    GoogleMapsApi.marker.setMap(null);
-  } */
-
-  public static placeMarkerAndPanTo(latLng: google.maps.LatLng, map: google.maps.Map): void {
+  // eslint-disable-next-line max-len
+  public static placeMarkerAndPanTo(location: google.maps.LatLng, map: google.maps.Map): google.maps.Marker {
     const marker = new google.maps.Marker({
-      position: latLng,
+      position: location,
       map,
+      draggable: true,
+      animation: google.maps.Animation.DROP,
     });
-    console.log(marker);
-    map.panTo(latLng);
+    map.panTo(location);
+    return marker;
   }
 
   // изменение карты по еолокации при клике на кнопку
@@ -162,18 +137,9 @@ export default class GoogleMapsApi {
     infoWindow.setPosition(pos);
     infoWindow.setContent(
       browserHasGeolocation
-        ? 'Error: The Geolocation service failed.'
+        ? "Error: The Geolocation service don't work now."
         : "Error:This browser doesn't support geolocation.",
     );
     infoWindow.open(map);
-  }
-
-  public static addMarker(latLng: google.maps.LatLng): void {
-    console.log(latLng);
-    console.log('test');
-    /* if (event instanceof google.maps.LatLng) {
-      const lat = google.maps.LatLng.lat();
-      const lng = google.maps.LatLng.lng();
-    } */
   }
 }
