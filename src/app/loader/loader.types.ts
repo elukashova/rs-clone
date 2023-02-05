@@ -16,4 +16,12 @@ export type RequestData = SignUp | LogIn;
 export enum Endpoints {
   Login = 'auth/signin',
   Signup = 'auth/signup',
+  GetUser = 'auth/me',
 }
+
+export type LoadRequest = {
+  url: URL;
+  method: string;
+  params?: RequestData;
+  token?: string;
+};

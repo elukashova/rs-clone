@@ -5,7 +5,8 @@ import Input from '../input/input';
 import './form.css';
 import Routes from '../../app/loader/router/router.types';
 import { SignUp, Token } from '../../app/loader/loader.types';
-import { createUser } from '../../app/loader/services/user-services';
+import { createUser, getUser } from '../../app/loader/services/user-services';
+import { setDataToLocalStorage } from '../../utils/local-storage/local-storage';
 
 export default class SignupForm extends BaseComponent<'form'> {
   private formHeader: BaseComponent<'h4'> = new BaseComponent(
@@ -91,12 +92,24 @@ export default class SignupForm extends BaseComponent<'form'> {
   private signupBtnCallback = async (e: Event): Promise<void> => {
     e.preventDefault();
     try {
-      const userToken: Token = await createUser(this.newUser);
-      console.log(userToken); // temporary console.log
+      this.createUser().then((token) => SignupForm.getUser(token));
       window.history.pushState({}, '', Routes.Dashboard);
       this.replaceMainCallback();
     } catch (err) {
       console.log(err); // temporary console.log
     }
   };
+
+  private async createUser(): Promise<Token> {
+    return createUser(this.newUser).then((token) => {
+      setDataToLocalStorage(token, 'userSessionToken');
+      return token;
+    });
+  }
+
+  // этот метод потом будет вынесен в загрузку dashboard
+  private static async getUser(token: Token): Promise<void> {
+    const user = await getUser(token);
+    console.log(user);
+  }
 }
