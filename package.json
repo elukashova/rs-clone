@@ -59,6 +59,7 @@
     "webpack-dev-server": "^4.11.1"
   },
   "dependencies": {
-    "@mapbox/mapbox-gl-geocoder": "^5.0.1"
+    "@mapbox/mapbox-gl-geocoder": "^5.0.1",
+    "@types/google.visualization": "0.0.68"
   }
 }

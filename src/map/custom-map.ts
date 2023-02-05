@@ -1,3 +1,5 @@
+import BaseComponent from '../components/base-component/base-component';
+
 /* eslint-disable max-lines-per-function */
 export default class GoogleMapsApi {
   public static map: google.maps.Map;
@@ -16,6 +18,12 @@ export default class GoogleMapsApi {
 
   public static directionsRenderer: google.maps.DirectionsRenderer;
 
+  public static elevation: google.maps.ElevationService;
+
+  public static chartDiv: BaseComponent<'div'> = new BaseComponent('div', document.body, 'chart-div', '', {
+    id: 'chart-div',
+  });
+
   public static markers: google.maps.Marker[] = [];
 
   constructor(
@@ -33,18 +41,17 @@ export default class GoogleMapsApi {
   public static initMap(): void {
     const mapWrapper: HTMLElement | null = document.getElementById('map');
     GoogleMapsApi.directionsService = new google.maps.DirectionsService();
-    GoogleMapsApi.directionsRenderer = new google.maps.DirectionsRenderer();
+    GoogleMapsApi.directionsRenderer = new google.maps.DirectionsRenderer({
+      polylineOptions: { strokeColor: '#1CBAA7' },
+      markerOptions: { icon: './assets/icons/geo.png' },
+    });
     if (mapWrapper) {
       const map = new google.maps.Map(mapWrapper, {
         zoom: 8,
         center: { lat: 40, lng: 0 },
       });
 
-      /* map.addListener('click', (event: { LatLng: google.maps.LatLng }) => {
-        console.log(event.LatLng);
-        console.log(GoogleMapsApi.geocoder);
-        GoogleMapsApi.placeMarkerAndPanTo(event.LatLng, map);
-      }); */
+      GoogleMapsApi.elevation = new google.maps.ElevationService();
 
       map.addListener('click', (event: google.maps.MapMouseEvent) => {
         if (GoogleMapsApi.markers.length < 2) {
@@ -52,6 +59,9 @@ export default class GoogleMapsApi {
         }
       });
       GoogleMapsApi.directionsRenderer.setMap(map);
+      GoogleMapsApi.directionsRenderer.setOptions({
+        draggable: true,
+      });
 
       // переменные и слушатель для определения местоположения пользователя по геолокации
       const infoWindow = new google.maps.InfoWindow();
@@ -61,13 +71,6 @@ export default class GoogleMapsApi {
       map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
       locationButton.addEventListener('click', () => GoogleMapsApi.geoLocationButton(infoWindow, map));
     }
-    /* Посчитать дистанцию между точками
-    google.maps.geometry.spherical.computeDistanceBetween (latLngA, latLngB);
-
-    function calcDistance(p1, p2) {
-          var d = (google.maps.geometry.spherical.computeDistanceBetween(p1, p2) / 1000).toFixed(2);
-          console.log(d);
-} */
   }
 
   public static placeMarker(location: google.maps.LatLng | null, map: google.maps.Map): void {
@@ -89,20 +92,31 @@ export default class GoogleMapsApi {
             { lat: secondLan, lng: secondLng },
           ];
 
-          // GoogleMapsApi.drawPolyline(pathCoordinates, map);
           const request = {
             origin: pathCoordinates[0],
             destination: pathCoordinates[1],
-            travelMode: google.maps.TravelMode.WALKING,
+            travelMode: google.maps.TravelMode.WALKING, // DRIVING, WALKING, BICYCLING
+            unitSystem: google.maps.UnitSystem.METRIC, // IMPERIAL Distances are shown using miles.
           };
-          GoogleMapsApi.directionsService.route(request, (result, status) => {
-            if (status === 'OK') {
-              GoogleMapsApi.directionsRenderer.setDirections(result);
-            }
-          });
-          /* const lengthInKms = google.maps.geometry.spherical.computeLength
-          (GoogleMapsApi.currentPath.getPath()) / 1000;
-          console.log(lengthInKms); */
+          GoogleMapsApi.directionsService
+            .route(request, (response, status) => {
+              if (status === 'OK') {
+                GoogleMapsApi.directionsRenderer.setDirections(response);
+                console.log(`Distance ${response?.routes[0].legs[0].distance?.text}`);
+                console.log(`Duration ${response?.routes[0].legs[0].duration?.text}`);
+                GoogleMapsApi.markers.forEach((marker) => marker.setOpacity(0.0));
+                GoogleMapsApi.elevation
+                  .getElevationAlongPath({
+                    path: [request?.origin, request?.destination],
+                    samples: 200,
+                  })
+                  .then((res) => GoogleMapsApi.plotElevation(res))
+                  .catch(() => {
+                    GoogleMapsApi.chartDiv.element.textContent = 'Cannot show elevation';
+                  });
+              }
+            })
+            .catch((error) => console.error(`Directions request failed: ${error}`));
         }
       }
 
@@ -110,6 +124,25 @@ export default class GoogleMapsApi {
         GoogleMapsApi.deleteMarker(e);
       });
     }
+  }
+
+  public static plotElevation({ results }: google.maps.PathElevationResponse): void {
+    const chart = new google.visualization.ColumnChart(GoogleMapsApi.chartDiv.element);
+    const data = new google.visualization.DataTable();
+
+    data.addColumn('string', 'Sample');
+    data.addColumn('number', 'Elevation');
+
+    for (let i = 0; i < results.length; i += 1) {
+      data.addRow(['', results[i].elevation]);
+    }
+
+    chart.draw(data, {
+      height: 150,
+      legend: 'none',
+      title: 'Elevation (m)',
+      colors: ['#219486', '#1CBAA7'],
+    });
   }
 
   public static getLat(marker: google.maps.Marker): number | undefined {
@@ -129,33 +162,20 @@ export default class GoogleMapsApi {
         GoogleMapsApi.markers.splice(GoogleMapsApi.markers.indexOf(marker), 1);
       }
     });
-    // GoogleMapsApi.removeLine();
   }
 
-  // eslint-disable-next-line max-len
-  /* public static drawPolyline(coordinates: google.maps.LatLngLiteral[], map: google.maps.Map): void {
-    GoogleMapsApi.currentPath = new google.maps.Polyline({
-      path: coordinates,
-      strokeColor: '#FF0000',
-      strokeOpacity: 1.0,
-      strokeWeight: 2,
-      geodesic: true,
-      draggable: true,
-    });
-    GoogleMapsApi.currentPath.setMap(map);
+  public static getRoute(): void {
+    console.log(GoogleMapsApi.directionsService);
   }
-
-  public static removeLine(): void {
-    GoogleMapsApi.currentPath.setMap(null);
-  } */
 
   // eslint-disable-next-line max-len
   public static placeMarkerAndPanTo(location: google.maps.LatLng, map: google.maps.Map): google.maps.Marker {
     const marker = new google.maps.Marker({
       position: location,
       map,
-      draggable: true,
       animation: google.maps.Animation.DROP,
+      opacity: 1,
+      icon: './assets/icons/geo.png',
     });
     map.panTo(location);
     return marker;

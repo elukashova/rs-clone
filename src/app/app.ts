@@ -27,7 +27,7 @@ export default class App {
     // получать язык из указанной страны или менять русский/английский при переводе
     const language = 'en';
     // eslint-disable-next-line operator-linebreak
-    const srcString = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap&language=${language}&libraries=geometry`;
+    const srcString = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap&language=${language}&libraries=visualization,geometry`;
     const script = new BaseComponent('script', parent, '', '', {
       async: '',
       defer: '',

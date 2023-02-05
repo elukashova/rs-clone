@@ -16,3 +16,4 @@ declare global {
   }
 }
 window.initMap = GoogleMapsApi.initMap;
+google.charts.load('current', { packages: ['corechart'] });
