@@ -9,6 +9,8 @@ export default class TrainingFeed extends BaseComponent<'article'> {
 
   public findFriendsButton: Button | undefined;
 
+  private buttonContainer: BaseComponent<'div'> | undefined;
+
   constructor(parent: HTMLElement) {
     super('article', parent, 'training-feed');
     this.showGreetingMessage();
@@ -16,8 +18,9 @@ export default class TrainingFeed extends BaseComponent<'article'> {
 
   public showGreetingMessage(): void {
     this.element.append(this.message.element);
-    this.addTrainingButton = new Button(this.element, 'Добавить Тренировку', 'btn_main');
-    this.addTrainingButton = new Button(this.element, 'Найти Друзей', 'btn_main');
+    this.buttonContainer = new BaseComponent('div', this.element, 'training-feed__buttons');
+    this.addTrainingButton = new Button(this.buttonContainer.element, 'Добавить Тренировку', 'btn_main');
+    this.addTrainingButton = new Button(this.buttonContainer.element, 'Найти Друзей', 'btn_main');
   }
 
   public deleteGreetingMessage(): void {
