@@ -10,6 +10,12 @@ export default class GoogleMapsApi {
 
   public static response: HTMLPreElement;
 
+  public static currentPath: google.maps.Polyline;
+
+  public static directionsService: google.maps.DirectionsService;
+
+  public static directionsRenderer: google.maps.DirectionsRenderer;
+
   public static markers: google.maps.Marker[] = [];
 
   constructor(
@@ -26,6 +32,8 @@ export default class GoogleMapsApi {
 
   public static initMap(): void {
     const mapWrapper: HTMLElement | null = document.getElementById('map');
+    GoogleMapsApi.directionsService = new google.maps.DirectionsService();
+    GoogleMapsApi.directionsRenderer = new google.maps.DirectionsRenderer();
     if (mapWrapper) {
       const map = new google.maps.Map(mapWrapper, {
         zoom: 8,
@@ -43,6 +51,7 @@ export default class GoogleMapsApi {
           GoogleMapsApi.placeMarker(event.latLng, map);
         }
       });
+      GoogleMapsApi.directionsRenderer.setMap(map);
 
       // переменные и слушатель для определения местоположения пользователя по геолокации
       const infoWindow = new google.maps.InfoWindow();
@@ -68,12 +77,49 @@ export default class GoogleMapsApi {
       map.setCenter(GoogleMapsApi.marker.getPosition() as google.maps.LatLng);
 
       GoogleMapsApi.markers.push(GoogleMapsApi.marker);
-      console.log(GoogleMapsApi.markers);
+      if (GoogleMapsApi.markers.length === 2) {
+        const firstLan = GoogleMapsApi.getLat(GoogleMapsApi.markers[0]);
+        const firstLng = GoogleMapsApi.getLng(GoogleMapsApi.markers[0]);
+        const secondLan = GoogleMapsApi.getLat(GoogleMapsApi.markers[1]);
+        const secondLng = GoogleMapsApi.getLng(GoogleMapsApi.markers[1]);
+
+        if (firstLan && firstLng && secondLan && secondLng) {
+          const pathCoordinates: google.maps.LatLngLiteral[] = [
+            { lat: firstLan, lng: firstLng },
+            { lat: secondLan, lng: secondLng },
+          ];
+
+          // GoogleMapsApi.drawPolyline(pathCoordinates, map);
+          const request = {
+            origin: pathCoordinates[0],
+            destination: pathCoordinates[1],
+            travelMode: google.maps.TravelMode.WALKING,
+          };
+          GoogleMapsApi.directionsService.route(request, (result, status) => {
+            if (status === 'OK') {
+              GoogleMapsApi.directionsRenderer.setDirections(result);
+            }
+          });
+          /* const lengthInKms = google.maps.geometry.spherical.computeLength
+          (GoogleMapsApi.currentPath.getPath()) / 1000;
+          console.log(lengthInKms); */
+        }
+      }
 
       GoogleMapsApi.marker.addListener('click', (e: google.maps.MapMouseEvent) => {
         GoogleMapsApi.deleteMarker(e);
       });
     }
+  }
+
+  public static getLat(marker: google.maps.Marker): number | undefined {
+    const lat = marker?.getPosition()?.lat();
+    return lat;
+  }
+
+  public static getLng(marker: google.maps.Marker): number | undefined {
+    const lng = marker?.getPosition()?.lng();
+    return lng;
   }
 
   public static deleteMarker(e: google.maps.MapMouseEvent): void {
@@ -83,7 +129,25 @@ export default class GoogleMapsApi {
         GoogleMapsApi.markers.splice(GoogleMapsApi.markers.indexOf(marker), 1);
       }
     });
+    // GoogleMapsApi.removeLine();
   }
+
+  // eslint-disable-next-line max-len
+  /* public static drawPolyline(coordinates: google.maps.LatLngLiteral[], map: google.maps.Map): void {
+    GoogleMapsApi.currentPath = new google.maps.Polyline({
+      path: coordinates,
+      strokeColor: '#FF0000',
+      strokeOpacity: 1.0,
+      strokeWeight: 2,
+      geodesic: true,
+      draggable: true,
+    });
+    GoogleMapsApi.currentPath.setMap(map);
+  }
+
+  public static removeLine(): void {
+    GoogleMapsApi.currentPath.setMap(null);
+  } */
 
   // eslint-disable-next-line max-len
   public static placeMarkerAndPanTo(location: google.maps.LatLng, map: google.maps.Map): google.maps.Marker {
@@ -97,7 +161,7 @@ export default class GoogleMapsApi {
     return marker;
   }
 
-  // изменение карты по еолокации при клике на кнопку
+  // изменение карты по геолокации при клике на кнопку
   public static geoLocationButton(infoWindow: google.maps.InfoWindow, map: google.maps.Map): void {
     // если браузер поддерживает геолокацию
     if (navigator.geolocation) {
