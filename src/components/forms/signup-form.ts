@@ -7,6 +7,7 @@ import Routes from '../../app/loader/router/router.types';
 import { SignUp, Token } from '../../app/loader/loader.types';
 import { createUser, getUser } from '../../app/loader/services/user-services';
 import { setDataToLocalStorage } from '../../utils/local-storage/local-storage';
+// import googleButton from '../google-button/google-button';
 
 export default class SignupForm extends BaseComponent<'form'> {
   private formHeader: BaseComponent<'h4'> = new BaseComponent(
@@ -50,7 +51,10 @@ export default class SignupForm extends BaseComponent<'form'> {
     additionalClasses: 'signup__link-login',
   });
 
-  private googleButton: Button = new Button(this.element, 'Sign up with Google', 'signup__btn-google');
+  // private googleButton: BaseComponent<'div'> =
+  // new BaseComponent<'div'>('div', this.element, 'g-signin2', '', {
+  //   'data-onsuccess': 'onSignIn',
+  // });
 
   private newUser: SignUp = {
     username: '',
@@ -62,6 +66,7 @@ export default class SignupForm extends BaseComponent<'form'> {
   constructor(parent: HTMLElement, private replaceMainCallback: () => Promise<void>) {
     super('form', parent, 'signup-form signup');
     this.loginLink.element.setAttribute('href', Routes.LogIn);
+    // this.element.append(googleButton.element);
     this.addSignupEventListeners();
   }
 
@@ -71,6 +76,7 @@ export default class SignupForm extends BaseComponent<'form'> {
     this.passwordInput.element.addEventListener('input', this.passwordInputCallback);
     this.countryInput.element.addEventListener('input', this.countryInputCallback);
     this.signupButton.element.addEventListener('click', this.signupBtnCallback);
+    // this.googleButton.element.addEventListener('click', this.googleBtnCallback);
   }
 
   private nameInputCallback = (): void => {
@@ -99,6 +105,10 @@ export default class SignupForm extends BaseComponent<'form'> {
       console.log(err); // temporary console.log
     }
   };
+
+  // private googleBtnCallback = (e: Event): void => {
+  //   e.preventDefault();
+  // };
 
   private async createUser(): Promise<Token> {
     return createUser(this.newUser).then((token) => {
