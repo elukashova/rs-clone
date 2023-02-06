@@ -32,19 +32,4 @@ export default class App {
   public handleRouting(): void {
     this.router.locationHandler();
   }
-
-  // public async googleIt(parent: HTMLElement): Promise<void> {
-  //   await App.createGoogleBtnScript(parent);
-  //   this.initializeGoogleBtnId();
-  // }
-
-  // public static createGoogleBtnScript(parent: HTMLElement): BaseComponent<'script'> {
-  //   const srcString: string = 'https://accounts.google.com/gsi/client';
-  //   const script = new BaseComponent('script', parent, '', '', {
-  //     src: srcString,
-  //     async: '',
-  //     defer: '',
-  //   });
-  //   return script;
-  // }
 }

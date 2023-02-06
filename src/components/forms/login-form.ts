@@ -5,6 +5,8 @@ import BaseComponent from '../base-component/base-component';
 import Button from '../button/button';
 import Input from '../input/input';
 import './form.css';
+import GoogleBtn from '../google-button/google-btn.types';
+import GoogleButton from '../google-button/google-btn';
 
 export default class LoginForm extends BaseComponent<'form'> {
   private formHeader: BaseComponent<'h4'> = new BaseComponent(
@@ -14,7 +16,7 @@ export default class LoginForm extends BaseComponent<'form'> {
     'Account Login',
   );
 
-  public googleButton: Button = new Button(this.element, 'Sign up with Google', 'login__btn-google');
+  private googleBtn = new GoogleButton(this.element, GoogleBtn.SignIn);
 
   private logInMessage: BaseComponent<'span'> = new BaseComponent(
     'span',

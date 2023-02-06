@@ -7,6 +7,8 @@ import Routes from '../../app/loader/router/router.types';
 import { SignUp, Token } from '../../app/loader/loader.types';
 import { createUser, getUser } from '../../app/loader/services/user-services';
 import { setDataToLocalStorage } from '../../utils/local-storage/local-storage';
+import GoogleBtn from '../google-button/google-btn.types';
+import GoogleButton from '../google-button/google-btn';
 // import googleButton from '../google-button/google-button';
 
 export default class SignupForm extends BaseComponent<'form'> {
@@ -51,10 +53,7 @@ export default class SignupForm extends BaseComponent<'form'> {
     additionalClasses: 'signup__link-login',
   });
 
-  // private googleButton: BaseComponent<'div'> =
-  // new BaseComponent<'div'>('div', this.element, 'g-signin2', '', {
-  //   'data-onsuccess': 'onSignIn',
-  // });
+  private googleBtn = new GoogleButton(this.element, GoogleBtn.SignUp);
 
   private newUser: SignUp = {
     username: '',

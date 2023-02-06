@@ -1,4 +1,4 @@
-import BaseComponent from '../../components/base-component/base-component';
+import BaseComponent from '../base-component/base-component';
 import GoogleBtn from './google-btn.types';
 
 export default class GoogleButton extends BaseComponent<'div'> {
@@ -6,6 +6,7 @@ export default class GoogleButton extends BaseComponent<'div'> {
 
   constructor(parent: HTMLElement, type: GoogleBtn) {
     super('div', parent, type);
+    this.initializeGoogleBtnId();
   }
 
   public initializeGoogleBtnId(): void {
@@ -15,7 +16,7 @@ export default class GoogleButton extends BaseComponent<'div'> {
       auto_select: true,
     });
     this.renderGoogleBtn();
-    google.accounts.id.prompt();
+    // google.accounts.id.prompt();
   }
 
   public renderGoogleBtn(): void {
