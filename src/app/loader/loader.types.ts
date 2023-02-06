@@ -27,3 +27,11 @@ export type LoadRequest = {
   params?: RequestData;
   token?: string;
 };
+
+export enum Methods {
+  Get = 'GET',
+  Post = 'POST',
+  Put = 'PUT',
+  Patch = 'PATCH',
+  Delete = 'DELETE',
+}
