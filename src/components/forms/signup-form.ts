@@ -48,7 +48,7 @@ export default class SignupForm extends BaseComponent<'form'> {
   );
 
   private loginLink: NavigationLink = new NavigationLink(this.replaceMainCallback, {
-    text: 'Login here',
+    text: 'Log in here',
     parent: this.logInMessage.element,
     additionalClasses: 'signup__link-login',
   });

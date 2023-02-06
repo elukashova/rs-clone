@@ -8,6 +8,7 @@ import './form.css';
 import { GoogleBtnClass, GoogleBtnType } from '../google-button/google-btn.types';
 import GoogleButton from '../google-button/google-btn';
 import { setDataToLocalStorage } from '../../utils/local-storage/local-storage';
+import NavigationLink from '../link/link';
 
 export default class LoginForm extends BaseComponent<'form'> {
   private formHeader: BaseComponent<'h4'> = new BaseComponent(
@@ -30,7 +31,20 @@ export default class LoginForm extends BaseComponent<'form'> {
 
   public passwordInput: Input = new Input(this.element, 'login__form-input', 'Password', { type: 'password' });
 
-  public loginButton: Button = new Button(this.element, 'Login', 'login__btn-main btn_main');
+  public loginButton: Button = new Button(this.element, 'Log in', 'login__btn-main btn_main');
+
+  private signUpMessage: BaseComponent<'span'> = new BaseComponent(
+    'span',
+    this.element,
+    'login_message-sigup',
+    'Not a member? ',
+  );
+
+  private signupLink: NavigationLink = new NavigationLink(this.replaceMainCallback, {
+    text: 'Sign up here',
+    parent: this.signUpMessage.element,
+    additionalClasses: 'login__link-signup',
+  });
 
   private user: LogIn = {
     email: '',
@@ -42,6 +56,7 @@ export default class LoginForm extends BaseComponent<'form'> {
 
   constructor(parent: HTMLElement, private replaceMainCallback: () => Promise<void>) {
     super('form', parent, 'login-form login');
+    this.signupLink.element.setAttribute('href', Routes.SignUp);
     this.GoogleBtn = new GoogleButton(
       {
         parent: this.element,
