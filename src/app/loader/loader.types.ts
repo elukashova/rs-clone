@@ -1,8 +1,10 @@
 export type SignUp = {
-  username: string;
+  name: string;
   email: string;
-  password: string;
-  country: string;
+  google: boolean;
+  password?: string;
+  country?: string;
+  avatar_url?: string;
 };
 
 export type LogIn = Pick<SignUp, 'email' | 'password'>;
