@@ -1,51 +1,67 @@
 import jwtdecode from 'jwt-decode';
-import { SignUp } from '../../app/loader/loader.types';
-// import Routes from '../../app/loader/router/router.types';
+import { LogIn, SignUp } from '../../app/loader/loader.types';
 import BaseComponent from '../base-component/base-component';
-import { GoogleAccount, GoogleBtnData } from './google-btn.types';
+import { GoogleAccount, GoogleBtnData, GoogleBtnType, LogInCallback, SignUpCallback } from './google-btn.types';
 
 export default class GoogleButton extends BaseComponent<'div'> {
   private clientId: string = '867792290204-n80gt7ebkoqsg6cqr8592g0fle342tjj.apps.googleusercontent.com';
 
-  private signUpCallback: (user: SignUp) => void;
+  private googleLogInCallback: LogInCallback | undefined;
+
+  private googleSignUpCallback: SignUpCallback | undefined;
 
   private newUser: SignUp = {
-    name: '',
+    username: '',
     email: '',
     google: true,
     avatar_url: '',
   };
 
-  constructor(data: GoogleBtnData) {
-    super('div', data.parent, data.type);
-    this.signUpCallback = data.callback;
-    this.initializeGoogleBtnId();
+  private existingUser: LogIn = {
+    email: '',
+    google: true,
+  };
+
+  constructor(private data: GoogleBtnData, type: GoogleBtnType, private isFirstAccess: boolean) {
+    super('div', data.parent, data.btnClass);
+    this.googleSignUpCallback = this.isFirstAccess ? this.data.signupCallback : undefined;
+    this.googleLogInCallback = !this.isFirstAccess ? this.data.loginCallback : undefined;
+    this.initializeGoogleBtnId(type);
   }
 
-  public initializeGoogleBtnId(): void {
+  public initializeGoogleBtnId(type: GoogleBtnType): void {
     google.accounts.id.initialize({
       client_id: this.clientId,
-      callback: this.handleGoogleCredentials,
+      callback: this.isFirstAccess ? this.handleGoogleSignup : this.handleGoogleLogin,
       auto_select: true,
     });
-    this.renderGoogleBtn();
-    // google.accounts.id.prompt();
+    this.renderGoogleBtn(type);
   }
 
-  public renderGoogleBtn(): void {
+  public renderGoogleBtn(type: GoogleBtnType): void {
     google.accounts.id.renderButton(this.element, {
       theme: 'outline',
-      text: 'signup_with',
+      text: type,
       size: 'large',
       type: 'standard',
     });
   }
 
-  public handleGoogleCredentials = (resp: google.accounts.id.CredentialResponse): void => {
+  public handleGoogleSignup = (resp: google.accounts.id.CredentialResponse): void => {
     const account: GoogleAccount = jwtdecode(resp.credential);
-    this.newUser.name = account.name;
+    this.newUser.username = account.name;
     this.newUser.email = account.email;
     this.newUser.avatar_url = account.picture;
-    this.signUpCallback(this.newUser);
+    if (this.googleSignUpCallback) {
+      this.googleSignUpCallback(this.newUser);
+    }
+  };
+
+  public handleGoogleLogin = (resp: google.accounts.id.CredentialResponse): void => {
+    const account: GoogleAccount = jwtdecode(resp.credential);
+    if (this.googleLogInCallback) {
+      this.existingUser.email = account.email;
+      this.googleLogInCallback(this.existingUser);
+    }
   };
 }

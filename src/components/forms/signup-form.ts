@@ -7,7 +7,7 @@ import Routes from '../../app/loader/router/router.types';
 import { SignUp, Token } from '../../app/loader/loader.types';
 import { createUser, getUser } from '../../app/loader/services/user-services';
 import { setDataToLocalStorage } from '../../utils/local-storage/local-storage';
-import { GoogleBtn } from '../google-button/google-btn.types';
+import { GoogleBtnClass, GoogleBtnType } from '../google-button/google-btn.types';
 import GoogleButton from '../google-button/google-btn';
 // import googleButton from '../google-button/google-button';
 
@@ -53,24 +53,30 @@ export default class SignupForm extends BaseComponent<'form'> {
     additionalClasses: 'signup__link-login',
   });
 
-  private googleBtn: GoogleButton;
+  private googleButton: GoogleButton;
 
   private newUser: SignUp = {
-    name: '',
+    username: '',
     email: '',
     google: false,
     password: '',
     country: '',
   };
 
+  private isNewUser: boolean = true;
+
   constructor(parent: HTMLElement, private replaceMainCallback: () => Promise<void>) {
     super('form', parent, 'signup-form signup');
     this.loginLink.element.setAttribute('href', Routes.LogIn);
-    this.googleBtn = new GoogleButton({
-      parent: this.element,
-      type: GoogleBtn.SignUpClass,
-      callback: this.signUpUser,
-    });
+    this.googleButton = new GoogleButton(
+      {
+        parent: this.element,
+        btnClass: GoogleBtnClass.SignUpClass,
+        signupCallback: this.signUpUser,
+      },
+      GoogleBtnType.SignUpType,
+      this.isNewUser,
+    );
     this.addSignupEventListeners();
   }
 
@@ -83,7 +89,7 @@ export default class SignupForm extends BaseComponent<'form'> {
   }
 
   private nameInputCallback = (): void => {
-    this.newUser.name = this.nameInput.getValue();
+    this.newUser.username = this.nameInput.getValue();
   };
 
   private emailInputCallback = (): void => {

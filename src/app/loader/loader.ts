@@ -3,7 +3,7 @@ import { RequestData, Token, LoadRequest } from './loader.types';
 export default class Loader {
   // http://localhost:3000
   // https://the-big-bug-theory-be.onrender.com'
-  private static server: string = 'http://localhost:3000';
+  private static server: string = 'https://the-big-bug-theory-be.onrender.com';
 
   private static errorHandler(res: Response): Response {
     if (!res.ok) {
