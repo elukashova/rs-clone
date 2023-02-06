@@ -1,7 +1,7 @@
 import BaseComponent from '../components/base-component/base-component';
 
 /* eslint-disable max-lines-per-function */
-export default class GoogleMapsApi {
+export default class CustomMap {
   public static map: google.maps.Map;
 
   public static marker: google.maps.Marker;
@@ -20,7 +20,7 @@ export default class GoogleMapsApi {
 
   public static elevation: google.maps.ElevationService;
 
-  public static chartDiv: BaseComponent<'div'> = new BaseComponent('div', document.body, 'chart-div', '', {
+  public static chartElevation: BaseComponent<'div'> = new BaseComponent('div', document.body, 'chart-div', '', {
     id: 'chart-div',
   });
 
@@ -36,12 +36,13 @@ export default class GoogleMapsApi {
       center: latLng || { lat: 40, lng: 0 },
     });
     console.log(map);
+    CustomMap.initMap();
   }
 
   public static initMap(): void {
     const mapWrapper: HTMLElement | null = document.getElementById('map');
-    GoogleMapsApi.directionsService = new google.maps.DirectionsService();
-    GoogleMapsApi.directionsRenderer = new google.maps.DirectionsRenderer({
+    CustomMap.directionsService = new google.maps.DirectionsService();
+    CustomMap.directionsRenderer = new google.maps.DirectionsRenderer({
       polylineOptions: { strokeColor: '#1CBAA7' },
       markerOptions: { icon: './assets/icons/geo.png' },
     });
@@ -51,15 +52,15 @@ export default class GoogleMapsApi {
         center: { lat: 40, lng: 0 },
       });
 
-      GoogleMapsApi.elevation = new google.maps.ElevationService();
+      CustomMap.elevation = new google.maps.ElevationService();
 
       map.addListener('click', (event: google.maps.MapMouseEvent) => {
-        if (GoogleMapsApi.markers.length < 2) {
-          GoogleMapsApi.placeMarker(event.latLng, map);
+        if (CustomMap.markers.length < 2) {
+          CustomMap.placeMarker(event.latLng, map);
         }
       });
-      GoogleMapsApi.directionsRenderer.setMap(map);
-      GoogleMapsApi.directionsRenderer.setOptions({
+      CustomMap.directionsRenderer.setMap(map);
+      CustomMap.directionsRenderer.setOptions({
         draggable: true,
       });
 
@@ -69,22 +70,22 @@ export default class GoogleMapsApi {
       locationButton.textContent = 'Determine current location';
       locationButton.classList.add('custom-map-control-button');
       map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
-      locationButton.addEventListener('click', () => GoogleMapsApi.geoLocationButton(infoWindow, map));
+      locationButton.addEventListener('click', () => CustomMap.geoLocationButton(infoWindow, map));
     }
   }
 
   public static placeMarker(location: google.maps.LatLng | null, map: google.maps.Map): void {
     if (location) {
-      GoogleMapsApi.marker = GoogleMapsApi.placeMarkerAndPanTo(location, map);
+      CustomMap.marker = CustomMap.placeMarkerAndPanTo(location, map);
       map.setZoom(9);
-      map.setCenter(GoogleMapsApi.marker.getPosition() as google.maps.LatLng);
+      map.setCenter(CustomMap.marker.getPosition() as google.maps.LatLng);
 
-      GoogleMapsApi.markers.push(GoogleMapsApi.marker);
-      if (GoogleMapsApi.markers.length === 2) {
-        const firstLan = GoogleMapsApi.getLat(GoogleMapsApi.markers[0]);
-        const firstLng = GoogleMapsApi.getLng(GoogleMapsApi.markers[0]);
-        const secondLan = GoogleMapsApi.getLat(GoogleMapsApi.markers[1]);
-        const secondLng = GoogleMapsApi.getLng(GoogleMapsApi.markers[1]);
+      CustomMap.markers.push(CustomMap.marker);
+      if (CustomMap.markers.length === 2) {
+        const firstLan = CustomMap.getLat(CustomMap.markers[0]);
+        const firstLng = CustomMap.getLng(CustomMap.markers[0]);
+        const secondLan = CustomMap.getLat(CustomMap.markers[1]);
+        const secondLng = CustomMap.getLng(CustomMap.markers[1]);
 
         if (firstLan && firstLng && secondLan && secondLng) {
           const pathCoordinates: google.maps.LatLngLiteral[] = [
@@ -98,21 +99,21 @@ export default class GoogleMapsApi {
             travelMode: google.maps.TravelMode.WALKING, // DRIVING, WALKING, BICYCLING
             unitSystem: google.maps.UnitSystem.METRIC, // IMPERIAL Distances are shown using miles.
           };
-          GoogleMapsApi.directionsService
+          CustomMap.directionsService
             .route(request, (response, status) => {
               if (status === 'OK') {
-                GoogleMapsApi.directionsRenderer.setDirections(response);
+                CustomMap.directionsRenderer.setDirections(response);
                 console.log(`Distance ${response?.routes[0].legs[0].distance?.text}`);
                 console.log(`Duration ${response?.routes[0].legs[0].duration?.text}`);
-                GoogleMapsApi.markers.forEach((marker) => marker.setOpacity(0.0));
-                GoogleMapsApi.elevation
+                CustomMap.markers.forEach((marker) => marker.setOpacity(0.0));
+                CustomMap.elevation
                   .getElevationAlongPath({
                     path: [request?.origin, request?.destination],
                     samples: 200,
                   })
-                  .then((res) => GoogleMapsApi.plotElevation(res))
+                  .then((res) => CustomMap.plotElevation(res))
                   .catch(() => {
-                    GoogleMapsApi.chartDiv.element.textContent = 'Cannot show elevation';
+                    CustomMap.chartElevation.element.textContent = 'Cannot show elevation';
                   });
               }
             })
@@ -120,14 +121,14 @@ export default class GoogleMapsApi {
         }
       }
 
-      GoogleMapsApi.marker.addListener('click', (e: google.maps.MapMouseEvent) => {
-        GoogleMapsApi.deleteMarker(e);
+      CustomMap.marker.addListener('click', (e: google.maps.MapMouseEvent) => {
+        CustomMap.deleteMarker(e);
       });
     }
   }
 
   public static plotElevation({ results }: google.maps.PathElevationResponse): void {
-    const chart = new google.visualization.ColumnChart(GoogleMapsApi.chartDiv.element);
+    const chart = new google.visualization.ColumnChart(CustomMap.chartElevation.element);
     const data = new google.visualization.DataTable();
 
     data.addColumn('string', 'Sample');
@@ -156,16 +157,16 @@ export default class GoogleMapsApi {
   }
 
   public static deleteMarker(e: google.maps.MapMouseEvent): void {
-    GoogleMapsApi.markers.forEach((marker) => {
+    CustomMap.markers.forEach((marker) => {
       if (marker.getPosition() === e.latLng) {
         marker.setMap(null);
-        GoogleMapsApi.markers.splice(GoogleMapsApi.markers.indexOf(marker), 1);
+        CustomMap.markers.splice(CustomMap.markers.indexOf(marker), 1);
       }
     });
   }
 
   public static getRoute(): void {
-    console.log(GoogleMapsApi.directionsService);
+    console.log(CustomMap.directionsService);
   }
 
   // eslint-disable-next-line max-len
@@ -199,7 +200,7 @@ export default class GoogleMapsApi {
         () => {
           const latLngInfo = map.getCenter();
           if (latLngInfo) {
-            GoogleMapsApi.handleLocationError(true, infoWindow, latLngInfo, map);
+            CustomMap.handleLocationError(true, infoWindow, latLngInfo, map);
           }
         },
       );
@@ -207,7 +208,7 @@ export default class GoogleMapsApi {
       // если браузер не поддерживает геолокацию
       const latLngInfo = map.getCenter();
       if (latLngInfo) {
-        GoogleMapsApi.handleLocationError(false, infoWindow, latLngInfo, map);
+        CustomMap.handleLocationError(false, infoWindow, latLngInfo, map);
       }
     }
   }
