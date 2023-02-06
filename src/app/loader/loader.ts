@@ -29,8 +29,6 @@ export default class Loader {
   public static async postData<T>(method: string, view: string, params?: RequestData): Promise<T> {
     const url: URL = Loader.createURL(view);
 
-    console.log(params);
-
     return this.load({ url, method, params }).then((res: Response) => res.json());
   }
 

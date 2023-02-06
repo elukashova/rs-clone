@@ -16,7 +16,7 @@ export default class GoogleButton extends BaseComponent<'div'> {
     avatar_url: '',
   };
 
-  constructor(data: GoogleBtnData, private replaceMainCallback: () => Promise<void>) {
+  constructor(data: GoogleBtnData) {
     super('div', data.parent, data.type);
     this.signUpCallback = data.callback;
     this.initializeGoogleBtnId();

@@ -66,15 +66,11 @@ export default class SignupForm extends BaseComponent<'form'> {
   constructor(parent: HTMLElement, private replaceMainCallback: () => Promise<void>) {
     super('form', parent, 'signup-form signup');
     this.loginLink.element.setAttribute('href', Routes.LogIn);
-    // this.element.append(googleButton.element);
-    this.googleBtn = new GoogleButton(
-      {
-        parent: this.element,
-        type: GoogleBtn.SignUpClass,
-        callback: this.signUpUser,
-      },
-      this.replaceMainCallback,
-    );
+    this.googleBtn = new GoogleButton({
+      parent: this.element,
+      type: GoogleBtn.SignUpClass,
+      callback: this.signUpUser,
+    });
     this.addSignupEventListeners();
   }
 
@@ -84,7 +80,6 @@ export default class SignupForm extends BaseComponent<'form'> {
     this.passwordInput.element.addEventListener('input', this.passwordInputCallback);
     this.countryInput.element.addEventListener('input', this.countryInputCallback);
     this.signupButton.element.addEventListener('click', this.signupBtnCallback);
-    // this.googleButton.element.addEventListener('click', this.googleBtnCallback);
   }
 
   private nameInputCallback = (): void => {
