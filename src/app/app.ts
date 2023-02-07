@@ -1,17 +1,7 @@
 import BaseComponent from '../components/base-component/base-component';
-/* import Footer from '../components/footer/footer';
-import Header from '../components/header/header'; */
+import GoogleMaps from '../map/google-maps';
 
 export default class App {
-  /* private header: Header = new Header(this.parent); */
-
-  private mapDiv: BaseComponent<'div'> = new BaseComponent('div', this.parent, 'map', '', {
-    id: 'map',
-    style: 'height: 50vh',
-  });
-
-  /* private footer: Footer = new Footer(this.parent); */
-
   constructor(private readonly parent: HTMLElement) {
     this.parent.classList.add('root');
   }
@@ -19,10 +9,21 @@ export default class App {
   public init(): void {
     this.parent.style.backgroundColor = 'grey';
     this.parent.style.height = '100%';
+    const mapDiv: BaseComponent<'div'> = new BaseComponent('div', this.parent, 'map', '', {
+      id: 'map',
+      style: 'height: 50vh',
+    });
+    /* const mapDiv2: BaseComponent<'div'> = new BaseComponent('div', this.parent, 'map', '', {
+      id: 'map',
+      style: 'height: 50vh',
+    }); */
+    const map1 = new GoogleMaps(mapDiv.element, 'map1', 8, { lat: -33.397, lng: 150.644 });
+    // const map2 = new GoogleMaps(mapDiv2.element, 'map1', 8, { lat: -3.397, lng: 153.644 });
+    console.log(map1 /* map2 */);
   }
 
   // скрипт с ключом для гугл апи
-  public static addKey(parent: HTMLElement): BaseComponent<'script'> {
+  /* public static addKey(parent: HTMLElement): BaseComponent<'script'> {
     const apiKey = 'AIzaSyC90BCUHG7PI6cW9XNex-5bY3Dd44Rqhgs';
     // получать язык из указанной страны или менять русский/английский при переводе
     const language = 'en';
@@ -34,5 +35,5 @@ export default class App {
       src: srcString,
     });
     return script;
-  }
+  } */
 }

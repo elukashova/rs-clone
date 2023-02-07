@@ -1,18 +1,11 @@
-import BaseComponent from '../components/base-component/base-component';
+/* eslint-disable max-len */
+/* import BaseComponent from '../components/base-component/base-component';
+import { ElevationRequest } from './interface-map';
 
-/* eslint-disable max-lines-per-function */
 export default class CustomMap {
   public static map: google.maps.Map;
 
   public static marker: google.maps.Marker;
-
-  public static geocoder: google.maps.Geocoder;
-
-  public static responseDiv: HTMLDivElement;
-
-  public static response: HTMLPreElement;
-
-  public static currentPath: google.maps.Polyline;
 
   public static directionsService: google.maps.DirectionsService;
 
@@ -26,61 +19,58 @@ export default class CustomMap {
 
   public static markers: google.maps.Marker[] = [];
 
-  constructor(
-    element: HTMLElement,
-    zoomNumber: number,
-    latLng: google.maps.LatLng | google.maps.LatLngLiteral | null | undefined,
-  ) {
-    const map = new google.maps.Map(element, {
-      zoom: zoomNumber,
-      center: latLng || { lat: 40, lng: 0 },
-    });
-    console.log(map);
+  public mapId: number;
+
+  constructor(mapId: number) {
+    this.mapId = mapId;
     CustomMap.initMap();
   }
 
   public static initMap(): void {
     const mapWrapper: HTMLElement | null = document.getElementById('map');
-    CustomMap.directionsService = new google.maps.DirectionsService();
-    CustomMap.directionsRenderer = new google.maps.DirectionsRenderer({
-      polylineOptions: { strokeColor: '#1CBAA7' },
-      markerOptions: { icon: './assets/icons/geo.png' },
-    });
     if (mapWrapper) {
-      const map = new google.maps.Map(mapWrapper, {
+      const myOptions = {
         zoom: 8,
         center: { lat: 40, lng: 0 },
-      });
-
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+      };
+      CustomMap.map = new google.maps.Map(mapWrapper, myOptions);
       CustomMap.elevation = new google.maps.ElevationService();
-
-      map.addListener('click', (event: google.maps.MapMouseEvent) => {
-        if (CustomMap.markers.length < 2) {
-          CustomMap.placeMarker(event.latLng, map);
-        }
+      CustomMap.directionsService = new google.maps.DirectionsService();
+      CustomMap.directionsRenderer = new google.maps.DirectionsRenderer({
+        polylineOptions: { strokeColor: '#1CBAA7' },
+        markerOptions: { icon: './assets/icons/geo.png' },
       });
-      CustomMap.directionsRenderer.setMap(map);
+      CustomMap.directionsRenderer.setMap(CustomMap.map);
       CustomMap.directionsRenderer.setOptions({
         draggable: true,
       });
-
+      CustomMap.directionsRenderer.addListener('directions_changed', () => {
+        const directions = CustomMap.directionsRenderer.getDirections();
+        if (directions) {
+          CustomMap.computeTotalDistance(directions);
+        }
+      });
+      // слушатель добавления маркеров
+      CustomMap.map.addListener('click', (event: google.maps.MapMouseEvent) => {
+        if (CustomMap.markers.length < 2) {
+          CustomMap.placeMarker(event.latLng, CustomMap.map);
+        }
+      });
       // переменные и слушатель для определения местоположения пользователя по геолокации
       const infoWindow = new google.maps.InfoWindow();
       const locationButton = document.createElement('button');
       locationButton.textContent = 'Determine current location';
-      locationButton.classList.add('custom-map-control-button');
-      map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
-      locationButton.addEventListener('click', () => CustomMap.geoLocationButton(infoWindow, map));
+      CustomMap.map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
+      locationButton.addEventListener('click', () => CustomMap.geoLocationButton(infoWindow, CustomMap.map));
     }
   }
 
   public static placeMarker(location: google.maps.LatLng | null, map: google.maps.Map): void {
     if (location) {
       CustomMap.marker = CustomMap.placeMarkerAndPanTo(location, map);
-      map.setZoom(9);
-      map.setCenter(CustomMap.marker.getPosition() as google.maps.LatLng);
-
       CustomMap.markers.push(CustomMap.marker);
+
       if (CustomMap.markers.length === 2) {
         const firstLan = CustomMap.getLat(CustomMap.markers[0]);
         const firstLng = CustomMap.getLng(CustomMap.markers[0]);
@@ -88,43 +78,44 @@ export default class CustomMap {
         const secondLng = CustomMap.getLng(CustomMap.markers[1]);
 
         if (firstLan && firstLng && secondLan && secondLng) {
-          const pathCoordinates: google.maps.LatLngLiteral[] = [
-            { lat: firstLan, lng: firstLng },
-            { lat: secondLan, lng: secondLng },
-          ];
-
-          const request = {
-            origin: pathCoordinates[0],
-            destination: pathCoordinates[1],
-            travelMode: google.maps.TravelMode.WALKING, // DRIVING, WALKING, BICYCLING
-            unitSystem: google.maps.UnitSystem.METRIC, // IMPERIAL Distances are shown using miles.
-          };
-          CustomMap.directionsService
-            .route(request, (response, status) => {
-              if (status === 'OK') {
-                CustomMap.directionsRenderer.setDirections(response);
-                console.log(`Distance ${response?.routes[0].legs[0].distance?.text}`);
-                console.log(`Duration ${response?.routes[0].legs[0].duration?.text}`);
-                CustomMap.markers.forEach((marker) => marker.setOpacity(0.0));
-                CustomMap.elevation
-                  .getElevationAlongPath({
-                    path: [request?.origin, request?.destination],
-                    samples: 200,
-                  })
-                  .then((res) => CustomMap.plotElevation(res))
-                  .catch(() => {
-                    CustomMap.chartElevation.element.textContent = 'Cannot show elevation';
-                  });
-              }
-            })
-            .catch((error) => console.error(`Directions request failed: ${error}`));
+          CustomMap.doDirectionRequest(firstLan, firstLng, secondLan, secondLng);
         }
       }
-
-      CustomMap.marker.addListener('click', (e: google.maps.MapMouseEvent) => {
-        CustomMap.deleteMarker(e);
-      });
     }
+  }
+
+  public static doDirectionRequest(Lan1: number, Lng1: number, Lan2: number, Lng2: number): void {
+    const request = {
+      origin: { lat: Lan1, lng: Lng1 }, // start coordinates
+      destination: { lat: Lan2, lng: Lng2 }, // end coordinates
+      travelMode: google.maps.TravelMode.WALKING, // DRIVING, WALKING, BICYCLING
+      unitSystem: google.maps.UnitSystem.METRIC,
+    };
+    CustomMap.directionsService
+      .route(request, (response, status) => {
+        if (status === 'OK' && response) {
+          CustomMap.renderDirection(response);
+          CustomMap.markers.forEach((marker) => marker.setOpacity(0.0));
+          CustomMap.doElevationRequest(request);
+        }
+      })
+      .catch((error) => console.error(`Directions request failed: ${error}`));
+  }
+
+  public static renderDirection(response: google.maps.DirectionsResult): void {
+    CustomMap.directionsRenderer.setDirections(response);
+  }
+
+  public static doElevationRequest(request: ElevationRequest): void {
+    CustomMap.elevation
+      .getElevationAlongPath({
+        path: [request?.origin, request?.destination],
+        samples: 200,
+      })
+      .then((res) => CustomMap.plotElevation(res))
+      .catch(() => {
+        CustomMap.chartElevation.element.textContent = 'Cannot show elevation';
+      });
   }
 
   public static plotElevation({ results }: google.maps.PathElevationResponse): void {
@@ -141,9 +132,10 @@ export default class CustomMap {
     chart.draw(data, {
       height: 150,
       legend: 'none',
-      title: 'Elevation (m)',
+      title: 'Elevation (meters)',
       colors: ['#219486', '#1CBAA7'],
     });
+    CustomMap.getMapElevationInfo(results);
   }
 
   public static getLat(marker: google.maps.Marker): number | undefined {
@@ -156,19 +148,6 @@ export default class CustomMap {
     return lng;
   }
 
-  public static deleteMarker(e: google.maps.MapMouseEvent): void {
-    CustomMap.markers.forEach((marker) => {
-      if (marker.getPosition() === e.latLng) {
-        marker.setMap(null);
-        CustomMap.markers.splice(CustomMap.markers.indexOf(marker), 1);
-      }
-    });
-  }
-
-  public static getRoute(): void {
-    console.log(CustomMap.directionsService);
-  }
-
   // eslint-disable-next-line max-len
   public static placeMarkerAndPanTo(location: google.maps.LatLng, map: google.maps.Map): google.maps.Marker {
     const marker = new google.maps.Marker({
@@ -179,6 +158,7 @@ export default class CustomMap {
       icon: './assets/icons/geo.png',
     });
     map.panTo(location);
+    map.setZoom(9);
     return marker;
   }
 
@@ -227,4 +207,22 @@ export default class CustomMap {
     );
     infoWindow.open(map);
   }
+
+  public static getMapElevationInfo(results: google.maps.ElevationResult[]): void {
+    console.log(results);
+  }
+
+  public static computeTotalDistance(result: google.maps.DirectionsResult): number {
+    let total = 0;
+    const myRoute = result.routes[0];
+    if (myRoute) {
+      for (let i = 0; i < myRoute.legs.length; i += 1) {
+        if (myRoute.legs[i].distance) {
+          total += myRoute.legs[i].distance.value;
+        }
+      }
+    }
+    return total;
+  }
 }
+ */
