@@ -58,18 +58,14 @@ export default class NewRoutePage extends BaseComponent<'section'> {
   }
 
   private setVehicleName(name: string): void {
-    this.vehicleType.setName(name);
-  }
-
-  private static setParameterValue(element: MapParameter, name: string): void {
-    element.setValue(name);
+    this.vehicleType.name = name;
   }
 
   private setParameters(): void {
-    NewRoutePage.setParameterValue(this.distance, '0,00 км');
-    NewRoutePage.setParameterValue(this.ascent, '0 м');
-    NewRoutePage.setParameterValue(this.descent, '0 м');
-    NewRoutePage.setParameterValue(this.time, '0 с');
-    NewRoutePage.setParameterValue(this.roadType, 'дорога с покрытием');
+    this.distance.value = '0,00 км';
+    this.ascent.value = '0 м';
+    this.descent.value = '0 м';
+    this.time.value = '0 с';
+    this.roadType.value = 'дорога с покрытием';
   }
 }
