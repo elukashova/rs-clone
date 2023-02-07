@@ -27,6 +27,9 @@
   },
   "homepage": "https://github.com/elukashova/rs-clone#readme",
   "devDependencies": {
+    "@types/gapi": "^0.0.44",
+    "@types/google-one-tap": "^1.2.2",
+    "@types/google.accounts": "^0.0.6",
     "@types/jest": "^29.4.0",
     "@typescript-eslint/eslint-plugin": "^5.49.0",
     "@typescript-eslint/parser": "^5.49.0",
@@ -57,9 +60,6 @@
     "webpack-dev-server": "^4.11.1"
   },
   "dependencies": {
-    "@types/gapi": "^0.0.44",
-    "@types/google-one-tap": "^1.2.2",
-    "@types/google.accounts": "^0.0.5",
     "jwt-decode": "^3.1.2"
   }
 }
