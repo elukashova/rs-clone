@@ -1,4 +1,4 @@
-export type ElevationRequest = {
+export type MapRequest = {
   origin: {
     lat: number;
     lng: number;

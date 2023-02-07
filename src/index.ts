@@ -5,6 +5,9 @@ const app = new App(document.body);
 
 window.onload = (): void => {
   app.init();
+
+  // строчка для добавления Google Charts
+  google.charts.load('current', { packages: ['corechart'] });
 };
 
 // делаем метод initMap глобальным
@@ -13,13 +16,10 @@ declare global {
     initMap: (elem: HTMLElement, options: google.maps.MapOptions) => void;
   }
 }
-
 window.initMap = (parent: HTMLElement, options: google.maps.MapOptions): google.maps.Map => {
   const map = new google.maps.Map(parent, options);
   return map;
 };
-// строчка для добавления Charts
-google.charts.load('current', { packages: ['corechart'] });
 
 window.onpopstate = (): void => {
   app.handleRouting();
