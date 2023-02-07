@@ -1,13 +1,13 @@
 import { LogIn, SignUp } from '../../app/loader/loader.types';
 
 export enum GoogleBtnClasses {
-  SignUpClass = 'g_id_signup',
-  SignInClass = 'g_id_signin',
+  Signup = 'g_id_signup',
+  Signin = 'g_id_signin',
 }
 
 export enum GoogleBtnTypes {
-  SignUpType = 'signup_with',
-  SignInType = 'signin_with',
+  Signup = 'signup_with',
+  Signin = 'signin_with',
 }
 
 export type GoogleBtnData = {

@@ -60,10 +60,10 @@ export default class LoginForm extends BaseComponent<'form'> {
     this.googleBtn = new GoogleButton(
       {
         parent: this.element,
-        btnClass: GoogleBtnClasses.SignInClass,
+        btnClass: GoogleBtnClasses.Signin,
         loginCallback: this.signInUser,
       },
-      GoogleBtnTypes.SignInType,
+      GoogleBtnTypes.Signin,
       this.isNewUser,
     );
     this.addLoginEventListeners();

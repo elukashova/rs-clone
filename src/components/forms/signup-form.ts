@@ -70,10 +70,10 @@ export default class SignupForm extends BaseComponent<'form'> {
     this.googleButton = new GoogleButton(
       {
         parent: this.element,
-        btnClass: GoogleBtnClasses.SignUpClass,
+        btnClass: GoogleBtnClasses.Signup,
         signupCallback: this.signUpUser,
       },
-      GoogleBtnTypes.SignUpType,
+      GoogleBtnTypes.Signup,
       this.isNewUser,
     );
     this.addSignupEventListeners();
