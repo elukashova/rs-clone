@@ -7,9 +7,8 @@ import Routes from '../../app/loader/router/router.types';
 import { SignUp, Token } from '../../app/loader/loader.types';
 import { createUser, getUser } from '../../app/loader/services/user-services';
 import { setDataToLocalStorage } from '../../utils/local-storage/local-storage';
-import { GoogleBtnClass, GoogleBtnType } from '../google-button/google-btn.types';
+import { GoogleBtnClasses, GoogleBtnTypes } from '../google-button/google-btn.types';
 import GoogleButton from '../google-button/google-btn';
-// import googleButton from '../google-button/google-button';
 
 export default class SignupForm extends BaseComponent<'form'> {
   private formHeader: BaseComponent<'h4'> = new BaseComponent(
@@ -65,16 +64,16 @@ export default class SignupForm extends BaseComponent<'form'> {
 
   private isNewUser: boolean = true;
 
-  constructor(parent: HTMLElement, private replaceMainCallback: () => Promise<void>) {
+  constructor(parent: HTMLElement, private replaceMainCallback: () => void) {
     super('form', parent, 'signup-form signup');
     this.loginLink.element.setAttribute('href', Routes.LogIn);
     this.googleButton = new GoogleButton(
       {
         parent: this.element,
-        btnClass: GoogleBtnClass.SignUpClass,
+        btnClass: GoogleBtnClasses.SignUpClass,
         signupCallback: this.signUpUser,
       },
-      GoogleBtnType.SignUpType,
+      GoogleBtnTypes.SignUpType,
       this.isNewUser,
     );
     this.addSignupEventListeners();
@@ -104,7 +103,7 @@ export default class SignupForm extends BaseComponent<'form'> {
     this.newUser.country = this.countryInput.getValue();
   };
 
-  private signupBtnCallback = async (e: Event): Promise<void> => {
+  private signupBtnCallback = (e: Event): void => {
     e.preventDefault();
     try {
       this.signUpUser(this.newUser);
@@ -123,7 +122,7 @@ export default class SignupForm extends BaseComponent<'form'> {
     this.replaceMainCallback();
   }
 
-  private static async createUser(user: SignUp): Promise<Token> {
+  private static createUser(user: SignUp): Promise<Token> {
     return createUser(user).then((token) => {
       setDataToLocalStorage(token, 'userSessionToken');
       return token;
@@ -131,8 +130,7 @@ export default class SignupForm extends BaseComponent<'form'> {
   }
 
   // этот метод потом будет вынесен в загрузку dashboard
-  private static async getUser(token: Token): Promise<void> {
-    const user = await getUser(token);
-    console.log(user);
+  private static getUser(token: Token): void {
+    getUser(token).then((user) => console.log(user));
   }
 }

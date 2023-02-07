@@ -14,9 +14,10 @@ export default class Loader {
   }
 
   private static load(request: LoadRequest): Promise<Response> {
-    const headers: HeadersInit | undefined = !request.token
-      ? { 'Content-Type': 'application/json' }
-      : { 'Content-Type': 'application/json', Authorization: `Bearer ${request.token}` };
+    const headers: HeadersInit = {
+      'Content-Type': 'application/json',
+      ...(request.token && { Authorization: `Bearer ${request.token}` }),
+    };
 
     const { method } = request;
 
@@ -30,13 +31,13 @@ export default class Loader {
   public static postData<T>(method: Methods, view: string, params?: RequestData): Promise<T> {
     const url: URL = Loader.createURL(view);
 
-    return this.load({ url, method, params }).then((res: Response) => res.json());
+    return this.load({ url, method, params }).then((response: Response) => response.json());
   }
 
-  public static getUserData<T>(method: Methods, view: string, jwtObj: Token): Promise<T> {
+  // eslint-disable-next-line max-len
+  public static getUserData<T>(method: Methods, view: string, { token }: Token): Promise<T> {
     const url: URL = Loader.createURL(view);
-    const { token } = jwtObj;
-    return this.load({ url, method, token }).then((res: Response) => res.json());
+    return this.load({ url, method, token }).then((response: Response) => response.json());
   }
 
   private static createURL = (view: string): URL => {

@@ -5,7 +5,7 @@ import BaseComponent from '../base-component/base-component';
 import Button from '../button/button';
 import Input from '../input/input';
 import './form.css';
-import { GoogleBtnClass, GoogleBtnType } from '../google-button/google-btn.types';
+import { GoogleBtnClasses, GoogleBtnTypes } from '../google-button/google-btn.types';
 import GoogleButton from '../google-button/google-btn';
 import { setDataToLocalStorage } from '../../utils/local-storage/local-storage';
 import NavigationLink from '../link/link';
@@ -18,7 +18,7 @@ export default class LoginForm extends BaseComponent<'form'> {
     'Account Login',
   );
 
-  private GoogleBtn: GoogleButton;
+  private googleBtn: GoogleButton;
 
   private logInMessage: BaseComponent<'span'> = new BaseComponent(
     'span',
@@ -54,16 +54,16 @@ export default class LoginForm extends BaseComponent<'form'> {
 
   private isNewUser: boolean = false;
 
-  constructor(parent: HTMLElement, private replaceMainCallback: () => Promise<void>) {
+  constructor(parent: HTMLElement, private replaceMainCallback: () => void) {
     super('form', parent, 'login-form login');
     this.signupLink.element.setAttribute('href', Routes.SignUp);
-    this.GoogleBtn = new GoogleButton(
+    this.googleBtn = new GoogleButton(
       {
         parent: this.element,
-        btnClass: GoogleBtnClass.SignInClass,
+        btnClass: GoogleBtnClasses.SignInClass,
         loginCallback: this.signInUser,
       },
-      GoogleBtnType.SignInType,
+      GoogleBtnTypes.SignInType,
       this.isNewUser,
     );
     this.addLoginEventListeners();
@@ -83,7 +83,7 @@ export default class LoginForm extends BaseComponent<'form'> {
     this.user.password = this.passwordInput.getValue();
   };
 
-  private loginBtnCallback = async (e: Event): Promise<void> => {
+  private loginBtnCallback = (e: Event): void => {
     e.preventDefault();
     try {
       this.signInUser(this.user);
@@ -102,7 +102,7 @@ export default class LoginForm extends BaseComponent<'form'> {
     this.replaceMainCallback();
   }
 
-  private static async loginUser(user: LogIn): Promise<Token> {
+  private static loginUser(user: LogIn): Promise<Token> {
     return loginUser(user).then((token) => {
       setDataToLocalStorage(token, 'userSessionToken');
       return token;
@@ -110,8 +110,7 @@ export default class LoginForm extends BaseComponent<'form'> {
   }
 
   // этот метод потом будет вынесен в загрузку dashboard
-  private static async getUser(token: Token): Promise<void> {
-    const user = await getUser(token);
-    console.log(user);
+  private static getUser(token: Token): void {
+    getUser(token).then((user) => console.log(user));
   }
 }

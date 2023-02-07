@@ -2,7 +2,7 @@ import jwtdecode from 'jwt-decode';
 import { LogIn, SignUp } from '../../app/loader/loader.types';
 import { GOOGLE_CLIENT_ID } from '../../utils/consts';
 import BaseComponent from '../base-component/base-component';
-import { GoogleAccount, GoogleBtnData, GoogleBtnType, LogInCallback, SignUpCallback } from './google-btn.types';
+import { GoogleAccount, GoogleBtnData, GoogleBtnTypes, LogInCallback, SignUpCallback } from './google-btn.types';
 
 export default class GoogleButton extends BaseComponent<'div'> {
   private googleLogInCallback: LogInCallback | undefined;
@@ -21,14 +21,14 @@ export default class GoogleButton extends BaseComponent<'div'> {
     google: true,
   };
 
-  constructor(private data: GoogleBtnData, type: GoogleBtnType, private isFirstAccess: boolean) {
+  constructor(private data: GoogleBtnData, type: GoogleBtnTypes, private isFirstAccess: boolean) {
     super('div', data.parent, data.btnClass);
     this.googleSignUpCallback = this.isFirstAccess ? this.data.signupCallback : undefined;
     this.googleLogInCallback = !this.isFirstAccess ? this.data.loginCallback : undefined;
     this.initializeGoogleBtnId(type);
   }
 
-  public initializeGoogleBtnId(type: GoogleBtnType): void {
+  public initializeGoogleBtnId(type: GoogleBtnTypes): void {
     google.accounts.id.initialize({
       client_id: GOOGLE_CLIENT_ID,
       callback: this.isFirstAccess ? this.handleGoogleSignup : this.handleGoogleLogin,
@@ -37,7 +37,7 @@ export default class GoogleButton extends BaseComponent<'div'> {
     this.renderGoogleBtn(type);
   }
 
-  public renderGoogleBtn(type: GoogleBtnType): void {
+  public renderGoogleBtn(type: GoogleBtnTypes): void {
     google.accounts.id.renderButton(this.element, {
       theme: 'outline',
       text: type,

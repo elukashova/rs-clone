@@ -1,18 +1,18 @@
 import { LogIn, SignUp } from '../../app/loader/loader.types';
 
-export enum GoogleBtnClass {
+export enum GoogleBtnClasses {
   SignUpClass = 'g_id_signup',
   SignInClass = 'g_id_signin',
 }
 
-export enum GoogleBtnType {
+export enum GoogleBtnTypes {
   SignUpType = 'signup_with',
   SignInType = 'signin_with',
 }
 
 export type GoogleBtnData = {
   parent: HTMLElement;
-  btnClass: GoogleBtnClass;
+  btnClass: GoogleBtnClasses;
   signupCallback?: SignUpCallback;
   loginCallback?: LogInCallback;
 };

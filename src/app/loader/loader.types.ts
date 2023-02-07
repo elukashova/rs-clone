@@ -1,13 +1,14 @@
-export type SignUp = {
-  username: string;
+export interface LogIn {
   email: string;
   google: boolean;
   password?: string;
+}
+
+export interface SignUp extends LogIn {
+  username: string;
   country?: string;
   avatar_url?: string;
-};
-
-export type LogIn = Pick<SignUp, 'email' | 'google' | 'password'>;
+}
 
 export type Token = {
   token: string;
