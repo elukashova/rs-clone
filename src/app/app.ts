@@ -15,8 +15,6 @@ export default class App {
 
   private router: Router = new Router(this.main);
 
-  private clientId: string = '867792290204-n80gt7ebkoqsg6cqr8592g0fle342tjj.apps.googleusercontent.com';
-
   constructor(private readonly parent: HTMLElement) {
     this.parent.classList.add('root');
     this.header = new Header(this.parent, this.router.locationHandler);

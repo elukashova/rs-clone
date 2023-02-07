@@ -4,8 +4,6 @@ import BaseComponent from '../base-component/base-component';
 import { GoogleAccount, GoogleBtnData, GoogleBtnType, LogInCallback, SignUpCallback } from './google-btn.types';
 
 export default class GoogleButton extends BaseComponent<'div'> {
-  private clientId: string = '867792290204-n80gt7ebkoqsg6cqr8592g0fle342tjj.apps.googleusercontent.com';
-
   private googleLogInCallback: LogInCallback | undefined;
 
   private googleSignUpCallback: SignUpCallback | undefined;
@@ -31,7 +29,7 @@ export default class GoogleButton extends BaseComponent<'div'> {
 
   public initializeGoogleBtnId(type: GoogleBtnType): void {
     google.accounts.id.initialize({
-      client_id: this.clientId,
+      client_id: process.env.GOOGLE_CLIENT_ID,
       callback: this.isFirstAccess ? this.handleGoogleSignup : this.handleGoogleLogin,
       auto_select: true,
     });

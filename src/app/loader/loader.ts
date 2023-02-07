@@ -1,9 +1,9 @@
 import { RequestData, Token, LoadRequest, Methods } from './loader.types';
 
 export default class Loader {
-  // http://localhost:3000
-  // https://the-big-bug-theory-be.onrender.com'
-  private static server: string = 'https://the-big-bug-theory-be.onrender.com';
+  // process.env.DEVELOPMENT_ENV
+  // process.env.PRODUCTION_ENV
+  private static server: string = process.env.PRODUCTION_ENV;
 
   private static errorHandler(response: Response): Response {
     if (!response.ok) {

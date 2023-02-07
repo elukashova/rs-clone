@@ -4,6 +4,7 @@ const EslintPlugin = require('eslint-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const assets = path.resolve(__dirname, 'assets');
+const Dotenv = require("dotenv-webpack");
 
 const devServer = (isDev) =>
   !isDev
@@ -84,6 +85,10 @@ module.exports = ({ develop }) => ({
           to: path.resolve(__dirname, 'dist/assets'),
         },
       ],
+    }),
+    new Dotenv({
+      systemvars: true,
+      prefix: 'process.env.',
     }),
   ],
   ...devServer(develop),
