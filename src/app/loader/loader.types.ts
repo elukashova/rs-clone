@@ -1,11 +1,14 @@
-export type SignUp = {
-  username: string;
+export interface LogIn {
   email: string;
-  password: string;
-  country: string;
-};
+  google: boolean;
+  password?: string;
+}
 
-export type LogIn = Pick<SignUp, 'email' | 'password'>;
+export interface SignUp extends LogIn {
+  username: string;
+  country?: string;
+  avatar_url?: string;
+}
 
 export type Token = {
   token: string;
@@ -25,3 +28,11 @@ export type LoadRequest = {
   params?: RequestData;
   token?: string;
 };
+
+export enum Methods {
+  Get = 'GET',
+  Post = 'POST',
+  Put = 'PUT',
+  Patch = 'PATCH',
+  Delete = 'DELETE',
+}

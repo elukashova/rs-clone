@@ -5,6 +5,10 @@ import BaseComponent from '../base-component/base-component';
 import Button from '../button/button';
 import Input from '../input/input';
 import './form.css';
+import { GoogleBtnClasses, GoogleBtnTypes } from '../google-button/google-btn.types';
+import GoogleButton from '../google-button/google-btn';
+import { setDataToLocalStorage } from '../../utils/local-storage/local-storage';
+import NavigationLink from '../link/link';
 
 export default class LoginForm extends BaseComponent<'form'> {
   private formHeader: BaseComponent<'h4'> = new BaseComponent(
@@ -14,7 +18,7 @@ export default class LoginForm extends BaseComponent<'form'> {
     'Account Login',
   );
 
-  public googleButton: Button = new Button(this.element, 'Sign up with Google', 'login__btn-google');
+  private googleBtn: GoogleButton;
 
   private logInMessage: BaseComponent<'span'> = new BaseComponent(
     'span',
@@ -27,15 +31,41 @@ export default class LoginForm extends BaseComponent<'form'> {
 
   public passwordInput: Input = new Input(this.element, 'login__form-input', 'Password', { type: 'password' });
 
-  public loginButton: Button = new Button(this.element, 'Login', 'login__btn-main btn_main');
+  public loginButton: Button = new Button(this.element, 'Log in', 'login__btn-main btn_main');
+
+  private signUpMessage: BaseComponent<'span'> = new BaseComponent(
+    'span',
+    this.element,
+    'login_message-sigup',
+    'Not a member? ',
+  );
+
+  private signupLink: NavigationLink = new NavigationLink(this.replaceMainCallback, {
+    text: 'Sign up here',
+    parent: this.signUpMessage.element,
+    additionalClasses: 'login__link-signup',
+  });
 
   private user: LogIn = {
     email: '',
+    google: true,
     password: '',
   };
 
-  constructor(parent: HTMLElement, private replaceMainCallback: () => Promise<void>) {
+  private isNewUser: boolean = false;
+
+  constructor(parent: HTMLElement, private replaceMainCallback: () => void) {
     super('form', parent, 'login-form login');
+    this.signupLink.element.setAttribute('href', Routes.SignUp);
+    this.googleBtn = new GoogleButton(
+      {
+        parent: this.element,
+        btnClass: GoogleBtnClasses.Signin,
+        loginCallback: this.signInUser,
+      },
+      GoogleBtnTypes.Signin,
+      this.isNewUser,
+    );
     this.addLoginEventListeners();
   }
 
@@ -53,21 +83,34 @@ export default class LoginForm extends BaseComponent<'form'> {
     this.user.password = this.passwordInput.getValue();
   };
 
-  private loginBtnCallback = async (e: Event): Promise<void> => {
+  private loginBtnCallback = (e: Event): void => {
     e.preventDefault();
     try {
-      const userToken: Token = await loginUser(this.user);
-      LoginForm.getUser(userToken);
-      window.history.pushState({}, '', Routes.Dashboard);
-      this.replaceMainCallback();
+      this.signInUser(this.user);
     } catch (err) {
       console.log(err); // temporary console.log
     }
   };
 
+  private signInUser = (user: LogIn): void => {
+    LoginForm.loginUser(user).then((token) => LoginForm.getUser(token));
+    this.changeRoute();
+  };
+
+  private changeRoute(): void {
+    window.history.pushState({}, '', Routes.Dashboard);
+    this.replaceMainCallback();
+  }
+
+  private static loginUser(user: LogIn): Promise<Token> {
+    return loginUser(user).then((token) => {
+      setDataToLocalStorage(token, 'userSessionToken');
+      return token;
+    });
+  }
+
   // этот метод потом будет вынесен в загрузку dashboard
-  private static async getUser(token: Token): Promise<void> {
-    const user = await getUser(token);
-    console.log(user);
+  private static getUser(token: Token): void {
+    getUser(token).then((user) => console.log(user));
   }
 }

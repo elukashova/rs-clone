@@ -7,6 +7,8 @@ import Routes from '../../app/loader/router/router.types';
 import { SignUp, Token } from '../../app/loader/loader.types';
 import { createUser, getUser } from '../../app/loader/services/user-services';
 import { setDataToLocalStorage } from '../../utils/local-storage/local-storage';
+import { GoogleBtnClasses, GoogleBtnTypes } from '../google-button/google-btn.types';
+import GoogleButton from '../google-button/google-btn';
 
 export default class SignupForm extends BaseComponent<'form'> {
   private formHeader: BaseComponent<'h4'> = new BaseComponent(
@@ -45,23 +47,35 @@ export default class SignupForm extends BaseComponent<'form'> {
   );
 
   private loginLink: NavigationLink = new NavigationLink(this.replaceMainCallback, {
-    text: 'Login here',
+    text: 'Log in here',
     parent: this.logInMessage.element,
     additionalClasses: 'signup__link-login',
   });
 
-  private googleButton: Button = new Button(this.element, 'Sign up with Google', 'signup__btn-google');
+  private googleButton: GoogleButton;
 
   private newUser: SignUp = {
     username: '',
     email: '',
+    google: false,
     password: '',
     country: '',
   };
 
-  constructor(parent: HTMLElement, private replaceMainCallback: () => Promise<void>) {
+  private isNewUser: boolean = true;
+
+  constructor(parent: HTMLElement, private replaceMainCallback: () => void) {
     super('form', parent, 'signup-form signup');
     this.loginLink.element.setAttribute('href', Routes.LogIn);
+    this.googleButton = new GoogleButton(
+      {
+        parent: this.element,
+        btnClass: GoogleBtnClasses.Signup,
+        signupCallback: this.signUpUser,
+      },
+      GoogleBtnTypes.Signup,
+      this.isNewUser,
+    );
     this.addSignupEventListeners();
   }
 
@@ -89,27 +103,34 @@ export default class SignupForm extends BaseComponent<'form'> {
     this.newUser.country = this.countryInput.getValue();
   };
 
-  private signupBtnCallback = async (e: Event): Promise<void> => {
+  private signupBtnCallback = (e: Event): void => {
     e.preventDefault();
     try {
-      this.createUser().then((token) => SignupForm.getUser(token));
-      window.history.pushState({}, '', Routes.Dashboard);
-      this.replaceMainCallback();
+      this.signUpUser(this.newUser);
     } catch (err) {
       console.log(err); // temporary console.log
     }
   };
 
-  private async createUser(): Promise<Token> {
-    return createUser(this.newUser).then((token) => {
+  private signUpUser = (user: SignUp): void => {
+    SignupForm.createUser(user).then((token) => SignupForm.getUser(token));
+    this.changeRoute();
+  };
+
+  private changeRoute(): void {
+    window.history.pushState({}, '', Routes.Dashboard);
+    this.replaceMainCallback();
+  }
+
+  private static createUser(user: SignUp): Promise<Token> {
+    return createUser(user).then((token) => {
       setDataToLocalStorage(token, 'userSessionToken');
       return token;
     });
   }
 
   // этот метод потом будет вынесен в загрузку dashboard
-  private static async getUser(token: Token): Promise<void> {
-    const user = await getUser(token);
-    console.log(user);
+  private static getUser(token: Token): void {
+    getUser(token).then((user) => console.log(user));
   }
 }

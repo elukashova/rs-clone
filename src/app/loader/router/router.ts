@@ -14,7 +14,7 @@ export default class Router {
     this.main = main;
   }
 
-  public locationHandler = async (): Promise<void> => {
+  public locationHandler = (): void => {
     const location: string = window.location.pathname.length === 0 ? '/' : window.location.pathname;
 
     switch (location) {
