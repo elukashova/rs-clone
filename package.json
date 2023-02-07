@@ -28,12 +28,10 @@
   "homepage": "https://github.com/elukashova/rs-clone#readme",
   "devDependencies": {
     "@types/jest": "^29.4.0",
-    "@types/node": "^18.13.0",
     "@typescript-eslint/eslint-plugin": "^5.49.0",
     "@typescript-eslint/parser": "^5.49.0",
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.7.3",
-    "dotenv-webpack": "^8.0.1",
     "eslint": "^8.33.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^17.0.0",

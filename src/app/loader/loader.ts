@@ -1,9 +1,10 @@
+import { PRODUCTION_ENV } from '../../utils/consts';
 import { RequestData, Token, LoadRequest, Methods } from './loader.types';
 
 export default class Loader {
-  // process.env.DEVELOPMENT_ENV
-  // process.env.PRODUCTION_ENV
-  private static server: string = process.env.PRODUCTION_ENV;
+  // DEVELOPMENT_ENV
+  // PRODUCTION_ENV
+  private static server: string = PRODUCTION_ENV;
 
   private static errorHandler(response: Response): Response {
     if (!response.ok) {

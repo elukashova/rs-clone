@@ -1,5 +1,6 @@
 import jwtdecode from 'jwt-decode';
 import { LogIn, SignUp } from '../../app/loader/loader.types';
+import { GOOGLE_CLIENT_ID } from '../../utils/consts';
 import BaseComponent from '../base-component/base-component';
 import { GoogleAccount, GoogleBtnData, GoogleBtnType, LogInCallback, SignUpCallback } from './google-btn.types';
 
@@ -29,7 +30,7 @@ export default class GoogleButton extends BaseComponent<'div'> {
 
   public initializeGoogleBtnId(type: GoogleBtnType): void {
     google.accounts.id.initialize({
-      client_id: process.env.GOOGLE_CLIENT_ID,
+      client_id: GOOGLE_CLIENT_ID,
       callback: this.isFirstAccess ? this.handleGoogleSignup : this.handleGoogleLogin,
       auto_select: true,
     });
