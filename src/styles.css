@@ -6,7 +6,8 @@ body {
   padding: 0;
 }
 
-.map {
+.map,
+.map-wrapper {
   width: 100%;
   height: 100%;
   z-index: 10;

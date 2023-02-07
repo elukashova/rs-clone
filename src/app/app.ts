@@ -9,10 +9,7 @@ export default class App {
   public init(): void {
     this.parent.style.backgroundColor = 'grey';
     this.parent.style.height = '100%';
-    const mapDiv: BaseComponent<'div'> = new BaseComponent('div', this.parent, 'map', '', {
-      id: 'map',
-      style: 'height: 50vh',
-    });
+    const mapDiv: BaseComponent<'div'> = new BaseComponent('div', this.parent, 'map', '', { id: 'map' });
     /* const mapDiv2: BaseComponent<'div'> = new BaseComponent('div', this.parent, 'map', '', {
       id: 'map',
       style: 'height: 50vh',
