@@ -1,0 +1,9 @@
+.training-journal {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 5px;
+  background: gainsboro;
+  border-radius: 5px;
+}

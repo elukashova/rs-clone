@@ -1,22 +1,43 @@
 import BaseComponent from '../components/base-component/base-component';
 import GoogleMaps from '../map/google-maps';
+import Footer from '../components/footer/footer';
+import Header from '../components/header/header';
+// import PersonalPage from '../pages/personal-page/personal-page';
+import Main from '../pages/main/main-page';
+import NewRoutePage from '../pages/new-route-page/new-route-page';
+import Router from './loader/router/router';
 
 export default class App {
+  private header: Header;
+
+  private main: Main = new Main();
+
+  private footer: Footer;
+
+  // private personalPage: PersonalPage = new PersonalPage(this.parent);
+
+  private newRoutePage = new NewRoutePage(this.parent);
+
+  private router: Router = new Router(this.main);
+
   constructor(private readonly parent: HTMLElement) {
     this.parent.classList.add('root');
+    this.header = new Header(this.parent, this.router.locationHandler);
+    this.parent.append(this.main.element);
+    this.footer = new Footer(this.parent);
   }
 
   public init(): void {
     this.parent.style.backgroundColor = 'grey';
     this.parent.style.height = '100%';
     const mapDiv: BaseComponent<'div'> = new BaseComponent('div', this.parent, 'map', '', { id: 'map' });
-    /* const mapDiv2: BaseComponent<'div'> = new BaseComponent('div', this.parent, 'map', '', {
-      id: 'map',
-      style: 'height: 50vh',
-    }); */
     const map1 = new GoogleMaps(mapDiv.element, 'map1', 8, { lat: -33.397, lng: 150.644 });
-    // const map2 = new GoogleMaps(mapDiv2.element, 'map1', 8, { lat: -3.397, lng: 153.644 });
-    console.log(map1 /* map2 */);
+    console.log(map1);
+    this.handleRouting();
+  }
+
+  public handleRouting(): void {
+    this.router.locationHandler();
   }
 
   // скрипт с ключом для гугл апи

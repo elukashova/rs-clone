@@ -2,7 +2,10 @@ import App from './app/app';
 // import CustomMap from './map/custom-map';
 
 const app = new App(document.body);
-app.init();
+
+window.onload = (): void => {
+  app.init();
+};
 
 // делаем метод initMap глобальным
 declare global {
@@ -15,5 +18,9 @@ window.initMap = (parent: HTMLElement, options: google.maps.MapOptions): google.
   const map = new google.maps.Map(parent, options);
   return map;
 };
-
+// строчка для добавления Charts
 google.charts.load('current', { packages: ['corechart'] });
+
+window.onpopstate = (): void => {
+  app.handleRouting();
+};

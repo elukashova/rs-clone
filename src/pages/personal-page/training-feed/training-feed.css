@@ -1,0 +1,13 @@
+.training-feed {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 60%;
+  padding: 20px;
+}
+
+.training-feed__buttons {
+  display: flex;
+  gap: 5px;
+}

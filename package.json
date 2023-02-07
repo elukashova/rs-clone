@@ -27,6 +27,9 @@
   },
   "homepage": "https://github.com/elukashova/rs-clone#readme",
   "devDependencies": {
+    "@types/gapi": "^0.0.44",
+    "@types/google-one-tap": "^1.2.2",
+    "@types/google.accounts": "^0.0.6",
     "@types/google.maps": "^3.51.1",
     "@types/googlemaps": "^3.43.3",
     "@types/jest": "^29.4.0",
@@ -60,6 +63,7 @@
   },
   "dependencies": {
     "@mapbox/mapbox-gl-geocoder": "^5.0.1",
-    "@types/google.visualization": "0.0.68"
+    "@types/google.visualization": "0.0.68",
+    "jwt-decode": "^3.1.2"
   }
 }
