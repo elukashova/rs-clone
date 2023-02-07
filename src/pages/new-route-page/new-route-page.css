@@ -1,0 +1,38 @@
+.new-route-page {
+  width: 863px;
+  margin: auto;
+}
+
+.new-route-page__options {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.new-route-page__buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.new-route-page__map {
+  width: 100%;
+  height: 400px;
+}
+
+.new-route-page__map-parameters {
+  display: flex;
+  justify-content: center;
+}
+
+.map-parameter {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 50px;
+  padding: 10px;
+  border: 1px solid grey;
+}
+
+.map-parameter :last-child {
+  align-self: center;
+}
