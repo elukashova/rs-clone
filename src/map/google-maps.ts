@@ -3,15 +3,7 @@
 import BaseComponent from '../components/base-component/base-component';
 import Button from '../components/button/button';
 import { ProjectColors } from '../utils/consts';
-import {
-  DirectionsRenderer,
-  GeoErrors,
-  Coordinates,
-  MapRequest,
-  OptionsForMap,
-  ZoomSettings,
-  PathDuration,
-} from './interface-map';
+import { DirectionsRenderer, GeoErrors, Coordinates, MapRequest, OptionsForMap, ZoomSettings } from './interface-map';
 
 export default class GoogleMaps {
   public map!: google.maps.Map;
@@ -40,9 +32,9 @@ export default class GoogleMaps {
 
   public elevationTotal: number[] = [0, 0];
 
-  public distanceTotal: number = 0;
+  public distanceTotal: google.maps.Distance = { text: '', value: 0 };
 
-  public timeTotal: PathDuration = { text: '', value: 0 };
+  public timeTotal: google.maps.Duration = { text: '', value: 0 };
 
   public currentTravelMode: google.maps.TravelMode = google.maps.TravelMode.WALKING;
 
@@ -97,6 +89,13 @@ export default class GoogleMaps {
     this.map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton.element);
     locationButton.element.addEventListener('click', (): void => {
       this.changeGeolocation();
+    });
+
+    this.directionsRenderer.addListener('directions_changed', () => {
+      const directions = this.directionsRenderer.getDirections();
+      if (directions) {
+        this.getTotalDistanceAndTime(directions);
+      }
     });
   }
 
@@ -202,8 +201,7 @@ export default class GoogleMaps {
           this.markers.forEach((marker: google.maps.Marker): void => marker.setOpacity(0.0));
           this.doElevationRequest(request);
           // GoogleMaps.getMarkersAndWaypoints(result);
-          this.getTotalTime(result);
-          this.getTotalDistance(result);
+          this.getTotalDistanceAndTime(result);
         }
       })
       .catch((error: Error): void => console.error(`Directions request failed: ${error}`));
@@ -265,24 +263,15 @@ export default class GoogleMaps {
       }
     }
     this.elevationTotal = [elevationGain, elevationLoss];
-    console.log(this.elevationTotal);
     return this.elevationTotal;
   }
 
   // получение всей протяженности маршрута в метрах
-  public getTotalDistance(result: google.maps.DirectionsResult): number {
+  public getTotalDistanceAndTime(result: google.maps.DirectionsResult): void {
     const [myRoute]: google.maps.DirectionsRoute[] = result.routes;
-    const distance = myRoute.legs.reduce((total, leg) => total + (leg?.distance?.value ?? 0), 0);
-    this.distanceTotal = distance;
-    console.log(this.distanceTotal);
-    return this.distanceTotal;
-  }
-
-  public getTotalTime(result: google.maps.DirectionsResult): PathDuration {
-    const { text, value } = result.routes[0].legs[0].duration ?? { text: '', value: 0 };
-    this.timeTotal = { text, value };
-    console.log(this.timeTotal);
-    return this.timeTotal;
+    const [legs]: google.maps.DirectionsLeg[] = myRoute.legs;
+    this.distanceTotal = legs.distance ?? { text: '', value: 0 };
+    this.timeTotal = legs.duration ?? { text: '', value: 0 };
   }
 
   // предварительный метод, будет изменен

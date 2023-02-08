@@ -27,8 +27,3 @@ export enum GeoErrors {
 export enum ZoomSettings {
   Closer = 7,
 }
-
-export type PathDuration = {
-  text: string;
-  value: number;
-};
