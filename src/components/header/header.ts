@@ -16,7 +16,7 @@ export default class Header extends BaseComponent<'header'> {
   private challenges = new NavigationLink(this.replaceMainCallback, {
     text: '',
     parent: this.linksContainer.element,
-    additionalClasses: 'header-icon',
+    additionalClasses: 'header-icon header-icon_challenge',
   });
 
   private languageIcon = new HeaderIcon(this.linksContainer.element, 'header-icon_lang');

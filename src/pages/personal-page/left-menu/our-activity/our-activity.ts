@@ -6,7 +6,10 @@ import SelectPeriod from './select-period/select-activity';
 export default class OurActivity extends BaseComponent<'div'> {
   private ActivityIcons = new BaseComponent('div', this.element, 'our-activity__icons');
 
-  public addActivityIcon = new ActivityIcon(this.ActivityIcons.element, '');
+  public addActivityIcon = new ActivityIcon(
+    this.ActivityIcons.element,
+    '/../../../assets/icons/svg/icons-plus-black.svg',
+  );
 
   private selectPeriod = new SelectPeriod(this.element);
 
