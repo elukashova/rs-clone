@@ -1,33 +1,28 @@
+export type Coordinates = {
+  lat: number;
+  lng: number;
+};
+
 export type MapRequest = {
-  origin: {
-    lat: number;
-    lng: number;
-  };
-  destination: {
-    lat: number;
-    lng: number;
-  };
+  origin: Coordinates;
+  destination: Coordinates;
   travelMode: google.maps.TravelMode;
   unitSystem: google.maps.UnitSystem;
 };
 
 export type OptionsForMap = {
   zoom?: number;
-  center: {
-    lat: number;
-    lng: number;
-  };
+  center: Coordinates;
   mapTypeId?: google.maps.MapTypeId;
 };
 
-export type DirectionsRendererType = google.maps.DirectionsResult | null;
-
-export type LatLngType = {
-  lat: number;
-  lng: number;
-};
+export type DirectionsRenderer = google.maps.DirectionsResult | null;
 
 export enum GeoErrors {
   Service = "Error: The Geolocation service don't work now.",
   Browser = "Error: This browser doesn't support geolocation.",
+}
+
+export enum ZoomSettings {
+  Closer = 7,
 }

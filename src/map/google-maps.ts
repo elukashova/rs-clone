@@ -1,7 +1,8 @@
+/* eslint-disable max-lines-per-function */
 import BaseComponent from '../components/base-component/base-component';
 import Button from '../components/button/button';
 import { ProjectColors } from '../utils/consts';
-import { DirectionsRendererType, GeoErrors, LatLngType, MapRequest, OptionsForMap } from './interface-map';
+import { DirectionsRenderer, GeoErrors, Coordinates, MapRequest, OptionsForMap, ZoomSettings } from './interface-map';
 
 export default class GoogleMaps {
   public map!: google.maps.Map;
@@ -26,6 +27,8 @@ export default class GoogleMaps {
 
   public markers: google.maps.Marker[] = [];
 
+  public allWaypoints = [];
+
   public elevationNumber: number = 0;
 
   public maxMarkerCount: number = 2;
@@ -38,15 +41,7 @@ export default class GoogleMaps {
 
   public chartElevation!: BaseComponent<'div'>;
 
-  constructor(
-    parent: HTMLElement,
-    mapId: string,
-    zoom: number,
-    center: {
-      lat: number;
-      lng: number;
-    },
-  ) {
+  constructor(parent: HTMLElement, mapId: string, zoom: number, center: Coordinates) {
     this.mapId = mapId;
     this.zoom = zoom;
     this.latLng = center;
@@ -86,7 +81,7 @@ export default class GoogleMaps {
     locationButton.element.style.marginTop = '10px';
     this.map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton.element);
     locationButton.element.addEventListener('click', (): void => {
-      GoogleMaps.geoLocationButton(this.infoWindow, this.map);
+      this.changeGeolocation();
     });
   }
 
@@ -97,14 +92,15 @@ export default class GoogleMaps {
       this.addMarkerToMarkers(this.marker);
 
       if (this.markers.length === this.maxMarkerCount) {
-        const startPoint: LatLngType | undefined = GoogleMaps.getLatLng(this.markers[0]);
-        const endPoint: LatLngType | undefined = GoogleMaps.getLatLng(this.markers[1]);
+        const [startMarker, endMarker] = this.markers;
+        const startPoint: Coordinates | undefined = GoogleMaps.getLatLng(startMarker);
+        const endPoint: Coordinates | undefined = GoogleMaps.getLatLng(endMarker);
         if (startPoint && endPoint) {
-          const startPointLatLngLiteral: LatLngType = {
+          const startPointLatLngLiteral: Coordinates = {
             lat: startPoint.lat,
             lng: startPoint.lng,
           };
-          const endPointLatLngLiteral: LatLngType = {
+          const endPointLatLngLiteral: Coordinates = {
             lat: endPoint.lat,
             lng: endPoint.lng,
           };
@@ -115,32 +111,32 @@ export default class GoogleMaps {
   }
 
   // изменение карты по геолокации при клике на кнопку
-  public static geoLocationButton(infoWindow: google.maps.InfoWindow, map: google.maps.Map): void {
+  public changeGeolocation(): void {
     // если браузер поддерживает геолокацию
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position: GeolocationPosition): void => {
-          const pos: LatLngType = {
+          const pos: Coordinates = {
             lat: position.coords.latitude,
             lng: position.coords.longitude,
           };
-          infoWindow.setPosition(pos);
-          infoWindow.setContent('Location found!');
-          infoWindow.open(map);
-          map.setCenter(pos);
+          this.infoWindow.setPosition(pos);
+          this.infoWindow.setContent('Location found!');
+          this.infoWindow.open(this.map);
+          this.map.setCenter(pos);
         },
         (): void => {
-          const latLngInfo: google.maps.LatLng | undefined = map.getCenter();
+          const latLngInfo: google.maps.LatLng | undefined = this.map.getCenter();
           if (latLngInfo) {
-            GoogleMaps.handleLocationError(true, infoWindow, latLngInfo, map);
+            this.handleLocationError(true, latLngInfo);
           }
         },
       );
     } else {
       // если браузер не поддерживает геолокацию
-      const latLngInfo: google.maps.LatLng | undefined = map.getCenter();
+      const latLngInfo: google.maps.LatLng | undefined = this.map.getCenter();
       if (latLngInfo) {
-        GoogleMaps.handleLocationError(false, infoWindow, latLngInfo, map);
+        this.handleLocationError(false, latLngInfo);
       }
     }
   }
@@ -156,7 +152,7 @@ export default class GoogleMaps {
       icon: './assets/icons/png/geo.png',
     });
     map.panTo(location);
-    map.setZoom(9);
+    map.setZoom(ZoomSettings.Closer);
     return this.marker;
   }
 
@@ -166,14 +162,14 @@ export default class GoogleMaps {
   }
 
   // получение литерала широты и долготы по маркеру
-  public static getLatLng(marker: google.maps.Marker): { lat: number; lng: number } | undefined {
+  public static getLatLng(marker: google.maps.Marker): Coordinates | undefined {
     const position: google.maps.LatLng | null | undefined = marker?.getPosition();
     return position ? { lat: position.lat(), lng: position.lng() } : undefined;
   }
 
   // запрос в Direction API
   // eslint-disable-next-line max-len
-  public doDirectionRequest(startLiteral: google.maps.LatLngLiteral, endLiteral: google.maps.LatLngLiteral): void {
+  public doDirectionRequest(startLiteral: Coordinates, endLiteral: Coordinates): void {
     const request: MapRequest = {
       destination: endLiteral, // end coordinates
       origin: startLiteral, // start coordinates
@@ -181,31 +177,40 @@ export default class GoogleMaps {
       unitSystem: google.maps.UnitSystem.METRIC,
     };
     this.directionsService
-      .route(request, (response: DirectionsRendererType, status: google.maps.DirectionsStatus) => {
-        if (status === 'OK' && response) {
-          console.log(request, response, status);
-          this.renderDirection(response);
+      .route(request, (result: DirectionsRenderer, status: google.maps.DirectionsStatus) => {
+        if (status === 'OK' && result) {
+          this.renderDirection(result);
           this.markers.forEach((marker: google.maps.Marker): void => marker.setOpacity(0.0));
           this.doElevationRequest(request);
-          console.log(response?.routes[0].legs[0].distance?.text);
         }
       })
       .catch((error: Error): void => console.error(`Directions request failed: ${error}`));
   }
 
+  /*   public getMarkersAndWaypoints() {
+    DirectionsService.route;
+  } */
+
   public renderDirection(response: google.maps.DirectionsResult): void {
     this.directionsRenderer.setDirections(response);
   }
 
-  public static handleLocationError(
-    browserHasGeolocation: boolean,
-    infoWindow: google.maps.InfoWindow,
-    pos: google.maps.LatLng,
-    map: google.maps.Map,
-  ): void {
-    infoWindow.setPosition(pos);
-    infoWindow.setContent(browserHasGeolocation ? GeoErrors.Service : GeoErrors.Browser);
-    infoWindow.open(map);
+  public handleLocationError(browserHasGeolocation: boolean, pos: google.maps.LatLng): void {
+    this.infoWindow.setPosition(pos);
+    this.infoWindow.setContent(browserHasGeolocation ? GeoErrors.Service : GeoErrors.Browser);
+    this.infoWindow.open(this.map);
+  }
+
+  public requestElevation(request: MapRequest): void {
+    this.elevation
+      .getElevationAlongPath({
+        path: [request?.origin, request?.destination],
+        samples: 200,
+      })
+      .then((response: google.maps.PathElevationResponse): void => this.drawPlotElevation(response))
+      .catch((): void => {
+        this.chartElevation.element.textContent = 'Cannot show elevation';
+      });
   }
 
   public doElevationRequest(request: MapRequest): void {
@@ -237,6 +242,7 @@ export default class GoogleMaps {
       title: 'Elevation (meters)',
       colors: [ProjectColors.DarkTurquoise, ProjectColors.Turquoise],
     });
+    GoogleMaps.getMapElevationInfo(results);
   }
 
   // получение всего подъема на пути и всего спуска в метрах
@@ -257,16 +263,8 @@ export default class GoogleMaps {
 
   // получение всей протяженности маршрута в метрах
   public static getTotalDistance(result: google.maps.DirectionsResult): number {
-    const myRoute: google.maps.DirectionsRoute = result.routes[0];
-    if (myRoute) {
-      return myRoute.legs.reduce((total, leg) => {
-        if (leg.distance) {
-          return total + leg.distance.value;
-        }
-        return total;
-      }, 0);
-    }
-    return 0;
+    const [myRoutes]: google.maps.DirectionsRoute[] = result.routes;
+    return myRoutes.legs.reduce((total, leg) => total + (leg?.distance?.value ?? 0), 0);
   }
 
   public static getTotalTime(result: google.maps.DirectionsResult): void {
