@@ -1,5 +1,7 @@
 import BaseComponent from '../components/base-component/base-component';
-import { DirectionsRendererType, LatLngType, MapRequest, OptionsForMap } from './interface-map';
+import Button from '../components/button/button';
+import { ProjectColors } from '../utils/consts';
+import { DirectionsRendererType, GeoErrors, LatLngType, MapRequest, OptionsForMap } from './interface-map';
 
 export default class GoogleMaps {
   public map!: google.maps.Map;
@@ -9,8 +11,8 @@ export default class GoogleMaps {
   public directionsService: google.maps.DirectionsService = new google.maps.DirectionsService();
 
   public directionsRenderer: google.maps.DirectionsRenderer = new google.maps.DirectionsRenderer({
-    polylineOptions: { strokeColor: '#1CBAA7' },
-    markerOptions: { icon: './assets/icons/geo.png' },
+    polylineOptions: { strokeColor: ProjectColors.Turquoise },
+    markerOptions: { icon: './assets/icons/png/geo.png' },
     draggable: true,
   });
 
@@ -18,13 +20,15 @@ export default class GoogleMaps {
 
   public infoWindow: google.maps.InfoWindow = new google.maps.InfoWindow();
 
-  public directions: google.maps.DirectionsResult[];
+  public directions: google.maps.DirectionsResult[] = [];
 
   public marker!: google.maps.Marker;
 
-  public markers: google.maps.Marker[];
+  public markers: google.maps.Marker[] = [];
 
-  public elevationNumber: number;
+  public elevationNumber: number = 0;
+
+  public maxMarkerCount: number = 2;
 
   public zoom: number;
 
@@ -46,9 +50,6 @@ export default class GoogleMaps {
     this.mapId = mapId;
     this.zoom = zoom;
     this.latLng = center;
-    this.markers = [];
-    this.directions = [];
-    this.elevationNumber = 0;
     this.renderMap(parent);
     this.initMap(this.mapWrapper.element, zoom, center);
   }
@@ -75,16 +76,18 @@ export default class GoogleMaps {
 
     // слушатель добавления маркеров (не более 2)
     this.map.addListener('click', (event: google.maps.MapMouseEvent): void => {
-      if (this.markers.length < 2) {
+      if (this.markers.length < this.maxMarkerCount) {
         this.placeMarker(event.latLng, this.map);
       }
     });
 
     // переменные и слушатель для определения местоположения пользователя по геолокации
-    const locationButton: HTMLButtonElement = document.createElement('button');
-    locationButton.textContent = 'Go to current location';
-    this.map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
-    locationButton.addEventListener('click', (): void => GoogleMaps.geoLocationButton(this.infoWindow, this.map));
+    const locationButton = new Button(document.body, 'Go to current location');
+    locationButton.element.style.marginTop = '10px';
+    this.map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton.element);
+    locationButton.element.addEventListener('click', (): void => {
+      GoogleMaps.geoLocationButton(this.infoWindow, this.map);
+    });
   }
 
   // размещаем маркер
@@ -93,17 +96,17 @@ export default class GoogleMaps {
       this.marker = this.placeMarkerAndPanTo(location, map);
       this.addMarkerToMarkers(this.marker);
 
-      if (this.markers.length === 2) {
+      if (this.markers.length === this.maxMarkerCount) {
         const startPoint: LatLngType | undefined = GoogleMaps.getLatLng(this.markers[0]);
         const endPoint: LatLngType | undefined = GoogleMaps.getLatLng(this.markers[1]);
         if (startPoint && endPoint) {
           const startPointLatLngLiteral: LatLngType = {
-            lat: startPoint?.lat,
-            lng: startPoint?.lng,
+            lat: startPoint.lat,
+            lng: startPoint.lng,
           };
           const endPointLatLngLiteral: LatLngType = {
-            lat: endPoint?.lat,
-            lng: endPoint?.lng,
+            lat: endPoint.lat,
+            lng: endPoint.lng,
           };
           this.doDirectionRequest(startPointLatLngLiteral, endPointLatLngLiteral);
         }
@@ -150,7 +153,7 @@ export default class GoogleMaps {
       map,
       animation: google.maps.Animation.DROP,
       opacity: 1,
-      icon: './assets/icons/geo.png',
+      icon: './assets/icons/png/geo.png',
     });
     map.panTo(location);
     map.setZoom(9);
@@ -201,11 +204,7 @@ export default class GoogleMaps {
     map: google.maps.Map,
   ): void {
     infoWindow.setPosition(pos);
-    infoWindow.setContent(
-      browserHasGeolocation
-        ? "Error: The Geolocation service don't work now."
-        : "Error: This browser doesn't support geolocation.",
-    );
+    infoWindow.setContent(browserHasGeolocation ? GeoErrors.Service : GeoErrors.Browser);
     infoWindow.open(map);
   }
 
@@ -236,7 +235,41 @@ export default class GoogleMaps {
       height: 150,
       legend: 'none',
       title: 'Elevation (meters)',
-      colors: ['#219486', '#1CBAA7'],
+      colors: [ProjectColors.DarkTurquoise, ProjectColors.Turquoise],
     });
+  }
+
+  // получение всего подъема на пути и всего спуска в метрах
+  public static getMapElevationInfo(results: google.maps.ElevationResult[]): number[] {
+    let elevationGain = 0;
+    let elevationLoss = 0;
+    for (let i = 0; i < results.length - 1; i += 1) {
+      const currentElevation = results[i].elevation;
+      const nextElevation = results[i + 1].elevation;
+      if (currentElevation < nextElevation) {
+        elevationGain += nextElevation - currentElevation;
+      } else {
+        elevationLoss += currentElevation - nextElevation;
+      }
+    }
+    return [elevationGain, elevationLoss];
+  }
+
+  // получение всей протяженности маршрута в метрах
+  public static getTotalDistance(result: google.maps.DirectionsResult): number {
+    const myRoute: google.maps.DirectionsRoute = result.routes[0];
+    if (myRoute) {
+      return myRoute.legs.reduce((total, leg) => {
+        if (leg.distance) {
+          return total + leg.distance.value;
+        }
+        return total;
+      }, 0);
+    }
+    return 0;
+  }
+
+  public static getTotalTime(result: google.maps.DirectionsResult): void {
+    console.log(result);
   }
 }

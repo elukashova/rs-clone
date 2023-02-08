@@ -26,3 +26,8 @@ export type LatLngType = {
   lat: number;
   lng: number;
 };
+
+export enum GeoErrors {
+  Service = "Error: The Geolocation service don't work now.",
+  Browser = "Error: This browser doesn't support geolocation.",
+}
