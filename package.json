@@ -30,8 +30,9 @@
     "@types/gapi": "^0.0.44",
     "@types/google-one-tap": "^1.2.2",
     "@types/google.accounts": "^0.0.6",
+    "@types/google.maps": "^3.51.1",
     "@types/jest": "^29.4.0",
-    "@typescript-eslint/eslint-plugin": "^5.49.0",
+    "@typescript-eslint/eslint-plugin": "^5.50.0",
     "@typescript-eslint/parser": "^5.49.0",
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.7.3",
@@ -60,6 +61,7 @@
     "webpack-dev-server": "^4.11.1"
   },
   "dependencies": {
+    "@mapbox/mapbox-gl-geocoder": "^5.0.1",
     "jwt-decode": "^3.1.2"
   }
 }
