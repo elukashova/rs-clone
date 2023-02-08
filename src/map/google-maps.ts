@@ -263,8 +263,8 @@ export default class GoogleMaps {
 
   // получение всей протяженности маршрута в метрах
   public static getTotalDistance(result: google.maps.DirectionsResult): number {
-    const [myRoutes]: google.maps.DirectionsRoute[] = result.routes;
-    return myRoutes.legs.reduce((total, leg) => total + (leg?.distance?.value ?? 0), 0);
+    const [myRoute]: google.maps.DirectionsRoute[] = result.routes;
+    return myRoute.legs.reduce((total, leg) => total + (leg?.distance?.value ?? 0), 0);
   }
 
   public static getTotalTime(result: google.maps.DirectionsResult): void {
