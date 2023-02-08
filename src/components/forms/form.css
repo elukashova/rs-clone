@@ -3,13 +3,35 @@
   margin: auto;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 20px;
   width: 863px;
-  padding: 30px 200px 40px 180px;
+  padding: 100px 120px 40px;
   background-color: white;
 }
 
 .login-form-message,
-.signup-form-message {
+.signup__form-message {
+  color: grey;
+  font-size: 18px;
+}
+
+.signup__form_header,
+.login__form_header {
+  margin: 0 0 10px;
+  font-size: 30px;
+}
+
+.form-input input {
+  height: 54px;
+  padding: 0 10px;
+  border-radius: 6px;
+  border: 2px solid #1565d8;
+  box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.6);
+  font-size: 16px;
+  color: #494949;
+}
+
+.signup__message-login,
+.login_message-sigup {
   align-self: center;
 }

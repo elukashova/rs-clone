@@ -1,4 +1,5 @@
 import App from './app/app';
+import './styles.css';
 // import CustomMap from './map/custom-map';
 
 const app = new App(document.body);
