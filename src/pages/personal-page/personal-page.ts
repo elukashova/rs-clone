@@ -11,7 +11,7 @@ export default class PersonalPage extends BaseComponent<'section'> {
 
   private rightMenu = new RightMenu(this.element);
 
-  constructor(parent: HTMLElement) {
-    super('section', parent, 'personal-page');
+  constructor() {
+    super('section', undefined, 'personal-page');
   }
 }
