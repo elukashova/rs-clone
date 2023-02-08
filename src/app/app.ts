@@ -2,7 +2,7 @@ import Footer from '../components/footer/footer';
 import Header from '../components/header/header';
 // import PersonalPage from '../pages/personal-page/personal-page';
 import Main from '../pages/main/main-page';
-import NewRoutePage from '../pages/new-route-page/new-route-page';
+// import NewRoutePage from '../pages/new-route-page/new-route-page';
 import Router from './loader/router/router';
 
 export default class App {
@@ -14,7 +14,7 @@ export default class App {
 
   // private personalPage: PersonalPage = new PersonalPage(this.parent);
 
-  private newRoutePage = new NewRoutePage(this.parent);
+  // private newRoutePage = new NewRoutePage(this.parent);
 
   private router: Router = new Router(this.main);
 

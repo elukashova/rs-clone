@@ -1,7 +1,9 @@
-.login-page {
-  background: powderblue;
+.main {
+  height: 100%;
 }
 
-.signup-page {
-  background: gainsboro;
+.signup-page,
+.login-page {
+  display: flex;
+  height: 100%;
 }

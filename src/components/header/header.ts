@@ -42,4 +42,12 @@ export default class Header extends BaseComponent<'header'> {
       console.log('change theme');
     });
   }
+
+  public hide(): void {
+    this.element.style.display = 'none';
+  }
+
+  public show(): void {
+    this.element.style.display = 'flex';
+  }
 }
