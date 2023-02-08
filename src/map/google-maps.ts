@@ -1,8 +1,17 @@
+/* eslint-disable object-curly-newline */
 /* eslint-disable max-lines-per-function */
 import BaseComponent from '../components/base-component/base-component';
 import Button from '../components/button/button';
 import { ProjectColors } from '../utils/consts';
-import { DirectionsRenderer, GeoErrors, Coordinates, MapRequest, OptionsForMap, ZoomSettings } from './interface-map';
+import {
+  DirectionsRenderer,
+  GeoErrors,
+  Coordinates,
+  MapRequest,
+  OptionsForMap,
+  ZoomSettings,
+  PathDuration,
+} from './interface-map';
 
 export default class GoogleMaps {
   public map!: google.maps.Map;
@@ -29,7 +38,13 @@ export default class GoogleMaps {
 
   public allWaypoints = [];
 
-  public elevationNumber: number = 0;
+  public elevationTotal: number[] = [0, 0];
+
+  public distanceTotal: number = 0;
+
+  public timeTotal: PathDuration = { text: '', value: 0 };
+
+  public currentTravelMode: google.maps.TravelMode = google.maps.TravelMode.WALKING;
 
   public maxMarkerCount: number = 2;
 
@@ -167,50 +182,41 @@ export default class GoogleMaps {
     return position ? { lat: position.lat(), lng: position.lng() } : undefined;
   }
 
-  // запрос в Direction API
+  // запрос в Direction API на отрисовку пути
   // eslint-disable-next-line max-len
-  public doDirectionRequest(startLiteral: Coordinates, endLiteral: Coordinates): void {
+  public doDirectionRequest(startPoint: Coordinates, endPoint: Coordinates, waypoints?: Coordinates[]): void {
     const request: MapRequest = {
-      destination: endLiteral, // end coordinates
-      origin: startLiteral, // start coordinates
-      travelMode: google.maps.TravelMode.WALKING, // DRIVING, WALKING, BICYCLING
+      origin: startPoint, // start coordinates
+      destination: endPoint, // end coordinates
+      waypoints: waypoints?.map((waypoint) => ({
+        location: waypoint,
+        stopover: false,
+      })),
+      travelMode: this.currentTravelMode, // DRIVING, WALKING, BICYCLING
       unitSystem: google.maps.UnitSystem.METRIC,
     };
     this.directionsService
       .route(request, (result: DirectionsRenderer, status: google.maps.DirectionsStatus) => {
         if (status === 'OK' && result) {
-          this.renderDirection(result);
+          this.directionsRenderer.setDirections(result);
           this.markers.forEach((marker: google.maps.Marker): void => marker.setOpacity(0.0));
           this.doElevationRequest(request);
+          // GoogleMaps.getMarkersAndWaypoints(result);
+          this.getTotalTime(result);
+          this.getTotalDistance(result);
         }
       })
       .catch((error: Error): void => console.error(`Directions request failed: ${error}`));
   }
 
-  /*   public getMarkersAndWaypoints() {
-    DirectionsService.route;
-  } */
-
-  public renderDirection(response: google.maps.DirectionsResult): void {
-    this.directionsRenderer.setDirections(response);
+  public static getMarkersAndWaypoints(result: DirectionsRenderer): void {
+    console.log(result);
   }
 
   public handleLocationError(browserHasGeolocation: boolean, pos: google.maps.LatLng): void {
     this.infoWindow.setPosition(pos);
     this.infoWindow.setContent(browserHasGeolocation ? GeoErrors.Service : GeoErrors.Browser);
     this.infoWindow.open(this.map);
-  }
-
-  public requestElevation(request: MapRequest): void {
-    this.elevation
-      .getElevationAlongPath({
-        path: [request?.origin, request?.destination],
-        samples: 200,
-      })
-      .then((response: google.maps.PathElevationResponse): void => this.drawPlotElevation(response))
-      .catch((): void => {
-        this.chartElevation.element.textContent = 'Cannot show elevation';
-      });
   }
 
   public doElevationRequest(request: MapRequest): void {
@@ -242,11 +248,11 @@ export default class GoogleMaps {
       title: 'Elevation (meters)',
       colors: [ProjectColors.DarkTurquoise, ProjectColors.Turquoise],
     });
-    GoogleMaps.getMapElevationInfo(results);
+    this.getMapElevationInfo(results);
   }
 
   // получение всего подъема на пути и всего спуска в метрах
-  public static getMapElevationInfo(results: google.maps.ElevationResult[]): number[] {
+  public getMapElevationInfo(results: google.maps.ElevationResult[]): number[] {
     let elevationGain = 0;
     let elevationLoss = 0;
     for (let i = 0; i < results.length - 1; i += 1) {
@@ -258,16 +264,29 @@ export default class GoogleMaps {
         elevationLoss += currentElevation - nextElevation;
       }
     }
-    return [elevationGain, elevationLoss];
+    this.elevationTotal = [elevationGain, elevationLoss];
+    console.log(this.elevationTotal);
+    return this.elevationTotal;
   }
 
   // получение всей протяженности маршрута в метрах
-  public static getTotalDistance(result: google.maps.DirectionsResult): number {
+  public getTotalDistance(result: google.maps.DirectionsResult): number {
     const [myRoute]: google.maps.DirectionsRoute[] = result.routes;
-    return myRoute.legs.reduce((total, leg) => total + (leg?.distance?.value ?? 0), 0);
+    const distance = myRoute.legs.reduce((total, leg) => total + (leg?.distance?.value ?? 0), 0);
+    this.distanceTotal = distance;
+    console.log(this.distanceTotal);
+    return this.distanceTotal;
   }
 
-  public static getTotalTime(result: google.maps.DirectionsResult): void {
-    console.log(result);
+  public getTotalTime(result: google.maps.DirectionsResult): PathDuration {
+    const { text, value } = result.routes[0].legs[0].duration ?? { text: '', value: 0 };
+    this.timeTotal = { text, value };
+    console.log(this.timeTotal);
+    return this.timeTotal;
+  }
+
+  // предварительный метод, будет изменен
+  public changeTravelMode(): void {
+    this.currentTravelMode = google.maps.TravelMode.WALKING;
   }
 }
