@@ -1,3 +1,5 @@
+import BaseComponent from '../components/base-component/base-component';
+import GoogleMaps from '../map/google-maps';
 import Footer from '../components/footer/footer';
 import Header from '../components/header/header';
 // import PersonalPage from '../pages/personal-page/personal-page';
@@ -27,10 +29,30 @@ export default class App {
 
   public init(): void {
     this.parent.style.backgroundColor = 'grey';
+    this.parent.style.height = '100%';
+    const mapDiv: BaseComponent<'div'> = new BaseComponent('div', this.parent, 'map', '', { id: 'map' });
+    const map1 = new GoogleMaps(mapDiv.element, 'map1', 8, { lat: -33.397, lng: 150.644 });
+
+    console.log(map1);
     this.handleRouting();
   }
 
   public handleRouting(): void {
     this.router.locationHandler();
   }
+
+  // скрипт с ключом для гугл апи
+  /* public static addKey(parent: HTMLElement): BaseComponent<'script'> {
+    const apiKey = 'AIzaSyC90BCUHG7PI6cW9XNex-5bY3Dd44Rqhgs';
+    // получать язык из указанной страны или менять русский/английский при переводе
+    const language = 'en';
+    // eslint-disable-next-line operator-linebreak
+    const srcString = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap&language=${language}&libraries=visualization,geometry`;
+    const script = new BaseComponent('script', parent, '', '', {
+      async: '',
+      defer: '',
+      src: srcString,
+    });
+    return script;
+  } */
 }
