@@ -13,3 +13,9 @@
 .signup-form-message {
   align-self: center;
 }
+
+.invalid {
+  box-shadow: 0 0 3px rgba(255, 0, 0, 0.5);
+  border: 1px red solid;
+  outline: 0;
+}

@@ -1,18 +1,70 @@
 import getClassNames from '../../utils/utils';
 import BaseComponent from '../base-component/base-component';
+import { CountryResponse } from '../forms/form.types';
 
 export default class Select extends BaseComponent<'select'> {
-  constructor(parent: HTMLElement, options: string[], additionalClasses?: string) {
+  private label: BaseComponent<'label'> = new BaseComponent('label', undefined, '', 'Country');
+
+  private callToAction: string = '--Please choose your country--';
+
+  // eslint-disable-next-line max-len
+  constructor(parent: HTMLElement, options: string[], additionalClasses?: string, countries?: boolean) {
     const classes = getClassNames('select', additionalClasses);
-    super('select', parent, classes);
-    this.addOptions(options);
+    super('select', undefined, classes);
+    if (!countries) {
+      parent.append(this.element);
+      this.addOptions(options);
+    } else {
+      parent.append(this.label.element);
+      parent.append(this.element);
+      this.createCountriesList();
+      this.element.setAttribute('required', '');
+    }
   }
 
-  private addOptions(options: string[]): void {
-    options.forEach((option) => this.element.append(Select.createOption(option).element));
+  public addOptions(options: string[]): void {
+    options.forEach((option) => this.element.append(this.createOption(option).element));
   }
 
-  private static createOption(name: string): BaseComponent<'option'> {
-    return new BaseComponent('option', undefined, '', name);
+  private createOption(name: string): BaseComponent<'option'> {
+    return new BaseComponent('option', undefined, '', name, {
+      value: name === this.callToAction ? '' : name,
+    });
+  }
+
+  private createCountriesList(): void {
+    Select.retrieveCountriesData().then((countriesList: string[]) => {
+      countriesList.unshift(this.callToAction);
+      this.addOptions(countriesList);
+    });
+  }
+
+  private static async retrieveCountriesData(): Promise<string[]> {
+    const countries: CountryResponse[] = await Select.loadCountrySelectOptions();
+    const optionsArray: string[] = [];
+    countries.map((country) => optionsArray.push(country.name));
+    return optionsArray;
+  }
+
+  private static async loadCountrySelectOptions(): Promise<CountryResponse[]> {
+    return fetch('https://restcountries.com/v2/all?fields=name').then((response: Response) => response.json());
+  }
+
+  public get selectValue(): string {
+    const value: string = this.element.value === this.callToAction ? '' : this.element.value;
+    this.checkValue(value);
+    return value;
+  }
+
+  private checkValue(value: string): void {
+    if (!value) {
+      this.showInvalidSelect();
+    } else if (this.element.classList.contains('invalid')) {
+      this.element.classList.remove('invalid');
+    }
+  }
+
+  private showInvalidSelect(): void {
+    this.element.classList.add('invalid');
   }
 }
