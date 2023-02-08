@@ -52,19 +52,21 @@ export default class Select extends BaseComponent<'select'> {
 
   public get selectValue(): string {
     const value: string = this.element.value === this.callToAction ? '' : this.element.value;
-    this.checkValue(value);
+    if (!value) {
+      this.showInvalidState();
+    }
     return value;
   }
 
-  private checkValue(value: string): void {
-    if (!value) {
-      this.showInvalidSelect();
-    } else if (this.element.classList.contains('invalid')) {
-      this.element.classList.remove('invalid');
-    }
+  private showInvalidState(): void {
+    this.element.classList.add('invalid');
+    this.element.addEventListener('change', this.checkIfValidSelectCallback);
   }
 
-  private showInvalidSelect(): void {
-    this.element.classList.add('invalid');
-  }
+  private checkIfValidSelectCallback = (): void => {
+    if (this.selectValue !== '') {
+      this.element.classList.remove('invalid');
+      this.element.removeEventListener('change', this.checkIfValidSelectCallback);
+    }
+  };
 }

@@ -37,14 +37,14 @@ export default class SignupForm extends BaseComponent<'form'> {
 
   private emailInput: Input = new Input(this.element, 'signup__form-input form-input', 'Email address', {
     type: 'email',
-    required: '',
     pattern: convertRegexToPattern(VALID_EMAIL),
+    required: '',
   });
 
   private passwordInput: Input = new Input(this.element, 'signup__form-input form-input', 'Password', {
     type: 'password',
-    required: '',
     pattern: convertRegexToPattern(VALID_PASSWORD),
+    required: '',
   });
 
   private countrySelect: Select = new Select(this.element, [], 'signup__form-select form-select', true);

@@ -10,6 +10,8 @@ export default class Input extends BaseComponent<'div'> {
 
   private inputName: string;
 
+  private message: ValidityMessages | null = null;
+
   // eslint-disable-next-line prettier/prettier
   constructor(
     parent: HTMLElement,
@@ -33,33 +35,44 @@ export default class Input extends BaseComponent<'div'> {
   }
 
   public checkInput(message: ValidityMessages): boolean {
-    const validityState = this.input.element.validity;
+    this.message = message;
+    const validityState: ValidityState = this.input.element.validity;
 
     if (validityState.valueMissing) {
-      this.input.element.setCustomValidity(`Please enter your ${this.inputName}`);
-      this.input.element.reportValidity();
+      this.checkInputValidity(ValidityMessages.EmptyValue + this.inputName);
+      return false;
+    }
+    if (validityState.typeMismatch || validityState.patternMismatch) {
+      this.checkInputValidity(message);
       return false;
     }
 
-    if (this.input.element.type === 'email') {
-      if (validityState.typeMismatch) {
-        this.input.element.setCustomValidity(message);
-        this.input.element.reportValidity();
-        return false;
-      }
-    }
-
-    if (validityState.patternMismatch) {
-      this.input.element.setCustomValidity(message);
-      this.input.element.reportValidity();
-      return false;
-    }
-
+    this.input.element.setCustomValidity('');
+    this.input.element.reportValidity();
     return true;
   }
 
-  public handleInvalidCredentials(): void {
-    this.input.element.setCustomValidity(`This ${this.inputName} is incorrect. Please, try again!`);
+  private checkInputValidity(message: string): void {
+    this.input.element.setCustomValidity(message);
     this.input.element.reportValidity();
+    this.showInvalidState();
+    this.input.element.addEventListener('input', this.checkIfValidInputCallback);
   }
+
+  private showInvalidState = (): void => {
+    this.input.element.classList.add('invalid');
+  };
+
+  private checkIfValidInputCallback = (): void => {
+    if (this.message && this.checkInput(this.message)) {
+      this.input.element.classList.remove('invalid');
+      this.input.element.removeEventListener('input', this.checkIfValidInputCallback);
+    }
+  };
+
+  // public handleInvalidCredentials(): void {
+  //   this.input.element.setCustomValidity
+  // (`This ${this.inputName} is incorrect. Please, try again!`);
+  //   this.input.element.reportValidity();
+  // }
 }
