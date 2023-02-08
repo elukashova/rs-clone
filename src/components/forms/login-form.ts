@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import Routes from '../../app/loader/router/router.types';
 import { LogIn, Token } from '../../app/loader/loader.types';
 import { getUser, loginUser } from '../../app/loader/services/user-services';
@@ -9,6 +10,9 @@ import { GoogleBtnClasses, GoogleBtnTypes } from '../google-button/google-btn.ty
 import GoogleButton from '../google-button/google-btn';
 import { setDataToLocalStorage } from '../../utils/local-storage/local-storage';
 import NavigationLink from '../link/link';
+import { VALID_EMAIL, VALID_PASSWORD } from '../../utils/consts';
+import { ValidityMessages } from './form.types';
+import { convertRegexToPattern } from '../../utils/utils';
 
 export default class LoginForm extends BaseComponent<'form'> {
   private formHeader: BaseComponent<'h4'> = new BaseComponent(
@@ -27,9 +31,17 @@ export default class LoginForm extends BaseComponent<'form'> {
     'If you have an account, you can login with e-mail',
   );
 
-  public emailInput: Input = new Input(this.element, 'login__form-input', 'Email address', { type: 'email' });
+  public emailInput: Input = new Input(this.element, 'login__form-input', 'Email address', {
+    type: 'email',
+    required: '',
+    pattern: convertRegexToPattern(VALID_EMAIL),
+  });
 
-  public passwordInput: Input = new Input(this.element, 'login__form-input', 'Password', { type: 'password' });
+  public passwordInput: Input = new Input(this.element, 'login__form-input', 'Password', {
+    type: 'password',
+    required: '',
+    pattern: convertRegexToPattern(VALID_PASSWORD),
+  });
 
   public loginButton: Button = new Button(this.element, 'Log in', 'login__btn-main btn_main');
 
@@ -66,30 +78,40 @@ export default class LoginForm extends BaseComponent<'form'> {
       GoogleBtnTypes.Signin,
       this.isNewUser,
     );
-    this.addLoginEventListeners();
-  }
 
-  private addLoginEventListeners(): void {
-    this.emailInput.element.addEventListener('input', this.emailInputCallback);
-    this.passwordInput.element.addEventListener('input', this.passwordInputCallback);
     this.loginButton.element.addEventListener('click', this.loginBtnCallback);
   }
 
-  private emailInputCallback = (): void => {
-    this.user.email = this.emailInput.getValue();
-  };
-
-  private passwordInputCallback = (): void => {
-    this.user.password = this.passwordInput.getValue();
-  };
-
   private loginBtnCallback = (e: Event): void => {
     e.preventDefault();
-    try {
-      this.signInUser(this.user);
-    } catch (err) {
-      console.log(err); // temporary console.log
+    if (this.checkInputs(e)) {
+      e.preventDefault();
+      try {
+        this.collectUserData();
+        this.signInUser(this.user);
+      } catch (err) {
+        console.log(err); // temporary console.log
+      }
     }
+  };
+
+  private collectUserData(): void {
+    this.user.email = this.emailInput.inputValue;
+    this.user.password = this.passwordInput.inputValue;
+  }
+
+  private checkInputs = (e: Event): boolean => {
+    const conditionsArray: boolean[] = [
+      this.passwordInput.checkInput(ValidityMessages.Password),
+      this.emailInput.checkInput(ValidityMessages.Email),
+    ];
+
+    if (conditionsArray.includes(false)) {
+      e.preventDefault();
+      return false;
+    }
+
+    return true;
   };
 
   private signInUser = (user: LogIn): void => {

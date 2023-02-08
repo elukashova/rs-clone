@@ -12,6 +12,7 @@ import GoogleButton from '../google-button/google-btn';
 import { VALID_EMAIL, VALID_NAME, VALID_PASSWORD } from '../../utils/consts';
 import { ValidityMessages } from './form.types';
 import Select from '../select/select';
+import { convertRegexToPattern } from '../../utils/utils';
 
 export default class SignupForm extends BaseComponent<'form'> {
   private formHeader: BaseComponent<'h4'> = new BaseComponent(
@@ -30,20 +31,20 @@ export default class SignupForm extends BaseComponent<'form'> {
 
   private nameInput: Input = new Input(this.element, 'signup__form-input form-input', 'Full Name', {
     type: 'text',
-    pattern: SignupForm.convertRegexToPattern(VALID_NAME),
+    pattern: convertRegexToPattern(VALID_NAME),
     required: '',
   });
 
   private emailInput: Input = new Input(this.element, 'signup__form-input form-input', 'Email address', {
     type: 'email',
     required: '',
-    pattern: SignupForm.convertRegexToPattern(VALID_EMAIL),
+    pattern: convertRegexToPattern(VALID_EMAIL),
   });
 
   private passwordInput: Input = new Input(this.element, 'signup__form-input form-input', 'Password', {
     type: 'password',
     required: '',
-    pattern: SignupForm.convertRegexToPattern(VALID_PASSWORD),
+    pattern: convertRegexToPattern(VALID_PASSWORD),
   });
 
   private countrySelect: Select = new Select(this.element, [], 'signup__form-select form-select', true);
@@ -130,10 +131,6 @@ export default class SignupForm extends BaseComponent<'form'> {
 
     return true;
   };
-
-  private static convertRegexToPattern(regex: RegExp): string {
-    return regex.toString().slice(1, -1);
-  }
 
   private signUpUser = (user: SignUp): void => {
     SignupForm.createUser(user).then((token) => SignupForm.getUser(token));
