@@ -17,7 +17,7 @@ export default class Header extends BaseComponent<'header'> {
 
   private themeIcon = new HeaderIcon(this.element, 'header-icon_theme');
 
-  constructor(parent: HTMLElement, private replaceMainCallback: () => Promise<void>) {
+  constructor(parent: HTMLElement, private replaceMainCallback: () => void) {
     super('header', parent, 'header');
     this.challenges.element.setAttribute('href', Routes.Challenges);
     this.openMenu();

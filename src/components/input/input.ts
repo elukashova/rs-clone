@@ -1,4 +1,4 @@
-import getClassNames from '../../utils/utils';
+import { getClassNames } from '../../utils/utils';
 import BaseComponent from '../base-component/base-component';
 import { ValidityMessages } from '../forms/form.types';
 import './input.css';
