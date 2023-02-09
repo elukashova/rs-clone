@@ -1,5 +1,6 @@
-import Routes from '../../app/loader/router/router.types';
-import { LogIn, Token } from '../../app/loader/loader.types';
+/* eslint-disable prettier/prettier */
+import Routes from '../../app/router/router.types';
+import { Errors, LogIn, Token } from '../../app/loader/loader.types';
 import { getUser, loginUser } from '../../app/loader/services/user-services';
 import BaseComponent from '../base-component/base-component';
 import Button from '../button/button';
@@ -9,6 +10,9 @@ import { GoogleBtnClasses, GoogleBtnTypes } from '../google-button/google-btn.ty
 import GoogleButton from '../google-button/google-btn';
 import { setDataToLocalStorage } from '../../utils/local-storage/local-storage';
 import NavigationLink from '../link/link';
+import { VALID_EMAIL, VALID_PASSWORD } from '../../utils/consts';
+import { InputConflictMessages, ValidityMessages } from './form.types';
+import { convertRegexToPattern } from '../../utils/utils';
 
 export default class LoginForm extends BaseComponent<'form'> {
   private formHeader: BaseComponent<'h4'> = new BaseComponent(
@@ -29,10 +33,14 @@ export default class LoginForm extends BaseComponent<'form'> {
 
   public emailInput: Input = new Input(this.element, 'login__form-input form-input', 'Email address', {
     type: 'email',
+    required: '',
+    pattern: convertRegexToPattern(VALID_EMAIL),
   });
 
   public passwordInput: Input = new Input(this.element, 'login__form-input form-input', 'Password', {
     type: 'password',
+    required: '',
+    pattern: convertRegexToPattern(VALID_PASSWORD),
   });
 
   public loginButton: Button = new Button(this.element, 'Log in', 'login__btn-main btn_main');
@@ -70,35 +78,49 @@ export default class LoginForm extends BaseComponent<'form'> {
       GoogleBtnTypes.Signin,
       this.isNewUser,
     );
-    this.addLoginEventListeners();
-  }
 
-  private addLoginEventListeners(): void {
-    this.emailInput.element.addEventListener('input', this.emailInputCallback);
-    this.passwordInput.element.addEventListener('input', this.passwordInputCallback);
     this.loginButton.element.addEventListener('click', this.loginBtnCallback);
   }
 
-  private emailInputCallback = (): void => {
-    this.user.email = this.emailInput.getValue();
-  };
-
-  private passwordInputCallback = (): void => {
-    this.user.password = this.passwordInput.getValue();
-  };
-
   private loginBtnCallback = (e: Event): void => {
     e.preventDefault();
-    try {
+    if (this.checkInputs(e)) {
+      e.preventDefault();
+      this.collectUserData();
       this.signInUser(this.user);
-    } catch (err) {
-      console.log(err); // temporary console.log
     }
   };
 
+  private collectUserData(): void {
+    this.user.email = this.emailInput.inputValue;
+    this.user.password = this.passwordInput.inputValue;
+  }
+
+  private checkInputs = (e: Event): boolean => {
+    const conditionsArray: boolean[] = [
+      this.passwordInput.checkInput(ValidityMessages.Password),
+      this.emailInput.checkInput(ValidityMessages.Email),
+    ];
+
+    if (conditionsArray.includes(false)) {
+      e.preventDefault();
+      return false;
+    }
+
+    return true;
+  };
+
   private signInUser = (user: LogIn): void => {
-    LoginForm.loginUser(user).then((token) => LoginForm.getUser(token));
-    this.changeRoute();
+    LoginForm.loginUser(user)
+      .then((token: Token) => {
+        LoginForm.getUser(token);
+        this.changeRoute();
+      })
+      .catch((err: Error) => {
+        if (err.message === Errors.Unauthorized) {
+          this.showInvalidCredentialsMessage();
+        }
+      });
   };
 
   private changeRoute(): void {
@@ -116,5 +138,17 @@ export default class LoginForm extends BaseComponent<'form'> {
   // этот метод потом будет вынесен в загрузку dashboard
   private static getUser(token: Token): void {
     getUser(token).then((user) => console.log(user));
+  }
+
+  private showInvalidCredentialsMessage(): void {
+    const message: HTMLSpanElement = document.createElement('span');
+    message.textContent = InputConflictMessages.InvalidCredentials;
+    const signUpLink: NavigationLink = new NavigationLink(this.replaceMainCallback, {
+      text: 'sign up',
+      parent: message,
+      additionalClasses: 'login__link-signup',
+    });
+    signUpLink.element.setAttribute('href', Routes.SignUp);
+    this.element.insertBefore(message, this.loginButton.element);
   }
 }

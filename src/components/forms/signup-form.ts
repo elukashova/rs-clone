@@ -3,12 +3,16 @@ import Button from '../button/button';
 import NavigationLink from '../link/link';
 import Input from '../input/input';
 import './form.css';
-import Routes from '../../app/loader/router/router.types';
-import { SignUp, Token } from '../../app/loader/loader.types';
+import Routes from '../../app/router/router.types';
+import { Errors, SignUp, Token } from '../../app/loader/loader.types';
 import { createUser, getUser } from '../../app/loader/services/user-services';
 import { setDataToLocalStorage } from '../../utils/local-storage/local-storage';
 import { GoogleBtnClasses, GoogleBtnTypes } from '../google-button/google-btn.types';
 import GoogleButton from '../google-button/google-btn';
+import { VALID_EMAIL, VALID_NAME, VALID_PASSWORD } from '../../utils/consts';
+import { InputConflictMessages, ValidityMessages } from './form.types';
+import Select from '../select/select';
+import { convertRegexToPattern } from '../../utils/utils';
 
 export default class SignupForm extends BaseComponent<'form'> {
   private formHeader: BaseComponent<'h4'> = new BaseComponent(
@@ -25,19 +29,29 @@ export default class SignupForm extends BaseComponent<'form'> {
     'Become a member and enjoy exclusive promotions.',
   );
 
-  private nameInput: Input = new Input(this.element, 'signup__form-input form-input', 'Full Name', { type: 'text' });
+  private nameInput: Input = new Input(this.element, 'signup__form-input form-input', 'Full Name', {
+    type: 'text',
+    pattern: convertRegexToPattern(VALID_NAME),
+    required: '',
+  });
 
   private emailInput: Input = new Input(this.element, 'signup__form-input form-input', 'Email address', {
     type: 'email',
+    pattern: convertRegexToPattern(VALID_EMAIL),
+    required: '',
   });
 
   private passwordInput: Input = new Input(this.element, 'signup__form-input form-input', 'Password', {
     type: 'password',
+    pattern: convertRegexToPattern(VALID_PASSWORD),
+    required: '',
   });
 
-  private countryInput: Input = new Input(this.element, 'signup__form-input form-input', 'Country', { type: 'text' });
+  private countrySelect: Select = new Select(this.element, [], 'signup__form-select form-select', true);
 
-  private signupButton: Button = new Button(this.element, 'Sign up', 'signup__btn-main btn_main');
+  private signupButton: Button = new Button(this.element, 'Sign up', 'signup__btn-main btn_main', {
+    type: 'submit',
+  });
 
   private logInMessage: BaseComponent<'span'> = new BaseComponent(
     'span',
@@ -65,7 +79,10 @@ export default class SignupForm extends BaseComponent<'form'> {
   private isNewUser: boolean = true;
 
   constructor(parent: HTMLElement, private replaceMainCallback: () => void) {
-    super('form', parent, 'signup-form signup');
+    super('form', parent, 'signup-form signup', '', {
+      autocomplete: 'on',
+    });
+
     this.loginLink.element.setAttribute('href', Routes.LogIn);
     this.googleButton = new GoogleButton(
       {
@@ -76,45 +93,54 @@ export default class SignupForm extends BaseComponent<'form'> {
       GoogleBtnTypes.Signup,
       this.isNewUser,
     );
-    this.addSignupEventListeners();
-  }
 
-  private addSignupEventListeners(): void {
-    this.nameInput.element.addEventListener('input', this.nameInputCallback);
-    this.emailInput.element.addEventListener('input', this.emailInputCallback);
-    this.passwordInput.element.addEventListener('input', this.passwordInputCallback);
-    this.countryInput.element.addEventListener('input', this.countryInputCallback);
     this.signupButton.element.addEventListener('click', this.signupBtnCallback);
   }
 
-  private nameInputCallback = (): void => {
-    this.newUser.username = this.nameInput.getValue();
-  };
-
-  private emailInputCallback = (): void => {
-    this.newUser.email = this.emailInput.getValue();
-  };
-
-  private passwordInputCallback = (): void => {
-    this.newUser.password = this.passwordInput.getValue();
-  };
-
-  private countryInputCallback = (): void => {
-    this.newUser.country = this.countryInput.getValue();
-  };
-
   private signupBtnCallback = (e: Event): void => {
-    e.preventDefault();
-    try {
+    if (this.checkInputs(e)) {
+      e.preventDefault();
+      this.collectUserData();
       this.signUpUser(this.newUser);
-    } catch (err) {
-      console.log(err); // temporary console.log
     }
   };
 
+  private collectUserData(): void {
+    this.newUser.username = this.nameInput.inputValue;
+    this.newUser.email = this.emailInput.inputValue;
+    this.newUser.password = this.passwordInput.inputValue;
+    this.newUser.country = this.countrySelect.selectValue;
+  }
+
+  private checkInputs = (e: Event): boolean => {
+    const conditionsArray: boolean[] = [
+      this.passwordInput.checkInput(ValidityMessages.Password),
+      this.emailInput.checkInput(ValidityMessages.Email),
+      this.nameInput.checkInput(ValidityMessages.Name),
+      Boolean(this.countrySelect.selectValue),
+    ];
+
+    if (conditionsArray.includes(false)) {
+      e.preventDefault();
+      return false;
+    }
+
+    return true;
+  };
+
   private signUpUser = (user: SignUp): void => {
-    SignupForm.createUser(user).then((token) => SignupForm.getUser(token));
-    this.changeRoute();
+    SignupForm.createUser(user)
+      .then((token: Token) => {
+        if (token) {
+          SignupForm.getUser(token);
+          this.changeRoute();
+        }
+      })
+      .catch((err: Error) => {
+        if (err.message === Errors.UserAlreadyExists) {
+          this.showUserAlreadyRegisteredMessage();
+        }
+      });
   };
 
   private changeRoute(): void {
@@ -132,5 +158,17 @@ export default class SignupForm extends BaseComponent<'form'> {
   // этот метод потом будет вынесен в загрузку dashboard
   private static getUser(token: Token): void {
     getUser(token).then((user) => console.log(user));
+  }
+
+  private showUserAlreadyRegisteredMessage(): void {
+    const message: HTMLSpanElement = document.createElement('span');
+    message.textContent = InputConflictMessages.UserAlreadyExists;
+    const logInLink: NavigationLink = new NavigationLink(this.replaceMainCallback, {
+      text: 'log in',
+      parent: message,
+      additionalClasses: 'signup__link-login',
+    });
+    logInLink.element.setAttribute('href', Routes.LogIn);
+    this.element.insertBefore(message, this.signupButton.element);
   }
 }
