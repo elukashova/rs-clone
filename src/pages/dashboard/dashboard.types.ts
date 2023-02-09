@@ -1,5 +1,5 @@
 type User = {
-  avatar_url: string;
+  avatarUrl: string;
   bio: string;
   country: string;
   created_at: string;

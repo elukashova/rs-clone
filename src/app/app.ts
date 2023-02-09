@@ -47,6 +47,7 @@ export default class App {
         this.parent.style.backgroundImage = 'url(/assets/backgrounds/login-background.jpg)';
         break;
       default:
+        console.log('hey');
         this.parent.style.backgroundImage = '';
         this.parent.style.backgroundColor = '#F6F4F9';
     }

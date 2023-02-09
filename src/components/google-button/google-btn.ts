@@ -13,7 +13,7 @@ export default class GoogleButton extends BaseComponent<'div'> {
     username: '',
     email: '',
     google: true,
-    avatar_url: '',
+    avatarUrl: '',
   };
 
   private existingUser: LogIn = {
@@ -50,7 +50,6 @@ export default class GoogleButton extends BaseComponent<'div'> {
     const account: GoogleAccount = jwtdecode(resp.credential);
     this.newUser.username = account.name;
     this.newUser.email = account.email;
-    this.newUser.avatar_url = account.picture;
     if (this.googleSignUpCallback) {
       this.googleSignUpCallback(this.newUser);
     }

@@ -27,6 +27,7 @@ export default class Dashboard extends BaseComponent<'section'> {
           ...user,
         };
         this.leftMenu = new LeftMenu(this.currentUser, undefined);
+        console.log(this.currentUser);
         this.element.insertBefore(this.leftMenu.element, this.trainingFeed.element);
       });
     }

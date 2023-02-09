@@ -7,7 +7,7 @@ export interface LogIn {
 export interface SignUp extends LogIn {
   username: string;
   country?: string;
-  avatar_url?: string;
+  avatarUrl?: string;
 }
 
 export type Token = {
@@ -43,7 +43,7 @@ export enum Errors {
 }
 
 type User = {
-  avatar_url: string;
+  avatarUrl: string;
   bio: string;
   country: string;
   created_at: string;
