@@ -35,8 +35,8 @@ export default class Input extends BaseComponent<'div'> {
   }
 
   public checkInput(message: ValidityMessages): boolean {
-    this.message = message;
     const validityState: ValidityState = this.input.element.validity;
+    this.message = message;
 
     if (validityState.valueMissing) {
       this.checkInputValidity(ValidityMessages.EmptyValue + this.inputName);
@@ -60,12 +60,12 @@ export default class Input extends BaseComponent<'div'> {
   }
 
   private showInvalidState = (): void => {
-    this.input.element.classList.add('invalid');
+    this.element.classList.add('invalid');
   };
 
   private checkIfValidInputCallback = (): void => {
     if (this.message && this.checkInput(this.message)) {
-      this.input.element.classList.remove('invalid');
+      this.element.classList.remove('invalid');
       this.input.element.removeEventListener('input', this.checkIfValidInputCallback);
     }
   };
