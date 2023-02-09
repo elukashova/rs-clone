@@ -9,7 +9,7 @@ export default class Loader {
 
   private static errorHandler(response: Response): Response {
     if (!response.ok) {
-      throw new Error(response.statusText);
+      throw new Error(`${response.status}`);
     }
     return response;
   }

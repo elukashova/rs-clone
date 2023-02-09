@@ -41,8 +41,3 @@ export enum Errors {
   UserAlreadyExists = '409',
   Unauthorized = '401',
 }
-
-// export enum Errors {
-//   UserAlreadyExists = 'Conflict',
-//   Unauthorized = 'Unauthorized',
-// }
