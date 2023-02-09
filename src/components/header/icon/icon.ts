@@ -1,10 +1,17 @@
+import { getClassNames } from '../../../utils/utils';
 import BaseComponent from '../../base-component/base-component';
 import './icon.css';
-import getClassNames from '../../../utils/utils';
 
-export default class HeaderIcon extends BaseComponent<'span'> {
-  constructor(root: HTMLElement, additionalClasses?: string) {
+export default class HeaderIcon extends BaseComponent<'img'> {
+  // eslint-disable-next-line max-len
+  constructor(
+    parent: HTMLElement,
+    additionalClasses?: string,
+    attributes?: {
+      [key: string]: string;
+    },
+  ) {
     const classes = getClassNames('header-icon', additionalClasses);
-    super('span', root, classes);
+    super('img', parent, classes, '', attributes);
   }
 }

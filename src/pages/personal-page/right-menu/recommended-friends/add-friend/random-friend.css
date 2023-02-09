@@ -14,5 +14,6 @@
 .random-friend__icon {
   width: 40px;
   height: 40px;
-  background-color: bisque;
+  background-image: url('../../../../../assets/icons/png/cross.png');
+  background-size: cover;
 }

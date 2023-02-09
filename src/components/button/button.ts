@@ -1,10 +1,11 @@
 import BaseComponent from '../base-component/base-component';
-import getClassNames from '../../utils/utils';
+import { getClassNames } from '../../utils/utils';
 import './button.css';
 
 export default class Button extends BaseComponent<'button'> {
-  constructor(parent: HTMLElement, text: string, additionalClasses?: string) {
+  // eslint-disable-next-line max-len
+  constructor(parent: HTMLElement, text: string, additionalClasses?: string, attributes?: Record<string, string>) {
     const classes = getClassNames('btn', additionalClasses);
-    super('button', parent, classes, text);
+    super('button', parent, classes, text, attributes);
   }
 }

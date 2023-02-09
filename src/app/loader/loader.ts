@@ -1,5 +1,6 @@
 import { PRODUCTION_ENV } from '../../utils/consts';
 import { RequestData, Token, LoadRequest, Methods } from './loader.types';
+// import { DEVELOPMENT_ENV } from '../../utils/consts';
 
 export default class Loader {
   // DEVELOPMENT_ENV
@@ -8,12 +9,13 @@ export default class Loader {
 
   private static errorHandler(response: Response): Response {
     if (!response.ok) {
-      throw new Error(response.statusText);
+      throw new Error(`${response.status}`);
     }
     return response;
   }
 
   private static load(request: LoadRequest): Promise<Response> {
+    console.log('hey');
     const headers: HeadersInit = {
       'Content-Type': 'application/json',
       ...(request.token && { Authorization: `Bearer ${request.token}` }),
