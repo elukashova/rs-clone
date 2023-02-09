@@ -1,3 +1,4 @@
+import { REST_COUNTRIES } from '../../utils/consts';
 import { getClassNames } from '../../utils/utils';
 import BaseComponent from '../base-component/base-component';
 import { CountryResponse } from '../forms/form.types';
@@ -46,8 +47,8 @@ export default class Select extends BaseComponent<'select'> {
     return optionsArray;
   }
 
-  private static async loadCountrySelectOptions(): Promise<CountryResponse[]> {
-    return fetch('https://restcountries.com/v2/all?fields=name').then((response: Response) => response.json());
+  private static loadCountrySelectOptions(): Promise<CountryResponse[]> {
+    return fetch(REST_COUNTRIES).then((response: Response) => response.json());
   }
 
   public get selectValue(): string {

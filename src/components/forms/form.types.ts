@@ -16,3 +16,8 @@ export type CountryResponse = {
   name: 'string';
   independent: 'string';
 };
+
+export enum InputConflictMessages {
+  UserAlreadyExist = 'An account with this email already exists. Please choose another one or log in.',
+  InvalidCredentials = '"Invalid email or password. Please enter valid credentials.',
+}

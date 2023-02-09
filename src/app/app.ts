@@ -5,7 +5,7 @@ import Header from '../components/header/header';
 // import PersonalPage from '../pages/personal-page/personal-page';
 import Main from '../pages/main/main-page';
 import NewRoutePage from '../pages/new-route-page/new-route-page';
-import Router from './loader/router/router';
+import Router from './router/router';
 
 export default class App {
   private header: Header;
@@ -40,6 +40,12 @@ export default class App {
   public handleRouting(): void {
     this.router.locationHandler();
   }
+
+  // public static checkIfLoggedUser(): void {
+  //   if (checkDataInLocalStorage('userSessionToken')) {
+
+  //   }
+  // }
 
   // скрипт с ключом для гугл апи
   /* public static addKey(parent: HTMLElement): BaseComponent<'script'> {

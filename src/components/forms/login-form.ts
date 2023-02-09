@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
-import Routes from '../../app/loader/router/router.types';
-import { LogIn, Token } from '../../app/loader/loader.types';
+import Routes from '../../app/router/router.types';
+import { Errors, LogIn, Token } from '../../app/loader/loader.types';
 import { getUser, loginUser } from '../../app/loader/services/user-services';
 import BaseComponent from '../base-component/base-component';
 import Button from '../button/button';
@@ -11,7 +11,7 @@ import GoogleButton from '../google-button/google-btn';
 import { setDataToLocalStorage } from '../../utils/local-storage/local-storage';
 import NavigationLink from '../link/link';
 import { VALID_EMAIL, VALID_PASSWORD } from '../../utils/consts';
-import { ValidityMessages } from './form.types';
+import { InputConflictMessages, ValidityMessages } from './form.types';
 import { convertRegexToPattern } from '../../utils/utils';
 
 export default class LoginForm extends BaseComponent<'form'> {
@@ -115,8 +115,14 @@ export default class LoginForm extends BaseComponent<'form'> {
   };
 
   private signInUser = (user: LogIn): void => {
-    LoginForm.loginUser(user).then((token) => LoginForm.getUser(token));
-    this.changeRoute();
+    LoginForm.loginUser(user)
+      .then((token) => LoginForm.getUser(token))
+      .catch((err: Error) => {
+        if (err.message === Errors.Unauthorized) {
+          this.showInvalidCredentialsMessage();
+        }
+      })
+      .then(() => this.changeRoute());
   };
 
   private changeRoute(): void {
@@ -134,5 +140,11 @@ export default class LoginForm extends BaseComponent<'form'> {
   // этот метод потом будет вынесен в загрузку dashboard
   private static getUser(token: Token): void {
     getUser(token).then((user) => console.log(user));
+  }
+
+  private showInvalidCredentialsMessage(): void {
+    const message: HTMLSpanElement = document.createElement('span');
+    message.textContent = InputConflictMessages.InvalidCredentials;
+    this.element.insertBefore(message, this.loginButton.element);
   }
 }

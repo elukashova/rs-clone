@@ -1,6 +1,6 @@
-import Main from '../../../pages/main/main-page';
-import LoginPage from '../../../pages/main/section-login';
-import SignupPage from '../../../pages/main/section-signup';
+import Main from '../../pages/main/main-page';
+import LoginPage from '../../pages/main/section-login';
+import SignupPage from '../../pages/main/section-signup';
 import Routes from './router.types';
 
 export default class Router {

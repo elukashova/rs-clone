@@ -36,3 +36,8 @@ export enum Methods {
   Patch = 'PATCH',
   Delete = 'DELETE',
 }
+
+export enum Errors {
+  UserAlreadyExist = 'Conflict',
+  Unauthorized = 'Unauthorized',
+}

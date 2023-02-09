@@ -3,14 +3,14 @@ import Button from '../button/button';
 import NavigationLink from '../link/link';
 import Input from '../input/input';
 import './form.css';
-import Routes from '../../app/loader/router/router.types';
-import { SignUp, Token } from '../../app/loader/loader.types';
+import Routes from '../../app/router/router.types';
+import { Errors, SignUp, Token } from '../../app/loader/loader.types';
 import { createUser, getUser } from '../../app/loader/services/user-services';
 import { setDataToLocalStorage } from '../../utils/local-storage/local-storage';
 import { GoogleBtnClasses, GoogleBtnTypes } from '../google-button/google-btn.types';
 import GoogleButton from '../google-button/google-btn';
 import { VALID_EMAIL, VALID_NAME, VALID_PASSWORD } from '../../utils/consts';
-import { ValidityMessages } from './form.types';
+import { InputConflictMessages, ValidityMessages } from './form.types';
 import Select from '../select/select';
 import { convertRegexToPattern } from '../../utils/utils';
 
@@ -104,7 +104,7 @@ export default class SignupForm extends BaseComponent<'form'> {
         this.collectUserData();
         this.signUpUser(this.newUser);
       } catch (err) {
-        console.log(err); // temporary console.log
+        console.log('hey'); // temporary console.log
       }
     }
   };
@@ -133,8 +133,14 @@ export default class SignupForm extends BaseComponent<'form'> {
   };
 
   private signUpUser = (user: SignUp): void => {
-    SignupForm.createUser(user).then((token) => SignupForm.getUser(token));
-    this.changeRoute();
+    SignupForm.createUser(user)
+      .then((token: Token) => SignupForm.getUser(token))
+      .catch((err: Error) => {
+        if (err.message === Errors.UserAlreadyExist) {
+          this.showUserAlreadyRegisteredMessage();
+        }
+      })
+      .then(() => this.changeRoute());
   };
 
   private changeRoute(): void {
@@ -152,5 +158,11 @@ export default class SignupForm extends BaseComponent<'form'> {
   // этот метод потом будет вынесен в загрузку dashboard
   private static getUser(token: Token): void {
     getUser(token).then((user) => console.log(user));
+  }
+
+  private showUserAlreadyRegisteredMessage(): void {
+    const message: HTMLSpanElement = document.createElement('span');
+    message.textContent = InputConflictMessages.UserAlreadyExist;
+    this.element.insertBefore(message, this.signupButton.element);
   }
 }
