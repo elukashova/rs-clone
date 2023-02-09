@@ -86,12 +86,8 @@ export default class LoginForm extends BaseComponent<'form'> {
     e.preventDefault();
     if (this.checkInputs(e)) {
       e.preventDefault();
-      try {
-        this.collectUserData();
-        this.signInUser(this.user);
-      } catch (err) {
-        console.log(err); // temporary console.log
-      }
+      this.collectUserData();
+      this.signInUser(this.user);
     }
   };
 
@@ -116,13 +112,15 @@ export default class LoginForm extends BaseComponent<'form'> {
 
   private signInUser = (user: LogIn): void => {
     LoginForm.loginUser(user)
-      .then((token) => LoginForm.getUser(token))
+      .then((token: Token) => {
+        LoginForm.getUser(token);
+        this.changeRoute();
+      })
       .catch((err: Error) => {
         if (err.message === Errors.Unauthorized) {
           this.showInvalidCredentialsMessage();
         }
-      })
-      .then(() => this.changeRoute());
+      });
   };
 
   private changeRoute(): void {

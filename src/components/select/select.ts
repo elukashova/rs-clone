@@ -41,10 +41,13 @@ export default class Select extends BaseComponent<'select'> {
   }
 
   private static async retrieveCountriesData(): Promise<string[]> {
-    const countries: CountryResponse[] = await Select.loadCountrySelectOptions();
-    const optionsArray: string[] = [];
-    countries.map((country) => optionsArray.push(country.name));
-    return optionsArray;
+    return Select.loadCountrySelectOptions().then((countries: CountryResponse[]) => {
+      const names: string[] = countries.reduce((result: string[], country: CountryResponse) => {
+        result.push(country.name);
+        return result;
+      }, []);
+      return names;
+    });
   }
 
   private static loadCountrySelectOptions(): Promise<CountryResponse[]> {

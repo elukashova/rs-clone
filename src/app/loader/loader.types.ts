@@ -38,6 +38,6 @@ export enum Methods {
 }
 
 export enum Errors {
-  UserAlreadyExist = 'Conflict',
+  UserAlreadyExists = 'Conflict',
   Unauthorized = 'Unauthorized',
 }

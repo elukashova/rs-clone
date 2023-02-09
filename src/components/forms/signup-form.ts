@@ -100,12 +100,8 @@ export default class SignupForm extends BaseComponent<'form'> {
   private signupBtnCallback = (e: Event): void => {
     if (this.checkInputs(e)) {
       e.preventDefault();
-      try {
-        this.collectUserData();
-        this.signUpUser(this.newUser);
-      } catch (err) {
-        console.log('hey'); // temporary console.log
-      }
+      this.collectUserData();
+      this.signUpUser(this.newUser);
     }
   };
 
@@ -134,13 +130,17 @@ export default class SignupForm extends BaseComponent<'form'> {
 
   private signUpUser = (user: SignUp): void => {
     SignupForm.createUser(user)
-      .then((token: Token) => SignupForm.getUser(token))
-      .catch((err: Error) => {
-        if (err.message === Errors.UserAlreadyExist) {
-          this.showUserAlreadyRegisteredMessage();
+      .then((token: Token) => {
+        if (token) {
+          SignupForm.getUser(token);
+          this.changeRoute();
         }
       })
-      .then(() => this.changeRoute());
+      .catch((err: Error) => {
+        if (err.message === Errors.UserAlreadyExists) {
+          this.showUserAlreadyRegisteredMessage();
+        }
+      });
   };
 
   private changeRoute(): void {
@@ -162,7 +162,7 @@ export default class SignupForm extends BaseComponent<'form'> {
 
   private showUserAlreadyRegisteredMessage(): void {
     const message: HTMLSpanElement = document.createElement('span');
-    message.textContent = InputConflictMessages.UserAlreadyExist;
+    message.textContent = InputConflictMessages.UserAlreadyExists;
     this.element.insertBefore(message, this.signupButton.element);
   }
 }
