@@ -31,13 +31,13 @@ export default class LoginForm extends BaseComponent<'form'> {
     'If you have an account, you can login with e-mail',
   );
 
-  public emailInput: Input = new Input(this.element, 'login__form-input', 'Email address', {
+  public emailInput: Input = new Input(this.element, 'login__form-input form-input', 'Email address', {
     type: 'email',
     required: '',
     pattern: convertRegexToPattern(VALID_EMAIL),
   });
 
-  public passwordInput: Input = new Input(this.element, 'login__form-input', 'Password', {
+  public passwordInput: Input = new Input(this.element, 'login__form-input form-input', 'Password', {
     type: 'password',
     required: '',
     pattern: convertRegexToPattern(VALID_PASSWORD),

@@ -1,6 +1,7 @@
 import Main from '../../pages/main/main-page';
 import LoginPage from '../../pages/main/section-login';
 import SignupPage from '../../pages/main/section-signup';
+import PersonalPage from '../../pages/personal-page/personal-page';
 import Routes from './router.types';
 
 export default class Router {
@@ -9,6 +10,8 @@ export default class Router {
   private signupPage: SignupPage | null = null;
 
   private loginPage: LoginPage | null = null;
+
+  private personalPage: PersonalPage | null = null;
 
   constructor(main: Main) {
     this.main = main;
@@ -27,7 +30,8 @@ export default class Router {
         this.main.setContent(this.loginPage);
         break;
       case Routes.Dashboard:
-        console.log('dashboard page'); // temporary placeholder
+        this.personalPage = new PersonalPage();
+        this.main.setContent(this.personalPage);
         break;
       default:
         console.log('will be 404 page'); // temporary placeholder
