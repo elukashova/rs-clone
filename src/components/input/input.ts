@@ -69,10 +69,4 @@ export default class Input extends BaseComponent<'div'> {
       this.input.element.removeEventListener('input', this.checkIfValidInputCallback);
     }
   };
-
-  // public handleInvalidCredentials(): void {
-  //   this.input.element.setCustomValidity
-  // (`This ${this.inputName} is incorrect. Please, try again!`);
-  //   this.input.element.reportValidity();
-  // }
 }

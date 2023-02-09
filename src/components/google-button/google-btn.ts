@@ -48,6 +48,7 @@ export default class GoogleButton extends BaseComponent<'div'> {
 
   public handleGoogleSignup = (resp: google.accounts.id.CredentialResponse): void => {
     const account: GoogleAccount = jwtdecode(resp.credential);
+    console.log(jwtdecode(resp.credential));
     this.newUser.username = account.name;
     this.newUser.email = account.email;
     this.newUser.avatar_url = account.picture;

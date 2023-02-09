@@ -1,11 +1,11 @@
-import { PRODUCTION_ENV } from '../../utils/consts';
+// import { PRODUCTION_ENV } from '../../utils/consts';
 import { RequestData, Token, LoadRequest, Methods } from './loader.types';
-// import { DEVELOPMENT_ENV } from '../../utils/consts';
+import { DEVELOPMENT_ENV } from '../../utils/consts';
 
 export default class Loader {
   // DEVELOPMENT_ENV
   // PRODUCTION_ENV
-  private static server: string = PRODUCTION_ENV;
+  private static server: string = DEVELOPMENT_ENV;
 
   private static errorHandler(response: Response): Response {
     if (!response.ok) {
@@ -15,7 +15,6 @@ export default class Loader {
   }
 
   private static load(request: LoadRequest): Promise<Response> {
-    console.log('hey');
     const headers: HeadersInit = {
       'Content-Type': 'application/json',
       ...(request.token && { Authorization: `Bearer ${request.token}` }),
