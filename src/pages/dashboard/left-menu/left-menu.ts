@@ -17,7 +17,6 @@ export default class LeftMenu extends BaseComponent<'aside'> {
     super('aside', parent, 'left-menu');
     // eslint-disable-next-line max-len
     const name: string = LeftMenu.transformNameFormat(user.username);
-    console.log(name);
     const url: string = user.avatar_url || DefaultUserInfo.DefaultUrl;
     const bio: string = user.bio || DefaultUserInfo.DefaultBio;
 
