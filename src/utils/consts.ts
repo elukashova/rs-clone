@@ -23,3 +23,28 @@ export const VALID_NAME: RegExp = /^([\w]{3,})+\s+([\w\s]{3,})+$/;
 // eslint-disable-next-line prettier/prettier, max-len
 export const VALID_EMAIL: RegExp = /^(?!\\.)(?!.*\\.$)(?!.*\\.\\.)([A-Za-z0-9!#$%&'*\\.\\.+-\\/=?^_`{|}~]{2,})@([\w-]+\.)+[a-z]{2,4}$/;
 export const VALID_PASSWORD: RegExp = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,}$/;
+
+export enum SvgNames {
+  Search = 'search',
+  Settings = 'settings',
+  PaginationLeft = 'pagination-left',
+  PaginationRight = 'pagination-right',
+  ThreeDots = 'three-dots',
+  Update = 'update',
+  Burger = 'burger-menu',
+  Copy = 'copy',
+  Edit = 'edit',
+  Star = 'star',
+  Favorite = 'favorite',
+  MapMarker = 'map-marker',
+
+  Plus = 'plus',
+  Plus2 = 'plus2',
+  Plus3 = 'icons-plus',
+  Plus4 = 'icons-plus-black',
+
+  Hiking = 'hiking',
+  Running = 'running',
+  Walking = 'walking',
+  Cycling = 'cycling',
+}

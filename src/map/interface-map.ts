@@ -6,6 +6,7 @@ export type Coordinates = {
 export type MapRequest = {
   origin: Coordinates;
   destination: Coordinates;
+  waypoints: { location: Coordinates; stopover: false }[] | undefined;
   travelMode: google.maps.TravelMode;
   unitSystem: google.maps.UnitSystem;
 };
@@ -24,5 +25,5 @@ export enum GeoErrors {
 }
 
 export enum ZoomSettings {
-  Closer = 7,
+  Closer = 9,
 }
