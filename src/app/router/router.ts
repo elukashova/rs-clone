@@ -1,7 +1,7 @@
 import Main from '../../pages/main/main-page';
 import LoginPage from '../../pages/main/section-login';
 import SignupPage from '../../pages/main/section-signup';
-import PersonalPage from '../../pages/personal-page/personal-page';
+import Dashboard from '../../pages/dashboard/dashboard';
 import Routes from './router.types';
 
 export default class Router {
@@ -11,14 +11,15 @@ export default class Router {
 
   private loginPage: LoginPage | null = null;
 
-  private personalPage: PersonalPage | null = null;
+  private personalPage: Dashboard | null = null;
 
-  constructor(main: Main) {
+  constructor(main: Main, private replaceBackgroundCallback: (location: string) => void) {
     this.main = main;
   }
 
   public locationHandler = (): void => {
     const location: string = window.location.pathname.length === 0 ? '/' : window.location.pathname;
+    this.replaceBackgroundCallback(location);
 
     switch (location) {
       case Routes.SignUp:
@@ -30,7 +31,7 @@ export default class Router {
         this.main.setContent(this.loginPage);
         break;
       case Routes.Dashboard:
-        this.personalPage = new PersonalPage();
+        this.personalPage = new Dashboard();
         this.main.setContent(this.personalPage);
         break;
       default:
