@@ -1,7 +1,7 @@
-import { getClassNames } from '../../utils/utils';
-import BaseComponent from '../base-component/base-component';
-import { ValidityMessages } from '../forms/form.types';
-import './input.css';
+import { getClassNames } from '../../../utils/utils';
+import BaseComponent from '../base-component';
+import { ValidityMessages } from '../../forms/form.types';
+import './text-input.css';
 
 export default class Input extends BaseComponent<'div'> {
   public input: BaseComponent<'input'>;
@@ -12,12 +12,13 @@ export default class Input extends BaseComponent<'div'> {
 
   private message: ValidityMessages | null = null;
 
-  // eslint-disable-next-line prettier/prettier
   constructor(
     parent: HTMLElement,
     additionalClasses: string,
     text: string,
-    attributes: { [key: string]: string },
+    attributes: {
+      [key: string]: string;
+    },
   ) {
     const classes = getClassNames('input', additionalClasses);
     super('div', parent, classes, undefined);

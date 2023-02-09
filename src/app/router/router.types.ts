@@ -7,6 +7,7 @@ enum Routes {
   Settings = '/settings',
   AddActivity = '/add/activity',
   AddRoute = 'add/route',
+  AboutTeam = '/team',
 }
 
 export default Routes;

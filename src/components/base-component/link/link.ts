@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
-import { getClassNames } from '../../utils/utils';
-import BaseComponent from '../base-component/base-component';
+import { getClassNames } from '../../../utils/utils';
+import BaseComponent from '../base-component';
 import { Link } from './link.types';
 
 export default class NavigationLink extends BaseComponent<'a'> {

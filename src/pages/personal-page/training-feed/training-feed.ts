@@ -1,6 +1,6 @@
 import './training-feed.css';
 import BaseComponent from '../../../components/base-component/base-component';
-import Button from '../../../components/button/button';
+import Button from '../../../components/base-component/button/button';
 
 export default class TrainingFeed extends BaseComponent<'article'> {
   public message = new BaseComponent('span', undefined, 'training-feed__message', 'Лента пока пуста, Вы можете');

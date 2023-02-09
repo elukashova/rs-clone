@@ -1,7 +1,7 @@
 /* eslint-disable object-curly-newline */
 /* eslint-disable max-lines-per-function */
 import BaseComponent from '../components/base-component/base-component';
-import Button from '../components/button/button';
+import Button from '../components/base-component/button/button';
 import { ProjectColors } from '../utils/consts';
 import { DirectionsRenderer, GeoErrors, Coordinates, MapRequest, OptionsForMap, ZoomSettings } from './interface-map';
 

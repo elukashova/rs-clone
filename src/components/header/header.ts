@@ -1,10 +1,10 @@
 import BaseComponent from '../base-component/base-component';
-import Avatar from './avatar/avatar';
-import HeaderIcon from './icon/icon';
-import NavigationLink from '../link/link';
+import Avatar from '../base-component/avatar-image/avatar';
+import Image from '../base-component/image/image';
+import NavigationLink from '../base-component/link/link';
 import './header.css';
 import Routes from '../../app/router/router.types';
-import Svg from '../svg/svg';
+import Svg from '../base-component/svg/svg';
 import { ProjectColors, SvgNames } from '../../utils/consts';
 
 export default class Header extends BaseComponent<'header'> {
@@ -17,7 +17,7 @@ export default class Header extends BaseComponent<'header'> {
     attributes: { href: Routes.Dashboard },
   });
 
-  private logoIcon = new HeaderIcon(this.logoLink.element, 'header-icon_logo icon', {
+  private logoIcon = new Image(this.logoLink.element, 'header-icon_logo', {
     src: './assets/icons/png/logo.png',
     alt: 'We make fitness tracking social. We house your entire active journey in one spot – and you get to share it with friends.',
   });
@@ -94,12 +94,12 @@ export default class Header extends BaseComponent<'header'> {
     attributes: { href: Routes.Challenges },
   });
 
-  private languageIcon = new HeaderIcon(this.linksContainer.element, 'header-icon_lang icon', {
+  private languageIcon = new Image(this.linksContainer.element, 'header-icon_lang icon', {
     src: './assets/icons/png/change-language-icon.png',
     alt: 'Change language',
   });
 
-  private themeIcon = new HeaderIcon(this.linksContainer.element, 'header-icon_theme icon', {
+  private themeIcon = new Image(this.linksContainer.element, 'header-icon_theme icon', {
     src: './assets/icons/png/change-theme-icon.png',
     alt: 'Change theme',
   });

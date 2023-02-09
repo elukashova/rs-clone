@@ -1,7 +1,7 @@
 import './your-tasks.css';
 import BaseComponent from '../../../../components/base-component/base-component';
 import Task from './task/task';
-import Button from '../../../../components/button/button';
+import Button from '../../../../components/base-component/button/button';
 
 export default class YourTasks extends BaseComponent<'div'> {
   private heading = new BaseComponent('h5', this.element, 'your-tasks__heading', 'Ваши Задачи');

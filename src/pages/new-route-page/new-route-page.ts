@@ -1,8 +1,8 @@
 import './new-route-page.css';
 import BaseComponent from '../../components/base-component/base-component';
-import Input from '../../components/input/input';
+import Input from '../../components/base-component/text-input-and-label/text-input';
 import Select from '../../components/select/select';
-import Button from '../../components/button/button';
+import Button from '../../components/base-component/button/button';
 import MapParameter from './map-parameter/map-parameter';
 
 export default class NewRoutePage extends BaseComponent<'section'> {

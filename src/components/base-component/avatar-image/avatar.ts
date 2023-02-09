@@ -1,5 +1,5 @@
 import { getClassNames } from '../../../utils/utils';
-import BaseComponent from '../../base-component/base-component';
+import BaseComponent from '../base-component';
 import './avatar.css';
 
 export default class Avatar extends BaseComponent<'img'> {
@@ -10,7 +10,7 @@ export default class Avatar extends BaseComponent<'img'> {
       [key: string]: string;
     },
   ) {
-    const classes = getClassNames('header-icon', additionalClasses);
+    const classes = getClassNames('icon', additionalClasses);
     super('img', parent, classes, '', attributes);
   }
 

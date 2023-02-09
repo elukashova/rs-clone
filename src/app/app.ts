@@ -24,7 +24,7 @@ export default class App {
     this.parent.classList.add('root');
     this.header = new Header(this.parent, this.router.locationHandler);
     this.parent.append(this.main.element);
-    this.footer = new Footer(this.parent);
+    this.footer = new Footer(this.parent, this.router.locationHandler);
   }
 
   public init(): void {
