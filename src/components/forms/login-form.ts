@@ -27,9 +27,13 @@ export default class LoginForm extends BaseComponent<'form'> {
     'If you have an account, you can login with e-mail',
   );
 
-  public emailInput: Input = new Input(this.element, 'login__form-input', 'Email address', { type: 'email' });
+  public emailInput: Input = new Input(this.element, 'login__form-input form-input', 'Email address', {
+    type: 'email',
+  });
 
-  public passwordInput: Input = new Input(this.element, 'login__form-input', 'Password', { type: 'password' });
+  public passwordInput: Input = new Input(this.element, 'login__form-input form-input', 'Password', {
+    type: 'password',
+  });
 
   public loginButton: Button = new Button(this.element, 'Log in', 'login__btn-main btn_main');
 

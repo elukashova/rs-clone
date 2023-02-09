@@ -1,5 +1,23 @@
 .header {
   display: flex;
+  justify-content: space-between;
   height: 100px;
+  padding: 10px 20px;
+}
+
+.icons-container {
+  display: flex;
   gap: 20px;
+}
+
+.header-icon_theme {
+  background-image: url('../../assets/icons/png/change-theme-icon.png');
+}
+
+.header-icon_lang {
+  background-image: url('../../assets/icons/png/language-theme-icon.png');
+}
+
+.header-icon_challenge {
+  background-image: url('../../assets/icons/svg/icons-plus.svg');
 }

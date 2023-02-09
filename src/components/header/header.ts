@@ -9,13 +9,19 @@ import Routes from '../../app/loader/router/router.types';
 export default class Header extends BaseComponent<'header'> {
   private logo = new Logo(this.element);
 
-  private challenges = new NavigationLink(this.replaceMainCallback, { text: 'challenges', parent: this.element });
+  private linksContainer = new BaseComponent('div', this.element, 'icons-container');
 
-  private avatar = new Avatar(this.element);
+  private avatar = new Avatar(this.linksContainer.element);
 
-  private languageIcon = new HeaderIcon(this.element, 'header-icon_lang');
+  private challenges = new NavigationLink(this.replaceMainCallback, {
+    text: '',
+    parent: this.linksContainer.element,
+    additionalClasses: 'header-icon header-icon_challenge',
+  });
 
-  private themeIcon = new HeaderIcon(this.element, 'header-icon_theme');
+  private languageIcon = new HeaderIcon(this.linksContainer.element, 'header-icon_lang');
+
+  private themeIcon = new HeaderIcon(this.linksContainer.element, 'header-icon_theme');
 
   constructor(parent: HTMLElement, private replaceMainCallback: () => void) {
     super('header', parent, 'header');
@@ -41,5 +47,13 @@ export default class Header extends BaseComponent<'header'> {
     this.themeIcon.element.addEventListener('click', () => {
       console.log('change theme');
     });
+  }
+
+  public hide(): void {
+    this.element.style.display = 'none';
+  }
+
+  public show(): void {
+    this.element.style.display = 'flex';
   }
 }

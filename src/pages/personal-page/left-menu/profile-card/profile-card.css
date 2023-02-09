@@ -1,18 +1,30 @@
 .profile-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 10px;
-  padding: 5px;
-  background: gainsboro;
+  padding: 50px 10px 10px;
+  background: white;
   border-radius: 5px;
 }
 
 .profile-card__photo {
+  position: absolute;
+  top: -50px;
   width: 100px;
   height: 100px;
   background-color: grey;
   border-radius: 50%;
+}
+
+.profile-card__name {
+  margin: 0;
+  font-size: 40px;
+}
+
+.profile-card__about {
+  margin: 0;
 }
 
 .profile-card__info {
@@ -24,4 +36,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 5px;
+}
+
+.profile-info:not(:last-child) {
+  border-right: 1px solid grey;
 }
