@@ -36,15 +36,19 @@ export default class GoogleMaps {
 
   public markers: google.maps.Marker[] = [];
 
-  public allWaypoints = [];
+  public startPoint!: Coordinates;
+
+  public endPoint!: Coordinates;
+
+  public currentTravelMode: google.maps.TravelMode = google.maps.TravelMode.WALKING;
+
+  public waypoints!: google.maps.DirectionsWaypoint[];
 
   public elevationTotal: number[] = [0, 0];
 
   public distanceTotal: number = 0;
 
   public timeTotal: PathDuration = { text: '', value: 0 };
-
-  public currentTravelMode: google.maps.TravelMode = google.maps.TravelMode.WALKING;
 
   public maxMarkerCount: number = 2;
 
@@ -56,12 +60,19 @@ export default class GoogleMaps {
 
   public chartElevation!: BaseComponent<'div'>;
 
-  constructor(parent: HTMLElement, mapId: string, zoom: number, center: Coordinates) {
+  constructor(
+    parent: HTMLElement,
+    mapId: string,
+    zoom: number,
+    center: Coordinates,
+    travelMode: google.maps.TravelMode,
+  ) {
     this.mapId = mapId;
     this.zoom = zoom;
     this.latLng = center;
     this.renderMap(parent);
     this.initMap(this.mapWrapper.element, zoom, center);
+    this.currentTravelMode = travelMode;
   }
 
   public renderMap(parent: HTMLElement): void {
@@ -111,15 +122,15 @@ export default class GoogleMaps {
         const startPoint: Coordinates | undefined = GoogleMaps.getLatLng(startMarker);
         const endPoint: Coordinates | undefined = GoogleMaps.getLatLng(endMarker);
         if (startPoint && endPoint) {
-          const startPointLatLngLiteral: Coordinates = {
+          this.startPoint = {
             lat: startPoint.lat,
             lng: startPoint.lng,
           };
-          const endPointLatLngLiteral: Coordinates = {
+          this.endPoint = {
             lat: endPoint.lat,
             lng: endPoint.lng,
           };
-          this.doDirectionRequest(startPointLatLngLiteral, endPointLatLngLiteral);
+          this.doDirectionRequest(startPoint, endPoint);
         }
       }
     }
@@ -143,7 +154,7 @@ export default class GoogleMaps {
         (): void => {
           const latLngInfo: google.maps.LatLng | undefined = this.map.getCenter();
           if (latLngInfo) {
-            this.handleLocationError(true, latLngInfo);
+            this.catchLocationError(true, latLngInfo);
           }
         },
       );
@@ -151,7 +162,7 @@ export default class GoogleMaps {
       // если браузер не поддерживает геолокацию
       const latLngInfo: google.maps.LatLng | undefined = this.map.getCenter();
       if (latLngInfo) {
-        this.handleLocationError(false, latLngInfo);
+        this.catchLocationError(false, latLngInfo);
       }
     }
   }
@@ -192,9 +203,10 @@ export default class GoogleMaps {
         location: waypoint,
         stopover: false,
       })),
-      travelMode: this.currentTravelMode, // DRIVING, WALKING, BICYCLING
+      travelMode: this.currentTravelMode,
       unitSystem: google.maps.UnitSystem.METRIC,
     };
+
     this.directionsService
       .route(request, (result: DirectionsRenderer, status: google.maps.DirectionsStatus) => {
         if (status === 'OK' && result) {
@@ -209,11 +221,7 @@ export default class GoogleMaps {
       .catch((error: Error): void => console.error(`Directions request failed: ${error}`));
   }
 
-  public static getMarkersAndWaypoints(result: DirectionsRenderer): void {
-    console.log(result);
-  }
-
-  public handleLocationError(browserHasGeolocation: boolean, pos: google.maps.LatLng): void {
+  public catchLocationError(browserHasGeolocation: boolean, pos: google.maps.LatLng): void {
     this.infoWindow.setPosition(pos);
     this.infoWindow.setContent(browserHasGeolocation ? GeoErrors.Service : GeoErrors.Browser);
     this.infoWindow.open(this.map);
@@ -283,10 +291,5 @@ export default class GoogleMaps {
     this.timeTotal = { text, value };
     console.log(this.timeTotal);
     return this.timeTotal;
-  }
-
-  // предварительный метод, будет изменен
-  public changeTravelMode(): void {
-    this.currentTravelMode = google.maps.TravelMode.WALKING;
   }
 }

@@ -31,8 +31,13 @@ export default class App {
     this.parent.style.backgroundColor = 'grey';
     this.parent.style.height = '100%';
     const mapDiv: BaseComponent<'div'> = new BaseComponent('div', this.parent, 'map', '', { id: 'map' });
-    const map1 = new GoogleMaps(mapDiv.element, 'map1', 8, { lat: -33.397, lng: 150.644 });
-
+    const map1 = new GoogleMaps(
+      mapDiv.element,
+      'map1',
+      8,
+      { lat: -33.397, lng: 150.644 },
+      google.maps.TravelMode.BICYCLING,
+    );
     console.log(map1);
     this.handleRouting();
   }
