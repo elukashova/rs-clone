@@ -163,6 +163,12 @@ export default class SignupForm extends BaseComponent<'form'> {
   private showUserAlreadyRegisteredMessage(): void {
     const message: HTMLSpanElement = document.createElement('span');
     message.textContent = InputConflictMessages.UserAlreadyExists;
+    const logInLink: NavigationLink = new NavigationLink(this.replaceMainCallback, {
+      text: 'log in',
+      parent: message,
+      additionalClasses: 'signup__link-login',
+    });
+    logInLink.element.setAttribute('href', Routes.LogIn);
     this.element.insertBefore(message, this.signupButton.element);
   }
 }

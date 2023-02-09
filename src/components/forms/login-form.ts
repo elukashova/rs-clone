@@ -143,6 +143,12 @@ export default class LoginForm extends BaseComponent<'form'> {
   private showInvalidCredentialsMessage(): void {
     const message: HTMLSpanElement = document.createElement('span');
     message.textContent = InputConflictMessages.InvalidCredentials;
+    const signUpLink: NavigationLink = new NavigationLink(this.replaceMainCallback, {
+      text: 'sign up',
+      parent: message,
+      additionalClasses: 'login__link-signup',
+    });
+    signUpLink.element.setAttribute('href', Routes.SignUp);
     this.element.insertBefore(message, this.loginButton.element);
   }
 }

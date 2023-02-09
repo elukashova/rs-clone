@@ -18,6 +18,6 @@ export type CountryResponse = {
 };
 
 export enum InputConflictMessages {
-  UserAlreadyExists = 'An account with this email already exists. Please choose another one or log in.',
-  InvalidCredentials = 'Invalid email or password. Please enter valid credentials.',
+  UserAlreadyExists = 'An account with this email already exists. Please choose another one or ',
+  InvalidCredentials = 'Invalid email or password. Please enter valid credentials or ',
 }
