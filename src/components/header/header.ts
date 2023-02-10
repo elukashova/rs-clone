@@ -62,7 +62,7 @@ export default class Header extends BaseComponent<'header'> {
 
   private addDropDown = new BaseComponent('div', this.linksContainer.element, 'header-add-dropdown');
 
-  private addIcon = new Svg(this.addDropDown.element, SvgNames.Plus, ProjectColors.Turquoise, 'header-add-icon');
+  private addIcon = new Svg(this.addDropDown.element, SvgNames.Plus2, ProjectColors.Turquoise, 'header-add-icon');
 
   private addDropDownContent = new BaseComponent('div', this.addDropDown.element, 'header-add-content');
 
@@ -70,21 +70,21 @@ export default class Header extends BaseComponent<'header'> {
     text: 'Add new activity',
     parent: this.addDropDownContent.element,
     additionalClasses: 'header-link-add link',
-    attributes: { href: Routes.Dashboard },
+    attributes: { href: Routes.AddActivity },
   });
 
   private addNewRouteLink = new NavigationLink(this.replaceMainCallback, {
     text: 'Add new route',
     parent: this.addDropDownContent.element,
     additionalClasses: 'header-link-add link',
-    attributes: { href: Routes.MyRoutes },
+    attributes: { href: Routes.AddRoute },
   });
 
   private findFriendsLink = new NavigationLink(this.replaceMainCallback, {
     text: 'Find friends',
     parent: this.addDropDownContent.element,
     additionalClasses: 'header-link-add link',
-    attributes: { href: Routes.Settings },
+    attributes: { href: Routes.FindFriends },
   });
 
   private challenges = new NavigationLink(this.replaceMainCallback, {

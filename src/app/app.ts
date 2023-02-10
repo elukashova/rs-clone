@@ -5,7 +5,6 @@ import Main from '../pages/main/main-page';
 // import NewRoutePage from '../pages/new-route-page/new-route-page';
 import Router from './router/router';
 import Routes from './router/router.types';
-import AddActivity from '../pages/add-activity/add-activity';
 
 export default class App {
   private header: Header;
@@ -16,15 +15,11 @@ export default class App {
 
   private router: Router;
 
-  private temp: AddActivity;
-
   constructor(private readonly parent: HTMLElement) {
     this.parent.classList.add('root');
     this.router = new Router(this.main, this.replaceRootBackground);
     this.header = new Header(this.parent, this.router.locationHandler);
-
     this.parent.append(this.main.element);
-    this.temp = new AddActivity(this.main.element);
     this.footer = new Footer(this.parent, this.router.locationHandler);
   }
 
