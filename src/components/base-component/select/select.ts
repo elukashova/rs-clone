@@ -1,7 +1,7 @@
-import { REST_COUNTRIES } from '../../utils/consts';
-import { getClassNames } from '../../utils/utils';
-import BaseComponent from '../base-component/base-component';
-import { CountryResponse } from '../forms/form.types';
+import { REST_COUNTRIES } from '../../../utils/consts';
+import { getClassNames } from '../../../utils/utils';
+import BaseComponent from '../base-component';
+import { CountryResponse } from '../../authorization/forms/form.types';
 
 export default class Select extends BaseComponent<'select'> {
   private label: BaseComponent<'label'> = new BaseComponent('label', undefined, '', 'Country');

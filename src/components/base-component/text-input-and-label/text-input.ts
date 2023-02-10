@@ -1,6 +1,6 @@
 import { getClassNames } from '../../../utils/utils';
 import BaseComponent from '../base-component';
-import { ValidityMessages } from '../../forms/form.types';
+import { ValidityMessages } from '../../authorization/forms/form.types';
 import './text-input.css';
 
 export default class Input extends BaseComponent<'div'> {
