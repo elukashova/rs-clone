@@ -1,5 +1,3 @@
-import BaseComponent from '../components/base-component/base-component';
-import GoogleMaps from '../map/google-maps';
 import Footer from '../components/footer/footer';
 import Header from '../components/header/header';
 // import Dashboard from '../pages/dashboard/dashboard';
@@ -7,6 +5,7 @@ import Main from '../pages/main/main-page';
 // import NewRoutePage from '../pages/new-route-page/new-route-page';
 import Router from './router/router';
 import Routes from './router/router.types';
+import AddActivity from '../pages/add-activity/add-activity';
 
 export default class App {
   private header: Header;
@@ -17,25 +16,20 @@ export default class App {
 
   private router: Router;
 
+  private temp: AddActivity;
+
   constructor(private readonly parent: HTMLElement) {
     this.parent.classList.add('root');
     this.router = new Router(this.main, this.replaceRootBackground);
     this.header = new Header(this.parent, this.router.locationHandler);
+
     this.parent.append(this.main.element);
+    this.temp = new AddActivity(this.main.element);
     this.footer = new Footer(this.parent, this.router.locationHandler);
   }
 
   public init(): void {
     this.parent.style.height = '100%';
-    const mapDiv: BaseComponent<'div'> = new BaseComponent('div', this.parent, 'map', '', { id: 'map' });
-    const map1 = new GoogleMaps(
-      mapDiv.element,
-      'map1',
-      8,
-      { lat: -33.397, lng: 150.644 },
-      google.maps.TravelMode.BICYCLING,
-    );
-    console.log(map1);
     this.handleRouting();
   }
 
