@@ -1,7 +1,7 @@
 import './new-route-page.css';
 import BaseComponent from '../../components/base-component/base-component';
 import Input from '../../components/base-component/text-input-and-label/text-input';
-import Select from '../../components/select/select';
+import Select from '../../components/base-component/select/select';
 import Button from '../../components/base-component/button/button';
 import MapParameter from './map-parameter/map-parameter';
 
