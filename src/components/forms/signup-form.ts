@@ -5,7 +5,7 @@ import Input from '../base-component/text-input-and-label/text-input';
 import './form.css';
 import Routes from '../../app/router/router.types';
 import { Errors, SignUp, Token } from '../../app/loader/loader.types';
-import { createUser, getUser } from '../../app/loader/services/user-services';
+import { createUser } from '../../app/loader/services/user-services';
 import { setDataToLocalStorage } from '../../utils/local-storage/local-storage';
 import { GoogleBtnClasses, GoogleBtnTypes } from '../google-button/google-btn.types';
 import GoogleButton from '../google-button/google-btn';
@@ -132,7 +132,6 @@ export default class SignupForm extends BaseComponent<'form'> {
     SignupForm.createUser(user)
       .then((token: Token) => {
         if (token) {
-          SignupForm.getUser(token);
           this.changeRoute();
         }
       })
@@ -153,11 +152,6 @@ export default class SignupForm extends BaseComponent<'form'> {
       setDataToLocalStorage(token, 'userSessionToken');
       return token;
     });
-  }
-
-  // этот метод потом будет вынесен в загрузку dashboard
-  private static getUser(token: Token): void {
-    getUser(token).then((user) => console.log(user));
   }
 
   private showUserAlreadyRegisteredMessage(): void {

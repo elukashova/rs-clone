@@ -7,7 +7,7 @@ export interface LogIn {
 export interface SignUp extends LogIn {
   username: string;
   country?: string;
-  avatar_url?: string;
+  avatarUrl?: string;
 }
 
 export type Token = {
@@ -41,3 +41,16 @@ export enum Errors {
   UserAlreadyExists = '409',
   Unauthorized = '401',
 }
+
+type User = {
+  avatarUrl: string;
+  bio: string;
+  country: string;
+  created_at: string;
+  email: string;
+  id: string;
+  updated_at: string;
+  username: string;
+};
+
+export default User;
