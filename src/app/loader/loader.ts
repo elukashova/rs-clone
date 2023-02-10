@@ -15,7 +15,6 @@ export default class Loader {
   }
 
   private static load(request: LoadRequest): Promise<Response> {
-    console.log('hey');
     const headers: HeadersInit = {
       'Content-Type': 'application/json',
       ...(request.token && { Authorization: `Bearer ${request.token}` }),
@@ -38,6 +37,7 @@ export default class Loader {
 
   // eslint-disable-next-line max-len
   public static getUserData<T>(method: Methods, view: string, { token }: Token): Promise<T> {
+    console.log(token);
     const url: URL = Loader.createURL(view);
     return this.load({ url, method, token }).then((response: Response) => response.json());
   }

@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import Routes from '../../app/router/router.types';
 import { Errors, LogIn, Token } from '../../app/loader/loader.types';
-import { getUser, loginUser } from '../../app/loader/services/user-services';
+import { loginUser } from '../../app/loader/services/user-services';
 import BaseComponent from '../base-component/base-component';
 import Button from '../button/button';
 import Input from '../input/input';
@@ -113,8 +113,9 @@ export default class LoginForm extends BaseComponent<'form'> {
   private signInUser = (user: LogIn): void => {
     LoginForm.loginUser(user)
       .then((token: Token) => {
-        LoginForm.getUser(token);
-        this.changeRoute();
+        if (token) {
+          this.changeRoute();
+        }
       })
       .catch((err: Error) => {
         if (err.message === Errors.Unauthorized) {
@@ -133,11 +134,6 @@ export default class LoginForm extends BaseComponent<'form'> {
       setDataToLocalStorage(token, 'userSessionToken');
       return token;
     });
-  }
-
-  // этот метод потом будет вынесен в загрузку dashboard
-  private static getUser(token: Token): void {
-    getUser(token).then((user) => console.log(user));
   }
 
   private showInvalidCredentialsMessage(): void {

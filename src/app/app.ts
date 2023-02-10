@@ -2,10 +2,11 @@ import BaseComponent from '../components/base-component/base-component';
 import GoogleMaps from '../map/google-maps';
 import Footer from '../components/footer/footer';
 import Header from '../components/header/header';
-// import PersonalPage from '../pages/personal-page/personal-page';
+// import Dashboard from '../pages/dashboard/dashboard';
 import Main from '../pages/main/main-page';
 // import NewRoutePage from '../pages/new-route-page/new-route-page';
 import Router from './router/router';
+import Routes from './router/router.types';
 
 export default class App {
   private header: Header;
@@ -14,21 +15,17 @@ export default class App {
 
   private footer: Footer;
 
-  // private personalPage: PersonalPage = new PersonalPage(this.parent);
-
-  // private newRoutePage = new NewRoutePage(this.parent);
-
-  private router: Router = new Router(this.main);
+  private router: Router;
 
   constructor(private readonly parent: HTMLElement) {
     this.parent.classList.add('root');
+    this.router = new Router(this.main, this.replaceRootBackground);
     this.header = new Header(this.parent, this.router.locationHandler);
     this.parent.append(this.main.element);
     this.footer = new Footer(this.parent);
   }
 
   public init(): void {
-    this.parent.style.backgroundColor = 'grey';
     this.parent.style.height = '100%';
     const mapDiv: BaseComponent<'div'> = new BaseComponent('div', this.parent, 'map', '', { id: 'map' });
     const map1 = new GoogleMaps(mapDiv.element, 'map1', 8, { lat: -33.397, lng: 150.644 });
@@ -41,11 +38,20 @@ export default class App {
     this.router.locationHandler();
   }
 
-  // public static checkIfLoggedUser(): void {
-  //   if (checkDataInLocalStorage('userSessionToken')) {
-
-  //   }
-  // }
+  private replaceRootBackground = (location: string): void => {
+    switch (location) {
+      case Routes.SignUp:
+        this.parent.style.backgroundImage = 'url(/assets/backgrounds/signup-background.jpg)';
+        break;
+      case Routes.LogIn:
+        this.parent.style.backgroundImage = 'url(/assets/backgrounds/login-background.jpg)';
+        break;
+      default:
+        console.log('hey');
+        this.parent.style.backgroundImage = '';
+        this.parent.style.backgroundColor = '#F6F4F9';
+    }
+  };
 
   // скрипт с ключом для гугл апи
   /* public static addKey(parent: HTMLElement): BaseComponent<'script'> {
