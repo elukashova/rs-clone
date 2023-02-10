@@ -21,12 +21,12 @@ export default class Dashboard extends BaseComponent<'section'> {
   constructor() {
     super('section', undefined, 'dashboard');
     if (this.token) {
-      getUser(this.token).then((user) => {
+      getUser(this.token).then((user: User) => {
         this.currentUser = {
           ...user,
         };
         Dashboard.addIdToLocalStorage(this.currentUser.id);
-        this.leftMenu = new LeftMenu(this.currentUser, undefined);
+        this.leftMenu = new LeftMenu(this.currentUser);
         this.element.insertBefore(this.leftMenu.element, this.trainingFeed.element);
       });
     }

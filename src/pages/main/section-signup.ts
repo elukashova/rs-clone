@@ -1,5 +1,5 @@
 import BaseComponent from '../../components/base-component/base-component';
-import SignupForm from '../../components/authorization/forms/signup-form';
+import SignupForm from '../splash/forms/signup-form';
 import './main-page.css';
 
 export default class SignupPage extends BaseComponent<'section'> {

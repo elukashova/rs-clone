@@ -1,7 +1,7 @@
-import BaseComponent from '../../base-component/base-component';
-import Button from '../../base-component/button/button';
-import NavigationLink from '../../base-component/link/link';
-import Input from '../../base-component/text-input-and-label/text-input';
+import BaseComponent from '../../../components/base-component/base-component';
+import Button from '../../../components/base-component/button/button';
+import NavigationLink from '../../../components/base-component/link/link';
+import Input from '../../../components/base-component/text-input-and-label/text-input';
 import './form.css';
 import Routes from '../../../app/router/router.types';
 import { Errors, SignUp, Token } from '../../../app/loader/loader.types';
@@ -11,7 +11,7 @@ import { GoogleBtnClasses, GoogleBtnTypes } from '../google-button/google-btn.ty
 import GoogleButton from '../google-button/google-btn';
 import { VALID_EMAIL, VALID_NAME, VALID_PASSWORD } from '../../../utils/consts';
 import { InputConflictMessages, ValidityMessages } from './form.types';
-import Select from '../../base-component/select/select';
+import Select from '../../../components/base-component/select/select';
 import { convertRegexToPattern } from '../../../utils/utils';
 
 export default class SignupForm extends BaseComponent<'form'> {

@@ -2,14 +2,14 @@
 import Routes from '../../../app/router/router.types';
 import { Errors, LogIn, Token } from '../../../app/loader/loader.types';
 import { loginUser } from '../../../app/loader/services/user-services';
-import BaseComponent from '../../base-component/base-component';
-import Button from '../../base-component/button/button';
-import Input from '../../base-component/text-input-and-label/text-input';
+import BaseComponent from '../../../components/base-component/base-component';
+import Button from '../../../components/base-component/button/button';
+import Input from '../../../components/base-component/text-input-and-label/text-input';
 import './form.css';
 import { GoogleBtnClasses, GoogleBtnTypes } from '../google-button/google-btn.types';
 import GoogleButton from '../google-button/google-btn';
 import { setDataToLocalStorage } from '../../../utils/local-storage';
-import NavigationLink from '../../base-component/link/link';
+import NavigationLink from '../../../components/base-component/link/link';
 import { VALID_EMAIL, VALID_PASSWORD } from '../../../utils/consts';
 import { InputConflictMessages, ValidityMessages } from './form.types';
 import { convertRegexToPattern } from '../../../utils/utils';

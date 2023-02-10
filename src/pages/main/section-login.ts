@@ -1,5 +1,5 @@
 import BaseComponent from '../../components/base-component/base-component';
-import LoginForm from '../../components/authorization/forms/login-form';
+import LoginForm from '../splash/forms/login-form';
 import './main-page.css';
 
 export default class LoginPage extends BaseComponent<'section'> {
