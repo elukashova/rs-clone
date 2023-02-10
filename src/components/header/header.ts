@@ -1,38 +1,118 @@
 import BaseComponent from '../base-component/base-component';
-import Avatar from './avatar/avatar';
-import HeaderIcon from './icon/icon';
-import NavigationLink from '../link/link';
-import Logo from './logo/logo';
+import Avatar from '../base-component/avatar-image/avatar';
+import Image from '../base-component/image/image';
+import NavigationLink from '../base-component/link/link';
 import './header.css';
 import Routes from '../../app/router/router.types';
+import Svg from '../base-component/svg/svg';
+import { ProjectColors, SvgNames } from '../../utils/consts';
 
 export default class Header extends BaseComponent<'header'> {
-  private logo = new Logo(this.element);
+  private contentWrapper = new BaseComponent('div', this.element, 'header-content-wrapper');
 
-  private linksContainer = new BaseComponent('div', this.element, 'icons-container');
-
-  private avatar = new Avatar(this.linksContainer.element);
-
-  private challenges = new NavigationLink(this.replaceMainCallback, {
+  private logoLink = new NavigationLink(this.replaceMainCallback, {
     text: '',
-    parent: this.linksContainer.element,
-    additionalClasses: 'header-icon header-icon_challenge',
+    parent: this.contentWrapper.element,
+    additionalClasses: 'header-link-logo link',
+    attributes: { href: Routes.Dashboard },
   });
 
-  private languageIcon = new HeaderIcon(this.linksContainer.element, 'header-icon_lang');
+  private logoIcon = new Image(this.logoLink.element, 'header-icon_logo', {
+    src: './assets/icons/png/logo.png',
+    alt: 'We make fitness tracking social. We house your entire active journey in one spot – and you get to share it with friends.',
+  });
 
-  private themeIcon = new HeaderIcon(this.linksContainer.element, 'header-icon_theme');
+  private linksContainer = new BaseComponent('div', this.contentWrapper.element, 'header-icons-container');
+
+  private avatarDropDown = new BaseComponent('div', this.linksContainer.element, 'header-avatar-dropdown');
+
+  private avatarIcon = new Avatar(this.avatarDropDown.element, 'header-avatar-icon', {
+    src: './assets/images/avatars/default.png',
+    alt: 'Your avatar',
+  });
+
+  private avatarDropDownContent = new BaseComponent('div', this.avatarDropDown.element, 'header-avatar-content');
+
+  private personalPageLink = new NavigationLink(this.replaceMainCallback, {
+    text: 'Personal page',
+    parent: this.avatarDropDownContent.element,
+    additionalClasses: 'header-link-avatar link',
+    attributes: { href: Routes.Dashboard },
+  });
+
+  private myRoutesPageLink = new NavigationLink(this.replaceMainCallback, {
+    text: 'My Routes',
+    parent: this.avatarDropDownContent.element,
+    additionalClasses: 'header-link-avatar link',
+    attributes: { href: Routes.MyRoutes },
+  });
+
+  private settingsPageLink = new NavigationLink(this.replaceMainCallback, {
+    text: 'Settings',
+    parent: this.avatarDropDownContent.element,
+    additionalClasses: 'header-link-avatar link',
+    attributes: { href: Routes.Settings },
+  });
+
+  private exit = new NavigationLink(this.replaceMainCallback, {
+    text: 'Exit',
+    parent: this.avatarDropDownContent.element,
+    additionalClasses: 'header-link-avatar link',
+  });
+
+  private addDropDown = new BaseComponent('div', this.linksContainer.element, 'header-add-dropdown');
+
+  private addIcon = new Svg(this.addDropDown.element, SvgNames.Plus, ProjectColors.Turquoise, 'header-add-icon');
+
+  private addDropDownContent = new BaseComponent('div', this.addDropDown.element, 'header-add-content');
+
+  private addActivityLink = new NavigationLink(this.replaceMainCallback, {
+    text: 'Add new activity',
+    parent: this.addDropDownContent.element,
+    additionalClasses: 'header-link-add link',
+    attributes: { href: Routes.Dashboard },
+  });
+
+  private addNewRouteLink = new NavigationLink(this.replaceMainCallback, {
+    text: 'Add new route',
+    parent: this.addDropDownContent.element,
+    additionalClasses: 'header-link-add link',
+    attributes: { href: Routes.MyRoutes },
+  });
+
+  private findFriendsLink = new NavigationLink(this.replaceMainCallback, {
+    text: 'Find friends',
+    parent: this.addDropDownContent.element,
+    additionalClasses: 'header-link-add link',
+    attributes: { href: Routes.Settings },
+  });
+
+  private challenges = new NavigationLink(this.replaceMainCallback, {
+    text: 'Challenges',
+    parent: this.addDropDownContent.element,
+    additionalClasses: 'header-link-add link',
+    attributes: { href: Routes.Challenges },
+  });
+
+  private languageIcon = new Image(this.linksContainer.element, 'header-icon_lang icon', {
+    src: './assets/icons/png/change-language-icon.png',
+    alt: 'Change language',
+  });
+
+  private themeIcon = new Image(this.linksContainer.element, 'header-icon_theme icon', {
+    src: './assets/icons/png/change-theme-icon.png',
+    alt: 'Change theme',
+  });
 
   constructor(parent: HTMLElement, private replaceMainCallback: () => void) {
     super('header', parent, 'header');
-    this.challenges.element.setAttribute('href', Routes.Challenges);
     this.openMenu();
     this.changeLanguage();
     this.changeTheme();
   }
 
   public openMenu(): void {
-    this.avatar.element.addEventListener('click', () => {
+    this.avatarIcon.element.addEventListener('click', () => {
       console.log('open avatar menu');
     });
   }

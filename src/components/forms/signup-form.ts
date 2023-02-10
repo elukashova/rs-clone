@@ -1,7 +1,7 @@
 import BaseComponent from '../base-component/base-component';
-import Button from '../button/button';
-import NavigationLink from '../link/link';
-import Input from '../input/input';
+import Button from '../base-component/button/button';
+import NavigationLink from '../base-component/link/link';
+import Input from '../base-component/text-input-and-label/text-input';
 import './form.css';
 import Routes from '../../app/router/router.types';
 import { Errors, SignUp, Token } from '../../app/loader/loader.types';

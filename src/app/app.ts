@@ -22,14 +22,19 @@ export default class App {
     this.router = new Router(this.main, this.replaceRootBackground);
     this.header = new Header(this.parent, this.router.locationHandler);
     this.parent.append(this.main.element);
-    this.footer = new Footer(this.parent);
+    this.footer = new Footer(this.parent, this.router.locationHandler);
   }
 
   public init(): void {
     this.parent.style.height = '100%';
     const mapDiv: BaseComponent<'div'> = new BaseComponent('div', this.parent, 'map', '', { id: 'map' });
-    const map1 = new GoogleMaps(mapDiv.element, 'map1', 8, { lat: -33.397, lng: 150.644 });
-
+    const map1 = new GoogleMaps(
+      mapDiv.element,
+      'map1',
+      8,
+      { lat: -33.397, lng: 150.644 },
+      google.maps.TravelMode.BICYCLING,
+    );
     console.log(map1);
     this.handleRouting();
   }
