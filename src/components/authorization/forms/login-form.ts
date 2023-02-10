@@ -8,7 +8,7 @@ import Input from '../../base-component/text-input-and-label/text-input';
 import './form.css';
 import { GoogleBtnClasses, GoogleBtnTypes } from '../google-button/google-btn.types';
 import GoogleButton from '../google-button/google-btn';
-import { setDataToLocalStorage } from '../../../utils/local-storage/local-storage';
+import { setDataToLocalStorage } from '../../../utils/local-storage';
 import NavigationLink from '../../base-component/link/link';
 import { VALID_EMAIL, VALID_PASSWORD } from '../../../utils/consts';
 import { InputConflictMessages, ValidityMessages } from './form.types';

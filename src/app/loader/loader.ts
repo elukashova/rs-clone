@@ -1,11 +1,11 @@
-import { PRODUCTION_ENV } from '../../utils/consts';
-import { RequestData, Token, LoadRequest, Methods } from './loader.types';
-// import { DEVELOPMENT_ENV } from '../../utils/consts';
+// import { PRODUCTION_ENV } from '../../utils/consts';
+import { RequestData, Token, LoadRequest, Methods, UpdateUserData } from './loader.types';
+import { DEVELOPMENT_ENV } from '../../utils/consts';
 
 export default class Loader {
   // DEVELOPMENT_ENV
   // PRODUCTION_ENV
-  private static server: string = PRODUCTION_ENV;
+  private static server: string = DEVELOPMENT_ENV;
 
   private static errorHandler(response: Response): Response {
     if (!response.ok) {
@@ -37,9 +37,14 @@ export default class Loader {
 
   // eslint-disable-next-line max-len
   public static getUserData<T>(method: Methods, view: string, { token }: Token): Promise<T> {
-    console.log(token);
     const url: URL = Loader.createURL(view);
     return this.load({ url, method, token }).then((response: Response) => response.json());
+  }
+
+  // eslint-disable-next-line max-len
+  public static putUserData<T>(method: Methods, view: string, params: UpdateUserData): Promise<T> {
+    const url: URL = Loader.createURL(view);
+    return this.load({ url, method, params }).then((response: Response) => response.json());
   }
 
   private static createURL = (view: string): URL => {

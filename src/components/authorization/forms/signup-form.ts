@@ -6,7 +6,7 @@ import './form.css';
 import Routes from '../../../app/router/router.types';
 import { Errors, SignUp, Token } from '../../../app/loader/loader.types';
 import { createUser } from '../../../app/loader/services/user-services';
-import { setDataToLocalStorage } from '../../../utils/local-storage/local-storage';
+import { setDataToLocalStorage } from '../../../utils/local-storage';
 import { GoogleBtnClasses, GoogleBtnTypes } from '../google-button/google-btn.types';
 import GoogleButton from '../google-button/google-btn';
 import { VALID_EMAIL, VALID_NAME, VALID_PASSWORD } from '../../../utils/consts';

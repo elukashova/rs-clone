@@ -1,9 +1,24 @@
 import './profile-card.css';
 import BaseComponent from '../../../../components/base-component/base-component';
 import ProfileInfo from './profile-card-info';
+import Svg from '../../../../components/base-component/svg/svg';
+import SvgNames from '../../../../components/base-component/svg/svg.types';
+import Button from '../../../../components/base-component/button/button';
+import eventEmitter from '../../../../utils/event-emitter';
+import Image from '../../../../components/base-component/image/image';
+import UrlObj from '../../../../utils/utils.types';
 
 export default class ProfileCard extends BaseComponent<'div'> {
-  private photo: BaseComponent<'img'> = new BaseComponent('img', this.element, 'profile-card__photo');
+  private photo: Image = new Image(this.element, 'profile-card__photo');
+
+  private changePhotoButton: Button = new Button(this.element, '', 'profile-card__change-avatar_btn');
+
+  private changePhotoSVG: Svg = new Svg(
+    this.changePhotoButton.element,
+    SvgNames.Plus2,
+    '#219486',
+    'profile-card__change-avatar_svg',
+  );
 
   private name: BaseComponent<'h4'> | undefined;
 
@@ -20,6 +35,8 @@ export default class ProfileCard extends BaseComponent<'div'> {
   constructor(parent: HTMLElement, photo: string, name: string, about: string) {
     super('div', parent, 'profile-card');
     this.render(photo, name, about);
+    this.changePhotoButton.element.addEventListener('click', this.changePhotoBtnCallback);
+    this.subscribeToEvents();
   }
 
   private render(url: string, name: string, about: string): void {
@@ -33,5 +50,19 @@ export default class ProfileCard extends BaseComponent<'div'> {
       this.subscribers.element,
       this.trainings.element,
     );
+  }
+
+  private changePhotoBtnCallback = (): void => {
+    eventEmitter.emit('openAvatarModal', { url: this.photo.element.src });
+  };
+
+  private updateProfilePicture(url: string): void {
+    this.photo.element.src = url;
+  }
+
+  private subscribeToEvents(): void {
+    eventEmitter.on('updateAvatar', (source: UrlObj) => {
+      this.updateProfilePicture(source.url);
+    });
   }
 }
