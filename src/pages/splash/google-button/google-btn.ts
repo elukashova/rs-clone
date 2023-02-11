@@ -1,7 +1,7 @@
 import jwtdecode from 'jwt-decode';
 import { LogIn, SignUp } from '../../../app/loader/loader.types';
 import { GOOGLE_CLIENT_ID } from '../../../utils/consts';
-import BaseComponent from '../../base-component/base-component';
+import BaseComponent from '../../../components/base-component/base-component';
 import { GoogleAccount, GoogleBtnData, GoogleBtnTypes, LogInCallback, SignUpCallback } from './google-btn.types';
 
 export default class GoogleButton extends BaseComponent<'div'> {

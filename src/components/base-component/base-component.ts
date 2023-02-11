@@ -1,5 +1,5 @@
 export default class BaseComponent<T extends keyof HTMLElementTagNameMap> {
-  public readonly element: HTMLElementTagNameMap[T];
+  public element: HTMLElementTagNameMap[T];
 
   constructor(
     tag: T,

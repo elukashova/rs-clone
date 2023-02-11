@@ -4,9 +4,8 @@ import LeftMenu from './left-menu/left-menu';
 import TrainingFeed from './training-feed/training-feed';
 import RightMenu from './right-menu/right-menu';
 import { getUser } from '../../app/loader/services/user-services';
-import { Token } from '../../app/loader/loader.types';
-import { checkDataInLocalStorage } from '../../utils/local-storage/local-storage';
-import User from './dashboard.types';
+import { Token, User } from '../../app/loader/loader.types';
+import { checkDataInLocalStorage, setDataToLocalStorage } from '../../utils/local-storage';
 
 export default class Dashboard extends BaseComponent<'section'> {
   private leftMenu!: LeftMenu;
@@ -20,16 +19,20 @@ export default class Dashboard extends BaseComponent<'section'> {
   private currentUser!: User;
 
   constructor() {
-    super('section', undefined, 'dashboard');
+    super('section', undefined, 'dashboard section');
     if (this.token) {
-      getUser(this.token).then((user) => {
+      getUser(this.token).then((user: User) => {
         this.currentUser = {
           ...user,
         };
-        this.leftMenu = new LeftMenu(this.currentUser, undefined);
-        console.log(this.currentUser);
+        Dashboard.addIdToLocalStorage(this.currentUser.id);
+        this.leftMenu = new LeftMenu(this.currentUser);
         this.element.insertBefore(this.leftMenu.element, this.trainingFeed.element);
       });
     }
+  }
+
+  private static addIdToLocalStorage(id: string): void {
+    setDataToLocalStorage(id, 'myUserId');
   }
 }

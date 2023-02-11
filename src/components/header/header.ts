@@ -5,7 +5,10 @@ import NavigationLink from '../base-component/link/link';
 import './header.css';
 import Routes from '../../app/router/router.types';
 import Svg from '../base-component/svg/svg';
-import { ProjectColors, SvgNames } from '../../utils/consts';
+import { ProjectColors } from '../../utils/consts';
+import SvgNames from '../base-component/svg/svg.types';
+import eventEmitter from '../../utils/event-emitter';
+import UrlObj from '../../utils/utils.types';
 
 export default class Header extends BaseComponent<'header'> {
   private contentWrapper = new BaseComponent('div', this.element, 'header-content-wrapper');
@@ -62,7 +65,7 @@ export default class Header extends BaseComponent<'header'> {
 
   private addDropDown = new BaseComponent('div', this.linksContainer.element, 'header-add-dropdown');
 
-  private addIcon = new Svg(this.addDropDown.element, SvgNames.Plus, ProjectColors.Turquoise, 'header-add-icon');
+  private addIcon = new Svg(this.addDropDown.element, SvgNames.Plus2, ProjectColors.Turquoise, 'header-add-icon');
 
   private addDropDownContent = new BaseComponent('div', this.addDropDown.element, 'header-add-content');
 
@@ -70,21 +73,21 @@ export default class Header extends BaseComponent<'header'> {
     text: 'Add new activity',
     parent: this.addDropDownContent.element,
     additionalClasses: 'header-link-add link',
-    attributes: { href: Routes.Dashboard },
+    attributes: { href: Routes.AddActivity },
   });
 
   private addNewRouteLink = new NavigationLink(this.replaceMainCallback, {
     text: 'Add new route',
     parent: this.addDropDownContent.element,
     additionalClasses: 'header-link-add link',
-    attributes: { href: Routes.MyRoutes },
+    attributes: { href: Routes.AddRoute },
   });
 
   private findFriendsLink = new NavigationLink(this.replaceMainCallback, {
     text: 'Find friends',
     parent: this.addDropDownContent.element,
     additionalClasses: 'header-link-add link',
-    attributes: { href: Routes.Settings },
+    attributes: { href: Routes.FindFriends },
   });
 
   private challenges = new NavigationLink(this.replaceMainCallback, {
@@ -109,6 +112,7 @@ export default class Header extends BaseComponent<'header'> {
     this.openMenu();
     this.changeLanguage();
     this.changeTheme();
+    this.subscribeToEvents();
   }
 
   public openMenu(): void {
@@ -135,5 +139,15 @@ export default class Header extends BaseComponent<'header'> {
 
   public show(): void {
     this.element.style.display = 'flex';
+  }
+
+  private updateProfilePicture(url: string): void {
+    this.avatarIcon.element.src = url;
+  }
+
+  private subscribeToEvents(): void {
+    eventEmitter.on('updateAvatar', (source: UrlObj) => {
+      this.updateProfilePicture(source.url);
+    });
   }
 }

@@ -3,8 +3,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1em;
   padding: 3em 1em 1em;
+  gap: 1em;
   background: white;
   border-radius: 5px;
 }
@@ -12,19 +12,98 @@
 .profile-card__photo {
   position: absolute;
   transform: translateY(-100%);
-  width: 100px;
-  height: 100px;
+  width: 6.5em;
+  height: 6.5em;
   background-color: white;
+  border: 5px solid #219486;
   border-radius: 50%;
 }
 
-.profile-card__name {
+.profile-card__photo_btn-change {
+  position: absolute;
+  z-index: 2;
+  transform: translateX(110%) translateY(-100%);
+  width: 1.5em;
+  height: 1.5em;
+  padding: 0;
+  border-radius: 50%;
+  outline: none;
+}
+
+.profile-card__photo_btn-change_svg {
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 50%;
+  transition: fill 0.3s;
+}
+
+.profile-card__photo_btn-change_svg:hover {
+  fill: #1cbaa7;
+}
+
+.profile-card__name_wrapper,
+.profile-card__about_wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: calc(15em + 10vw);
+}
+
+.profile-card__name_wrapper {
+  padding-top: 0.7em;
+}
+
+.profile-card__name_btn-update,
+.profile-card__about_btn-update {
+  width: 1.5em;
+  height: 1.5em;
+  padding: 0;
+  border-radius: 50%;
+  outline: none;
+  background: none;
+}
+
+.profile-card__name_btn-update_svg,
+.profile-card__about_btn-update_svg {
+  width: calc(0.35em + 0.25vw);
+  height: calc(0.35em + 0.25vw);
+  transition: fill 0.3s;
+}
+
+.profile-card__name_btn-update_svg:hover,
+.profile-card__about_btn-update_svg:hover {
+  fill: #1cbaa7;
+}
+
+.profile-card__name,
+.profile-card__about {
+  width: 90%;
   margin: 0;
-  font-size: calc(0.9em + 1vw);
+  margin-left: 1em;
+  font-family: 'Work Sans', sans-serif;
+  text-align: center;
+  border: none;
+  border-bottom: 1px solid white;
+  pointer-events: none;
+}
+
+.profile-card__name {
+  font-size: calc(0.8em + 1vw);
+  font-weight: 500;
 }
 
 .profile-card__about {
-  margin: 0;
+  font-size: calc(0.8em + 0.3vw);
+  font-weight: 300;
+}
+
+.profile-card__name:focus,
+.profile-card__about:focus {
+  border: none;
+  outline: none;
+  border-bottom: 1px solid #90dad1;
+  caret-color: #ff8d24;
+  pointer-events: all;
 }
 
 .profile-card__info {

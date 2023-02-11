@@ -1,12 +1,15 @@
 import { getClassNames } from '../../../utils/utils';
 import BaseComponent from '../base-component';
-import { ValidityMessages } from '../../authorization/forms/form.types';
+import { ValidityMessages } from '../../../pages/splash/forms/form.types';
 import './text-input.css';
+import Svg from '../svg/svg';
 
 export default class Input extends BaseComponent<'div'> {
   public input: BaseComponent<'input'>;
 
   public label: BaseComponent<'label'>;
+
+  public svgIcon?: Svg;
 
   private inputName: string;
 
@@ -15,13 +18,13 @@ export default class Input extends BaseComponent<'div'> {
   constructor(
     parent: HTMLElement,
     additionalClasses: string,
-    text: string,
-    attributes: {
+    text?: string,
+    attributes?: {
       [key: string]: string;
     },
   ) {
     const classes = getClassNames('input', additionalClasses);
-    super('div', parent, classes, undefined);
+    super('div', parent, classes);
     this.label = new BaseComponent('label', this.element, '', text);
     this.input = new BaseComponent('input', this.label.element, '', '', attributes);
     this.inputName = this.label.element.innerText.toLowerCase();
@@ -69,5 +72,9 @@ export default class Input extends BaseComponent<'div'> {
       this.element.classList.remove('invalid');
       this.input.element.removeEventListener('input', this.checkIfValidInputCallback);
     }
+  };
+
+  public addSvgIcon = (svgName: string, color: string, text: string): void => {
+    this.svgIcon = new Svg(this.input.element, svgName, color, `${text.toLowerCase()}-icon`);
   };
 }

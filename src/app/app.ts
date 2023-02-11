@@ -1,5 +1,3 @@
-import BaseComponent from '../components/base-component/base-component';
-import GoogleMaps from '../map/google-maps';
 import Footer from '../components/footer/footer';
 import Header from '../components/header/header';
 // import Dashboard from '../pages/dashboard/dashboard';
@@ -7,6 +5,9 @@ import Main from '../pages/main/main-page';
 // import NewRoutePage from '../pages/new-route-page/new-route-page';
 import Router from './router/router';
 import Routes from './router/router.types';
+import eventEmitter from '../utils/event-emitter';
+import ModalAvatar from '../components/avatar-modal/avatar-modal';
+import UrlObj from '../utils/utils.types';
 
 export default class App {
   private header: Header;
@@ -23,19 +24,11 @@ export default class App {
     this.header = new Header(this.parent, this.router.locationHandler);
     this.parent.append(this.main.element);
     this.footer = new Footer(this.parent, this.router.locationHandler);
+    this.subscribeToEvents();
   }
 
   public init(): void {
     this.parent.style.height = '100%';
-    const mapDiv: BaseComponent<'div'> = new BaseComponent('div', this.parent, 'map', '', { id: 'map' });
-    const map1 = new GoogleMaps(
-      mapDiv.element,
-      'map1',
-      8,
-      { lat: -33.397, lng: 150.644 },
-      google.maps.TravelMode.BICYCLING,
-    );
-    console.log(map1);
     this.handleRouting();
   }
 
@@ -52,11 +45,21 @@ export default class App {
         this.parent.style.backgroundImage = 'url(/assets/backgrounds/login-background.jpg)';
         break;
       default:
-        console.log('hey');
         this.parent.style.backgroundImage = '';
-        this.parent.style.backgroundColor = '#F6F4F9';
+        this.parent.style.background = '#F6F4F9';
     }
   };
+
+  private subscribeToEvents(): void {
+    eventEmitter.on('openAvatarModal', (url: UrlObj): void => {
+      this.showModalWindow(url);
+    });
+  }
+
+  private showModalWindow(url: UrlObj): void {
+    const modal: ModalAvatar = new ModalAvatar(this.parent, url);
+    modal.element.addEventListener('click', modal.closeModalCallback);
+  }
 
   // скрипт с ключом для гугл апи
   /* public static addKey(parent: HTMLElement): BaseComponent<'script'> {

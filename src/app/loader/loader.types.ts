@@ -20,12 +20,13 @@ export enum Endpoints {
   Login = 'auth/signin',
   Signup = 'auth/signup',
   GetUser = 'auth/me',
+  UpdateUser = 'update/',
 }
 
 export type LoadRequest = {
   url: URL;
   method: string;
-  params?: RequestData;
+  params?: RequestData | UpdateUserData;
   token?: string;
 };
 
@@ -40,16 +41,15 @@ export enum Methods {
 export enum Errors {
   UserAlreadyExists = '409',
   Unauthorized = '401',
+  NotFound = '404',
 }
 
-type User = {
+export type User = {
   avatarUrl: string;
   bio: string;
   country: string;
-  created_at: string;
   email: string;
   id: string;
-  updated_at: string;
   username: string;
 };
 
@@ -122,4 +122,13 @@ export type Activity = {
   created_at: Date;
   updated_at: Date;
   location?: string;
+};
+
+export type UpdateUserData = {
+  avatar_url?: string;
+  bio?: string;
+  country?: string;
+  email?: string;
+  id?: string;
+  username?: string;
 };
