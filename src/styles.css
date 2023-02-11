@@ -2,6 +2,19 @@
   box-sizing: border-box;
 }
 
+fieldset,
+form,
+label,
+legend,
+section {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
 html,
 body {
   width: 100%;
@@ -13,13 +26,17 @@ body {
 .root {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100%;
   font-family: 'Work Sans', sans-serif;
   background: url('./assets/backgrounds/signup-background.jpg');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center center;
   background-attachment: fixed;
+}
+
+.main {
+  flex: 1 0 auto;
 }
 
 .map,
@@ -34,10 +51,11 @@ body {
   color: #219486;
 }
 
-.h1,
+h1,
 h2,
 h3,
 h4,
-h5 {
+h5,
+.h3 {
   font-family: 'Montserrat', sans-serif;
 }

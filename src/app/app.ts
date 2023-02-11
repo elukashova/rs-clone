@@ -1,5 +1,3 @@
-import BaseComponent from '../components/base-component/base-component';
-import GoogleMaps from '../map/google-maps';
 import Footer from '../components/footer/footer';
 import Header from '../components/header/header';
 // import Dashboard from '../pages/dashboard/dashboard';
@@ -27,15 +25,6 @@ export default class App {
 
   public init(): void {
     this.parent.style.height = '100%';
-    const mapDiv: BaseComponent<'div'> = new BaseComponent('div', this.parent, 'map', '', { id: 'map' });
-    const map1 = new GoogleMaps(
-      mapDiv.element,
-      'map1',
-      8,
-      { lat: -33.397, lng: 150.644 },
-      google.maps.TravelMode.BICYCLING,
-    );
-    console.log(map1);
     this.handleRouting();
   }
 

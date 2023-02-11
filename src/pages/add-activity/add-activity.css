@@ -1,0 +1,78 @@
+.add-activity-section {
+  width: 80vw;
+  height: max-content;
+  margin: 0 auto;
+  background-color: #ffffff;
+}
+
+.add-activity__container {
+  margin: 6%;
+}
+
+.add-activity__heading {
+  padding: 4% 0 2% 0;
+}
+
+.add-activity__fieldset {
+  display: flex;
+  flex-direction: column;
+}
+
+.add-activity__form {
+  padding: 2% 0 5% 0;
+}
+
+.add-activity__fieldset {
+  gap: 2em;
+}
+
+.add-activity__block {
+  display: flex;
+  justify-content: flex-start;
+  gap: 4.2em;
+}
+
+.add-activity__block-container {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  gap: 4px;
+}
+
+.block-training {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.add-activity__input {
+  width: 10vw;
+}
+
+.add-activity__input label {
+  white-space: nowrap;
+}
+
+.description-block {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+}
+
+.add-activity__input.input-description {
+  width: 100%;
+}
+
+.input-description input {
+  height: 20px;
+}
+
+.input-search {
+  position: relative;
+}
+
+.search-icon {
+  position: absolute;
+}
+
+.btn-activity {
+  margin: 3% 0 6% 0;
+}
