@@ -211,14 +211,11 @@ export default class EditableTextarea extends BaseComponent<'div'> {
     } else {
       defaultCols = !this.isUpdate ? TextareaColsNumber.DefaultBio : TextareaColsNumber.IsUpdateBio;
     }
+
     const { value } = this.textarea.element;
     const letters: number = value.split('').length;
 
-    if (letters > defaultCols) {
-      this.rowsNumber = Math.ceil(letters / defaultCols);
-    } else {
-      this.rowsNumber = 1;
-    }
+    this.rowsNumber = Math.ceil(letters / defaultCols);
     this.textarea.element.rows = this.rowsNumber;
   };
 

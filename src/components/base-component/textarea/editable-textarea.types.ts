@@ -10,7 +10,7 @@ export enum TextareaLength {
 
 export enum TextareaColsNumber {
   DefaultName = 22,
-  DefaultBio = 35,
+  DefaultBio = 40,
   IsUpdateName = 19,
-  IsUpdateBio = 30,
+  IsUpdateBio = 35,
 }
