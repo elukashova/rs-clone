@@ -4,19 +4,16 @@
 }
 
 .btn {
-  padding: 16px;
+  padding: 0.7em;
   border: none;
   border-radius: 5px;
-  font-size: 20px;
+  font-size: 1.25em;
   cursor: pointer;
-}
-
-.btn_main {
   background-color: var(--main-btn-color);
   color: white;
   transition: background-color 0.2s;
 }
 
-.btn_main:hover {
+.btn:hover {
   background-color: var(--hover-btn-color);
 }

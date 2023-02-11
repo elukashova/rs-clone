@@ -2,11 +2,14 @@ import { getClassNames } from '../../../utils/utils';
 import BaseComponent from '../base-component';
 import { ValidityMessages } from '../../../pages/splash/forms/form.types';
 import './text-input.css';
+import Svg from '../svg/svg';
 
 export default class Input extends BaseComponent<'div'> {
   public input: BaseComponent<'input'>;
 
   public label: BaseComponent<'label'>;
+
+  public svgIcon?: Svg;
 
   private inputName: string;
 
@@ -69,5 +72,9 @@ export default class Input extends BaseComponent<'div'> {
       this.element.classList.remove('invalid');
       this.input.element.removeEventListener('input', this.checkIfValidInputCallback);
     }
+  };
+
+  public addSvgIcon = (svgName: string, color: string, text: string): void => {
+    this.svgIcon = new Svg(this.input.element, svgName, color, `${text.toLowerCase()}-icon`);
   };
 }

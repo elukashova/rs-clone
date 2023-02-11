@@ -6,6 +6,8 @@ import { ProjectColors } from '../utils/consts';
 import { DirectionsRenderer, GeoErrors, Coordinates, MapRequest, OptionsForMap, ZoomSettings } from './interface-map';
 
 export default class GoogleMaps {
+  public parentElement: HTMLElement;
+
   public map!: google.maps.Map;
 
   public mapId: string;
@@ -65,6 +67,7 @@ export default class GoogleMaps {
     this.renderMap(parent);
     this.initMap(this.mapWrapper.element, zoom, center);
     this.currentTravelMode = travelMode;
+    this.parentElement = parent;
   }
 
   public renderMap(parent: HTMLElement): void {
@@ -280,5 +283,13 @@ export default class GoogleMaps {
     const [legs]: google.maps.DirectionsLeg[] = myRoute.legs;
     this.distanceTotal = legs.distance ?? { text: '', value: 0 };
     this.timeTotal = legs.duration ?? { text: '', value: 0 };
+  }
+
+  public setTravelMode(travelMode: google.maps.TravelMode): void {
+    this.map.setMapTypeId(travelMode);
+  }
+
+  public deleteMap(): void {
+    this.parentElement.remove();
   }
 }

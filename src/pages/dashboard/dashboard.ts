@@ -19,7 +19,7 @@ export default class Dashboard extends BaseComponent<'section'> {
   private currentUser!: User;
 
   constructor() {
-    super('section', undefined, 'dashboard');
+    super('section', undefined, 'dashboard section');
     if (this.token) {
       getUser(this.token).then((user: User) => {
         this.currentUser = {

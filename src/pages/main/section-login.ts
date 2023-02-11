@@ -6,6 +6,6 @@ export default class LoginPage extends BaseComponent<'section'> {
   private loginForm: LoginForm = new LoginForm(this.element, this.replaceMainCallback);
 
   constructor(private replaceMainCallback: () => void) {
-    super('section', undefined, 'login-page');
+    super('section', undefined, 'login-page section');
   }
 }
