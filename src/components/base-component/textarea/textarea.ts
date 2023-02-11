@@ -38,11 +38,11 @@ export default class TextArea extends BaseComponent<'div'> {
     }
   }
 
-  public getText(): string {
+  public get textValue(): string {
     return this.textArea.element.value;
   }
 
-  public setText(text: string): void {
+  public set textValue(text) {
     this.textArea.element.value = text;
   }
 
