@@ -24,22 +24,29 @@
 }
 
 .header-avatar-icon,
+.header-add-icon,
 .header-icon_lang,
 .header-icon_theme,
 .header-link-avatar {
   cursor: pointer;
 }
 
-.header-add-icon {
-  height: 50px;
-  width: 50px;
-  cursor: pointer;
+.header-add-icon,
+.header-avatar-icon {
+  height: 3em;
+  width: 3em;
+}
+
+.header-avatar-icon {
+  height: 3em;
+  width: 3em;
 }
 
 .header-avatar-dropdown,
 .header-add-dropdown {
   position: relative;
   display: inline-block;
+  height: 3em;
 }
 
 .header-avatar-content,
