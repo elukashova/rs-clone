@@ -1,6 +1,4 @@
-import { UserData } from './type-not-friend';
-
-const users: UserData[] = [
+const users = [
   {
     avatarUrl: '../assets/images/avatars/avatar4.png',
     country: 'Russia',

@@ -19,3 +19,8 @@
 .friends__element {
   height: max-content;
 }
+
+.not-friends__element.hidden,
+.friends__element.hidden {
+  display: none;
+}

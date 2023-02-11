@@ -7,8 +7,8 @@ import { ProjectColors } from '../../utils/consts';
 import NotFriend from './not-friend/not-friend';
 import Input from '../../components/base-component/text-input-and-label/text-input';
 import SvgNames from '../../components/base-component/svg/svg.types';
-import { UserData } from './type-not-friend';
 import Friend from './friend/friend';
+import { UserData } from './type-friends';
 
 export default class Friends extends BaseComponent<'section'> {
   public notFriendsAll: NotFriend[] = [];
@@ -55,6 +55,13 @@ export default class Friends extends BaseComponent<'section'> {
     this.renderPage(users);
     this.notFriendsSearch.addSvgIcon(SvgNames.Search, ProjectColors.Grey, 'search');
     this.friendsSearch.addSvgIcon(SvgNames.Search, ProjectColors.Grey, 'search');
+
+    this.notFriendsSearch.element.addEventListener('input', (): void => {
+      Friends.search(this.notFriendsAll, this.notFriendsSearch);
+    });
+    this.friendsSearch.element.addEventListener('input', (): void => {
+      Friends.search(this.friendsAll, this.friendsSearch);
+    });
   }
 
   private renderPage(data: UserData[]): void {
@@ -80,6 +87,18 @@ export default class Friends extends BaseComponent<'section'> {
         user,
       );
       this.friendsAll.push(friend);
+    });
+  }
+
+  public static search(array: NotFriend[] | Friend[], input: Input): void {
+    array.forEach((user: NotFriend | Friend): void => user.element.classList.remove('hidden'));
+    const value = input.inputValue.trim().toLowerCase();
+    array.forEach((user: NotFriend | Friend): void => {
+      if (user && user.username && !user.username.toLowerCase().includes(value)) {
+        user.element.classList.add('hidden');
+      } else {
+        user.element.classList.remove('hidden');
+      }
     });
   }
 }

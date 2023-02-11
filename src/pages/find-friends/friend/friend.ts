@@ -3,18 +3,18 @@ import Avatar from '../../../components/base-component/avatar-image/avatar';
 import BaseComponent from '../../../components/base-component/base-component';
 import Button from '../../../components/base-component/button/button';
 import { getClassNames } from '../../../utils/utils';
-import { UserData } from '../type-not-friend';
+import { UserData } from '../type-friends';
 
 export default class Friend extends BaseComponent<'div'> {
-  private avatarUrl: string | undefined;
+  public avatarUrl: string | undefined;
 
-  private country: string | undefined;
+  public country: string | undefined;
 
-  private username: string | undefined;
+  public username: string | undefined;
 
-  private avatar?: Avatar;
+  public avatar?: Avatar;
 
-  private userName?: BaseComponent<'h4'>;
+  public userName?: BaseComponent<'h4'>;
 
   private userCountry?: BaseComponent<'p'>;
 
