@@ -4,10 +4,10 @@
 }
 
 .btn {
-  padding: 0.7em;
+  padding: 10px 15px;
   border: none;
   border-radius: 5px;
-  font-size: 1.25em;
+  font-size: 1em;
   cursor: pointer;
   background-color: var(--main-btn-color);
   color: white;
