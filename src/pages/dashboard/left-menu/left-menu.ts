@@ -3,8 +3,10 @@ import ProfileCard from './profile-card/profile-card';
 import TrainingJournal from './training-journal/training-journal';
 import './left-menu.css';
 import OurActivity from './our-activity/our-activity';
-import User from '../dashboard.types';
+import { User } from '../../../app/loader/loader.types';
 import DefaultUserInfo from './left-menu.types';
+import AvatarSources from '../../../components/avatar-modal/avatar-modal.types';
+import eventEmitter from '../../../utils/event-emitter';
 
 export default class LeftMenu extends BaseComponent<'aside'> {
   public profileCard: ProfileCard;
@@ -15,14 +17,13 @@ export default class LeftMenu extends BaseComponent<'aside'> {
 
   constructor(user: User, parent?: HTMLElement) {
     super('aside', parent, 'left-menu');
-    // eslint-disable-next-line max-len
     const name: string = LeftMenu.transformNameFormat(user.username);
-    const url: string = user.avatarUrl || DefaultUserInfo.DefaultUrl;
+    const avatarSource: string = user.avatarUrl || AvatarSources.Default;
     const bio: string = user.bio || DefaultUserInfo.DefaultBio;
-
-    this.profileCard = new ProfileCard(this.element, url, name, bio);
+    this.profileCard = new ProfileCard(this.element, avatarSource, name, bio);
     this.trainingJournal = new TrainingJournal(this.element);
     this.ourActivity = new OurActivity(this.element);
+    eventEmitter.emit('updateAvatar', { url: avatarSource });
   }
 
   private static transformNameFormat(name: string): string {

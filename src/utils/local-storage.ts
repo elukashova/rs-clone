@@ -1,4 +1,4 @@
-import { Token } from '../../app/loader/loader.types';
+import { Token } from '../app/loader/loader.types';
 
 export const checkDataInLocalStorage = <T>(key: string): T | null => {
   const response: string | null = localStorage.getItem(key);
@@ -12,7 +12,7 @@ export const checkDataInLocalStorage = <T>(key: string): T | null => {
   return null;
 };
 
-export const setDataToLocalStorage = (data: Token, key: string): void => {
+export const setDataToLocalStorage = (data: Token | string, key: string): void => {
   localStorage.removeItem(key);
   localStorage.setItem(key, JSON.stringify(data));
 };

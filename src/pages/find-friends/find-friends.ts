@@ -1,10 +1,11 @@
 import './find-friends.css';
 import BaseComponent from '../../components/base-component/base-component';
 import { getUser } from '../../app/loader/services/user-services';
-import User, { Token } from '../../app/loader/loader.types';
-import { checkDataInLocalStorage } from '../../utils/local-storage/local-storage';
+import { User, Token } from '../../app/loader/loader.types';
+import { checkDataInLocalStorage } from '../../utils/local-storage';
 import Input from '../../components/base-component/text-input-and-label/text-input';
-import { ProjectColors, SvgNames } from '../../utils/consts';
+import { ProjectColors } from '../../utils/consts';
+import SvgNames from '../../components/base-component/svg/svg.types';
 
 export default class Friends extends BaseComponent<'section'> {
   private findingContainer = new BaseComponent('div', this.element, 'find-friends__container');

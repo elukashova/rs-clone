@@ -1,6 +1,6 @@
 import { getClassNames } from '../../../utils/utils';
 import BaseComponent from '../base-component';
-import { ValidityMessages } from '../../authorization/forms/form.types';
+import { ValidityMessages } from '../../../pages/splash/forms/form.types';
 import './text-input.css';
 import Svg from '../svg/svg';
 
@@ -18,13 +18,13 @@ export default class Input extends BaseComponent<'div'> {
   constructor(
     parent: HTMLElement,
     additionalClasses: string,
-    text: string,
-    attributes: {
+    text?: string,
+    attributes?: {
       [key: string]: string;
     },
   ) {
     const classes = getClassNames('input', additionalClasses);
-    super('div', parent, classes, undefined);
+    super('div', parent, classes);
     this.label = new BaseComponent('label', this.element, '', text);
     this.input = new BaseComponent('input', this.label.element, '', '', attributes);
     this.inputName = this.label.element.innerText.toLowerCase();

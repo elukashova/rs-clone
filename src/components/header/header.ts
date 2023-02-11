@@ -5,7 +5,10 @@ import NavigationLink from '../base-component/link/link';
 import './header.css';
 import Routes from '../../app/router/router.types';
 import Svg from '../base-component/svg/svg';
-import { ProjectColors, SvgNames } from '../../utils/consts';
+import { ProjectColors } from '../../utils/consts';
+import SvgNames from '../base-component/svg/svg.types';
+import eventEmitter from '../../utils/event-emitter';
+import UrlObj from '../../utils/utils.types';
 
 export default class Header extends BaseComponent<'header'> {
   private contentWrapper = new BaseComponent('div', this.element, 'header-content-wrapper');
@@ -109,6 +112,7 @@ export default class Header extends BaseComponent<'header'> {
     this.openMenu();
     this.changeLanguage();
     this.changeTheme();
+    this.subscribeToEvents();
   }
 
   public openMenu(): void {
@@ -135,5 +139,15 @@ export default class Header extends BaseComponent<'header'> {
 
   public show(): void {
     this.element.style.display = 'flex';
+  }
+
+  private updateProfilePicture(url: string): void {
+    this.avatarIcon.element.src = url;
+  }
+
+  private subscribeToEvents(): void {
+    eventEmitter.on('updateAvatar', (source: UrlObj) => {
+      this.updateProfilePicture(source.url);
+    });
   }
 }

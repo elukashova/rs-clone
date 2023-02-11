@@ -15,6 +15,15 @@ section {
   vertical-align: baseline;
 }
 
+aside,
+nav,
+footer,
+header,
+section,
+main {
+  display: block;
+}
+
 html,
 body {
   width: 100%;
@@ -37,6 +46,8 @@ body {
 
 .main {
   flex: 1 0 auto;
+  width: 100%;
+  padding: 1rem 5rem;
 }
 
 .map,
