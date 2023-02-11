@@ -3,3 +3,9 @@
   flex-direction: column;
   gap: 5px;
 }
+
+.textarea {
+  background: none;
+  resize: none;
+  overflow: hidden;
+}
