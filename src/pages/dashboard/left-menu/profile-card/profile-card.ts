@@ -8,7 +8,7 @@ import eventEmitter from '../../../../utils/event-emitter';
 import Image from '../../../../components/base-component/image/image';
 import UrlObj from '../../../../utils/utils.types';
 import EditableTextarea from '../../../../components/base-component/textarea/editable-textarea';
-import TextareaTypes from '../../../../components/base-component/textarea/editable-textarea.types';
+import { TextareaTypes } from '../../../../components/base-component/textarea/editable-textarea.types';
 
 export default class ProfileCard extends BaseComponent<'div'> {
   private photo: Image = new Image(this.element, 'profile-card__photo');

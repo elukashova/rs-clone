@@ -85,11 +85,13 @@
   width: 90%;
   margin: 0;
   margin-left: 1em;
+  box-sizing: border-box;
   font-family: 'Work Sans', sans-serif;
   text-align: center;
   border: none;
   border-bottom: 1px solid white;
   pointer-events: none;
+  word-wrap: break-word;
 }
 
 .profile-card__name {
