@@ -1,5 +1,6 @@
 import './post.css';
 import BaseComponent from '../../../../components/base-component/base-component';
+import { Activity } from '../../../../app/loader/loader.types';
 
 export default class Post extends BaseComponent<'div'> {
   private userInfo = new BaseComponent('div', this.element, 'post__user-info');
@@ -20,12 +21,14 @@ export default class Post extends BaseComponent<'div'> {
 
   private activityContainer = new BaseComponent('div', this.element);
 
-  private activityIcon = new BaseComponent('span', this.activityContainer.element, 'post__activity-icon');
+  private activityIcon = new BaseComponent('img', this.activityContainer.element, 'post__activity-icon');
 
-  private activityName = new BaseComponent('h4', this.activityContainer.element, 'post__activity-name');
+  private activityTitle = new BaseComponent('h4', this.activityContainer.element, 'post__activity-title');
 
-  constructor(name: string) {
+  constructor(data: Activity) {
     super('div', undefined, 'post');
-    this.name.element.textContent = name;
+    this.photo.element.src = data.user.avatarUrl;
+    this.name.element.textContent = data.user.username;
+    this.activityTitle.element.textContent = data.title;
   }
 }
