@@ -63,6 +63,11 @@
   background: none;
 }
 
+.profile-card__name_btn-update:hover,
+.profile-card__about_btn-update:hover {
+  background: none;
+}
+
 .profile-card__name_btn-update_svg,
 .profile-card__about_btn-update_svg {
   width: calc(0.35em + 0.25vw);

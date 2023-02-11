@@ -59,6 +59,8 @@ export default class EditableTextarea extends BaseComponent<'div'> {
     this.isUpdate = true;
     this.textarea.element.removeAttribute('disabled');
     this.textarea.element.focus();
+    // eslint-disable-next-line max-len
+    this.textarea.element.selectionStart = this.textarea.element.value.length;
     this.replaceBtnSvg(SvgNames.CloseThin);
     this.appendOkButton(SvgNames.CheckThin);
     this.updateTextAlignmentn();
@@ -131,7 +133,6 @@ export default class EditableTextarea extends BaseComponent<'div'> {
       EditableTextarea.updateUser(id, this.checkCurrentType(value))
         .then((user: User) => {
           if (user) {
-            console.log(user);
             this.cancelUpdate();
           }
         })
