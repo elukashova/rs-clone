@@ -57,7 +57,7 @@ export default class App {
         break;
       default:
         this.parent.style.backgroundImage = '';
-        this.parent.style.backgroundColor = '#F6F4F9';
+        this.parent.style.background = '#F6F4F9';
     }
   };
 

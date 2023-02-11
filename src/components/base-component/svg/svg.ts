@@ -23,6 +23,6 @@ export default class Svg {
   }
 
   public replaceSVG(parent: Element, child: Element): void {
-    parent.replaceChild(this.svg, child);
+    parent.replaceChild(child, this.svg);
   }
 }

@@ -7,22 +7,26 @@ import Button from '../../../../components/base-component/button/button';
 import eventEmitter from '../../../../utils/event-emitter';
 import Image from '../../../../components/base-component/image/image';
 import UrlObj from '../../../../utils/utils.types';
+import EditableTextarea from '../../../../components/base-component/textarea/editable-textarea';
+import TextareaTypes from '../../../../components/base-component/textarea/editable-textarea.types';
 
 export default class ProfileCard extends BaseComponent<'div'> {
   private photo: Image = new Image(this.element, 'profile-card__photo');
 
-  private changePhotoButton: Button = new Button(this.element, '', 'profile-card__change-avatar_btn');
+  private changePhotoButton: Button = new Button(this.element, '', 'profile-card__photo_btn-change');
 
   private changePhotoSVG: Svg = new Svg(
     this.changePhotoButton.element,
     SvgNames.Plus2,
     '#219486',
-    'profile-card__change-avatar_svg',
+    'profile-card__photo_btn-change_svg',
   );
 
-  private name: BaseComponent<'h4'> | undefined;
+  // private name: BaseComponent<'h4'> | undefined;
 
-  private about: BaseComponent<'p'> | undefined;
+  private name: EditableTextarea | undefined;
+
+  private about: EditableTextarea | undefined;
 
   private profileScore: BaseComponent<'div'> | undefined;
 
@@ -32,17 +36,17 @@ export default class ProfileCard extends BaseComponent<'div'> {
 
   public trainings: ProfileInfo = new ProfileInfo('тренировки');
 
-  constructor(parent: HTMLElement, photo: string, name: string, about: string) {
+  constructor(parent: HTMLElement, photo: string, name: string, bio: string) {
     super('div', parent, 'profile-card');
-    this.render(photo, name, about);
+    this.render(photo, name, bio);
     this.changePhotoButton.element.addEventListener('click', this.changePhotoBtnCallback);
     this.subscribeToEvents();
   }
 
-  private render(url: string, name: string, about: string): void {
+  private render(url: string, name: string, bio: string): void {
     this.photo.element.setAttribute('src', url);
-    this.name = new BaseComponent('h4', this.element, 'profile-card__name', name);
-    this.about = new BaseComponent('p', this.element, 'profile-card__about', about);
+    this.name = new EditableTextarea(this.element, 'profile-card__name', name, TextareaTypes.Username);
+    this.about = new EditableTextarea(this.element, 'profile-card__about', bio, TextareaTypes.Bio);
     this.profileScore = new BaseComponent('div', this.element, 'profile-card__info');
     // eslint-disable-next-line prettier/prettier
     this.profileScore.element.append(

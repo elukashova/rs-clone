@@ -17,14 +17,13 @@ export default class LeftMenu extends BaseComponent<'aside'> {
 
   constructor(user: User, parent?: HTMLElement) {
     super('aside', parent, 'left-menu');
-    // eslint-disable-next-line max-len
     const name: string = LeftMenu.transformNameFormat(user.username);
     const avatarSource: string = user.avatarUrl || AvatarSources.Default;
-    eventEmitter.emit('updateAvatar', { url: avatarSource });
     const bio: string = user.bio || DefaultUserInfo.DefaultBio;
     this.profileCard = new ProfileCard(this.element, avatarSource, name, bio);
     this.trainingJournal = new TrainingJournal(this.element);
     this.ourActivity = new OurActivity(this.element);
+    eventEmitter.emit('updateAvatar', { url: avatarSource });
   }
 
   private static transformNameFormat(name: string): string {

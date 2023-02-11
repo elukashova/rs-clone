@@ -17,7 +17,10 @@ enum SvgNames {
   Plus3 = 'icons-plus',
   Plus4 = 'icons-plus-black',
   Check = 'check',
-  Close = 'close',
+  CheckThin = 'check-thin',
+  CloseRound = 'close-round',
+  CloseThin = 'close-thin',
+  Pencil = 'pencil',
 
   Hiking = 'hiking',
   Running = 'running',

@@ -33,7 +33,7 @@ export default class ModalAvatar extends BaseComponent<'div'> {
 
   private cancelBtnSVG: Svg = new Svg(
     this.cancelButton.element,
-    SvgNames.Close,
+    SvgNames.CloseRound,
     '#FF8D24',
     'avatars__button-cancel_svg',
   );

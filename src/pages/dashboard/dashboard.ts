@@ -33,7 +33,6 @@ export default class Dashboard extends BaseComponent<'section'> {
   }
 
   private static addIdToLocalStorage(id: string): void {
-    console.log(id);
     setDataToLocalStorage(id, 'myUserId');
   }
 }
