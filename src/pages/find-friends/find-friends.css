@@ -1,0 +1,21 @@
+.find-friends__container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20%;
+}
+
+.not-friends__title,
+.friends__title {
+  margin: 6% 0 4% 0;
+}
+
+.not-friends__input-search input,
+.friends__input-search input {
+  width: 50%;
+  border: 1px solid #8c8c8c;
+}
+
+.not-friends__element,
+.friends__element {
+  height: max-content;
+}
