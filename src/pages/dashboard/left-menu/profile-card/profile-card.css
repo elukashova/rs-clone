@@ -103,6 +103,7 @@
   outline: none;
   border-bottom: 1px solid #90dad1;
   caret-color: #ff8d24;
+  pointer-events: all;
 }
 
 .profile-card__info {

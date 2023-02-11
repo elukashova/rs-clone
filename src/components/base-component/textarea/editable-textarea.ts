@@ -7,6 +7,9 @@ import Svg from '../svg/svg';
 import SvgNames from '../svg/svg.types';
 import './editable-textarea.css';
 import TextareaTypes from './editable-textarea.types';
+import { VALID_NAME } from '../../../utils/consts';
+import { ValidityMessages } from '../../../pages/splash/forms/form.types';
+import DefaultUserInfo from '../../../pages/dashboard/left-menu/left-menu.types';
 
 export default class EditableTextarea extends BaseComponent<'div'> {
   private textarea: BaseComponent<'textarea'> = new BaseComponent(
@@ -38,6 +41,8 @@ export default class EditableTextarea extends BaseComponent<'div'> {
 
   private type: TextareaTypes;
 
+  private message: string = '';
+
   constructor(parent: HTMLElement, private classes: string, text: string, type: TextareaTypes) {
     super('div', parent, `${classes}_wrapper`);
     this.updateBtn = new Button(this.element, '', `${classes}_btn-update`);
@@ -46,7 +51,8 @@ export default class EditableTextarea extends BaseComponent<'div'> {
     this.type = type;
     this.textarea.element.value = this.currentValue;
     this.updateBtn.element.addEventListener('click', this.activateTextarea);
-    this.textarea.element.addEventListener('keydown', EditableTextarea.changeDefaultBehavior);
+    this.textarea.element.addEventListener('keydown', this.changeDefaultBehavior);
+    this.textarea.element.addEventListener('blur', this.blurCallback);
   }
 
   private activateTextarea = (): void => {
@@ -69,7 +75,7 @@ export default class EditableTextarea extends BaseComponent<'div'> {
     this.updateOkBtn = new Button(this.element, '', `${this.classes}_btn-update`);
     this.updateOkBtnSVG = new Svg(this.updateOkBtn.element, name, '#979797', `${this.classes}_btn-update_svg`);
     this.element.insertBefore(this.updateOkBtn.element, this.updateBtn.element);
-    this.updateOkBtn.element.addEventListener('click', this.appendOkButtonCallback);
+    this.updateOkBtn.element.addEventListener('click', this.updateOkButtonCallback);
   }
 
   private removeOkButton(): void {
@@ -81,14 +87,14 @@ export default class EditableTextarea extends BaseComponent<'div'> {
   private replaceUpdateBtnEventListener(): void {
     if (this.isUpdate === true) {
       this.updateBtn.element.removeEventListener('click', this.activateTextarea);
-      this.updateBtn.element.addEventListener('click', this.cancelNameUpdate);
+      this.updateBtn.element.addEventListener('click', this.cancelUpdate);
     } else {
       this.updateBtn.element.addEventListener('click', this.activateTextarea);
-      this.updateBtn.element.removeEventListener('click', this.cancelNameUpdate);
+      this.updateBtn.element.removeEventListener('click', this.cancelUpdate);
     }
   }
 
-  private cancelNameUpdate = (): void => {
+  private cancelUpdate = (): void => {
     this.isUpdate = false;
     this.textarea.element.value = this.currentValue;
     this.textarea.element.setAttribute('disabled', '');
@@ -98,9 +104,10 @@ export default class EditableTextarea extends BaseComponent<'div'> {
     this.updateTextAlignmentn();
   };
 
-  private static changeDefaultBehavior = (e: KeyboardEvent): void => {
+  private changeDefaultBehavior = (e: KeyboardEvent): void => {
     if (e.code === 'Enter') {
       e.preventDefault();
+      this.updateOkButtonCallback();
     }
   };
 
@@ -108,7 +115,15 @@ export default class EditableTextarea extends BaseComponent<'div'> {
     this.textarea.element.style.textAlign = this.isUpdate === true ? 'left' : 'center';
   }
 
-  private appendOkButtonCallback = (): void => {
+  private updateOkButtonCallback = (): void => {
+    if (this.type === TextareaTypes.Username) {
+      if (!this.checkTextarea(ValidityMessages.Name)) {
+        return;
+      }
+    } else {
+      this.checkTextarea('');
+    }
+
     const id: string | null = EditableTextarea.getIdFromLocalStorage();
     if (id) {
       const { value } = this.textarea.element;
@@ -117,7 +132,7 @@ export default class EditableTextarea extends BaseComponent<'div'> {
         .then((user: User) => {
           if (user) {
             console.log(user);
-            this.cancelNameUpdate();
+            this.cancelUpdate();
           }
         })
         .catch(() => null);
@@ -130,6 +145,45 @@ export default class EditableTextarea extends BaseComponent<'div'> {
     }
     return { bio: value };
   }
+
+  public checkTextarea(message: string): boolean {
+    const validityState: ValidityState = this.textarea.element.validity;
+    this.message = message;
+    if (this.type === TextareaTypes.Username) {
+      if (validityState.valueMissing || !this.textarea.element.value.match(VALID_NAME)) {
+        this.checkInputValidity(message);
+        return false;
+      }
+    }
+
+    if (this.type === TextareaTypes.Bio) {
+      if (validityState.valueMissing) {
+        this.textarea.element.value = DefaultUserInfo.DefaultBio;
+      }
+    }
+
+    this.textarea.element.setCustomValidity('');
+    this.textarea.element.reportValidity();
+    return true;
+  }
+
+  private checkInputValidity(message: string): void {
+    this.textarea.element.setCustomValidity(message);
+    this.textarea.element.reportValidity();
+    this.textarea.element.addEventListener('input', this.checkIfValidInputCallback);
+  }
+
+  private checkIfValidInputCallback = (): void => {
+    if (this.message && this.checkTextarea(this.message)) {
+      this.textarea.element.removeEventListener('input', this.checkIfValidInputCallback);
+    }
+  };
+
+  private blurCallback = (e: FocusEvent): void => {
+    if (!e.relatedTarget || e.relatedTarget !== this.updateOkBtn?.element) {
+      this.cancelUpdate();
+    }
+  };
 
   private static updateUser(id: string, data: UpdateUserData): Promise<User> {
     return updateUser(id, data).then((user: User) => user);
