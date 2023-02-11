@@ -16,11 +16,11 @@ export default class NotFriend extends BaseComponent<'div'> {
 
   public avatar?: Avatar;
 
-  public userName?: BaseComponent<'h4'>;
+  public userName!: BaseComponent<'h4'>;
 
   public userCountry?: BaseComponent<'p'>;
 
-  public subscribeButton?: Button;
+  public subscribeButton!: Button;
 
   public activityCount?: BaseComponent<'p'>;
 

@@ -9,6 +9,7 @@ import Input from '../../components/base-component/text-input-and-label/text-inp
 import SvgNames from '../../components/base-component/svg/svg.types';
 import Friend from './friend/friend';
 import { UserData } from './type-friends';
+import Pagination from '../../components/base-component/pagination-block/pagination';
 
 export default class Friends extends BaseComponent<'section'> {
   public notFriendsAll: NotFriend[] = [];
@@ -42,6 +43,10 @@ export default class Friends extends BaseComponent<'section'> {
 
   private currentUser!: User;
 
+  private notFriendsPagination!: Pagination;
+
+  private friendsPagination!: Pagination;
+
   constructor(parent: HTMLElement) {
     super('section', parent, 'find-friends find-friends-section');
     /* if (this.token) {
@@ -52,7 +57,8 @@ export default class Friends extends BaseComponent<'section'> {
         };
       });
     } */
-    this.renderPage(users);
+    this.renderUsers(users);
+    this.renderPaginations();
     this.notFriendsSearch.addSvgIcon(SvgNames.Search, ProjectColors.Grey, 'search');
     this.friendsSearch.addSvgIcon(SvgNames.Search, ProjectColors.Grey, 'search');
 
@@ -62,9 +68,23 @@ export default class Friends extends BaseComponent<'section'> {
     this.friendsSearch.element.addEventListener('input', (): void => {
       Friends.search(this.friendsAll, this.friendsSearch);
     });
+
+    this.friendsAll.forEach((friend) => {
+      friend.unsubscribeButton.element.addEventListener('click', (): void => {
+        Friends.removeElement(friend.element);
+        // метод, который удалит пользователя из друзей
+      });
+    });
+
+    this.notFriendsAll.forEach((notFriend) => {
+      notFriend.subscribeButton.element.addEventListener('click', (): void => {
+        Friends.removeElement(notFriend.element);
+        // метод, который добавит пользователя в друзья
+      });
+    });
   }
 
-  private renderPage(data: UserData[]): void {
+  private renderUsers(data: UserData[]): void {
     data.forEach((user, index) => {
       const notFriend = new NotFriend(
         this.notFriendsBlock.element,
@@ -90,6 +110,12 @@ export default class Friends extends BaseComponent<'section'> {
     });
   }
 
+  private renderPaginations(): void {
+    this.notFriendsPagination = new Pagination(this.notFriendsBlock, 'not-friends__pagination', 1, 4, 10);
+
+    this.friendsPagination = new Pagination(this.friendsBlock, 'friends__pagination', 1, 4, 10);
+  }
+
   public static search(array: NotFriend[] | Friend[], input: Input): void {
     array.forEach((user: NotFriend | Friend): void => user.element.classList.remove('hidden'));
     const value = input.inputValue.trim().toLowerCase();
@@ -100,5 +126,9 @@ export default class Friends extends BaseComponent<'section'> {
         user.element.classList.remove('hidden');
       }
     });
+  }
+
+  private static removeElement(element: HTMLElement): void {
+    element.remove();
   }
 }

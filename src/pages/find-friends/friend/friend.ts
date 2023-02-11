@@ -18,7 +18,7 @@ export default class Friend extends BaseComponent<'div'> {
 
   private userCountry?: BaseComponent<'p'>;
 
-  private subscribeButton?: Button;
+  public unsubscribeButton!: Button;
 
   private avatarContainer = new BaseComponent('div', this.element, 'friend__avatar-container');
 
@@ -50,6 +50,6 @@ export default class Friend extends BaseComponent<'div'> {
     this.userName = new BaseComponent('h4', this.userData.element, 'friend__username', `${this.username}`);
 
     this.userCountry = new BaseComponent('p', this.userData.element, 'friend__user-country', `${this.country}` || '');
-    this.subscribeButton = new Button(this.element, 'Unsubscribe', 'friend__button');
+    this.unsubscribeButton = new Button(this.element, 'Unsubscribe', 'friend__button');
   }
 }
