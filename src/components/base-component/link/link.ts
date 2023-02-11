@@ -7,10 +7,10 @@ export default class NavigationLink extends BaseComponent<'a'> {
   constructor(public replaceMainCallback: () => void, data: Link) {
     const classes = getClassNames('nav-link', data.additionalClasses);
     super('a', data.parent, classes, data.text, data.attributes);
-    this.element.addEventListener('click', this.loginLinkCallback);
+    this.element.addEventListener('click', this.linkCallback);
   }
 
-  public loginLinkCallback = (e: Event): void => {
+  public linkCallback = (e: Event): void => {
     e.preventDefault();
     window.history.pushState({}, '', this.element.href);
     this.replaceMainCallback();

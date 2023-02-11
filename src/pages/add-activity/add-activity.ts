@@ -4,8 +4,8 @@ import Button from '../../components/base-component/button/button';
 import Select from '../../components/base-component/select/select';
 import Input from '../../components/base-component/text-input-and-label/text-input';
 import GoogleMaps from '../../map/google-maps';
-import { SvgNames } from '../../utils/consts';
 import TextArea from '../../components/base-component/textarea/textarea';
+import SvgNames from '../../components/base-component/svg/svg.types';
 
 export default class AddActivity extends BaseComponent<'section'> {
   private formContainer = new BaseComponent('div', this.element, 'add-activity__container');
