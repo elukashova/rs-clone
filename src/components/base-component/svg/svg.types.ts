@@ -14,6 +14,7 @@ enum SvgNames {
 
   Plus = 'plus',
   Plus2 = 'plus2',
+  PlusRound = 'plus-round',
   Plus3 = 'icons-plus',
   Plus4 = 'icons-plus-black',
   Check = 'check',

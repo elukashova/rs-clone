@@ -109,10 +109,7 @@ export default class ModalAvatar extends BaseComponent<'div'> {
   };
 
   private static updateUser(id: string, data: UpdateUserData): Promise<User> {
-    return updateUser(id, data).then((user: User) => {
-      console.log(user);
-      return user;
-    });
+    return updateUser(id, data).then((user: User) => user);
   }
 
   private static getIdFromLocalStorage(): string | null {
