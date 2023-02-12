@@ -12,7 +12,7 @@ export default class ProfileInfo extends BaseComponent<'div'> {
   }
 
   private render(heading: string): void {
-    this.heading = new BaseComponent('span', this.element, '', heading);
-    this.score = new BaseComponent('span', this.element, '', '0');
+    this.heading = new BaseComponent('span', this.element, 'profile-info__heading', heading);
+    this.score = new BaseComponent('span', this.element, 'profile-info__score', '0');
   }
 }

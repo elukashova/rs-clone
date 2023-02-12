@@ -85,11 +85,13 @@
   width: 90%;
   margin: 0;
   margin-left: 1em;
+  box-sizing: border-box;
   font-family: 'Work Sans', sans-serif;
   text-align: center;
   border: none;
   border-bottom: 1px solid white;
   pointer-events: none;
+  word-wrap: break-word;
 }
 
 .profile-card__name {
@@ -100,6 +102,7 @@
 .profile-card__about {
   font-size: calc(0.8em + 0.3vw);
   font-weight: 300;
+  margin-bottom: 1em;
 }
 
 .profile-card__name:focus,
@@ -112,17 +115,36 @@
 }
 
 .profile-card__info {
-  display: flex;
-  gap: 10px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  width: 100%;
 }
 
 .profile-info {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 5px;
+  justify-content: space-between;
+}
+
+.profile-info__heading {
+  text-transform: uppercase;
+  font-weight: 400;
+  color: #1cbaa7;
+  font-size: calc(0.6em + 0.3vw);
+  cursor: pointer;
+}
+
+.profile-info__heading:hover {
+  color: #219486;
+}
+
+.profile-info__score {
+  padding-top: 0.3em;
+  font-weight: 300;
+  font-size: calc(0.6em + 0.3vw);
 }
 
 .profile-info:not(:last-child) {
-  border-right: 1px solid grey;
+  border-right: 1px solid #979797;
 }

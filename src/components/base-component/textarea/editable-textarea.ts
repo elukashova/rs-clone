@@ -5,11 +5,11 @@ import BaseComponent from '../base-component';
 import Button from '../button/button';
 import Svg from '../svg/svg';
 import SvgNames from '../svg/svg.types';
-import './editable-textarea.css';
-import TextareaTypes from './editable-textarea.types';
+import { TextareaTypes, TextareaLength, TextareaColsNumber } from './editable-textarea.types';
 import { VALID_NAME } from '../../../utils/consts';
 import { ValidityMessages } from '../../../pages/splash/forms/form.types';
 import DefaultUserInfo from '../../../pages/dashboard/left-menu/left-menu.types';
+import './textarea.css';
 
 export default class EditableTextarea extends BaseComponent<'div'> {
   private textarea: BaseComponent<'textarea'> = new BaseComponent(
@@ -43,27 +43,45 @@ export default class EditableTextarea extends BaseComponent<'div'> {
 
   private message: string = '';
 
+  private maxLimit: string = '';
+
+  private rowsNumber: number = 1;
+
   constructor(parent: HTMLElement, private classes: string, text: string, type: TextareaTypes) {
     super('div', parent, `${classes}_wrapper`);
     this.updateBtn = new Button(this.element, '', `${classes}_btn-update`);
     this.updateBtnSVG = new Svg(this.updateBtn.element, SvgNames.Pencil, '#979797', `${classes}_btn-update_svg`);
+
     this.currentValue = text;
     this.type = type;
     this.textarea.element.value = this.currentValue;
+
+    this.addEventListeners();
+    this.defineMaxLength();
+    this.resizeTextarea();
+  }
+
+  private addEventListeners(): void {
     this.updateBtn.element.addEventListener('click', this.activateTextarea);
     this.textarea.element.addEventListener('keydown', this.changeDefaultBehavior);
     this.textarea.element.addEventListener('blur', this.blurCallback);
+  }
+
+  private defineMaxLength(): void {
+    this.maxLimit = this.type === TextareaTypes.Bio ? TextareaLength.Bio : TextareaLength.Default;
+    this.textarea.element.setAttribute('maxlength', this.maxLimit);
   }
 
   private activateTextarea = (): void => {
     this.isUpdate = true;
     this.textarea.element.removeAttribute('disabled');
     this.textarea.element.focus();
+    this.textarea.element.addEventListener('input', this.resizeTextarea);
     // eslint-disable-next-line max-len
     this.textarea.element.selectionStart = this.textarea.element.value.length;
     this.replaceBtnSvg(SvgNames.CloseThin);
     this.appendOkButton(SvgNames.CheckThin);
-    this.updateTextAlignmentn();
+    this.updateTextAlignment();
     this.replaceUpdateBtnEventListener();
   };
 
@@ -103,18 +121,21 @@ export default class EditableTextarea extends BaseComponent<'div'> {
     this.replaceBtnSvg(SvgNames.Pencil);
     this.removeOkButton();
     this.replaceUpdateBtnEventListener();
-    this.updateTextAlignmentn();
+    this.updateTextAlignment();
+    this.resizeTextarea();
   };
 
   private changeDefaultBehavior = (e: KeyboardEvent): void => {
     if (e.code === 'Enter') {
+      this.isUpdate = false;
       e.preventDefault();
       this.updateOkButtonCallback();
     }
   };
 
-  private updateTextAlignmentn(): void {
+  private updateTextAlignment(): void {
     this.textarea.element.style.textAlign = this.isUpdate === true ? 'left' : 'center';
+    this.resizeTextarea();
   }
 
   private updateOkButtonCallback = (): void => {
@@ -125,6 +146,8 @@ export default class EditableTextarea extends BaseComponent<'div'> {
     } else {
       this.checkTextarea('');
     }
+
+    this.resizeTextarea();
 
     const id: string | null = EditableTextarea.getIdFromLocalStorage();
     if (id) {
@@ -178,6 +201,22 @@ export default class EditableTextarea extends BaseComponent<'div'> {
     if (this.message && this.checkTextarea(this.message)) {
       this.textarea.element.removeEventListener('input', this.checkIfValidInputCallback);
     }
+  };
+
+  private resizeTextarea = (): void => {
+    let defaultCols: number;
+    if (this.type === TextareaTypes.Username) {
+      // eslint-disable-next-line max-len
+      defaultCols = !this.isUpdate ? TextareaColsNumber.DefaultName : TextareaColsNumber.IsUpdateName;
+    } else {
+      defaultCols = !this.isUpdate ? TextareaColsNumber.DefaultBio : TextareaColsNumber.IsUpdateBio;
+    }
+
+    const { value } = this.textarea.element;
+    const letters: number = value.split('').length;
+
+    this.rowsNumber = Math.ceil(letters / defaultCols);
+    this.textarea.element.rows = this.rowsNumber;
   };
 
   private blurCallback = (e: FocusEvent): void => {
