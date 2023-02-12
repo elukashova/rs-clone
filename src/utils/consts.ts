@@ -15,6 +15,7 @@ export enum ProjectColors {
   DarkTurquoise = '#219486',
   Yellow = '#FFAE0B',
   Orange = '#FF8D24',
+  Grey = '#979797',
 }
 
 // form validation
