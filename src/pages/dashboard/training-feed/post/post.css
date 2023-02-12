@@ -13,6 +13,12 @@
   gap: 2em;
 }
 
+.post__user-info-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
 .post__photo {
   width: 3em;
   height: 3em;
@@ -39,6 +45,7 @@
 
 .post__activity-container {
   display: flex;
+  align-items: center;
   gap: 2em;
 }
 
