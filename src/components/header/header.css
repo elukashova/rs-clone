@@ -72,7 +72,11 @@
 .header-add-dropdown:hover .header-add-content {
   display: block;
   right: 0;
-  margin-top: 5%;
+  margin: -1px;
+}
+
+.header-add-dropdown:hover .header-add-content {
+  margin: -4px;
 }
 
 .header-avatar-dropdown:hover .header-link-avatar:hover,

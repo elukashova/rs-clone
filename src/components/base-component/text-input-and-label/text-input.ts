@@ -1,8 +1,8 @@
+import './text-input.css';
 import { getClassNames } from '../../../utils/utils';
 import BaseComponent from '../base-component';
-import { ValidityMessages } from '../../../pages/splash/forms/form.types';
-import './text-input.css';
 import Svg from '../svg/svg';
+import { ValidityMessages } from '../../../pages/splash/forms/form.types';
 
 export default class Input extends BaseComponent<'div'> {
   public input: BaseComponent<'input'>;
@@ -75,6 +75,6 @@ export default class Input extends BaseComponent<'div'> {
   };
 
   public addSvgIcon = (svgName: string, color: string, text: string): void => {
-    this.svgIcon = new Svg(this.input.element, svgName, color, `${text.toLowerCase()}-icon`);
+    this.svgIcon = new Svg(this.label.element, svgName, color, `${text.toLowerCase()}-icon`);
   };
 }

@@ -1,0 +1,48 @@
+.pagination {
+  display: grid;
+  grid-template-columns: 10% 4% 10%;
+  align-items: center;
+  gap: 5px;
+}
+
+.right-svg__block,
+.left-svg__block {
+  position: relative;
+  width: 40px;
+  height: 20px;
+}
+
+.right-svg,
+.left-svg {
+  position: absolute;
+  top: 0;
+  left: 10px;
+  width: 20px;
+  height: 20px;
+}
+
+.right-svg__block:hover,
+.left-svg__block:hover {
+  background-color: #1cbaa7;
+}
+
+.right-svg__block:hover,
+.left-svg__block:hover {
+  background-color: #219486;
+}
+
+.left-svg__block:hover .left-svg {
+  transform: translateX(-2px);
+  transition: all 0.3s ease-in-out;
+}
+
+.right-svg__block:hover .right-svg {
+  transform: translateX(2px);
+  transition: all 0.3s ease-in-out;
+}
+
+.right-svg__block:disabled,
+.left-svg__block:disabled {
+  opacity: 40%;
+  pointer-events: none;
+}

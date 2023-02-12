@@ -6,18 +6,18 @@ import Button from '../../components/base-component/button/button';
 import MapParameter from './map-parameter/map-parameter';
 
 export default class NewRoutePage extends BaseComponent<'section'> {
-  private heading = new BaseComponent('h3', this.element, 'new-route-page__heading', 'Добавить Маршрут');
+  private heading = new BaseComponent('h3', this.element, 'new-route-page__heading', 'Add route');
 
   private optionsContainer = new BaseComponent('div', this.element, 'new-route-page__options');
 
   public search = new Input(this.optionsContainer.element, 'new-route-page__search', '', {
     type: 'text',
-    placeholder: 'Введите названия места или нажмите на карту',
+    placeholder: 'Enter the name of the place or click on the map',
   });
 
   public routeType = new Select(
     this.optionsContainer.element,
-    ['тип маршрута', 'пеший', 'лисапед'],
+    ['Route type', 'walking', 'cycling'],
     'new-route-page__select',
   );
 
@@ -27,7 +27,7 @@ export default class NewRoutePage extends BaseComponent<'section'> {
 
   public deleteButton = new Button(this.buttonContainer.element, '', 'btn_delete');
 
-  public saveButton = new Button(this.buttonContainer.element, 'Сохранить', 'btn');
+  public saveButton = new Button(this.buttonContainer.element, 'Save', 'btn');
 
   public map = new BaseComponent('div', this.element, 'new-route-page__map', '', { id: 'map' });
 
@@ -35,25 +35,26 @@ export default class NewRoutePage extends BaseComponent<'section'> {
 
   public vehicleType = new MapParameter(this.mapParameters.element);
 
-  public distance = new MapParameter(this.mapParameters.element, 'Расстояние');
+  public distance = new MapParameter(this.mapParameters.element, 'Distance');
 
-  public ascent = new MapParameter(this.mapParameters.element, 'Набор высоты');
+  public ascent = new MapParameter(this.mapParameters.element, 'Ascent');
 
-  public descent = new MapParameter(this.mapParameters.element, 'Высота спуска');
+  public descent = new MapParameter(this.mapParameters.element, 'Descent');
 
-  public time = new MapParameter(this.mapParameters.element, 'Прим. чистое время');
+  public time = new MapParameter(this.mapParameters.element, 'Duration');
 
-  public roadType = new MapParameter(this.mapParameters.element, 'Тип дороги');
+  public roadType = new MapParameter(this.mapParameters.element, 'Road type');
 
-  public routeName = new Input(this.element, 'new-route-page__input', 'Название маршрута (обязательно)', {
+  public routeName = new Input(this.element, 'new-route-page__input', 'Route name', {
     type: 'text',
+    required: 'required',
   });
 
-  public routeDescription = new Input(this.element, 'new-route-page__input', 'Описание', { type: 'text' });
+  public routeDescription = new Input(this.element, 'new-route-page__input', 'Description', { type: 'text' });
 
   constructor(parent: HTMLElement) {
     super('section', parent, 'new-route-page');
-    this.setVehicleName('Велосипед');
+    this.setVehicleName('Bicycle');
     this.setParameters();
   }
 
@@ -66,6 +67,6 @@ export default class NewRoutePage extends BaseComponent<'section'> {
     this.ascent.value = '0 м';
     this.descent.value = '0 м';
     this.time.value = '0 с';
-    this.roadType.value = 'дорога с покрытием';
+    this.roadType.value = 'paved road';
   }
 }
