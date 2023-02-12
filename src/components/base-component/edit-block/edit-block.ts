@@ -23,4 +23,15 @@ export default class EditBlock {
       this.parent.removeChild(this.okButton.element);
     }
   }
+
+  // eslint-disable-next-line max-len
+  public replaceUpdateBtnEventListener(condition: boolean, trueCallback: () => void, falseCallback: () => void): void {
+    if (condition === true) {
+      this.editBtn.element.removeEventListener('click', falseCallback);
+      this.editBtn.element.addEventListener('click', trueCallback);
+    } else {
+      this.editBtn.element.addEventListener('click', falseCallback);
+      this.editBtn.element.removeEventListener('click', trueCallback);
+    }
+  }
 }

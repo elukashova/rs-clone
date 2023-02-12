@@ -73,18 +73,9 @@ export default class EditableTextarea extends BaseComponent<'div'> {
     this.editBlock.editBtn.replaceBtnSvg(SvgNames.CloseThin, this.classes, ProjectColors.Grey);
     this.editBlock.appendOkButton(this.updateOkButtonCallback);
     this.updateTextAlignment();
-    this.replaceUpdateBtnEventListener();
+    // eslint-disable-next-line max-len
+    this.editBlock.replaceUpdateBtnEventListener(this.isUpdate, this.cancelUpdate, this.activateTextarea);
   };
-
-  private replaceUpdateBtnEventListener(): void {
-    if (this.isUpdate === true) {
-      this.editBlock.editBtn.element.removeEventListener('click', this.activateTextarea);
-      this.editBlock.editBtn.element.addEventListener('click', this.cancelUpdate);
-    } else {
-      this.editBlock.editBtn.element.addEventListener('click', this.activateTextarea);
-      this.editBlock.editBtn.element.removeEventListener('click', this.cancelUpdate);
-    }
-  }
 
   private cancelUpdate = (): void => {
     this.isUpdate = false;
@@ -93,7 +84,8 @@ export default class EditableTextarea extends BaseComponent<'div'> {
     // eslint-disable-next-line max-len
     this.editBlock.editBtn.replaceBtnSvg(SvgNames.Pencil, this.classes, ProjectColors.Grey);
     this.editBlock.removeOkButton();
-    this.replaceUpdateBtnEventListener();
+    // eslint-disable-next-line max-len
+    this.editBlock.replaceUpdateBtnEventListener(this.isUpdate, this.cancelUpdate, this.activateTextarea);
     this.updateTextAlignment();
     this.resizeTextarea();
   };

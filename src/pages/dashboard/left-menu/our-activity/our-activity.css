@@ -10,14 +10,43 @@
 
 .our-activity__icons {
   display: flex;
+  flex-direction: column;
   width: 100%;
   justify-content: space-between;
+  align-items: center;
+  border-radius: 5px;
+}
+
+.our-activity__icons-header-wrapper {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.our-activity__icons_header {
+  text-transform: uppercase;
+  color: #ff8d24;
+  font-size: calc(0.5em + 0.3vw);
+  font-weight: 400;
 }
 
 .our-activity__icons-wrapper {
   display: flex;
   width: 90%;
+  height: 3em;
   justify-content: space-around;
+  align-items: center;
+  transition: box-shadow 0.3s;
+}
+
+.highlighted {
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+}
+
+.highlighted .our-activity__svg {
+  width: calc(0.5em + 1vw);
+  height: calc(0.5em + 1vw);
 }
 
 .our-activity__svg {
@@ -25,6 +54,22 @@
   height: calc(0.8em + 1.3vw);
   transition: fill 0.3s;
   cursor: pointer;
+}
+
+.activity__svg-0 {
+  order: 1;
+}
+
+.activity__svg-1 {
+  order: 2;
+}
+
+.activity__svg-2 {
+  order: 3;
+}
+
+.activity__svg-3 {
+  order: 4;
 }
 
 .our-activity_btn {
