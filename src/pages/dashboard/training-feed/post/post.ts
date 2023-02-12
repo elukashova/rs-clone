@@ -86,8 +86,8 @@ export default class Post extends BaseComponent<'div'> {
       this.googleMap = new GoogleMaps(
         this.map.element,
         '1',
-        1,
-        data.mapPoints.startPoint,
+        8,
+        { lat: -33.397, lng: 150.644 },
         google.maps.TravelMode.BICYCLING,
       );
       // this.googleMap.doDirectionRequest(data.mapPoints.startPoint, data.mapPoints.endPoint);
