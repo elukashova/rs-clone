@@ -15,12 +15,14 @@ export enum ProjectColors {
   DarkTurquoise = '#219486',
   Yellow = '#FFAE0B',
   Orange = '#FF8D24',
-  Grey = '#979797',
+  Grey = '#949494',
+  White = '#FFFFFF',
 }
 
 // form validation
 // eslint-disable-next-line prettier/prettier, @typescript-eslint/quotes, no-useless-escape
 export const VALID_NAME: RegExp = /^([\w]{3,})+\s+([\w\s]{3,})+$/;
-// eslint-disable-next-line prettier/prettier, max-len
-export const VALID_EMAIL: RegExp = /^(?!\\.)(?!.*\\.$)(?!.*\\.\\.)([A-Za-z0-9!#$%&'*\\.\\.+-\\/=?^_`{|}~]{2,})@([\w-]+\.)+[a-z]{2,4}$/;
+// eslint-disable-next-line prettier/prettier, max-len, operator-linebreak
+export const VALID_EMAIL: RegExp =
+  /^(?!\\.)(?!.*\\.$)(?!.*\\.\\.)([A-Za-z0-9!#$%&'*\\.\\.+-\\/=?^_`{|}~]{2,})@([\w-]+\.)+[a-z]{2,4}$/;
 export const VALID_PASSWORD: RegExp = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,}$/;
