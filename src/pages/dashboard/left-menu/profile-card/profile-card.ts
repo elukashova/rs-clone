@@ -9,17 +9,18 @@ import Image from '../../../../components/base-component/image/image';
 import UrlObj from '../../../../utils/utils.types';
 import EditableTextarea from '../../../../components/base-component/textarea/editable-textarea';
 import { TextareaTypes } from '../../../../components/base-component/textarea/editable-textarea.types';
+import { ProjectColors } from '../../../../utils/consts';
 
 export default class ProfileCard extends BaseComponent<'div'> {
   private photo: Image = new Image(this.element, 'profile-card__photo');
 
-  private changePhotoButton: Button = new Button(this.element, '', 'profile-card__photo_btn-change');
+  private changePhotoButton: Button = new Button(this.element, '', 'profile-card__photo_btn');
 
   private changePhotoSVG: Svg = new Svg(
     this.changePhotoButton.element,
     SvgNames.Plus2,
-    '#219486',
-    'profile-card__photo_btn-change_svg',
+    ProjectColors.DarkTurquoise,
+    'profile-card__photo_btn_svg',
   );
 
   private name: EditableTextarea | undefined;

@@ -21,7 +21,7 @@
 .our-activity__graph_day_column {
   height: calc(0.1em + 0.15vw);
   width: calc(0.7em + 0.3vw);
-  background: #949494;
+  background: #979797;
 }
 
 .our-activity__graph_div-round {

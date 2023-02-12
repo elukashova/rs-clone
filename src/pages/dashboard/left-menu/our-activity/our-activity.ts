@@ -3,8 +3,8 @@ import BaseComponent from '../../../../components/base-component/base-component'
 import ActivityGraph from './activity-graph/activity-graph';
 import Svg from '../../../../components/base-component/svg/svg';
 import SvgNames from '../../../../components/base-component/svg/svg.types';
-import Button from '../../../../components/base-component/button/button';
 import { ProjectColors } from '../../../../utils/consts';
+import EditBlock from '../../../../components/base-component/edit-block/edit-block';
 
 export default class OurActivity extends BaseComponent<'div'> {
   private activityIcons: BaseComponent<'div'> = new BaseComponent('div', this.element, 'our-activity__icons');
@@ -35,6 +35,8 @@ export default class OurActivity extends BaseComponent<'div'> {
     '0 km',
   );
 
+  private editBlock: EditBlock = new EditBlock(this.activityIcons.element, 'our-activity');
+
   private svgNumberOnPageOnPage: number = 3;
 
   // eslint-disable-next-line max-len
@@ -43,10 +45,6 @@ export default class OurActivity extends BaseComponent<'div'> {
   private svgNamesDefault: SvgNames[] = [SvgNames.Running, SvgNames.Cycling, SvgNames.Walking];
 
   private allSvgElements: Svg[] = [];
-
-  private updateBtn: Button | undefined;
-
-  private updateBtnSVG: Svg | undefined;
 
   private currentIconIdx: number = 0;
 
@@ -84,9 +82,9 @@ export default class OurActivity extends BaseComponent<'div'> {
     super('div', parent, 'our-activity');
     this.setTimeAndSteps('0 hr', '0 steps');
     this.renderSportSVGs();
-    this.renderUpdateButton();
     this.highlightCurrentIcon();
     this.allSvgElements.forEach((icon) => icon.svg.addEventListener('click', this.sportIconCallback));
+    this.editBlock.editBtn.element.addEventListener('click', this.activateSportChanging);
   }
 
   public setTimeAndSteps(time: string, steps: string): void {
@@ -100,11 +98,6 @@ export default class OurActivity extends BaseComponent<'div'> {
       svg.svg.setAttribute('id', this.svgNamesDefault[i]);
       this.allSvgElements.push(svg);
     }
-  }
-
-  private renderUpdateButton(): void {
-    this.updateBtn = new Button(this.activityIcons.element, '', 'our-activity__btn-update');
-    this.updateBtnSVG = new Svg(this.updateBtn.element, SvgNames.Pencil, '#949494', 'our-activity_btn-update_svg');
   }
 
   private highlightCurrentIcon(): void {
@@ -128,4 +121,17 @@ export default class OurActivity extends BaseComponent<'div'> {
       }
     });
   };
+
+  private activateSportChanging = (): void => {
+    // this.appendOkButton(SvgNames.CloseThin);
+    console.log(this.graph);
+  };
+
+  // private appendOkButton(name: string): void {
+  //   this.updateOkBtn = new Button(this.element, '', `${this.classes}_btn-update`);
+  //   this.updateOkBtnSVG =
+  // new Svg(this.updateOkBtn.element, name, '#949494', `${this.classes}_btn-update_svg`);
+  //   this.element.insertBefore(this.updateOkBtn.element, this.updateBtn.element);
+  //   this.updateOkBtn.element.addEventListener('click', this.updateOkButtonCallback);
+  // }
 }
