@@ -2,15 +2,76 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
-  padding: 10px;
+  gap: 1.6em;
+  padding: 1em;
   background-color: white;
   border-radius: 4px;
 }
 
 .our-activity__icons {
   display: flex;
-  flex-wrap: wrap;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.our-activity__icons-wrapper {
+  display: flex;
+  width: 90%;
+  justify-content: space-around;
+}
+
+.our-activity__svg {
+  width: calc(0.8em + 1.3vw);
+  height: calc(0.8em + 1.3vw);
+  transition: fill 0.3s;
+  cursor: pointer;
+}
+
+.our-activity__btn-update {
+  width: 1.5em;
+  height: 1em;
+  padding: 0;
+  border-radius: 50%;
+  outline: none;
+  background: none;
+}
+
+.our-activity__btn-update:hover {
+  background: none;
+}
+
+.our-activity_btn-update_svg {
+  width: calc(0.35em + 0.25vw);
+  height: calc(0.35em + 0.25vw);
+  transition: fill 0.3s;
+}
+
+.our-activity__svg:hover,
+.our-activity_btn-update_svg:hover {
+  fill: #1cbaa7;
+}
+
+.our-activity__week-wrapper,
+.our-activity__year-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  align-items: center;
+}
+
+.our-activity__week-header,
+.our-activity__year-header {
+  padding: 0;
+  margin: 0;
+  font-size: calc(0.7em + 0.3vw);
+  text-transform: uppercase;
+  font-weight: 500;
+  color: #ff8d24;
+}
+
+.our-activity__week-km {
+  font-weight: 400;
+  font-size: calc(0.5em + 0.5vw);
 }
 
 .our-activity__statistics {
@@ -23,11 +84,19 @@
 .our-activity__graph {
   width: 100%;
   height: 50px;
-  background-color: antiquewhite;
 }
 
 .our-activity__time-container {
   display: flex;
   justify-content: space-evenly;
-  gap: 10px;
+}
+
+.disabled {
+  pointer-events: none;
+}
+
+.our-activity__time,
+.our-activity__steps {
+  font-size: calc(0.7em + 0.3vw);
+  font-weight: 300;
 }
