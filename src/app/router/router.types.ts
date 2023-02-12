@@ -7,7 +7,7 @@ enum Routes {
   MyRoute = '/routes-route', // тут должен добавляться id карты к пути
   Settings = '/settings',
   AddActivity = '/add-activity',
-  AddRoute = 'add-route',
+  AddRoute = '/add-route',
   FindFriends = '/friends',
   AboutTeam = '/team',
 }

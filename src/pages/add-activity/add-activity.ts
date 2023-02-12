@@ -144,5 +144,6 @@ export default class AddActivity extends BaseComponent<'section'> {
   constructor(parent: HTMLElement) {
     super('section', parent, 'add-activity add-activity-section');
     this.search.addSvgIcon(SvgNames.Search, ProjectColors.Grey, 'search');
+    // console.log(this.map);
   }
 }

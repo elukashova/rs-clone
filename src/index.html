@@ -19,10 +19,20 @@
     />
   </head>
   <body>
+    <div id="map" style="display: none"></div>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+      function initMap() {
+        console.log('at maps');
+        const map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 10,
+          center: { lat: -34.397, lng: 150.644 },
+        });
+      }
+    </script>
     <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC90BCUHG7PI6cW9XNex-5bY3Dd44Rqhgs&callback=initMap&language=en&libraries=visualization,geometry"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC90BCUHG7PI6cW9XNex-5bY3Dd44Rqhgs&callback=initMap&language=en&libraries=visualization,geometry&v=weekly"
       async
       defer
     ></script>

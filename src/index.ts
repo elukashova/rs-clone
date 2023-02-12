@@ -12,7 +12,7 @@ window.onload = (): void => {
 };
 
 // делаем метод initMap глобальным
-declare global {
+/* declare global {
   interface Window {
     initMap: (elem: HTMLElement, options: google.maps.MapOptions) => void;
   }
@@ -20,7 +20,7 @@ declare global {
 window.initMap = (parent: HTMLElement, options: google.maps.MapOptions): google.maps.Map => {
   const map = new google.maps.Map(parent, options);
   return map;
-};
+}; */
 
 window.onpopstate = (): void => {
   app.handleRouting();
