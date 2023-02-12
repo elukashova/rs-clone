@@ -51,13 +51,13 @@ export default class Pagination extends BaseComponent<'div'> {
     this.rightSvg = new Svg(this.rightSvgContainer.element, SvgNames.PaginationRight, ProjectColors.White, 'right-svg');
   }
 
-  public updateCurrentPage(num: number): void {
-    this.currentPage = num;
+  public updateCurrentPage(page: number): void {
+    this.currentPage = page;
     this.updatePages();
   }
 
-  public updateTotalPages(num: number): void {
-    this.totalPages = num;
+  public updateTotalPages(page: number): void {
+    this.totalPages = page;
     if (this.totalPages !== this.currentPage) {
       this.enableRightArrowBtn();
     }
@@ -77,11 +77,11 @@ export default class Pagination extends BaseComponent<'div'> {
     return Math.ceil(totalItems / this.itemsPerPage);
   }
 
-  public disableArrowsFirstLastPage(num: number): void {
-    if (num === 1) {
+  public disableArrowsFirstLastPage(page: number): void {
+    if (page === 1) {
       this.disableLeftArrowBtn();
     }
-    if (num === this.totalPages) {
+    if (page === this.totalPages) {
       this.disableRightArrowBtn();
     }
   }

@@ -59,9 +59,11 @@ export default class Friends extends BaseComponent<'section'> {
     } */
     this.renderUsers(users);
     this.renderPaginations();
-    this.notFriendsSearch.addSvgIcon(SvgNames.Search, ProjectColors.Grey, 'search');
-    this.friendsSearch.addSvgIcon(SvgNames.Search, ProjectColors.Grey, 'search');
 
+    this.addListeners();
+  }
+
+  private addListeners(): void {
     this.notFriendsSearch.element.addEventListener('input', (): void => {
       Friends.search(this.notFriendsAll, this.notFriendsSearch);
     });
@@ -85,6 +87,7 @@ export default class Friends extends BaseComponent<'section'> {
   }
 
   private renderUsers(data: UserData[]): void {
+    this.addSvgIcons();
     data.forEach((user, index) => {
       const notFriend = new NotFriend(
         this.notFriendsBlock.element,
@@ -108,6 +111,11 @@ export default class Friends extends BaseComponent<'section'> {
       );
       this.friendsAll.push(friend);
     });
+  }
+
+  private addSvgIcons(): void {
+    this.notFriendsSearch.addSvgIcon(SvgNames.Search, ProjectColors.Grey, 'search');
+    this.friendsSearch.addSvgIcon(SvgNames.Search, ProjectColors.Grey, 'search');
   }
 
   private renderPaginations(): void {
