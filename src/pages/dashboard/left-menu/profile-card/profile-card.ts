@@ -22,19 +22,17 @@ export default class ProfileCard extends BaseComponent<'div'> {
     'profile-card__photo_btn-change_svg',
   );
 
-  // private name: BaseComponent<'h4'> | undefined;
-
   private name: EditableTextarea | undefined;
 
   private about: EditableTextarea | undefined;
 
   private profileScore: BaseComponent<'div'> | undefined;
 
-  public folowers: ProfileInfo = new ProfileInfo('подписки');
+  public folowers: ProfileInfo = new ProfileInfo('followee');
 
-  public subscribers: ProfileInfo = new ProfileInfo('подписчики');
+  public subscribers: ProfileInfo = new ProfileInfo('follower');
 
-  public trainings: ProfileInfo = new ProfileInfo('тренировки');
+  public trainings: ProfileInfo = new ProfileInfo('activities');
 
   constructor(parent: HTMLElement, photo: string, name: string, bio: string) {
     super('div', parent, 'profile-card');
