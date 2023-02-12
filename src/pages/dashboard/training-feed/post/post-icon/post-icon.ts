@@ -19,7 +19,7 @@ export default class PostIcon extends BaseComponent<'span'> {
   }
 
   public get value(): string {
-    const text = this._value.element.textContent;
+    const text: string | null = this._value.element.textContent;
     if (text !== null) return text;
     return '';
   }

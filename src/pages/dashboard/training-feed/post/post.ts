@@ -8,11 +8,12 @@ import SvgNames from '../../../../components/base-component/svg/svg.types';
 import Svg from '../../../../components/base-component/svg/svg';
 import TextArea from '../../../../components/base-component/textarea/textarea';
 import Button from '../../../../components/base-component/button/button';
+import Image from '../../../../components/base-component/image/image';
 
 export default class Post extends BaseComponent<'div'> {
   private userInfo = new BaseComponent('div', this.element, 'post__user-info');
 
-  private photo: BaseComponent<'img'> = new BaseComponent('img', this.userInfo.element, 'post__photo');
+  private photo: BaseComponent<'img'> = new Image(this.userInfo.element, 'post__photo');
 
   private userContainer = new BaseComponent('div', this.userInfo.element, 'post__user-info');
 
@@ -77,7 +78,7 @@ export default class Post extends BaseComponent<'div'> {
   }
 
   private addLike(): void {
-    let flag = false;
+    let flag: boolean = false;
     this.likeIcon.element.addEventListener('click', () => {
       if (!flag) {
         this.likeIcon.value = (+this.likeIcon.value + 1).toString();
