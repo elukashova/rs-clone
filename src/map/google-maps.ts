@@ -271,6 +271,7 @@ export default class GoogleMaps {
     this.timeTotal = legs.duration ?? { text: '', value: 0 };
   }
 
+  // TODO:
   public setTravelMode(travelMode: google.maps.TravelMode): void {
     this.map.setMapTypeId(travelMode);
   }
@@ -324,6 +325,7 @@ export default class GoogleMaps {
     });
   }
 
+  // TODO:
   public deleteRoute(): void {
     if (this.directionsRenderer) {
       this.directionsRenderer.setMap(null);
@@ -339,4 +341,11 @@ export default class GoogleMaps {
   public deleteMap(): void {
     this.parentElement.remove();
   }
+
+  // TODO:
+  /*  public doMapRequired(): void {
+    this.map.addListener('click', (e: google.maps.event) => {
+      e.preventDefault();
+    });
+  } */
 }
