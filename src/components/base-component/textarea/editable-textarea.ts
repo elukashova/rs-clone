@@ -50,7 +50,7 @@ export default class EditableTextarea extends BaseComponent<'div'> {
   constructor(parent: HTMLElement, private classes: string, text: string, type: TextareaTypes) {
     super('div', parent, `${classes}_wrapper`);
     this.updateBtn = new Button(this.element, '', `${classes}_btn-update`);
-    this.updateBtnSVG = new Svg(this.updateBtn.element, SvgNames.Pencil, '#979797', `${classes}_btn-update_svg`);
+    this.updateBtnSVG = new Svg(this.updateBtn.element, SvgNames.Pencil, '#949494', `${classes}_btn-update_svg`);
 
     this.currentValue = text;
     this.type = type;
@@ -86,14 +86,14 @@ export default class EditableTextarea extends BaseComponent<'div'> {
   };
 
   private replaceBtnSvg(name: string): void {
-    const newSvg: Svg = new Svg(this.updateBtn.element, name, '#979797', `${this.classes}_btn-update_svg`);
+    const newSvg: Svg = new Svg(this.updateBtn.element, name, '#949494', `${this.classes}_btn-update_svg`);
     this.updateBtnSVG.replaceSVG(this.updateBtn.element, newSvg.svg);
     this.updateBtnSVG = newSvg;
   }
 
   private appendOkButton(name: string): void {
     this.updateOkBtn = new Button(this.element, '', `${this.classes}_btn-update`);
-    this.updateOkBtnSVG = new Svg(this.updateOkBtn.element, name, '#979797', `${this.classes}_btn-update_svg`);
+    this.updateOkBtnSVG = new Svg(this.updateOkBtn.element, name, '#949494', `${this.classes}_btn-update_svg`);
     this.element.insertBefore(this.updateOkBtn.element, this.updateBtn.element);
     this.updateOkBtn.element.addEventListener('click', this.updateOkButtonCallback);
   }

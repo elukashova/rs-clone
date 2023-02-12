@@ -96,7 +96,7 @@ export default class OurActivity extends BaseComponent<'div'> {
 
   private renderSportSVGs(): void {
     for (let i: number = 0; i < this.svgNumberOnPageOnPage; i += 1) {
-      const svg: Svg = new Svg(this.sportsIcons.element, this.svgNamesDefault[i], '#979797', 'our-activity__svg');
+      const svg: Svg = new Svg(this.sportsIcons.element, this.svgNamesDefault[i], '#949494', 'our-activity__svg');
       svg.svg.setAttribute('id', this.svgNamesDefault[i]);
       this.allSvgElements.push(svg);
     }
@@ -104,7 +104,7 @@ export default class OurActivity extends BaseComponent<'div'> {
 
   private renderUpdateButton(): void {
     this.updateBtn = new Button(this.activityIcons.element, '', 'our-activity__btn-update');
-    this.updateBtnSVG = new Svg(this.updateBtn.element, SvgNames.Pencil, '#979797', 'our-activity_btn-update_svg');
+    this.updateBtnSVG = new Svg(this.updateBtn.element, SvgNames.Pencil, '#949494', 'our-activity_btn-update_svg');
   }
 
   private highlightCurrentIcon(): void {
