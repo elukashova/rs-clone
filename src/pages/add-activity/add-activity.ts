@@ -6,11 +6,12 @@ import Input from '../../components/base-component/text-input-and-label/text-inp
 import GoogleMaps from '../../map/google-maps';
 import TextArea from '../../components/base-component/textarea/textarea';
 import SvgNames from '../../components/base-component/svg/svg.types';
+import { ProjectColors } from '../../utils/consts';
 
 export default class AddActivity extends BaseComponent<'section'> {
   private formContainer = new BaseComponent('div', this.element, 'add-activity__container');
 
-  private heading = new BaseComponent('h3', this.formContainer.element, 'add-activity__heading', 'Добавить тренировку');
+  private heading = new BaseComponent('h3', this.formContainer.element, 'add-activity__heading', 'Add activity');
 
   private formElement = new BaseComponent('form', this.formContainer.element, 'add-activity__form');
 
@@ -20,21 +21,16 @@ export default class AddActivity extends BaseComponent<'section'> {
 
   private distanceContainer = new BaseComponent('div', this.pathInfoBlock.element, 'add-activity__block-container');
 
-  private distance = new Input(this.distanceContainer.element, 'add-activity__input input-distance', 'Дистанция (км)', {
+  private distance = new Input(this.distanceContainer.element, 'add-activity__input input-distance', 'Distance (km)', {
     type: 'number',
   });
 
   private durationContainer = new BaseComponent('div', this.pathInfoBlock.element, 'add-activity__block-container');
 
-  private durationHours = new Input(
-    this.durationContainer.element,
-    'add-activity__input input-hours',
-    'Продолжительность',
-    {
-      type: 'number',
-      placeholder: '01',
-    },
-  );
+  private durationHours = new Input(this.durationContainer.element, 'add-activity__input input-hours', 'Duration', {
+    type: 'number',
+    placeholder: '01',
+  });
 
   private durationMinutes = new Input(this.durationContainer.element, 'add-activity__input input-minutes', '', {
     type: 'number',
@@ -48,9 +44,14 @@ export default class AddActivity extends BaseComponent<'section'> {
 
   private elevationContainer = new BaseComponent('div', this.pathInfoBlock.element, 'add-activity__block-container');
 
-  private elevation = new Input(this.elevationContainer.element, 'add-activity__input input-elevation', 'Высота (м)', {
-    type: 'number',
-  });
+  private elevation = new Input(
+    this.elevationContainer.element,
+    'add-activity__input input-elevation',
+    'Elevation (m)',
+    {
+      type: 'number',
+    },
+  );
 
   private trainingBlock = new BaseComponent('div', this.formFieldset.element, 'add-activity__block', '');
 
@@ -64,13 +65,13 @@ export default class AddActivity extends BaseComponent<'section'> {
     'label',
     this.trainingContainer.element,
     'add-activity__label',
-    'Тип тренировки',
+    'Type of activity',
     { for: 'training' },
   );
 
   private training = new Select(
     this.trainingContainer.element,
-    ['Бег', 'Хайкинг', 'Прогулка', 'Велосипед'],
+    ['Running', 'Hiking', 'Walking', 'Cycling'],
     'add-activity__input input-training',
     false,
     { id: 'training' },
@@ -78,7 +79,7 @@ export default class AddActivity extends BaseComponent<'section'> {
 
   private dateContainer = new BaseComponent('div', this.trainingBlock.element, 'add-activity__block-container');
 
-  private date = new Input(this.dateContainer.element, 'add-activity__input input-date', 'Дата и время', {
+  private date = new Input(this.dateContainer.element, 'add-activity__input input-date', 'Date and time', {
     type: 'date',
   });
 
@@ -88,22 +89,17 @@ export default class AddActivity extends BaseComponent<'section'> {
 
   private searchContainer = new BaseComponent('div', this.trainingBlock.element, 'add-activity__block');
 
-  private search = new Input(
-    this.searchContainer.element,
-    'add-activity__input input-search',
-    'Совместная тренировка',
-    {
-      type: 'search',
-    },
-  );
+  private search = new Input(this.searchContainer.element, 'add-activity__input input-search', 'Train together', {
+    type: 'search',
+  });
 
   private titleBlock = new BaseComponent('div', this.formFieldset.element, 'add-activity__block', '');
 
   private titleContainer = new BaseComponent('div', this.titleBlock.element, 'add-activity__block-container');
 
-  private title = new Input(this.titleContainer.element, 'add-activity__input input-title', 'Название тренировки', {
+  private title = new Input(this.titleContainer.element, 'add-activity__input input-title', 'Name of activity', {
     type: 'text',
-    placeholder: 'Утренний забег',
+    placeholder: ' Morning race',
   });
 
   private descriptionBlock = new BaseComponent(
@@ -122,12 +118,12 @@ export default class AddActivity extends BaseComponent<'section'> {
   private description = new TextArea(
     this.descriptionContainer.element,
     'add-activity__input input-description',
-    'Описание тренировки',
+    'Description',
     {
       type: 'textarea',
       maxlength: '1000',
       rows: '4',
-      placeholder: 'Расскажите, как прошла тренировка.',
+      placeholder: "How'd it go? Share more about your activity!",
     },
   );
 
@@ -143,10 +139,10 @@ export default class AddActivity extends BaseComponent<'section'> {
     google.maps.TravelMode.BICYCLING,
   );
 
-  public saveButton = new Button(this.formElement.element, 'Сохранить', 'btn-activity');
+  public saveButton = new Button(this.formElement.element, 'Save', 'btn-activity');
 
   constructor(parent: HTMLElement) {
     super('section', parent, 'add-activity add-activity-section');
-    this.search.addSvgIcon(SvgNames.Search, '#000000', 'search');
+    this.search.addSvgIcon(SvgNames.Search, ProjectColors.Grey, 'search');
   }
 }

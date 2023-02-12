@@ -1,8 +1,8 @@
+import './header.css';
 import BaseComponent from '../base-component/base-component';
 import Avatar from '../base-component/avatar-image/avatar';
 import Image from '../base-component/image/image';
 import NavigationLink from '../base-component/link/link';
-import './header.css';
 import Routes from '../../app/router/router.types';
 import Svg from '../base-component/svg/svg';
 import { ProjectColors } from '../../utils/consts';

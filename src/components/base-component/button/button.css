@@ -4,6 +4,7 @@
 }
 
 .btn {
+  min-width: min-content;
   padding: 10px 15px;
   border: none;
   border-radius: 5px;
