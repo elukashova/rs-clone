@@ -53,6 +53,77 @@ export type User = {
   username: string;
 };
 
+export default User;
+
+export enum SportType {
+  RUNNING,
+  HIKING,
+  WALKING,
+  BIKING,
+}
+
+export type Route = {
+  id: number;
+  user_id: string;
+  user: User;
+  route_data: string;
+  title: string;
+  sport: SportType;
+  description: string;
+  date: Date;
+  created_at: Date;
+  updated_at: Date;
+  location: Location;
+  activity: Activity;
+};
+
+export type Location = {
+  id: number;
+  latitude: number;
+  longtitude: number;
+  route_id: number;
+  route: Route;
+  order: number;
+  created_at: Date;
+  updated_at: Date;
+};
+
+export type Kudo = {
+  id: number;
+  activity_id: number;
+  activity: Activity;
+  user_id: string;
+  user: User;
+  created_at: Date;
+  updated_at: Date;
+};
+
+export type Comment = {
+  id: number;
+  body: string;
+  user_id: string;
+  user: User;
+  activity_id: number;
+  activity: Activity;
+  created_at: Date;
+  updated_at: Date;
+};
+
+export type Activity = {
+  id: number;
+  user_id: string;
+  user: User;
+  sport: SportType;
+  title: string;
+  time: string;
+  distance: string;
+  elevation: number;
+  description?: string;
+  created_at: Date;
+  updated_at: Date;
+  location?: string;
+};
+
 export type UpdateUserData = {
   avatar_url?: string;
   bio?: string;

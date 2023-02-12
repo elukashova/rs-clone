@@ -1,0 +1,103 @@
+.post {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  width: 100%;
+  padding: 2em;
+  background: white;
+}
+
+.post__user-info {
+  display: flex;
+  align-items: center;
+  gap: 2em;
+}
+
+.post__photo {
+  width: 3em;
+  height: 3em;
+  border-radius: 50%;
+}
+
+.post__activity-icon {
+  width: 3em;
+  height: 3em;
+  border-radius: 50%;
+  background-color: grey;
+}
+
+.post__edit {
+  height: 3em;
+  width: 3em;
+  margin-left: auto;
+  background: url('../../../../assets/icons/svg/expand-icon.svg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  cursor: pointer;
+}
+
+.post__activity-container {
+  display: flex;
+  gap: 2em;
+}
+
+.post__info {
+  display: flex;
+  /* gap: 40px; */
+  margin-left: 4.5em;
+}
+
+.post__info > div {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  width: 8em;
+  padding: 0.5em;
+}
+
+.post__info > div:not(:last-child) {
+  border-right: 1px solid grey;
+}
+
+.post__icons {
+  display: flex;
+  justify-content: end;
+  gap: 1em;
+}
+
+.post__icon {
+  padding: 1em;
+  border-radius: 4px;
+  background-color: wheat;
+}
+
+.post__like,
+.post__comment {
+  width: 1em;
+  height: 1em;
+  cursor: pointer;
+}
+
+.post__add-comment {
+  display: none;
+  width: 80%;
+  margin: 1em auto;
+}
+
+.post__add-comment > textarea {
+  width: 100%;
+  height: 8em;
+  padding: 2em;
+  resize: none;
+}
+
+.post__button {
+  display: block;
+  margin-left: auto;
+  margin-top: 1em;
+}
+
+.active {
+  display: block;
+}
