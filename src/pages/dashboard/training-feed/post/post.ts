@@ -54,9 +54,9 @@ export default class Post extends BaseComponent<'div'> {
 
   private icons = new BaseComponent('div', this.element, 'post__icons');
 
-  private likeIcon = new PostIcon(this.icons.element, SvgNames.CloseThin, 'grey', 'post__like');
+  private likeIcon = new PostIcon(this.icons.element, SvgNames.CloseThin, 'black', 'post__like');
 
-  private commentIcon = new PostIcon(this.icons.element, SvgNames.CloseThin, 'grey', 'post__comment');
+  private commentIcon = new PostIcon(this.icons.element, SvgNames.CloseThin, 'black', 'post__comment');
 
   private commentArea = new TextArea(this.element, 'post__add-comment', '', {
     maxlength: '200',
@@ -84,6 +84,7 @@ export default class Post extends BaseComponent<'div'> {
     this.speed.value = 'later';
     this.time.value = `${data.duration}`;
     this.elevation.value = `${data.elevation} m`;
+    this.activityIconSvg = new Svg(this.activityIcon.element, data.sport, 'grey', 'why');
     if (data.mapPoints) {
       this.googleMap = new GoogleMaps(
         this.map.element,
@@ -117,9 +118,11 @@ export default class Post extends BaseComponent<'div'> {
     this.likeIcon.element.addEventListener('click', () => {
       if (!flag) {
         this.likeIcon.value = (+this.likeIcon.value + 1).toString();
+        this.likeIcon.icon?.updateFillColor('red');
         flag = true;
       } else {
         this.likeIcon.value = (+this.likeIcon.value - 1).toString();
+        this.likeIcon.icon?.updateFillColor('black');
         flag = false;
       }
     });
