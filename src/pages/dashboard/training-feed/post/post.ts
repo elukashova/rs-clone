@@ -64,7 +64,7 @@ export default class Post extends BaseComponent<'div'> {
     placeholder: 'type something up to 200 characters',
   });
 
-  private addCommentButton = new Button(this.commentArea.element, 'comment', 'post__button');
+  private addCommentButton = new Button(this.commentArea.element, 'Comment', 'post__button');
 
   constructor(data: Activity) {
     super('div', undefined, 'post');
