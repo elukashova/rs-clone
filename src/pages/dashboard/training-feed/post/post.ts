@@ -12,6 +12,7 @@ import Picture from '../../../../components/base-component/picture/picture';
 import GoogleMaps from '../../../../map/google-maps';
 import Comment from './comment/comment';
 import COMMENT_DATA from '../../../../mock/comment.data';
+import { ProjectColors } from '../../../../utils/consts';
 
 export default class Post extends BaseComponent<'div'> {
   private userInfo = new BaseComponent('div', this.element, 'post__user-info');
@@ -54,13 +55,16 @@ export default class Post extends BaseComponent<'div'> {
 
   private icons = new BaseComponent('div', this.element, 'post__icons');
 
-  private likeIcon = new PostIcon(this.icons.element, SvgNames.CloseThin, 'grey', 'post__like');
+  private likeIcon = new PostIcon(this.icons.element, SvgNames.CloseThin, 'black', 'post__like');
 
-  private commentIcon = new PostIcon(this.icons.element, SvgNames.CloseThin, 'grey', 'post__comment');
+  private commentIcon = new PostIcon(this.icons.element, SvgNames.CloseThin, 'black', 'post__comment');
 
-  private commentArea = new TextArea(this.element, 'post__add-comment', '', {});
+  private commentArea = new TextArea(this.element, 'post__add-comment', '', {
+    maxlength: '200',
+    placeholder: 'type something up to 200 characters',
+  });
 
-  private addCommentButton = new Button(this.commentArea.element, 'Добавить комментарий', 'post__button');
+  private addCommentButton = new Button(this.commentArea.element, 'Comment', 'post__button');
 
   constructor(data: Activity) {
     super('div', undefined, 'post');
@@ -69,6 +73,7 @@ export default class Post extends BaseComponent<'div'> {
     this.postComment();
     this.addLike();
     this.setContent(data);
+    this.toggleAddCommentButtonState();
   }
 
   private setContent(data: Activity): void {
@@ -80,6 +85,7 @@ export default class Post extends BaseComponent<'div'> {
     this.speed.value = 'later';
     this.time.value = `${data.duration}`;
     this.elevation.value = `${data.elevation} m`;
+    this.activityIconSvg = new Svg(this.activityIcon.element, data.sport, ProjectColors.Grey, 'activity__icon-svg');
     if (data.mapPoints) {
       this.googleMap = new GoogleMaps(
         this.map.element,
@@ -94,6 +100,7 @@ export default class Post extends BaseComponent<'div'> {
 
   private openComments(): void {
     this.commentIcon.element.addEventListener('click', () => {
+      this.addCommentButton.element.disabled = true;
       this.commentArea.element.classList.toggle('active');
     });
   }
@@ -112,9 +119,11 @@ export default class Post extends BaseComponent<'div'> {
     this.likeIcon.element.addEventListener('click', () => {
       if (!flag) {
         this.likeIcon.value = (+this.likeIcon.value + 1).toString();
+        this.likeIcon.icon?.updateFillColor(ProjectColors.Orange);
         flag = true;
       } else {
         this.likeIcon.value = (+this.likeIcon.value - 1).toString();
+        this.likeIcon.icon?.updateFillColor(ProjectColors.Grey);
         flag = false;
       }
     });
@@ -123,6 +132,16 @@ export default class Post extends BaseComponent<'div'> {
   private deletePost(): void {
     this.edit.element.addEventListener('click', () => {
       this.element.remove();
+    });
+  }
+
+  private toggleAddCommentButtonState(): void {
+    this.commentArea.element.addEventListener('input', () => {
+      if (this.commentArea.textValue) {
+        this.addCommentButton.element.disabled = false;
+      } else {
+        this.addCommentButton.element.disabled = true;
+      }
     });
   }
 }

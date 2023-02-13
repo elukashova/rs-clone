@@ -58,10 +58,10 @@ export type User = {
 export default User;
 
 export enum SportType {
-  RUNNING = 'Running',
-  HIKING = 'Hiking',
-  WALKING = 'Walking',
-  CYCLING = 'Cycling',
+  RUNNING = 'running',
+  HIKING = 'hiking',
+  WALKING = 'walking',
+  CYCLING = 'cycling',
 }
 
 export type Route = {

@@ -4,6 +4,7 @@ import Svg from '../../../../../components/base-component/svg/svg';
 import SvgNames from '../../../../../components/base-component/svg/svg.types';
 import COMMENT_DATA from '../../../../../mock/comment.data';
 import Picture from '../../../../../components/base-component/picture/picture';
+import { ProjectColors } from '../../../../../utils/consts';
 
 export default class Comment extends BaseComponent<'div'> {
   private info = new BaseComponent('div', this.element, 'comment__info');
@@ -18,7 +19,7 @@ export default class Comment extends BaseComponent<'div'> {
 
   private like = new BaseComponent('span', this.element);
 
-  private likeSvg = new Svg(this.like.element, SvgNames.Star, 'grey', 'comment__like');
+  private likeSvg = new Svg(this.like.element, SvgNames.Star, ProjectColors.Grey, 'comment__like');
 
   constructor() {
     super('div', undefined, 'comment');
@@ -34,10 +35,10 @@ export default class Comment extends BaseComponent<'div'> {
     let flag: boolean = false;
     this.like.element.addEventListener('click', () => {
       if (!flag) {
-        this.likeSvg.updateFillColor('red');
+        this.likeSvg.updateFillColor(ProjectColors.Orange);
         flag = true;
       } else {
-        this.likeSvg.updateFillColor('grey');
+        this.likeSvg.updateFillColor(ProjectColors.Grey);
         flag = false;
       }
     });
