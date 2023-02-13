@@ -18,7 +18,7 @@ export default class Dashboard extends BaseComponent<'section'> {
 
   private currentUser!: User;
 
-  constructor() {
+  constructor(private replaceMainCallback: () => void) {
     super('section', undefined, 'dashboard section');
     if (this.token) {
       getUser(this.token).then((user: User) => {
@@ -26,7 +26,7 @@ export default class Dashboard extends BaseComponent<'section'> {
           ...user,
         };
         Dashboard.addIdToLocalStorage(this.currentUser.id);
-        this.leftMenu = new LeftMenu(this.currentUser);
+        this.leftMenu = new LeftMenu(this.currentUser, replaceMainCallback);
         this.element.insertBefore(this.leftMenu.element, this.trainingFeed.element);
       });
     }

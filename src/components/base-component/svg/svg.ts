@@ -10,7 +10,7 @@ export default class Svg {
     parent.append(this.svg);
     const svgUseElement: SVGUseElement = document.createElementNS('http://www.w3.org/2000/svg', 'use');
     svgUseElement.setAttribute('href', `assets/icons/svg/sprite.svg#${iconName}`);
-    this.svg.classList.add(`${className}`);
+    this.svg.classList.add(...className.split(' '));
     this.svg.append(svgUseElement);
   }
 

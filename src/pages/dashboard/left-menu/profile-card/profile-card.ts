@@ -9,17 +9,19 @@ import Image from '../../../../components/base-component/image/image';
 import UrlObj from '../../../../utils/utils.types';
 import EditableTextarea from '../../../../components/base-component/textarea/editable-textarea';
 import { TextareaTypes } from '../../../../components/base-component/textarea/editable-textarea.types';
+import { ProjectColors } from '../../../../utils/consts';
+import Routes from '../../../../app/router/router.types';
 
 export default class ProfileCard extends BaseComponent<'div'> {
   private photo: Image = new Image(this.element, 'profile-card__photo');
 
-  private changePhotoButton: Button = new Button(this.element, '', 'profile-card__photo_btn-change');
+  private changePhotoButton: Button = new Button(this.element, '', 'profile-card__photo_btn');
 
   private changePhotoSVG: Svg = new Svg(
     this.changePhotoButton.element,
     SvgNames.Plus2,
-    '#219486',
-    'profile-card__photo_btn-change_svg',
+    ProjectColors.DarkTurquoise,
+    'profile-card__photo_btn_svg',
   );
 
   private name: EditableTextarea | undefined;
@@ -28,13 +30,14 @@ export default class ProfileCard extends BaseComponent<'div'> {
 
   private profileScore: BaseComponent<'div'> | undefined;
 
-  public folowers: ProfileInfo = new ProfileInfo('followee');
+  public folowers: ProfileInfo = new ProfileInfo('followee', Routes.FindFriends, this.replaceMainCallback);
 
-  public subscribers: ProfileInfo = new ProfileInfo('follower');
+  public subscribers: ProfileInfo = new ProfileInfo('follower', Routes.FindFriends, this.replaceMainCallback);
 
-  public trainings: ProfileInfo = new ProfileInfo('activities');
+  public trainings: ProfileInfo = new ProfileInfo('activities', Routes.AddActivity, this.replaceMainCallback);
 
-  constructor(parent: HTMLElement, photo: string, name: string, bio: string) {
+  // eslint-disable-next-line max-len
+  constructor(parent: HTMLElement, photo: string, name: string, bio: string, private replaceMainCallback: () => void) {
     super('div', parent, 'profile-card');
     this.render(photo, name, bio);
     this.changePhotoButton.element.addEventListener('click', this.changePhotoBtnCallback);
