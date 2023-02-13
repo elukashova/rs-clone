@@ -5,13 +5,13 @@ import Svg from '../../../../components/base-component/svg/svg';
 import SvgNames from '../../../../components/base-component/svg/svg.types';
 import Button from '../../../../components/base-component/button/button';
 import eventEmitter from '../../../../utils/event-emitter';
-import Image from '../../../../components/base-component/image/image';
+import Picture from '../../../../components/base-component/picture/picture';
 import UrlObj from '../../../../utils/utils.types';
 import EditableTextarea from '../../../../components/base-component/textarea/editable-textarea';
 import { TextareaTypes } from '../../../../components/base-component/textarea/editable-textarea.types';
 
 export default class ProfileCard extends BaseComponent<'div'> {
-  private photo: Image = new Image(this.element, 'profile-card__photo');
+  private photo: Picture = new Picture(this.element, 'profile-card__photo');
 
   private changePhotoButton: Button = new Button(this.element, '', 'profile-card__photo_btn-change');
 
@@ -46,12 +46,8 @@ export default class ProfileCard extends BaseComponent<'div'> {
     this.name = new EditableTextarea(this.element, 'profile-card__name', name, TextareaTypes.Username);
     this.about = new EditableTextarea(this.element, 'profile-card__about', bio, TextareaTypes.Bio);
     this.profileScore = new BaseComponent('div', this.element, 'profile-card__info');
-    // eslint-disable-next-line prettier/prettier
-    this.profileScore.element.append(
-      this.folowers.element,
-      this.subscribers.element,
-      this.trainings.element,
-    );
+    // eslint-disable-next-line prettier/prettier, max-len
+    this.profileScore.element.append(this.folowers.element, this.subscribers.element, this.trainings.element);
   }
 
   private changePhotoBtnCallback = (): void => {

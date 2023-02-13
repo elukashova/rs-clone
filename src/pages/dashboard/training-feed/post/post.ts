@@ -8,12 +8,12 @@ import SvgNames from '../../../../components/base-component/svg/svg.types';
 import Svg from '../../../../components/base-component/svg/svg';
 import TextArea from '../../../../components/base-component/textarea/textarea';
 import Button from '../../../../components/base-component/button/button';
-import Image from '../../../../components/base-component/image/image';
+import Picture from '../../../../components/base-component/picture/picture';
 
 export default class Post extends BaseComponent<'div'> {
   private userInfo = new BaseComponent('div', this.element, 'post__user-info');
 
-  private photo: BaseComponent<'img'> = new Image(this.userInfo.element, 'post__photo');
+  private photo: BaseComponent<'img'> = new Picture(this.userInfo.element, 'post__photo');
 
   private userContainer = new BaseComponent('div', this.userInfo.element, 'post__user-info');
 
