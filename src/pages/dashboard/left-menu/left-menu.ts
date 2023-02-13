@@ -15,12 +15,12 @@ export default class LeftMenu extends BaseComponent<'aside'> {
 
   public ourActivity: OurActivity;
 
-  constructor(user: User, parent?: HTMLElement) {
+  constructor(user: User, private replaceMainCallback: () => void, parent?: HTMLElement) {
     super('aside', parent, 'left-menu');
     const name: string = LeftMenu.transformNameFormat(user.username);
     const avatarSource: string = user.avatarUrl || AvatarSources.Default;
     const bio: string = user.bio || DefaultUserInfo.DefaultBio;
-    this.profileCard = new ProfileCard(this.element, avatarSource, name, bio);
+    this.profileCard = new ProfileCard(this.element, avatarSource, name, bio, replaceMainCallback);
     this.trainingJournal = new TrainingJournal(this.element);
     this.ourActivity = new OurActivity(this.element);
     eventEmitter.emit('updateAvatar', { url: avatarSource });

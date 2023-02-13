@@ -26,16 +26,6 @@ export default class TrainingJournal extends BaseComponent<'div'> {
     'January 1, 2023',
   );
 
-  public journalLink = new BaseComponent(
-    'a',
-    this.infoWrapper.element,
-    'training-journal__link',
-    'Your training journal',
-    {
-      href: '#',
-    },
-  );
-
   constructor(parent: HTMLElement) {
     super('div', parent, 'training-journal');
   }

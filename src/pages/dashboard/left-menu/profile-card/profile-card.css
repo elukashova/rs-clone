@@ -19,7 +19,7 @@
   border-radius: 50%;
 }
 
-.profile-card__photo_btn-change {
+.profile-card__photo_btn {
   position: absolute;
   z-index: 2;
   transform: translateX(110%) translateY(-100%);
@@ -30,14 +30,14 @@
   outline: none;
 }
 
-.profile-card__photo_btn-change_svg {
+.profile-card__photo_btn_svg {
   width: 1.5em;
   height: 1.5em;
   border-radius: 50%;
   transition: fill 0.3s;
 }
 
-.profile-card__photo_btn-change_svg:hover {
+.profile-card__photo_btn_svg:hover {
   fill: #1cbaa7;
 }
 
@@ -53,8 +53,12 @@
   padding-top: 0.7em;
 }
 
-.profile-card__name_btn-update,
-.profile-card__about_btn-update {
+.profile-card__about_wrapper {
+  margin-bottom: 1em;
+}
+
+.profile-card__name_btn,
+.profile-card__about_btn {
   width: 1.5em;
   height: 1.5em;
   padding: 0;
@@ -63,20 +67,20 @@
   background: none;
 }
 
-.profile-card__name_btn-update:hover,
-.profile-card__about_btn-update:hover {
+.profile-card__name_btn-edit:hover,
+.profile-card__about_btn-edit:hover {
   background: none;
 }
 
-.profile-card__name_btn-update_svg,
-.profile-card__about_btn-update_svg {
+.profile-card__name_btn_svg,
+.profile-card__about_btn_svg {
   width: calc(0.35em + 0.25vw);
   height: calc(0.35em + 0.25vw);
   transition: fill 0.3s;
 }
 
-.profile-card__name_btn-update_svg:hover,
-.profile-card__about_btn-update_svg:hover {
+.profile-card__name_btn_svg:hover,
+.profile-card__about_btn_svg:hover {
   fill: #1cbaa7;
 }
 
@@ -102,7 +106,6 @@
 .profile-card__about {
   font-size: calc(0.8em + 0.3vw);
   font-weight: 300;
-  margin-bottom: 1em;
 }
 
 .profile-card__name:focus,
@@ -127,12 +130,13 @@
   justify-content: space-between;
 }
 
-.profile-info__heading {
+.profile-info__link {
   text-transform: uppercase;
   font-weight: 400;
   color: #1cbaa7;
   font-size: calc(0.6em + 0.3vw);
   cursor: pointer;
+  text-decoration: none;
 }
 
 .profile-info__heading:hover {
@@ -146,5 +150,5 @@
 }
 
 .profile-info:not(:last-child) {
-  border-right: 1px solid #979797;
+  border-right: 1px solid #949494;
 }

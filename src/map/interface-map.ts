@@ -27,3 +27,8 @@ export enum GeoErrors {
 export enum ZoomSettings {
   Closer = 9,
 }
+
+export type MapPoints = {
+  startPoint: Coordinates;
+  endPoint: Coordinates;
+};

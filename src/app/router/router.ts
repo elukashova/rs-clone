@@ -43,7 +43,7 @@ export default class Router {
         this.main.setContent(this.loginPage);
         break;
       case Routes.Dashboard:
-        this.personalPage = new Dashboard();
+        this.personalPage = new Dashboard(this.locationHandler);
         this.main.setContent(this.personalPage);
         break;
       case Routes.AddActivity:
