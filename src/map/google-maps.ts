@@ -4,7 +4,15 @@ import './google-maps.css';
 import BaseComponent from '../components/base-component/base-component';
 import Button from '../components/base-component/button/button';
 import { ProjectColors } from '../utils/consts';
-import { DirectionsRenderer, GeoErrors, Coordinates, MapRequest, OptionsForMap, ZoomSettings } from './interface-map';
+import {
+  DirectionsRenderer,
+  GeoErrors,
+  Coordinates,
+  MapRequest,
+  OptionsForMap,
+  ZoomSettings,
+  APIKey,
+} from './interface-map';
 
 export default class GoogleMaps {
   public parentElement: HTMLElement;
@@ -194,7 +202,7 @@ export default class GoogleMaps {
       .route(request, (result: DirectionsRenderer, status: google.maps.DirectionsStatus) => {
         if (status === 'OK' && result) {
           this.directionsRenderer.setDirections(result);
-          this.doElevationRequest(request);
+          /* this.doElevationRequest(request); */
           // GoogleMaps.getMarkersAndWaypoints(result);
           this.getTotalDistanceAndTime(result);
         } else if (status === 'ZERO_RESULTS') {
@@ -364,4 +372,57 @@ export default class GoogleMaps {
     });
     this.infoWindow.close();
   } */
+
+  public static doStaticMap(startPoint: Coordinates, endPoint: Coordinates): string {
+    // const encodedPolyline = GoogleMaps.encodePolyline(startPoint, endPoint);
+    const request = {
+      key: `${APIKey.maps}`,
+      size: '800x400',
+      // path: `color:0x0000ff|weight:5|enc:${encodedPolyline}`,
+      path: `color:0x1CBAA7|weight:5|geodesic:true|${startPoint.lat},${startPoint.lng}|${endPoint.lat},${endPoint.lng}`,
+      /* zoom: 8, */
+      // scale: 2,
+      /* center: `${startPoint}`, */
+      // markers: `${startPoint}|${endPoint}`,
+      // markers: `icon:https://i.yapx.ru/VgFzC.png|${testStr}`,
+      markers: `color:0xFFAE0B|${startPoint.lat},${startPoint.lng}|${endPoint.lat},${endPoint.lng}`,
+    };
+
+    const url = `https://maps.googleapis.com/maps/api/staticmap?${Object.entries(request)
+      .map(([key, value]) => `${key}=${value}`)
+      .join('&')}`;
+    return url;
+
+    /* 'https://maps.googleapis.com/maps/api/staticmap?center=40.714%2c%20-73.998&zoom=12&size=400x400&key= YOUR_API_KEY'; */
+  }
+
+  public static encodePolyline(startPoint: Coordinates, endPoint: Coordinates): string {
+    const points = [startPoint, endPoint];
+    let encodedPolyline = '';
+    let prevLat = 0;
+    let prevLng = 0;
+    points.forEach((point) => {
+      const { lat, lng } = point;
+      const latDiff = lat - prevLat;
+      const lngDiff = lng - prevLng;
+      prevLat = lat;
+      prevLng = lng;
+      encodedPolyline += GoogleMaps.encodeNumber(latDiff);
+      encodedPolyline += GoogleMaps.encodeNumber(lngDiff);
+    });
+    console.log(encodedPolyline);
+    return encodedPolyline;
+  }
+
+  public static encodeNumber(num: number): string {
+    let encodedNum = '';
+    let numToEncode = num < 0 ? -num * 2 - 1 : num * 2;
+    while (numToEncode >= 32) {
+      encodedNum += String.fromCharCode((numToEncode % 32) + 95);
+      numToEncode = Math.floor(numToEncode / 32);
+    }
+    encodedNum += String.fromCharCode(numToEncode + 95);
+    console.log(encodedNum);
+    return encodedNum;
+  }
 }

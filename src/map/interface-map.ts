@@ -32,3 +32,7 @@ export type MapPoints = {
   startPoint: Coordinates;
   endPoint: Coordinates;
 };
+
+export enum APIKey {
+  maps = 'AIzaSyC90BCUHG7PI6cW9XNex-5bY3Dd44Rqhgs',
+}
