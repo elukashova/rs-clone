@@ -1,11 +1,11 @@
 import './random-friend-card.css';
 import AvatarSources from '../../../../components/avatar-modal/avatar-modal.types';
 import BaseComponent from '../../../../components/base-component/base-component';
-import Image from '../../../../components/base-component/image/image';
 import RandomFriend from './random-friend-card.types';
 import SvgButton from '../../../../components/base-component/button/svg-btn';
 import SvgNames from '../../../../components/base-component/svg/svg.types';
 import { ProjectColors } from '../../../../utils/consts';
+import Picture from '../../../../components/base-component/picture/picture';
 
 export default class RandomFriendCard extends BaseComponent<'div'> {
   private data: RandomFriend = {
@@ -18,7 +18,7 @@ export default class RandomFriendCard extends BaseComponent<'div'> {
 
   private infoWrapper: BaseComponent<'div'> = new BaseComponent('div', this.element, 'suggested-friends__info');
 
-  private avatar: Image = new Image(this.infoWrapper.element, 'suggested-friends__friend_photo', {
+  private avatar: Picture = new Picture(this.infoWrapper.element, 'suggested-friends__friend_photo', {
     src: this.data.avatar,
   });
 
