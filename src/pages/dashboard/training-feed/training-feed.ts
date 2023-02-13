@@ -13,8 +13,6 @@ export default class TrainingFeed extends BaseComponent<'article'> {
 
   private buttonContainer: BaseComponent<'div'> | undefined;
 
-  private posts = [];
-
   constructor(parent: HTMLElement) {
     super('article', parent, 'training-feed');
     this.showGreetingMessage();

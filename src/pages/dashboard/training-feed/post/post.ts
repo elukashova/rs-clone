@@ -62,8 +62,6 @@ export default class Post extends BaseComponent<'div'> {
 
   private addCommentButton = new Button(this.commentArea.element, 'Добавить комментарий', 'post__button');
 
-  private comments = [];
-
   constructor(data: Activity) {
     super('div', undefined, 'post');
     this.deletePost();
