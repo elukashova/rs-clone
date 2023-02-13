@@ -10,7 +10,7 @@ import { checkDataInLocalStorage, setDataToLocalStorage } from '../../utils/loca
 export default class Dashboard extends BaseComponent<'section'> {
   private leftMenu!: LeftMenu;
 
-  private trainingFeed: TrainingFeed = new TrainingFeed(this.element);
+  private trainingFeed: TrainingFeed = new TrainingFeed(this.element, this.replaceMainCallback);
 
   private rightMenu: RightMenu = new RightMenu(this.element, this.replaceMainCallback);
 
