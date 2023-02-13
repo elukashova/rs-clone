@@ -1,11 +1,14 @@
 import './recommended-friends.css';
 import BaseComponent from '../../../../components/base-component/base-component';
 import RandomFriend from './add-friend/random-friend';
+import RandomFriendCard from '../random-friend-card/random-friend-card';
 
 export default class RecommendedFriends extends BaseComponent<'div'> {
-  private heading = new BaseComponent('h5', this.element, 'recommended-friends__heading', 'Рекомендуемые друзья');
+  private heading = new BaseComponent('h5', this.element, 'recommended-friends__heading', 'Suggested friends');
 
   private friends = new BaseComponent('div', this.element, 'recommended-friends__friends');
+
+  private friendCard = new RandomFriendCard(this.element);
 
   private randomFriends: HTMLElement[] = [];
 

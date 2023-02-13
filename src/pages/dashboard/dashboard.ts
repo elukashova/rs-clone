@@ -12,7 +12,7 @@ export default class Dashboard extends BaseComponent<'section'> {
 
   private trainingFeed: TrainingFeed = new TrainingFeed(this.element);
 
-  private rightMenu: RightMenu = new RightMenu(this.element);
+  private rightMenu: RightMenu = new RightMenu(this.element, this.replaceMainCallback);
 
   private token: Token | null = checkDataInLocalStorage('userSessionToken');
 
