@@ -1,3 +1,5 @@
+import { MapPoints } from '../../map/interface-map';
+
 export interface LogIn {
   email: string;
   google: boolean;
@@ -56,10 +58,10 @@ export type User = {
 export default User;
 
 export enum SportType {
-  RUNNING,
-  HIKING,
-  WALKING,
-  BIKING,
+  RUNNING = 'Running',
+  HIKING = 'Hiking',
+  WALKING = 'Walking',
+  CYCLING = 'Cycling',
 }
 
 export type Route = {
@@ -113,14 +115,17 @@ export type Activity = {
   id: number;
   user_id: string;
   user: User;
-  sport: SportType;
-  title: string;
-  time: string;
   distance: string;
+  duration: string;
   elevation: number;
+  sport: SportType;
+  date: string;
+  time: string;
+  title: string;
   description?: string;
-  created_at: Date;
-  updated_at: Date;
+  mapPoints?: MapPoints;
+  created_at?: Date;
+  updated_at?: Date;
   location?: string;
 };
 

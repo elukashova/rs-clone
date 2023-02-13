@@ -1,0 +1,21 @@
+.comment {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.comment__like {
+  display: block;
+  width: 30px;
+  height: 30px;
+}
+
+.comment__info {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+
+.comment__date {
+  margin-left: auto;
+}
