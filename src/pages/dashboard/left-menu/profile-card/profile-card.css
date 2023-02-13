@@ -130,12 +130,13 @@
   justify-content: space-between;
 }
 
-.profile-info__heading {
+.profile-info__link {
   text-transform: uppercase;
   font-weight: 400;
   color: #1cbaa7;
   font-size: calc(0.6em + 0.3vw);
   cursor: pointer;
+  text-decoration: none;
 }
 
 .profile-info__heading:hover {
