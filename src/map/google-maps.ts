@@ -42,9 +42,9 @@ export default class GoogleMaps {
 
   public markers: google.maps.Marker[] = [];
 
-  public startPoint!: Coordinates;
+  public startPoint!: Coordinates | undefined;
 
-  public endPoint!: Coordinates;
+  public endPoint: Coordinates | undefined;
 
   public currentTravelMode: google.maps.TravelMode;
 
@@ -67,6 +67,8 @@ export default class GoogleMaps {
   public chartElevation!: BaseComponent<'div'>;
 
   public locationButton!: Button;
+
+  public clearButton!: Button;
 
   constructor(
     parent: HTMLElement,
@@ -107,7 +109,14 @@ export default class GoogleMaps {
     // переменные и слушатель для определения местоположения пользователя по геолокации
     this.locationButton = new Button(document.body, 'Go to current location');
     this.locationButton.element.style.marginTop = '10px';
+    this.locationButton.element.style.marginLeft = '20%';
     this.map.controls[google.maps.ControlPosition.TOP_CENTER].push(this.locationButton.element);
+
+    this.clearButton = new Button(document.body, 'Clear map');
+    this.clearButton.element.style.marginTop = '10px';
+    this.clearButton.element.style.marginLeft = '20px';
+    this.map.controls[google.maps.ControlPosition.TOP_CENTER].push(this.clearButton.element);
+
     this.addListeners();
   }
 
@@ -128,6 +137,15 @@ export default class GoogleMaps {
       if (directions) {
         this.getTotalDistanceAndTime(directions);
       }
+    });
+
+    this.clearButton.element.addEventListener('click', (event) => {
+      event.preventDefault();
+      this.deleteMarkers();
+      this.deleteRoute();
+      this.startPoint = undefined;
+      this.endPoint = undefined;
+      console.log(this.map, this.markers);
     });
   }
 
@@ -351,29 +369,6 @@ export default class GoogleMaps {
   public deleteMap(): void {
     this.parentElement.remove();
   }
-
-  /* public doMapRequired(): void {
-    const mapOptions = {
-      disableDefaultUI: true,
-      disableSingleClick: true,
-      disableDoubleClickZoom: true,
-      draggable: false,
-      scrollwheel: false,
-      clickableIcons: false,
-      clickable: false,
-      disableAddMarker: true,
-      disableAddRoute: true,
-      panControl: false,
-      streetViewControl: false,
-    };
-
-    this.map.setOptions(mapOptions);
-    this.markers.forEach((marker) => {
-      marker.setClickable(false);
-      google.maps.event.clearInstanceListeners(marker);
-    });
-    this.infoWindow.close();
-  } */
 
   public doStaticMap(startPoint: Coordinates, endPoint: Coordinates): string {
     const encodedPolyline = GoogleMaps.encodePolyline(startPoint, endPoint);
