@@ -144,6 +144,12 @@ export default class AddActivity extends BaseComponent<'section'> {
   constructor(parent: HTMLElement) {
     super('section', parent, 'add-activity add-activity-section');
     this.search.addSvgIcon(SvgNames.Search, ProjectColors.Grey, 'search');
-    // this.map.doMapRequired();
+    /* this.map.doDirectionRequest(
+      { lat: -33.397, lng: 150.644 },
+      { lat: -33.393, lng: 150.641 },
+      google.maps.TravelMode.WALKING,
+    );
+    google.maps.event.clearInstanceListeners(this.map);
+    this.map.doMapRequired(); */
   }
 }

@@ -342,10 +342,26 @@ export default class GoogleMaps {
     this.parentElement.remove();
   }
 
-  // TODO:
-  /*  public doMapRequired(): void {
-    this.map.addListener('click', (e: google.maps.event) => {
-      e.preventDefault();
+  /* public doMapRequired(): void {
+    const mapOptions = {
+      disableDefaultUI: true,
+      disableSingleClick: true,
+      disableDoubleClickZoom: true,
+      draggable: false,
+      scrollwheel: false,
+      clickableIcons: false,
+      clickable: false,
+      disableAddMarker: true,
+      disableAddRoute: true,
+      panControl: false,
+      streetViewControl: false,
+    };
+
+    this.map.setOptions(mapOptions);
+    this.markers.forEach((marker) => {
+      marker.setClickable(false);
+      google.maps.event.clearInstanceListeners(marker);
     });
+    this.infoWindow.close();
   } */
 }
