@@ -1,8 +1,8 @@
 import { getClassNames } from '../../../utils/utils';
 import BaseComponent from '../base-component';
-import './image.css';
+import './picture.css';
 
-export default class Image extends BaseComponent<'img'> {
+export default class Picture extends BaseComponent<'img'> {
   constructor(
     parent: HTMLElement,
     additionalClasses?: string,

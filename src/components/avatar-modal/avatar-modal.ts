@@ -1,7 +1,7 @@
 import './avatar-modal.css';
 import BaseComponent from '../base-component/base-component';
 import AvatarSources from './avatar-modal.types';
-import Image from '../base-component/image/image';
+import Picture from '../base-component/picture/picture';
 import Svg from '../base-component/svg/svg';
 import Button from '../base-component/button/button';
 import SvgNames from '../base-component/svg/svg.types';
@@ -42,7 +42,7 @@ export default class ModalAvatar extends BaseComponent<'div'> {
 
   private okBtnSVG: Svg = new Svg(this.okButton.element, SvgNames.Check, '#1CBAA7', 'avatars__button-ok_svg');
 
-  private allAvatars: Image[] = [];
+  private allAvatars: Picture[] = [];
 
   private currentAvatarUrl: string;
 
@@ -64,7 +64,7 @@ export default class ModalAvatar extends BaseComponent<'div'> {
 
   private renderAllAvatars(): void {
     Object.values(AvatarSources).forEach((source) => {
-      const avatar: Image = new Image(this.avatarsWrapper.element, 'avatars__img', {
+      const avatar: Picture = new Picture(this.avatarsWrapper.element, 'avatars__img', {
         src: source,
       });
       this.allAvatars.push(avatar);

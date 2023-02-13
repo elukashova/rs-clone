@@ -1,14 +1,14 @@
 import './comment.css';
 import BaseComponent from '../../../../../components/base-component/base-component';
-import Image from '../../../../../components/base-component/image/image';
 import Svg from '../../../../../components/base-component/svg/svg';
 import SvgNames from '../../../../../components/base-component/svg/svg.types';
 import COMMENT_DATA from '../../../../../mock/comment.data';
+import Picture from '../../../../../components/base-component/picture/picture';
 
 export default class Comment extends BaseComponent<'div'> {
   private info = new BaseComponent('div', this.element, 'comment__info');
 
-  private photo = new Image(this.info.element, 'comment__photo');
+  private photo = new Picture(this.info.element, 'comment__photo');
 
   private name = new BaseComponent('h4', this.info.element, 'comment__name');
 

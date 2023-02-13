@@ -1,0 +1,19 @@
+.google-maps__popup {
+  visibility: visible;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+  width: 100%;
+  height: 8em;
+  padding: 2%;
+  transform: translateY(1em);
+  background-color: #ffffff;
+  border-radius: 5px;
+  font-size: 1em;
+}
+
+.google-maps__popup-button {
+  width: 30%;
+  height: 3em;
+}

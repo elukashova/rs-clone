@@ -1,5 +1,6 @@
 /* eslint-disable object-curly-newline */
 /* eslint-disable max-lines-per-function */
+import './google-maps.css';
 import BaseComponent from '../components/base-component/base-component';
 import Button from '../components/base-component/button/button';
 import { ProjectColors } from '../utils/consts';
@@ -17,7 +18,8 @@ export default class GoogleMaps {
   public directionsRenderer: google.maps.DirectionsRenderer = new google.maps.DirectionsRenderer({
     polylineOptions: { strokeColor: ProjectColors.Turquoise },
     markerOptions: { icon: './assets/icons/png/geo.png' },
-    draggable: true,
+    draggable: false,
+    suppressMarkers: true,
   });
 
   public elevation: google.maps.ElevationService = new google.maps.ElevationService();
@@ -34,7 +36,7 @@ export default class GoogleMaps {
 
   public endPoint!: Coordinates;
 
-  public currentTravelMode: google.maps.TravelMode = google.maps.TravelMode.WALKING;
+  public currentTravelMode: google.maps.TravelMode;
 
   public waypoints!: google.maps.DirectionsWaypoint[];
 
@@ -53,6 +55,8 @@ export default class GoogleMaps {
   public mapWrapper!: BaseComponent<'div'>;
 
   public chartElevation!: BaseComponent<'div'>;
+
+  public locationButton!: Button;
 
   constructor(
     parent: HTMLElement,
@@ -90,6 +94,14 @@ export default class GoogleMaps {
     this.map = new google.maps.Map(parent, myOptions);
     this.directionsRenderer.setMap(this.map);
 
+    // переменные и слушатель для определения местоположения пользователя по геолокации
+    this.locationButton = new Button(document.body, 'Go to current location');
+    this.locationButton.element.style.marginTop = '10px';
+    this.map.controls[google.maps.ControlPosition.TOP_CENTER].push(this.locationButton.element);
+    this.addListeners();
+  }
+
+  private addListeners(): void {
     // слушатель добавления маркеров (не более 2)
     this.map.addListener('click', (event: google.maps.MapMouseEvent): void => {
       if (this.markers.length < this.maxMarkerCount) {
@@ -97,11 +109,7 @@ export default class GoogleMaps {
       }
     });
 
-    // переменные и слушатель для определения местоположения пользователя по геолокации
-    const locationButton = new Button(document.body, 'Go to current location');
-    locationButton.element.style.marginTop = '10px';
-    this.map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton.element);
-    locationButton.element.addEventListener('click', (): void => {
+    this.locationButton.element.addEventListener('click', (): void => {
       this.changeGeolocation();
     });
 
@@ -132,39 +140,8 @@ export default class GoogleMaps {
             lat: endPoint.lat,
             lng: endPoint.lng,
           };
-          this.doDirectionRequest(startPoint, endPoint);
+          this.doDirectionRequest(startPoint, endPoint, this.currentTravelMode);
         }
-      }
-    }
-  }
-
-  // изменение карты по геолокации при клике на кнопку
-  public changeGeolocation(): void {
-    // если браузер поддерживает геолокацию
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position: GeolocationPosition): void => {
-          const pos: Coordinates = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          };
-          this.infoWindow.setPosition(pos);
-          this.infoWindow.setContent('Location found!');
-          this.infoWindow.open(this.map);
-          this.map.setCenter(pos);
-        },
-        (): void => {
-          const latLngInfo: google.maps.LatLng | undefined = this.map.getCenter();
-          if (latLngInfo) {
-            this.catchLocationError(true, latLngInfo);
-          }
-        },
-      );
-    } else {
-      // если браузер не поддерживает геолокацию
-      const latLngInfo: google.maps.LatLng | undefined = this.map.getCenter();
-      if (latLngInfo) {
-        this.catchLocationError(false, latLngInfo);
       }
     }
   }
@@ -178,6 +155,7 @@ export default class GoogleMaps {
       animation: google.maps.Animation.DROP,
       opacity: 1,
       icon: './assets/icons/png/geo.png',
+      draggable: false,
     });
     map.panTo(location);
     map.setZoom(ZoomSettings.Closer);
@@ -197,26 +175,34 @@ export default class GoogleMaps {
 
   // запрос в Direction API на отрисовку пути
   // eslint-disable-next-line max-len
-  public doDirectionRequest(startPoint: Coordinates, endPoint: Coordinates, waypoints?: Coordinates[]): void {
+  public doDirectionRequest(startPoint: Coordinates, endPoint: Coordinates, selectedMode: string): void {
+    let travelType;
+    if (selectedMode === 'WALKING') {
+      travelType = google.maps.TravelMode.WALKING;
+    } else if (selectedMode === 'BICYCLING') {
+      travelType = google.maps.TravelMode.BICYCLING;
+    } else {
+      travelType = google.maps.TravelMode.WALKING;
+    }
     const request: MapRequest = {
       origin: startPoint, // start coordinates
       destination: endPoint, // end coordinates
-      waypoints: waypoints?.map((waypoint) => ({
-        location: waypoint,
-        stopover: false,
-      })),
-      travelMode: this.currentTravelMode,
+      travelMode: travelType || google.maps.TravelMode.WALKING,
       unitSystem: google.maps.UnitSystem.METRIC,
     };
-
     this.directionsService
       .route(request, (result: DirectionsRenderer, status: google.maps.DirectionsStatus) => {
         if (status === 'OK' && result) {
           this.directionsRenderer.setDirections(result);
-          this.markers.forEach((marker: google.maps.Marker): void => marker.setOpacity(0.0));
           this.doElevationRequest(request);
           // GoogleMaps.getMarkersAndWaypoints(result);
           this.getTotalDistanceAndTime(result);
+        } else if (status === 'ZERO_RESULTS') {
+          this.showMessage();
+          // добавлю код с появлением кнопки  с текстом,
+          // что маршрут не найден и предложением стереть маршрут и попробовать с другими данными
+        } else {
+          console.error("This route can't be laid.");
         }
       })
       .catch((error: Error): void => console.error(`Directions request failed: ${error}`));
@@ -285,11 +271,97 @@ export default class GoogleMaps {
     this.timeTotal = legs.duration ?? { text: '', value: 0 };
   }
 
+  // TODO:
   public setTravelMode(travelMode: google.maps.TravelMode): void {
     this.map.setMapTypeId(travelMode);
+  }
+
+  // изменение карты по геолокации при клике на кнопку
+  public changeGeolocation(): void {
+    // если браузер поддерживает геолокацию
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position: GeolocationPosition): void => {
+          const pos: Coordinates = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          };
+          this.infoWindow.setPosition(pos);
+          this.infoWindow.setContent('Location found!');
+          this.infoWindow.open(this.map);
+          this.map.setCenter(pos);
+        },
+        (): void => {
+          const latLngInfo: google.maps.LatLng | undefined = this.map.getCenter();
+          if (latLngInfo) {
+            this.catchLocationError(true, latLngInfo);
+          }
+        },
+      );
+    } else {
+      // если браузер не поддерживает геолокацию
+      const latLngInfo: google.maps.LatLng | undefined = this.map.getCenter();
+      if (latLngInfo) {
+        this.catchLocationError(false, latLngInfo);
+      }
+    }
+  }
+
+  public showMessage(): void {
+    const popup = new google.maps.InfoWindow();
+    const block = document.createElement('div');
+    block.classList.add('google-maps__popup');
+    block.textContent = 'Unfortunately, we were unable to find such a route. Do you want to build a different route?';
+    const button = new Button(block, 'OK', 'google-maps__popup-button');
+
+    block.append(button.element);
+    popup.setContent(block);
+    popup.open(this.map);
+
+    button.element.addEventListener('click', (event) => {
+      event.preventDefault();
+      this.deleteRoute();
+      block.style.visibility = 'hidden';
+    });
+  }
+
+  // TODO:
+  public deleteRoute(): void {
+    if (this.directionsRenderer) {
+      this.directionsRenderer.setMap(null);
+    }
+    this.deleteMarkers();
+  }
+
+  public deleteMarkers(): void {
+    this.markers.forEach((marker) => marker.setMap(null));
+    this.markers.length = 0;
   }
 
   public deleteMap(): void {
     this.parentElement.remove();
   }
+
+  /* public doMapRequired(): void {
+    const mapOptions = {
+      disableDefaultUI: true,
+      disableSingleClick: true,
+      disableDoubleClickZoom: true,
+      draggable: false,
+      scrollwheel: false,
+      clickableIcons: false,
+      clickable: false,
+      disableAddMarker: true,
+      disableAddRoute: true,
+      panControl: false,
+      streetViewControl: false,
+    };
+
+    this.map.setOptions(mapOptions);
+    this.markers.forEach((marker) => {
+      marker.setClickable(false);
+      google.maps.event.clearInstanceListeners(marker);
+    });
+    this.infoWindow.close();
+  } */
 }

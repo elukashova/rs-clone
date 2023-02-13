@@ -6,6 +6,7 @@ import Routes from './router.types';
 import AddActivity from '../../pages/add-activity/add-activity';
 import Friends from '../../pages/find-friends/find-friends';
 import NewRoutePage from '../../pages/new-route-page/new-route-page';
+import OurTeam from '../../pages/our-team/our-team';
 
 export default class Router {
   private main: Main;
@@ -21,6 +22,8 @@ export default class Router {
   private findFriends: Friends | null = null;
 
   private addRoute: NewRoutePage | null = null;
+
+  private aboutTeam: OurTeam | null = null;
 
   constructor(main: Main, private replaceBackgroundCallback: (location: string) => void) {
     this.main = main;
@@ -54,6 +57,10 @@ export default class Router {
       case Routes.AddRoute:
         this.addRoute = new NewRoutePage(this.main.element);
         this.main.setContent(this.addRoute);
+        break;
+      case Routes.AboutTeam:
+        this.aboutTeam = new OurTeam(this.main.element);
+        this.main.setContent(this.aboutTeam);
         break;
       default:
         console.log('will be 404 page'); // temporary placeholder
