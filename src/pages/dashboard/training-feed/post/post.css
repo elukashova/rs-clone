@@ -105,6 +105,10 @@
   margin-top: 1em;
 }
 
+.post__button:disabled {
+  background-color: grey;
+}
+
 .active {
   display: block;
 }

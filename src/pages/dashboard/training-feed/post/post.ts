@@ -58,9 +58,12 @@ export default class Post extends BaseComponent<'div'> {
 
   private commentIcon = new PostIcon(this.icons.element, SvgNames.CloseThin, 'grey', 'post__comment');
 
-  private commentArea = new TextArea(this.element, 'post__add-comment', '', {});
+  private commentArea = new TextArea(this.element, 'post__add-comment', '', {
+    maxlength: '200',
+    placeholder: 'type something up to 200 characters',
+  });
 
-  private addCommentButton = new Button(this.commentArea.element, 'Добавить комментарий', 'post__button');
+  private addCommentButton = new Button(this.commentArea.element, 'comment', 'post__button');
 
   constructor(data: Activity) {
     super('div', undefined, 'post');
@@ -69,6 +72,7 @@ export default class Post extends BaseComponent<'div'> {
     this.postComment();
     this.addLike();
     this.setContent(data);
+    this.toggleAddCommentButtonState();
   }
 
   private setContent(data: Activity): void {
@@ -94,6 +98,7 @@ export default class Post extends BaseComponent<'div'> {
 
   private openComments(): void {
     this.commentIcon.element.addEventListener('click', () => {
+      this.addCommentButton.element.disabled = true;
       this.commentArea.element.classList.toggle('active');
     });
   }
@@ -123,6 +128,16 @@ export default class Post extends BaseComponent<'div'> {
   private deletePost(): void {
     this.edit.element.addEventListener('click', () => {
       this.element.remove();
+    });
+  }
+
+  private toggleAddCommentButtonState(): void {
+    this.commentArea.element.addEventListener('input', () => {
+      if (this.commentArea.textValue) {
+        this.addCommentButton.element.disabled = false;
+      } else {
+        this.addCommentButton.element.disabled = true;
+      }
     });
   }
 }
