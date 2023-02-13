@@ -99,6 +99,10 @@ export default class OurActivity extends BaseComponent<'div'> {
 
   private choosenSportsCounter: number = 3;
 
+  private noSportsMessage: BaseComponent<'h6'> | undefined;
+
+  private isNoChoice: boolean = false;
+
   constructor(parent: HTMLElement) {
     super('div', parent, 'our-activity');
     this.setTimeAndSteps('0 hr', '0 steps');
@@ -167,6 +171,10 @@ export default class OurActivity extends BaseComponent<'div'> {
 
   private activateSportChanging = (): void => {
     this.isUpdate = true;
+    if (this.noSportsMessage && this.isNoChoice) {
+      this.sportsIcons.element.removeChild(this.noSportsMessage.element);
+      this.isNoChoice = false;
+    }
     this.editBlock.editBtn.replaceBtnSvg(SvgNames.CloseThin, 'our-activity', ProjectColors.Grey);
     this.editBlock.appendOkButton(this.confirmChoiceCallback);
     this.makeAreaEditable();
@@ -193,7 +201,7 @@ export default class OurActivity extends BaseComponent<'div'> {
   }
 
   private checkMissingSports(): Svg[] {
-    // eslint-disable-next-line max-len
+    this.putSvgInRightOrder();
     return this.allSvgElements.filter((svg: Svg) => this.currentSvgElements.indexOf(svg) === -1);
   }
 
@@ -240,8 +248,7 @@ export default class OurActivity extends BaseComponent<'div'> {
 
   private highlightAlreadyChosenSports(): void {
     // eslint-disable-next-line max-len
-    const chosenSports: Svg[] = this.currentSvgElements.filter((svg) => this.allSvgElements.includes(svg));
-    chosenSports.forEach((sport) => {
+    this.currentSvgElements.forEach((sport) => {
       sport.updateFillColor(ProjectColors.Orange);
       sport.svg.classList.add('chosen-sport');
     });
@@ -280,18 +287,26 @@ export default class OurActivity extends BaseComponent<'div'> {
   }
 
   private cancelSportChange = (): void => {
-    this.resetSportChoiceArea(this.currentSvgElements);
     this.chosenSvgElements = this.currentSvgElements;
+    this.resetSportChoiceArea(this.currentSvgElements);
     this.setCurrentSport();
     this.highlightCurrentIcon();
+    this.choosenSportsCounter = this.chosenSvgElements.length;
   };
 
   private confirmChoiceCallback = (): void => {
-    this.resetSportChoiceArea(this.chosenSvgElements);
-    this.appendNewSportSvg();
     this.currentSvgElements = this.chosenSvgElements;
-    this.setCurrentSport();
-    this.highlightCurrentIcon();
+    this.choosenSportsCounter = this.currentSvgElements.length;
+
+    if (this.chosenSvgElements.length !== 0) {
+      this.resetSportChoiceArea(this.chosenSvgElements);
+      this.appendNewSportSvg();
+      this.setCurrentSport();
+      this.highlightCurrentIcon();
+    } else {
+      this.showNoSportsMessage();
+      this.resetSportChoiceArea(this.chosenSvgElements);
+    }
   };
 
   private resetSportChoiceArea(array: Svg[]): void {
@@ -308,6 +323,7 @@ export default class OurActivity extends BaseComponent<'div'> {
   }
 
   private removeUnnecessarySvg(array: Svg[]): void {
+    this.putSvgInRightOrder();
     // eslint-disable-next-line max-len
     const svgToRemove: Svg[] = this.allSvgElements.filter((svg) => !array.includes(svg));
     svgToRemove.forEach((svg: Svg) => {
@@ -316,11 +332,11 @@ export default class OurActivity extends BaseComponent<'div'> {
   }
 
   private appendNewSportSvg(): void {
+    this.putSvgInRightOrder();
     // eslint-disable-next-line max-len
     const svgToAppend: Svg[] = this.allSvgElements.filter((svg) => this.chosenSvgElements.includes(svg));
     svgToAppend.forEach((svg: Svg) => {
       this.sportsIcons.element.append(svg.svg);
-      this.currentSvgElements.push(svg);
     });
   }
 
@@ -328,5 +344,22 @@ export default class OurActivity extends BaseComponent<'div'> {
     if (this.currentIcon && !this.currentSvgElements.includes(this.currentIcon)) {
       this.currentIconIndex = 0;
     }
+  }
+
+  private putSvgInRightOrder(): void {
+    // eslint-disable-next-line max-len
+    this.chosenSvgElements.sort((a, b) => this.allSvgElements.indexOf(a) - this.allSvgElements.indexOf(b));
+    // eslint-disable-next-line max-len
+    this.currentSvgElements.sort((a, b) => this.allSvgElements.indexOf(a) - this.allSvgElements.indexOf(b));
+  }
+
+  private showNoSportsMessage(): void {
+    this.isNoChoice = true;
+    this.noSportsMessage = new BaseComponent(
+      'h6',
+      this.sportsIcons.element,
+      'our-activity__icons_header',
+      'No sport chosen yet',
+    );
   }
 }
