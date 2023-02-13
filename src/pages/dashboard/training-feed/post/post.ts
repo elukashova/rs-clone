@@ -12,6 +12,7 @@ import Picture from '../../../../components/base-component/picture/picture';
 import GoogleMaps from '../../../../map/google-maps';
 import Comment from './comment/comment';
 import COMMENT_DATA from '../../../../mock/comment.data';
+import { ProjectColors } from '../../../../utils/consts';
 
 export default class Post extends BaseComponent<'div'> {
   private userInfo = new BaseComponent('div', this.element, 'post__user-info');
@@ -84,7 +85,7 @@ export default class Post extends BaseComponent<'div'> {
     this.speed.value = 'later';
     this.time.value = `${data.duration}`;
     this.elevation.value = `${data.elevation} m`;
-    this.activityIconSvg = new Svg(this.activityIcon.element, data.sport, 'grey', 'why');
+    this.activityIconSvg = new Svg(this.activityIcon.element, data.sport, ProjectColors.Grey, 'activity__icon-svg');
     if (data.mapPoints) {
       this.googleMap = new GoogleMaps(
         this.map.element,
@@ -118,11 +119,11 @@ export default class Post extends BaseComponent<'div'> {
     this.likeIcon.element.addEventListener('click', () => {
       if (!flag) {
         this.likeIcon.value = (+this.likeIcon.value + 1).toString();
-        this.likeIcon.icon?.updateFillColor('red');
+        this.likeIcon.icon?.updateFillColor(ProjectColors.Orange);
         flag = true;
       } else {
         this.likeIcon.value = (+this.likeIcon.value - 1).toString();
-        this.likeIcon.icon?.updateFillColor('black');
+        this.likeIcon.icon?.updateFillColor(ProjectColors.Grey);
         flag = false;
       }
     });
