@@ -1,5 +1,5 @@
 import './footer.css';
-import Image from '../base-component/image/image';
+import Picture from '../base-component/picture/picture';
 import BaseComponent from '../base-component/base-component';
 import ExternalLink from '../base-component/external-link/external-link';
 import Routes from '../../app/router/router.types';
@@ -26,21 +26,21 @@ export default class Footer extends BaseComponent<'footer'> {
     'matthewthewizzard',
   );
 
-  private matthewCat = new Image(this.matthewLink.element, 'footer-github-logo', {
+  private matthewCat = new Picture(this.matthewLink.element, 'footer-github-logo', {
     src: '../assets/icons/png/github-left.png',
     alt: "Matthew's github",
   });
 
   private elenaLink = new ExternalLink(this.linksContainer.element, 'https://github.com/elukashova', 'elukashova');
 
-  private lenaCat = new Image(this.elenaLink.element, 'footer-github-logo', {
+  private lenaCat = new Picture(this.elenaLink.element, 'footer-github-logo', {
     src: '../assets/icons/png/github-left.png',
     alt: "Lena's github",
   });
 
   private nastyaLink = new ExternalLink(this.linksContainer.element, 'https://github.com/TrickyPie', 'trickypie');
 
-  private nastyaCat = new Image(this.nastyaLink.element, 'footer-github-logo', {
+  private nastyaCat = new Picture(this.nastyaLink.element, 'footer-github-logo', {
     src: '../assets/icons/png/github-right.png',
     alt: "Nastya's github",
   });
@@ -62,7 +62,7 @@ export default class Footer extends BaseComponent<'footer'> {
 
   private rssLink = new ExternalLink(this.rsContainer.element, 'https://rs.school/js/', 'footer-rs-school-link');
 
-  private rssLogo = new Image(this.rssLink.element, 'footer-rs-school-logo', {
+  private rssLogo = new Picture(this.rssLink.element, 'footer-rs-school-logo', {
     src: '../assets/icons/png/rsschool.png',
     alt: "RS School logotype. It's free-of-charge and community-based education program.",
   });

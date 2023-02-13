@@ -27,6 +27,14 @@ enum SvgNames {
   Running = 'running',
   Walking = 'walking',
   Cycling = 'cycling',
+
+  Postgresql = 'postgresql',
+  Jsonwebtokens = 'jsonwebtokens',
+  Prisma = 'prisma',
+  Nestjs = 'nestjs',
+  Github = 'github-in-circle',
+  Webpack = 'webpack',
+  Typescript = 'typescript',
 }
 
 export default SvgNames;

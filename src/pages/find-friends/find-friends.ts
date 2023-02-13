@@ -1,5 +1,5 @@
 import './find-friends.css';
-import users from './user-test';
+import users from '../../mock/find-friends.data';
 import BaseComponent from '../../components/base-component/base-component';
 import { User, Token } from '../../app/loader/loader.types';
 import { checkDataInLocalStorage } from '../../utils/local-storage';

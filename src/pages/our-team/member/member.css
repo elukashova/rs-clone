@@ -1,0 +1,11 @@
+.member__block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1em;
+}
+
+.member__photo.icon {
+  width: 7em;
+  height: 7em;
+}
