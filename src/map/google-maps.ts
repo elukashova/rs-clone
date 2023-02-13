@@ -1,5 +1,7 @@
 /* eslint-disable object-curly-newline */
 /* eslint-disable max-lines-per-function */
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { encode } from '@googlemaps/polyline-codec';
 import './google-maps.css';
 import BaseComponent from '../components/base-component/base-component';
 import Button from '../components/base-component/button/button';
@@ -373,13 +375,17 @@ export default class GoogleMaps {
     this.infoWindow.close();
   } */
 
-  public static doStaticMap(startPoint: Coordinates, endPoint: Coordinates): string {
-    // const encodedPolyline = GoogleMaps.encodePolyline(startPoint, endPoint);
+  public doStaticMap(startPoint: Coordinates, endPoint: Coordinates): string {
+    const encodedPolyline = GoogleMaps.encodePolyline(startPoint, endPoint);
+    const test = encode([startPoint, endPoint], 5);
+
+    console.log(`test: ${test}`, `encodedPolyline: ${encodedPolyline}`);
+    this.testMap();
     const request = {
       key: `${APIKey.maps}`,
       size: '800x400',
       // path: `color:0x0000ff|weight:5|enc:${encodedPolyline}`,
-      path: `color:0x1CBAA7|weight:5|geodesic:true|${startPoint.lat},${startPoint.lng}|${endPoint.lat},${endPoint.lng}`,
+      path: `color:0x1CBAA7|weight:5|geodesic:true|enc:${test}`,
       /* zoom: 8, */
       // scale: 2,
       /* center: `${startPoint}`, */
@@ -424,5 +430,36 @@ export default class GoogleMaps {
     encodedNum += String.fromCharCode(numToEncode + 95);
     console.log(encodedNum);
     return encodedNum;
+  }
+
+  public testMap(/* start: Coordinates, end: Coordinates */): void {
+    const path = this.directionsRenderer.getDirections();
+    console.log(path);
+    // .route(start, end).then((data) => console.log(data));
+    /* .directions.routes[0].overview_polyline;
+    let markers = [];
+    const waypoints_labels = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'];
+    let waypoints_label_iter = 0;
+    markers.push(`markers=color:green|label:${waypoints_labels[waypoints_label_iter]}|${start}`);
+
+    for (let i = 0; i < request.waypoints.length; i += 1) {
+      // I have waypoints that are not stopovers I dont want to display them
+      if (request.waypoints[i].stopover === true) {
+        markers.push(
+          'markers=color:blue|label:' +
+            waypoints_labels[++waypoints_label_iter] +
+            '|' +
+            request.waypoints[i].location.lat() +
+            ',' +
+            request.waypoints[i].location.lng(),
+        );
+      }
+    }
+
+    markers.push(`markers=color:red|label:${waypoints_labels[++waypoints_label_iter]}|${end}`);
+
+    markers = markers.join('&');
+
+    alert(`https://maps.googleapis.com/maps/api/staticmap?size=1000x1000&maptype=roadmap&path=enc:${path}&${markers}`); */
   }
 }
