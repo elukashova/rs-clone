@@ -153,9 +153,14 @@ export default class AddActivity extends BaseComponent<'section'> {
     google.maps.event.clearInstanceListeners(this.map);
     this.map.doMapRequired(); */
     console.log(this.map);
-    const url = GoogleMaps.doStaticMap(
+    this.initStaticMap();
+  }
+
+  public async initStaticMap(): Promise<void> {
+    const url = await GoogleMaps.drawStaticMap(
       { lat: -33.77341785585683, lng: 151.02294751876593 },
       { lat: -33.78387945569748, lng: 150.70936384113133 },
+      google.maps.TravelMode.WALKING,
     );
     const mapImg = new BaseComponent('img', this.mapDiv.element, '', '', {
       src: `${url}`,

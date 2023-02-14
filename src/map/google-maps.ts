@@ -1,7 +1,7 @@
 /* eslint-disable object-curly-newline */
 /* eslint-disable max-lines-per-function */
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { encode } from '@googlemaps/polyline-codec';
+import { decode } from '@googlemaps/polyline-codec';
 import './google-maps.css';
 import BaseComponent from '../components/base-component/base-component';
 import Button from '../components/base-component/button/button';
@@ -370,41 +370,49 @@ export default class GoogleMaps {
     this.parentElement.remove();
   }
 
-  public static requestTest(startPoint: Coordinates, endPoint: Coordinates): void {
+  public static async drawStaticMap(
+    start: Coordinates,
+    end: Coordinates,
+    activityType: google.maps.TravelMode,
+  ): Promise<string> {
+    const data = await GoogleMaps.doRequestForStaticMap(start, end, activityType);
+    const url = GoogleMaps.createURL(start, end, data);
+    return url;
+  }
+
+  public static async doRequestForStaticMap(
+    startPoint: Coordinates,
+    endPoint: Coordinates,
+    activityType: google.maps.TravelMode,
+  ): Promise<string> {
     const request = {
       origin: startPoint,
       destination: endPoint,
-      travelMode: google.maps.TravelMode.WALKING,
+      travelMode: activityType,
     };
+    let res: string = '';
     const service = new google.maps.DirectionsService();
-    service
-      .route(request, (result: DirectionsRenderer) => {
-        console.log(result?.routes[0].overview_polyline);
-        /* if (result) {
-          GoogleMaps.doStaticMap(startPoint, endPoint, result.routes[0].overview_polyline);
-        } */
-        let response;
-        if (result) {
-          response = result?.routes[0].overview_polyline;
-        }
-        return response;
-      })
-      .catch((error: Error): void => console.error(`Directions request failed: ${error}`));
+    try {
+      const result = await service.route(request);
+      if (result) {
+        const decodedLine = decode(result.routes[0].overview_polyline);
+        res = decodedLine.map((coordinate) => coordinate.join(',')).join('|');
+        return res;
+      }
+    } catch (error) {
+      console.error(`Directions request failed: ${error}`);
+    }
+    return res;
   }
 
   // eslint-disable-next-line max-len
-  public static doStaticMap(startPoint: Coordinates, endPoint: Coordinates): string {
-    const test = encode([startPoint, endPoint], 5);
+  public static createURL(startPoint: Coordinates, endPoint: Coordinates, line: string): string {
+    // const poliline = GoogleMaps.requestTest(startPoint, endPoint);
+    console.log(line);
     const request = {
       key: `${APIKey.maps}`,
       size: '800x400',
-      // path: `color:0x0000ff|weight:5|enc:${encodedPolyline}`,
-      path: `color:0x1CBAA7|weight:5|geodesic:true|enc:${test}`,
-      /* zoom: 8, */
-      // scale: 2,
-      /* center: `${startPoint}`, */
-      // markers: `${startPoint}|${endPoint}`,
-      // markers: `icon:https://i.yapx.ru/VgFzC.png|${testStr}`,
+      path: `color:0x1CBAA7ff|weight:5|${line}`,
       markers: `color:0xFFAE0B|${startPoint.lat},${startPoint.lng}|${endPoint.lat},${endPoint.lng}`,
     };
 
