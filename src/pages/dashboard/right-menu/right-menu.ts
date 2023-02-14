@@ -1,7 +1,5 @@
 import './right-menu.css';
 import BaseComponent from '../../../components/base-component/base-component';
-// import YourTasks from './your-tasks/your-tasks';
-// import RecommendedFriends from './recommended-friends/recommended-friends';
 import Routes from '../../../app/router/router.types';
 import NavigationLink from '../../../components/base-component/link/link';
 import { Link } from '../../../components/base-component/link/link.types';
@@ -29,7 +27,6 @@ export default class RightMenu extends BaseComponent<'aside'> {
 
   private friendsCardsLimit: number = 3;
 
-  // public yourTasks = new YourTasks(this.element);
   private AddRouteLink = new NavigationLink(this.replaceMainCallback, this.data);
 
   private friendsWrapper: BaseComponent<'div'> = new BaseComponent('div', this.element, 'suggested-friends__wrapper');

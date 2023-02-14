@@ -7,6 +7,6 @@ export const getFriends = (token: Token): Promise<FriendData[]> => Loader.getUse
 
 export const getNotFriends = (token: Token): Promise<FriendData[]> => Loader.getUserData(Methods.Get, Endpoints.GetNotFriends, token);
 
-export const addFriend = (id: string, params: FriendId): Promise<void> => Loader.postData(Methods.Post, `${Endpoints.AddFriend}${id}`, params);
+export const addFriend = (token: Token, params: FriendId): Promise<void> => Loader.postData(Methods.Post, Endpoints.AddFriend, params, token);
 
-export const deleteFriend = (id: string, params: FriendId): Promise<void> => Loader.deleteData(Methods.Delete, `${Endpoints.Deletefriend}${id}`, params);
+export const deleteFriend = (token: Token, params: FriendId): Promise<void> => Loader.deleteData(Methods.Delete, Endpoints.DeleteFriend, params, token);

@@ -26,11 +26,11 @@ export enum Endpoints {
   Login = 'auth/signin',
   Signup = 'auth/signup',
   GetUser = 'auth/me',
-  UpdateUser = 'update/',
+  UpdateUser = 'update',
   GetFriends = 'friends',
   GetNotFriends = 'no-friends',
-  AddFriend = 'friends/',
-  Deletefriend = 'friends/',
+  AddFriend = 'friends',
+  DeleteFriend = 'friends',
 }
 
 export type LoadRequest = {

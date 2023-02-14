@@ -5,11 +5,11 @@ import SvgNames from '../../../../components/base-component/svg/svg.types';
 import { ProjectColors } from '../../../../utils/consts';
 import Picture from '../../../../components/base-component/picture/picture';
 import { checkDataInLocalStorage } from '../../../../utils/local-storage';
-import { FriendData, FriendId } from '../../../../app/loader/loader.types';
+import { FriendData, FriendId, Token } from '../../../../app/loader/loader.types';
 import { addFriend, deleteFriend } from '../../../../app/loader/services/friends-services';
 
 export default class RandomFriendCard extends BaseComponent<'div'> {
-  private id: string | null = RandomFriendCard.getIdFromLocalStorage();
+  private token: Token | null = checkDataInLocalStorage('userSessionToken');
 
   private plusButton: SvgButton = new SvgButton(this.element, '', 'suggested-friends__btn');
 
@@ -41,41 +41,31 @@ export default class RandomFriendCard extends BaseComponent<'div'> {
 
   private isAdded: boolean = false;
 
-  private userInfo: FriendData = {
-    id: '',
-    username: '',
-    country: '',
-    avatarUrl: '',
-  };
-
   private testInfo = {
     friendId: this.user.id,
   };
 
   constructor(private user: FriendData) {
     super('div', undefined, 'suggested-friends__friend');
-    this.userInfo = {
-      ...user,
-    };
     this.plusButton.appendSvg(SvgNames.Plus, 'suggested-friends', ProjectColors.Turquoise);
     this.plusButton.element.addEventListener('click', this.addFriendCallback);
   }
 
   private addFriendCallback = (): void => {
-    if (this.id && this.isAdded === false) {
-      RandomFriendCard.addNewFriend(this.id, this.testInfo);
+    if (this.token && this.isAdded === false) {
+      RandomFriendCard.addNewFriend(this.token, this.testInfo);
       this.isAdded = true;
-    } else if (this.id && this.isAdded === true) {
+    } else if (this.token && this.isAdded === true) {
       this.isAdded = false;
     }
     this.setButtonFunction();
   };
 
   private deleteFriendCallback = (): void => {
-    if (this.id && this.isAdded === true) {
-      RandomFriendCard.deleteFriend(this.id, this.testInfo);
+    if (this.token && this.isAdded === true) {
+      RandomFriendCard.deleteFriend(this.token, this.testInfo);
       this.isAdded = false;
-    } else if (this.id && this.isAdded === false) {
+    } else if (this.token && this.isAdded === false) {
       this.isAdded = true;
     }
     this.setButtonFunction();
@@ -93,16 +83,11 @@ export default class RandomFriendCard extends BaseComponent<'div'> {
     }
   }
 
-  private static addNewFriend(id: string, data: FriendId): Promise<void> {
-    return addFriend(id, data);
+  private static addNewFriend(token: Token, data: FriendId): Promise<void> {
+    return addFriend(token, data);
   }
 
-  private static deleteFriend(id: string, data: FriendId): Promise<void> {
-    return deleteFriend(id, data);
-  }
-
-  private static getIdFromLocalStorage(): string | null {
-    const id: string | null = checkDataInLocalStorage('myUserId');
-    return id;
+  private static deleteFriend(token: Token, data: FriendId): Promise<void> {
+    return deleteFriend(token, data);
   }
 }

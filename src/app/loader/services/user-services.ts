@@ -9,5 +9,5 @@ export const loginUser = (params: LogIn): Promise<Token> => Loader.postData(Meth
 
 export const getUser = (token: Token): Promise<User> => Loader.getUserData(Methods.Get, Endpoints.GetUser, token);
 
-export const updateUser = (id: string, params: UpdateUserData): Promise<User> =>
-  Loader.putUserData(Methods.Put, `${Endpoints.UpdateUser}${id}`, params);
+export const updateUser = (token: Token, params: UpdateUserData): Promise<User> =>
+  Loader.putUserData(Methods.Put, Endpoints.UpdateUser, params, token);

@@ -29,10 +29,16 @@ export default class Loader {
     }).then((response: Response) => this.errorHandler(response));
   }
 
-  public static postData<T>(method: Methods, view: string, params?: RequestData): Promise<T> {
+  // eslint-disable-next-line
+  public static postData<T>(
+    method: Methods,
+    view: string,
+    params?: RequestData,
+    { token }: { token?: string } = {},
+  ): Promise<T> {
     const url: URL = Loader.createURL(view);
 
-    return this.load({ url, method, params }).then((response: Response) => response.json());
+    return this.load({ url, method, params, token }).then((response: Response) => response.json());
   }
 
   // eslint-disable-next-line max-len
@@ -42,21 +48,26 @@ export default class Loader {
   }
 
   // eslint-disable-next-line max-len
-  public static putUserData<T>(method: Methods, view: string, params: UpdateUserData): Promise<T> {
+  public static putUserData<T>(
+    method: Methods,
+    view: string,
+    params: UpdateUserData,
+    { token }: { token?: string } = {},
+  ): Promise<T> {
     const url: URL = Loader.createURL(view);
-    return this.load({ url, method, params }).then((response: Response) => response.json());
+    return this.load({ url, method, params, token }).then((response: Response) => response.json());
   }
 
-  public static deleteData<T>(method: Methods, view: string, params?: FriendId): Promise<T> {
+  public static deleteData<T>(
+    method: Methods,
+    view: string,
+    params?: FriendId,
+    { token }: { token?: string } = {},
+  ): Promise<T> {
     const url: URL = Loader.createURL(view);
 
-    return this.load({ url, method, params }).then((res: Response) => res.json());
+    return this.load({ url, method, params, token }).then((res: Response) => res.json());
   }
-
-  // public static getAllUsersData<T>(method: Methods, view: string): Promise<T> {
-  //   const url: URL = Loader.createURL(view);
-  //   return this.load({ url, method }).then((response: Response) => response.json());
-  // }
 
   private static createURL = (view: string): URL => {
     const url: URL = new URL(view, Loader.server);
