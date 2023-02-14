@@ -5,11 +5,11 @@ import Picture from '../base-component/picture/picture';
 import Svg from '../base-component/svg/svg';
 import Button from '../base-component/button/button';
 import SvgNames from '../base-component/svg/svg.types';
-import UrlObj from '../../utils/utils.types';
 import { Token, UpdateUserData, User } from '../../app/loader/loader.types';
 import { updateUser } from '../../app/loader/services/user-services';
 import { checkDataInLocalStorage } from '../../utils/local-storage';
 import eventEmitter from '../../utils/event-emitter';
+import { EventData } from '../../utils/event-emitter.types';
 
 export default class ModalAvatar extends BaseComponent<'div'> {
   private modal: BaseComponent<'div'> = new BaseComponent('div', this.element, 'avatars__modal');
@@ -48,9 +48,10 @@ export default class ModalAvatar extends BaseComponent<'div'> {
 
   private token: Token | null = checkDataInLocalStorage('userSessionToken');
 
-  constructor(private root: HTMLElement, source: UrlObj) {
+  constructor(private root: HTMLElement, source: EventData) {
     super('div', root, 'avatars__background');
-    this.currentAvatarUrl = source.url;
+    console.log(source);
+    this.currentAvatarUrl = `${source.url}`;
     this.renderAllAvatars();
     this.cancelButton.element.addEventListener('click', this.cancelButtonCallback);
     this.okButton.element.addEventListener('click', this.okButtonCallback);

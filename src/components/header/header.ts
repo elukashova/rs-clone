@@ -8,7 +8,7 @@ import Svg from '../base-component/svg/svg';
 import { ProjectColors } from '../../utils/consts';
 import SvgNames from '../base-component/svg/svg.types';
 import eventEmitter from '../../utils/event-emitter';
-import UrlObj from '../../utils/utils.types';
+import { EventData } from '../../utils/event-emitter.types';
 
 export default class Header extends BaseComponent<'header'> {
   private contentWrapper = new BaseComponent('div', this.element, 'header-content-wrapper');
@@ -141,13 +141,13 @@ export default class Header extends BaseComponent<'header'> {
     this.element.style.display = 'flex';
   }
 
-  private updateProfilePicture(url: string): void {
-    this.avatarIcon.element.src = url;
+  private updateProfilePicture(source: EventData): void {
+    this.avatarIcon.element.src = `${source.url}`;
   }
 
   private subscribeToEvents(): void {
-    eventEmitter.on('updateAvatar', (source: UrlObj) => {
-      this.updateProfilePicture(source.url);
+    eventEmitter.on('updateAvatar', (source: EventData) => {
+      this.updateProfilePicture(source);
     });
   }
 }

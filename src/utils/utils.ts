@@ -20,3 +20,11 @@ export function provideRandomUsers(data: FriendData[], limit: number): FriendDat
 
   return uniqueUsers;
 }
+
+export function transformNameFormat(name: string): string {
+  const username: string[] = name.split(' ');
+  for (let i: number = 0; i < username.length; i += 1) {
+    username[i] = username[i].charAt(0).toUpperCase() + username[i].slice(1).toLowerCase();
+  }
+  return username.join(' ');
+}
