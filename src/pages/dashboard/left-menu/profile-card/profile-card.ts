@@ -6,11 +6,12 @@ import SvgNames from '../../../../components/base-component/svg/svg.types';
 import Button from '../../../../components/base-component/button/button';
 import eventEmitter from '../../../../utils/event-emitter';
 import Picture from '../../../../components/base-component/picture/picture';
-import UrlObj from '../../../../utils/utils.types';
 import EditableTextarea from '../../../../components/base-component/textarea/editable-textarea';
 import { TextareaTypes } from '../../../../components/base-component/textarea/editable-textarea.types';
 import { ProjectColors } from '../../../../utils/consts';
 import Routes from '../../../../app/router/router.types';
+import { User } from '../../../../app/loader/loader.types';
+import { EventData } from '../../../../utils/event-emitter.types';
 
 export default class ProfileCard extends BaseComponent<'div'> {
   private photo: Picture = new Picture(this.element, 'profile-card__photo');
@@ -30,16 +31,28 @@ export default class ProfileCard extends BaseComponent<'div'> {
 
   private profileScore: BaseComponent<'div'> | undefined;
 
-  public folowers: ProfileInfo = new ProfileInfo('followee', Routes.FindFriends, this.replaceMainCallback);
+  private followeesCounter: number = this.user.followees.length;
 
-  public subscribers: ProfileInfo = new ProfileInfo('follower', Routes.FindFriends, this.replaceMainCallback);
+  public followers: ProfileInfo = new ProfileInfo(
+    'followers',
+    Routes.FindFriends,
+    this.replaceMainCallback,
+    this.user.followers.length,
+  );
+
+  public followees: ProfileInfo = new ProfileInfo(
+    'followees',
+    Routes.FindFriends,
+    this.replaceMainCallback,
+    this.user.followees.length,
+  );
 
   public trainings: ProfileInfo = new ProfileInfo('activities', Routes.AddActivity, this.replaceMainCallback);
 
   // eslint-disable-next-line max-len
-  constructor(parent: HTMLElement, photo: string, name: string, bio: string, private replaceMainCallback: () => void) {
+  constructor(parent: HTMLElement, private user: User, private replaceMainCallback: () => void) {
     super('div', parent, 'profile-card');
-    this.render(photo, name, bio);
+    this.render(user.avatarUrl, user.username, user.bio);
     this.changePhotoButton.element.addEventListener('click', this.changePhotoBtnCallback);
     this.subscribeToEvents();
   }
@@ -50,20 +63,30 @@ export default class ProfileCard extends BaseComponent<'div'> {
     this.about = new EditableTextarea(this.element, 'profile-card__about', bio, TextareaTypes.Bio);
     this.profileScore = new BaseComponent('div', this.element, 'profile-card__info');
     // eslint-disable-next-line prettier/prettier, max-len
-    this.profileScore.element.append(this.folowers.element, this.subscribers.element, this.trainings.element);
+    this.profileScore.element.append(this.followers.element, this.followees.element, this.trainings.element);
   }
 
   private changePhotoBtnCallback = (): void => {
     eventEmitter.emit('openAvatarModal', { url: this.photo.element.src });
   };
 
-  private updateProfilePicture(url: string): void {
-    this.photo.element.src = url;
+  private updateProfilePicture(url: EventData): void {
+    this.photo.element.src = `${url.url}`;
   }
 
   private subscribeToEvents(): void {
-    eventEmitter.on('updateAvatar', (source: UrlObj) => {
-      this.updateProfilePicture(source.url);
+    eventEmitter.on('updateAvatar', (source: EventData) => {
+      this.updateProfilePicture(source);
+    });
+
+    eventEmitter.on('friendAdded', () => {
+      this.followeesCounter += 1;
+      this.followees.updateScore(this.followeesCounter);
+    });
+
+    eventEmitter.on('friendDeleted', () => {
+      this.followeesCounter -= 1;
+      this.followees.updateScore(this.followeesCounter);
     });
   }
 }

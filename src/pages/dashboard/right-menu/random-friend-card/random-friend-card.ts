@@ -7,6 +7,7 @@ import Picture from '../../../../components/base-component/picture/picture';
 import { checkDataInLocalStorage } from '../../../../utils/local-storage';
 import { FriendData, FriendId, Token } from '../../../../app/loader/loader.types';
 import { addFriend, deleteFriend } from '../../../../app/loader/services/friends-services';
+import eventEmitter from '../../../../utils/event-emitter';
 
 export default class RandomFriendCard extends BaseComponent<'div'> {
   private token: Token | null = checkDataInLocalStorage('userSessionToken');
@@ -55,20 +56,18 @@ export default class RandomFriendCard extends BaseComponent<'div'> {
     if (this.token && this.isAdded === false) {
       RandomFriendCard.addNewFriend(this.token, this.testInfo);
       this.isAdded = true;
-    } else if (this.token && this.isAdded === true) {
-      this.isAdded = false;
+      eventEmitter.emit('friendAdded', {});
+      this.setButtonFunction();
     }
-    this.setButtonFunction();
   };
 
   private deleteFriendCallback = (): void => {
     if (this.token && this.isAdded === true) {
       RandomFriendCard.deleteFriend(this.token, this.testInfo);
       this.isAdded = false;
-    } else if (this.token && this.isAdded === false) {
-      this.isAdded = true;
+      eventEmitter.emit('friendDeleted', {});
+      this.setButtonFunction();
     }
-    this.setButtonFunction();
   };
 
   private setButtonFunction(): void {

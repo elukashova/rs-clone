@@ -61,6 +61,16 @@ export type User = {
   email: string;
   id: string;
   username: string;
+  followees: FolloweeId[];
+  followers: FollowerId[];
+};
+
+type FollowerId = {
+  follower_id: string;
+};
+
+type FolloweeId = {
+  followee_id: string;
 };
 
 export type FriendData = {

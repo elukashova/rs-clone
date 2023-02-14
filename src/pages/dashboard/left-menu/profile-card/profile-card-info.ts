@@ -19,13 +19,20 @@ export default class ProfileInfo extends BaseComponent<'div'> {
   };
 
   // eslint-disable-next-line max-len
-  constructor(private heading: string, private href: Routes, private replaceMainCallback: () => void) {
+  constructor(private heading: string, private href: Routes, private replaceMainCallback: () => void, score?: number) {
     super('div', undefined, 'profile-info');
-    this.render();
+    this.render(score);
   }
 
-  private render(): void {
+  private render(score?: number): void {
+    const counter: number = score ?? 0;
     this.link = new NavigationLink(this.replaceMainCallback, this.data);
-    this.score = new BaseComponent('span', this.element, 'profile-info__score', '0');
+    this.score = new BaseComponent('span', this.element, 'profile-info__score', `${counter}`);
+  }
+
+  public updateScore(number: number): void {
+    if (this.score) {
+      this.score.element.textContent = `${number}`;
+    }
   }
 }

@@ -3,9 +3,13 @@ import BaseComponent from '../../components/base-component/base-component';
 import LeftMenu from './left-menu/left-menu';
 import TrainingFeed from './training-feed/training-feed';
 import RightMenu from './right-menu/right-menu';
-import { getUser } from '../../app/loader/services/user-services';
-import { Token, User } from '../../app/loader/loader.types';
+import { getUser, updateUser } from '../../app/loader/services/user-services';
+import { Token, UpdateUserData, User } from '../../app/loader/loader.types';
 import { checkDataInLocalStorage } from '../../utils/local-storage';
+import eventEmitter from '../../utils/event-emitter';
+import { transformNameFormat } from '../../utils/utils';
+import AvatarSources from '../../components/avatar-modal/avatar-modal.types';
+import DefaultUserInfo from './left-menu/left-menu.types';
 
 export default class Dashboard extends BaseComponent<'section'> {
   private leftMenu!: LeftMenu;
@@ -16,7 +20,16 @@ export default class Dashboard extends BaseComponent<'section'> {
 
   private token: Token | null = checkDataInLocalStorage('userSessionToken');
 
-  private currentUser!: User;
+  private currentUser: User = {
+    id: '',
+    username: '',
+    email: '',
+    country: '',
+    bio: '',
+    followees: [],
+    followers: [],
+    avatarUrl: '',
+  };
 
   constructor(private replaceMainCallback: () => void) {
     super('section', undefined, 'dashboard section');
@@ -25,9 +38,30 @@ export default class Dashboard extends BaseComponent<'section'> {
         this.currentUser = {
           ...user,
         };
+        this.setUserInfo(user);
         this.leftMenu = new LeftMenu(this.currentUser, replaceMainCallback);
         this.element.insertBefore(this.leftMenu.element, this.trainingFeed.element);
       });
     }
+  }
+
+  private setUserInfo(user: User): void {
+    transformNameFormat(user.username);
+    this.currentUser.username = transformNameFormat(user.username);
+    this.currentUser.avatarUrl = user.avatarUrl || AvatarSources.Default;
+    this.currentUser.bio = user.bio || DefaultUserInfo.DefaultBio;
+    if (this.token) {
+      Dashboard.updateUser(this.token, { avatar_url: this.currentUser.avatarUrl });
+    }
+  }
+
+  private static updateUser(token: Token, data: UpdateUserData): Promise<void | null> {
+    return updateUser(token, data)
+      .then((user: User) => {
+        if (user) {
+          eventEmitter.emit('updateAvatar', { url: user.avatarUrl });
+        }
+      })
+      .catch(() => null);
   }
 }
