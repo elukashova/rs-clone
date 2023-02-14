@@ -135,9 +135,9 @@ export default class AddActivity extends BaseComponent<'section'> {
   private map = new GoogleMaps(
     this.mapDiv.element,
     'map add-activity-map',
-    8,
     { lat: -33.397, lng: 150.644 },
     google.maps.TravelMode.BICYCLING,
+    false,
   );
 
   public saveButton = new Button(this.formElement.element, 'Save', 'btn-activity');
@@ -145,7 +145,10 @@ export default class AddActivity extends BaseComponent<'section'> {
   constructor(parent: HTMLElement) {
     super('section', parent, 'add-activity add-activity-section');
     this.search.addSvgIcon(SvgNames.Search, ProjectColors.Grey, 'search');
+    // this.map.doDirectionRequest
+    // (this.map.startPoint, this.map.endPoint, this.map.currentTravelMode);
     this.initStaticMap();
+    console.log(this.map.distanceTotal, this.map.timeTotal, this.map.elevationTotal);
   }
 
   public async initStaticMap(): Promise<void> {

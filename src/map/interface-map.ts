@@ -25,7 +25,7 @@ export enum GeoErrors {
 }
 
 export enum ZoomSettings {
-  Closer = 9,
+  Closer = 11,
 }
 
 export type MapPoints = {

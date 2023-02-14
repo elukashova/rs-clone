@@ -26,7 +26,7 @@ export default class GoogleMaps {
   public directionsService: google.maps.DirectionsService = new google.maps.DirectionsService();
 
   public directionsRenderer: google.maps.DirectionsRenderer = new google.maps.DirectionsRenderer({
-    polylineOptions: { strokeColor: ProjectColors.Turquoise },
+    polylineOptions: { strokeColor: ProjectColors.Orange },
     markerOptions: { icon: './assets/icons/png/geo.png' },
     draggable: false,
     suppressMarkers: true,
@@ -42,9 +42,9 @@ export default class GoogleMaps {
 
   public markers: google.maps.Marker[] = [];
 
-  public startPoint!: Coordinates | undefined;
+  public startPoint!: Coordinates;
 
-  public endPoint: Coordinates | undefined;
+  public endPoint!: Coordinates;
 
   public currentTravelMode: google.maps.TravelMode;
 
@@ -58,7 +58,7 @@ export default class GoogleMaps {
 
   public maxMarkerCount: number = 2;
 
-  public zoom: number;
+  public zoom: number = 10;
 
   public latLng: { lat: number; lng: number };
 
@@ -70,18 +70,20 @@ export default class GoogleMaps {
 
   public clearButton!: Button;
 
+  private elevationChart: boolean = true;
+
   constructor(
     parent: HTMLElement,
     mapId: string,
-    zoom: number,
     center: Coordinates,
     travelMode: google.maps.TravelMode,
+    elevationChart: boolean,
   ) {
     this.mapId = mapId;
-    this.zoom = zoom;
     this.latLng = center;
+    this.elevationChart = elevationChart;
     this.renderMap(parent);
-    this.initMap(this.mapWrapper.element, zoom, center);
+    this.initMap(this.mapWrapper.element, center);
     this.currentTravelMode = travelMode;
     this.parentElement = parent;
   }
@@ -97,9 +99,9 @@ export default class GoogleMaps {
   }
 
   // обязательный метод google maps, он вызывается в параметрах ключа
-  public initMap(parent: HTMLElement, zoom: number, latLng: { lat: number; lng: number }): void {
+  public initMap(parent: HTMLElement, latLng: { lat: number; lng: number }): void {
     const myOptions: OptionsForMap = {
-      zoom,
+      zoom: this.zoom,
       center: latLng,
       mapTypeId: google.maps.MapTypeId.ROADMAP,
     };
@@ -128,22 +130,21 @@ export default class GoogleMaps {
       }
     });
 
-    this.locationButton.element.addEventListener('click', (): void => {
+    this.locationButton.element.addEventListener('click', (event): void => {
+      event.preventDefault();
       this.changeGeolocation();
     });
 
     this.directionsRenderer.addListener('directions_changed', () => {
       const directions = this.directionsRenderer.getDirections();
       if (directions) {
-        this.getTotalDistanceAndTime(directions);
+        this.getTotalDistanceAndTime(directions.routes[0]);
       }
     });
 
     this.clearButton.element.addEventListener('click', (event) => {
       event.preventDefault();
-      this.deleteMarkers();
       this.deleteRoute();
-      console.log(this.map, this.markers);
     });
   }
 
@@ -201,34 +202,24 @@ export default class GoogleMaps {
 
   // запрос в Direction API на отрисовку пути
   // eslint-disable-next-line max-len
-  public doDirectionRequest(startPoint: Coordinates, endPoint: Coordinates, selectedMode: string): void {
-    let travelType;
-    if (selectedMode === 'WALKING') {
-      travelType = google.maps.TravelMode.WALKING;
-    } else if (selectedMode === 'BICYCLING') {
-      travelType = google.maps.TravelMode.BICYCLING;
-    } else {
-      travelType = google.maps.TravelMode.WALKING;
-    }
+  public async doDirectionRequest(startPoint: Coordinates, endPoint: Coordinates, selectedMode: string): Promise<void> {
+    const travelType = selectedMode === 'BICYCLING' ? google.maps.TravelMode.BICYCLING : google.maps.TravelMode.WALKING;
     const request: MapRequest = {
       origin: startPoint, // start coordinates
       destination: endPoint, // end coordinates
       travelMode: travelType || google.maps.TravelMode.WALKING,
       unitSystem: google.maps.UnitSystem.METRIC,
     };
-    this.directionsService
+    await this.directionsService
       .route(request, (result: DirectionsRenderer, status: google.maps.DirectionsStatus) => {
         if (status === 'OK' && result) {
-          console.log(this.directionsRenderer);
           this.directionsRenderer.setMap(this.map);
           this.directionsRenderer.setDirections(result);
-          /* this.doElevationRequest(request); */
-          // GoogleMaps.getMarkersAndWaypoints(result);
-          this.getTotalDistanceAndTime(result);
+
+          this.getTotalDistanceAndTime(result.routes[0]);
+          this.doElevationRequest(request);
         } else if (status === 'ZERO_RESULTS') {
           this.showMessage();
-          // добавлю код с появлением кнопки  с текстом,
-          // что маршрут не найден и предложением стереть маршрут и попробовать с другими данными
         } else {
           console.error("This route can't be laid.");
         }
@@ -236,22 +227,21 @@ export default class GoogleMaps {
       .catch((error: Error): void => console.error(`Directions request failed: ${error}`));
   }
 
-  public catchLocationError(browserHasGeolocation: boolean, pos: google.maps.LatLng): void {
-    this.infoWindow.setPosition(pos);
-    this.infoWindow.setContent(browserHasGeolocation ? GeoErrors.Service : GeoErrors.Browser);
-    this.infoWindow.open(this.map);
-  }
-
-  public doElevationRequest(request: MapRequest): void {
-    this.elevation
-      .getElevationAlongPath({
+  // eslint-disable-next-line max-len
+  public async doElevationRequest(request: MapRequest): Promise<void> {
+    try {
+      const response = await this.elevation.getElevationAlongPath({
         path: [request?.origin, request?.destination],
         samples: 200,
-      })
-      .then((response: google.maps.PathElevationResponse): void => this.drawPlotElevation(response))
-      .catch((): void => {
-        this.chartElevation.element.textContent = 'Cannot show elevation';
       });
+      if (response) {
+        if (this.elevationChart) {
+          this.drawPlotElevation(response);
+        }
+      }
+    } catch (error) {
+      this.chartElevation.element.textContent = "Can't show elevation";
+    }
   }
 
   public drawPlotElevation({ results }: google.maps.PathElevationResponse): void {
@@ -292,9 +282,9 @@ export default class GoogleMaps {
   }
 
   // получение всей протяженности маршрута в метрах
-  public getTotalDistanceAndTime(result: google.maps.DirectionsResult): void {
-    const [myRoute]: google.maps.DirectionsRoute[] = result.routes;
-    const [legs]: google.maps.DirectionsLeg[] = myRoute.legs;
+  public getTotalDistanceAndTime(route: google.maps.DirectionsRoute): void {
+    // const [myRoute]: google.maps.DirectionsRoute[] = result.routes;
+    const [legs]: google.maps.DirectionsLeg[] = route.legs;
     this.distanceTotal = legs.distance ?? { text: '', value: 0 };
     this.timeTotal = legs.duration ?? { text: '', value: 0 };
   }
@@ -302,6 +292,12 @@ export default class GoogleMaps {
   // TODO:
   public setTravelMode(travelMode: google.maps.TravelMode): void {
     this.map.setMapTypeId(travelMode);
+  }
+
+  public catchLocationError(browserHasGeolocation: boolean, pos: google.maps.LatLng): void {
+    this.infoWindow.setPosition(pos);
+    this.infoWindow.setContent(browserHasGeolocation ? GeoErrors.Service : GeoErrors.Browser);
+    this.infoWindow.open(this.map);
   }
 
   // изменение карты по геолокации при клике на кнопку
@@ -358,14 +354,8 @@ export default class GoogleMaps {
     if (this.directionsRenderer) {
       this.directionsRenderer.setMap(null);
     }
-    this.deleteMarkers();
-  }
-
-  public deleteMarkers(): void {
     this.markers.forEach((marker) => marker.setMap(null));
     this.markers.length = 0;
-    this.startPoint = undefined;
-    this.endPoint = undefined;
   }
 
   public deleteMap(): void {
@@ -373,12 +363,13 @@ export default class GoogleMaps {
   }
 
   public static async drawStaticMap(
-    start: Coordinates,
-    end: Coordinates,
-    activityType: google.maps.TravelMode,
+    startPoint: Coordinates,
+    endPoint: Coordinates,
+    activityType: string,
   ): Promise<string> {
-    const data = await GoogleMaps.doRequestForStaticMap(start, end, activityType);
-    const url = GoogleMaps.createURL(start, end, data);
+    const travelType = activityType === 'BICYCLING' ? google.maps.TravelMode.BICYCLING : google.maps.TravelMode.WALKING;
+    const data = await GoogleMaps.doRequestForStaticMap(startPoint, endPoint, travelType);
+    const url = GoogleMaps.createURL(startPoint, endPoint, data);
     return url;
   }
 
@@ -411,7 +402,7 @@ export default class GoogleMaps {
     const request = {
       key: `${APIKey.maps}`,
       size: '800x400',
-      path: `color:0x1CBAA7ff|weight:5|${line}`,
+      path: `color:0xFF8D24ff|weight:5|${line}`,
       markers: `color:0xFFAE0B|${start.lat},${start.lng}|${end.lat},${end.lng}`,
     };
 
