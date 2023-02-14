@@ -25,7 +25,7 @@ export default class RightMenu extends BaseComponent<'aside'> {
     },
   };
 
-  private friendsCardsLimit: number = 3;
+  private friendsCardsLimit: number = 0;
 
   private AddRouteLink = new NavigationLink(this.replaceMainCallback, this.data);
 
@@ -44,11 +44,14 @@ export default class RightMenu extends BaseComponent<'aside'> {
     super('aside', parent, 'right-menu');
     if (this.token) {
       getNotFriends(this.token).then((users: FriendData[]) => {
-        const usersToShow: FriendData[] = provideRandomUsers(users, this.friendsCardsLimit);
-        usersToShow.forEach((user) => {
-          const card: RandomFriendCard = new RandomFriendCard(user);
-          this.friendsWrapper.element.append(card.element);
-        });
+        this.friendsCardsLimit = users.length < 3 ? users.length : 3;
+        if (users.length !== 0) {
+          const usersToShow: FriendData[] = provideRandomUsers(users, this.friendsCardsLimit);
+          usersToShow.forEach((user) => {
+            const card: RandomFriendCard = new RandomFriendCard(user);
+            this.friendsWrapper.element.append(card.element);
+          });
+        }
       });
     }
   }

@@ -29,7 +29,6 @@ export default class Loader {
     }).then((response: Response) => this.errorHandler(response));
   }
 
-  // eslint-disable-next-line
   public static postData<T>(
     method: Methods,
     view: string,
@@ -41,13 +40,11 @@ export default class Loader {
     return this.load({ url, method, params, token }).then((response: Response) => response.json());
   }
 
-  // eslint-disable-next-line max-len
   public static getUserData<T>(method: Methods, view: string, { token }: Token): Promise<T> {
     const url: URL = Loader.createURL(view);
     return this.load({ url, method, token }).then((response: Response) => response.json());
   }
 
-  // eslint-disable-next-line max-len
   public static putUserData<T>(
     method: Methods,
     view: string,

@@ -19,7 +19,7 @@ export default class LeftMenu extends BaseComponent<'aside'> {
 
   private token: Token | null = checkDataInLocalStorage('userSessionToken');
 
-  constructor(private user: User, private replaceMainCallback: () => void, parent?: HTMLElement) {
+  constructor(private user: User, replaceMainCallback: () => void, parent?: HTMLElement) {
     super('aside', parent, 'left-menu');
     const name: string = LeftMenu.transformNameFormat(user.username);
     const avatarSource: string = user.avatarUrl || AvatarSources.Default;
