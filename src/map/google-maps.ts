@@ -143,8 +143,6 @@ export default class GoogleMaps {
       event.preventDefault();
       this.deleteMarkers();
       this.deleteRoute();
-      this.startPoint = undefined;
-      this.endPoint = undefined;
       console.log(this.map, this.markers);
     });
   }
@@ -364,18 +362,39 @@ export default class GoogleMaps {
   public deleteMarkers(): void {
     this.markers.forEach((marker) => marker.setMap(null));
     this.markers.length = 0;
+    this.startPoint = undefined;
+    this.endPoint = undefined;
   }
 
   public deleteMap(): void {
     this.parentElement.remove();
   }
 
-  public doStaticMap(startPoint: Coordinates, endPoint: Coordinates): string {
-    const encodedPolyline = GoogleMaps.encodePolyline(startPoint, endPoint);
-    const test = encode([startPoint, endPoint], 5);
+  public static requestTest(startPoint: Coordinates, endPoint: Coordinates): void {
+    const request = {
+      origin: startPoint,
+      destination: endPoint,
+      travelMode: google.maps.TravelMode.WALKING,
+    };
+    const service = new google.maps.DirectionsService();
+    service
+      .route(request, (result: DirectionsRenderer) => {
+        console.log(result?.routes[0].overview_polyline);
+        /* if (result) {
+          GoogleMaps.doStaticMap(startPoint, endPoint, result.routes[0].overview_polyline);
+        } */
+        let response;
+        if (result) {
+          response = result?.routes[0].overview_polyline;
+        }
+        return response;
+      })
+      .catch((error: Error): void => console.error(`Directions request failed: ${error}`));
+  }
 
-    console.log(`test: ${test}`, `encodedPolyline: ${encodedPolyline}`);
-    this.testMap();
+  // eslint-disable-next-line max-len
+  public static doStaticMap(startPoint: Coordinates, endPoint: Coordinates): string {
+    const test = encode([startPoint, endPoint], 5);
     const request = {
       key: `${APIKey.maps}`,
       size: '800x400',
@@ -393,68 +412,5 @@ export default class GoogleMaps {
       .map(([key, value]) => `${key}=${value}`)
       .join('&')}`;
     return url;
-
-    /* 'https://maps.googleapis.com/maps/api/staticmap?center=40.714%2c%20-73.998&zoom=12&size=400x400&key= YOUR_API_KEY'; */
-  }
-
-  public static encodePolyline(startPoint: Coordinates, endPoint: Coordinates): string {
-    const points = [startPoint, endPoint];
-    let encodedPolyline = '';
-    let prevLat = 0;
-    let prevLng = 0;
-    points.forEach((point) => {
-      const { lat, lng } = point;
-      const latDiff = lat - prevLat;
-      const lngDiff = lng - prevLng;
-      prevLat = lat;
-      prevLng = lng;
-      encodedPolyline += GoogleMaps.encodeNumber(latDiff);
-      encodedPolyline += GoogleMaps.encodeNumber(lngDiff);
-    });
-    console.log(encodedPolyline);
-    return encodedPolyline;
-  }
-
-  public static encodeNumber(num: number): string {
-    let encodedNum = '';
-    let numToEncode = num < 0 ? -num * 2 - 1 : num * 2;
-    while (numToEncode >= 32) {
-      encodedNum += String.fromCharCode((numToEncode % 32) + 95);
-      numToEncode = Math.floor(numToEncode / 32);
-    }
-    encodedNum += String.fromCharCode(numToEncode + 95);
-    console.log(encodedNum);
-    return encodedNum;
-  }
-
-  public testMap(/* start: Coordinates, end: Coordinates */): void {
-    const path = this.directionsRenderer.getDirections();
-    console.log(path);
-    // .route(start, end).then((data) => console.log(data));
-    /* .directions.routes[0].overview_polyline;
-    let markers = [];
-    const waypoints_labels = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'];
-    let waypoints_label_iter = 0;
-    markers.push(`markers=color:green|label:${waypoints_labels[waypoints_label_iter]}|${start}`);
-
-    for (let i = 0; i < request.waypoints.length; i += 1) {
-      // I have waypoints that are not stopovers I dont want to display them
-      if (request.waypoints[i].stopover === true) {
-        markers.push(
-          'markers=color:blue|label:' +
-            waypoints_labels[++waypoints_label_iter] +
-            '|' +
-            request.waypoints[i].location.lat() +
-            ',' +
-            request.waypoints[i].location.lng(),
-        );
-      }
-    }
-
-    markers.push(`markers=color:red|label:${waypoints_labels[++waypoints_label_iter]}|${end}`);
-
-    markers = markers.join('&');
-
-    alert(`https://maps.googleapis.com/maps/api/staticmap?size=1000x1000&maptype=roadmap&path=enc:${path}&${markers}`); */
   }
 }

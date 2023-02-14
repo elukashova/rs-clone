@@ -3,10 +3,11 @@ import BaseComponent from '../../components/base-component/base-component';
 import Button from '../../components/base-component/button/button';
 import Select from '../../components/base-component/select/select';
 import Input from '../../components/base-component/text-input-and-label/text-input';
-import GoogleMaps from '../../map/google-maps';
 import TextArea from '../../components/base-component/textarea/textarea';
 import SvgNames from '../../components/base-component/svg/svg.types';
 import { ProjectColors } from '../../utils/consts';
+// eslint-disable-next-line import/no-named-as-default
+import GoogleMaps from '../../map/google-maps';
 
 export default class AddActivity extends BaseComponent<'section'> {
   private formContainer = new BaseComponent('div', this.element, 'add-activity__container');
@@ -152,13 +153,12 @@ export default class AddActivity extends BaseComponent<'section'> {
     google.maps.event.clearInstanceListeners(this.map);
     this.map.doMapRequired(); */
     console.log(this.map);
-    const url = this.map.doStaticMap(
+    const url = GoogleMaps.doStaticMap(
       { lat: -33.77341785585683, lng: 151.02294751876593 },
       { lat: -33.78387945569748, lng: 150.70936384113133 },
     );
     const mapImg = new BaseComponent('img', this.mapDiv.element, '', '', {
       src: `${url}`,
-      alt: 'Static Map Image',
     });
     console.log(mapImg);
   }
