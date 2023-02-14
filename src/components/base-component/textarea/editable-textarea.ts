@@ -1,4 +1,4 @@
-import { UpdateUserData, User } from '../../../app/loader/loader.types';
+import { Token, UpdateUserData, User } from '../../../app/loader/loader.types';
 import { updateUser } from '../../../app/loader/services/user-services';
 import { checkDataInLocalStorage } from '../../../utils/local-storage';
 import BaseComponent from '../base-component';
@@ -39,6 +39,8 @@ export default class EditableTextarea extends BaseComponent<'div'> {
   private maxLimit: string = '';
 
   private rowsNumber: number = 1;
+
+  private token: Token | null = checkDataInLocalStorage('userSessionToken');
 
   constructor(parent: HTMLElement, private classes: string, text: string, type: TextareaTypes) {
     super('div', parent, `${classes}_wrapper`);
@@ -114,11 +116,10 @@ export default class EditableTextarea extends BaseComponent<'div'> {
 
     this.resizeTextarea();
 
-    const id: string | null = EditableTextarea.getIdFromLocalStorage();
-    if (id) {
+    if (this.token) {
       const { value } = this.textarea.element;
       this.currentValue = value;
-      EditableTextarea.updateUser(id, this.checkCurrentType(value))
+      EditableTextarea.updateUser(this.token, this.checkCurrentType(value))
         .then((user: User) => {
           if (user) {
             this.cancelUpdate();
@@ -190,12 +191,7 @@ export default class EditableTextarea extends BaseComponent<'div'> {
     }
   };
 
-  private static updateUser(id: string, data: UpdateUserData): Promise<User> {
-    return updateUser(id, data).then((user: User) => user);
-  }
-
-  private static getIdFromLocalStorage(): string | null {
-    const id: string | null = checkDataInLocalStorage('myUserId');
-    return id;
+  private static updateUser(token: Token, data: UpdateUserData): Promise<User> {
+    return updateUser(token, data).then((user: User) => user);
   }
 }

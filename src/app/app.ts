@@ -7,7 +7,7 @@ import Router from './router/router';
 import Routes from './router/router.types';
 import eventEmitter from '../utils/event-emitter';
 import ModalAvatar from '../components/avatar-modal/avatar-modal';
-import UrlObj from '../utils/utils.types';
+import { EventData } from '../utils/event-emitter.types';
 
 export default class App {
   private header: Header;
@@ -51,12 +51,12 @@ export default class App {
   };
 
   private subscribeToEvents(): void {
-    eventEmitter.on('openAvatarModal', (url: UrlObj): void => {
+    eventEmitter.on('openAvatarModal', (url: EventData): void => {
       this.showModalWindow(url);
     });
   }
 
-  private showModalWindow(url: UrlObj): void {
+  private showModalWindow(url: EventData): void {
     const modal: ModalAvatar = new ModalAvatar(this.parent, url);
     modal.element.addEventListener('click', modal.closeModalCallback);
   }

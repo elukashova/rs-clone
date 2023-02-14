@@ -135,11 +135,11 @@
   font-weight: 400;
   color: #1cbaa7;
   font-size: calc(0.6em + 0.3vw);
-  cursor: pointer;
   text-decoration: none;
+  transition: color 0.3s;
 }
 
-.profile-info__heading:hover {
+.profile-info__link:hover {
   color: #219486;
 }
 

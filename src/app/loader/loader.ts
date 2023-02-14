@@ -1,6 +1,6 @@
+// import { PRODUCTION_ENV } from '../../utils/consts';
+import { RequestData, Token, LoadRequest, Methods, UpdateUserData, FriendId } from './loader.types';
 import { PRODUCTION_ENV } from '../../utils/consts';
-import { RequestData, Token, LoadRequest, Methods, UpdateUserData } from './loader.types';
-// import { DEVELOPMENT_ENV } from '../../utils/consts';
 
 export default class Loader {
   // DEVELOPMENT_ENV
@@ -29,22 +29,41 @@ export default class Loader {
     }).then((response: Response) => this.errorHandler(response));
   }
 
-  public static postData<T>(method: Methods, view: string, params?: RequestData): Promise<T> {
+  public static postData<T>(
+    method: Methods,
+    view: string,
+    params?: RequestData,
+    { token }: { token?: string } = {},
+  ): Promise<T> {
     const url: URL = Loader.createURL(view);
 
-    return this.load({ url, method, params }).then((response: Response) => response.json());
+    return this.load({ url, method, params, token }).then((response: Response) => response.json());
   }
 
-  // eslint-disable-next-line max-len
   public static getUserData<T>(method: Methods, view: string, { token }: Token): Promise<T> {
     const url: URL = Loader.createURL(view);
     return this.load({ url, method, token }).then((response: Response) => response.json());
   }
 
-  // eslint-disable-next-line max-len
-  public static putUserData<T>(method: Methods, view: string, params: UpdateUserData): Promise<T> {
+  public static putUserData<T>(
+    method: Methods,
+    view: string,
+    params: UpdateUserData,
+    { token }: { token?: string } = {},
+  ): Promise<T> {
     const url: URL = Loader.createURL(view);
-    return this.load({ url, method, params }).then((response: Response) => response.json());
+    return this.load({ url, method, params, token }).then((response: Response) => response.json());
+  }
+
+  public static deleteData<T>(
+    method: Methods,
+    view: string,
+    params?: FriendId,
+    { token }: { token?: string } = {},
+  ): Promise<T> {
+    const url: URL = Loader.createURL(view);
+
+    return this.load({ url, method, params, token }).then((res: Response) => res.json());
   }
 
   private static createURL = (view: string): URL => {
