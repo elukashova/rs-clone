@@ -2,5 +2,52 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  align-items: center;
+  gap: 1em;
+}
+
+.add-route-link__wrapper {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1em 1em 1em;
+  background: white;
+  border-radius: 5px;
+}
+
+.add-route-link {
+  text-transform: uppercase;
+  font-weight: 400;
+  color: #1cbaa7;
+  font-size: calc(0.6em + 0.3vw);
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.add-route-link:hover {
+  color: #219486;
+}
+
+.suggested-friends__wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 1em 1em 1em;
+  gap: 0.5em;
+  background: white;
+  border-radius: 5px;
+}
+
+.suggested-friends__heading {
+  padding: 0;
+  margin: 0;
+  margin-bottom: 0.5em;
+  font-size: calc(0.7em + 0.3vw);
+  text-transform: uppercase;
+  font-weight: 500;
+  color: #ff8d24;
 }

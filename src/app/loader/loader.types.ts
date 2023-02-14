@@ -8,21 +8,29 @@ export interface LogIn {
 
 export interface SignUp extends LogIn {
   username: string;
-  country?: string;
   avatarUrl?: string;
+  country?: string;
 }
 
 export type Token = {
   token: string;
 };
 
-export type RequestData = SignUp | LogIn;
+export type FriendId = {
+  friendId: string;
+};
+
+export type RequestData = SignUp | LogIn | FriendId;
 
 export enum Endpoints {
   Login = 'auth/signin',
   Signup = 'auth/signup',
   GetUser = 'auth/me',
-  UpdateUser = 'update/',
+  UpdateUser = 'update',
+  GetFriends = 'friends',
+  GetNotFriends = 'no-friends',
+  AddFriend = 'friends',
+  DeleteFriend = 'friends',
 }
 
 export type LoadRequest = {
@@ -53,15 +61,30 @@ export type User = {
   email: string;
   id: string;
   username: string;
+  followees: FolloweeId[];
+  followers: FollowerId[];
 };
 
-export default User;
+type FollowerId = {
+  follower_id: string;
+};
+
+type FolloweeId = {
+  followee_id: string;
+};
+
+export type FriendData = {
+  id: string;
+  username: string;
+  country?: string;
+  avatarUrl: string;
+};
 
 export enum SportType {
-  RUNNING = 'Running',
-  HIKING = 'Hiking',
-  WALKING = 'Walking',
-  CYCLING = 'Cycling',
+  RUNNING = 'running',
+  HIKING = 'hiking',
+  WALKING = 'walking',
+  CYCLING = 'cycling',
 }
 
 export type Route = {

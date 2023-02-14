@@ -11,3 +11,7 @@
   display: flex;
   gap: 5px;
 }
+
+.training-feed__buttons > .btn {
+  text-decoration: none;
+}
