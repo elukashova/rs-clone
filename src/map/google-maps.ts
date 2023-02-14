@@ -219,6 +219,8 @@ export default class GoogleMaps {
     this.directionsService
       .route(request, (result: DirectionsRenderer, status: google.maps.DirectionsStatus) => {
         if (status === 'OK' && result) {
+          console.log(this.directionsRenderer);
+          this.directionsRenderer.setMap(this.map);
           this.directionsRenderer.setDirections(result);
           /* this.doElevationRequest(request); */
           // GoogleMaps.getMarkersAndWaypoints(result);
@@ -405,15 +407,12 @@ export default class GoogleMaps {
     return res;
   }
 
-  // eslint-disable-next-line max-len
-  public static createURL(startPoint: Coordinates, endPoint: Coordinates, line: string): string {
-    // const poliline = GoogleMaps.requestTest(startPoint, endPoint);
-    console.log(line);
+  public static createURL(start: Coordinates, end: Coordinates, line: string): string {
     const request = {
       key: `${APIKey.maps}`,
       size: '800x400',
       path: `color:0x1CBAA7ff|weight:5|${line}`,
-      markers: `color:0xFFAE0B|${startPoint.lat},${startPoint.lng}|${endPoint.lat},${endPoint.lng}`,
+      markers: `color:0xFFAE0B|${start.lat},${start.lng}|${end.lat},${end.lng}`,
     };
 
     const url = `https://maps.googleapis.com/maps/api/staticmap?${Object.entries(request)
