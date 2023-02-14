@@ -6,8 +6,14 @@ import Routes from '../../../app/router/router.types';
 import NavigationLink from '../../../components/base-component/link/link';
 import { Link } from '../../../components/base-component/link/link.types';
 import RandomFriendCard from './random-friend-card/random-friend-card';
+import { checkDataInLocalStorage } from '../../../utils/local-storage';
+import { FriendData, Token } from '../../../app/loader/loader.types';
+import { getNotFriends } from '../../../app/loader/services/friends-services';
+import { provideRandomUsers } from '../../../utils/utils';
 
 export default class RightMenu extends BaseComponent<'aside'> {
+  private token: Token | null = checkDataInLocalStorage('userSessionToken');
+
   private linkWrapper: BaseComponent<'div'> = new BaseComponent('div', this.element, 'add-route-link__wrapper');
 
   private linkText: string = 'Add new route';
@@ -21,6 +27,8 @@ export default class RightMenu extends BaseComponent<'aside'> {
     },
   };
 
+  private friendsCardsLimit: number = 3;
+
   // public yourTasks = new YourTasks(this.element);
   private AddRouteLink = new NavigationLink(this.replaceMainCallback, this.data);
 
@@ -33,9 +41,18 @@ export default class RightMenu extends BaseComponent<'aside'> {
     'Suggested friends',
   );
 
-  private friendCard = new RandomFriendCard(this.friendsWrapper.element);
+  private friendCard: RandomFriendCard | undefined;
 
   constructor(parent: HTMLElement, private replaceMainCallback: () => void) {
     super('aside', parent, 'right-menu');
+    if (this.token) {
+      getNotFriends(this.token).then((users: FriendData[]) => {
+        const usersToShow: FriendData[] = provideRandomUsers(users, this.friendsCardsLimit);
+        usersToShow.forEach((user) => {
+          const card: RandomFriendCard = new RandomFriendCard(user);
+          this.friendsWrapper.element.append(card.element);
+        });
+      });
+    }
   }
 }

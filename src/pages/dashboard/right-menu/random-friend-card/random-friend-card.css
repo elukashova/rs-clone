@@ -56,6 +56,11 @@
   transition: fill 0.3s;
 }
 
+.close-btn {
+  width: 2.5em;
+  height: 1.3em;
+}
+
 .suggested-friends_btn_svg:hover {
   fill: #219486;
 }

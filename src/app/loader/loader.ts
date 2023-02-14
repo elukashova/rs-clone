@@ -1,5 +1,5 @@
 // import { PRODUCTION_ENV } from '../../utils/consts';
-import { RequestData, Token, LoadRequest, Methods, UpdateUserData } from './loader.types';
+import { RequestData, Token, LoadRequest, Methods, UpdateUserData, FriendId } from './loader.types';
 import { DEVELOPMENT_ENV } from '../../utils/consts';
 
 export default class Loader {
@@ -46,6 +46,17 @@ export default class Loader {
     const url: URL = Loader.createURL(view);
     return this.load({ url, method, params }).then((response: Response) => response.json());
   }
+
+  public static deleteData<T>(method: Methods, view: string, params?: FriendId): Promise<T> {
+    const url: URL = Loader.createURL(view);
+
+    return this.load({ url, method, params }).then((res: Response) => res.json());
+  }
+
+  // public static getAllUsersData<T>(method: Methods, view: string): Promise<T> {
+  //   const url: URL = Loader.createURL(view);
+  //   return this.load({ url, method }).then((response: Response) => response.json());
+  // }
 
   private static createURL = (view: string): URL => {
     const url: URL = new URL(view, Loader.server);

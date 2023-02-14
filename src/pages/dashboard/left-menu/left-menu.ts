@@ -3,10 +3,11 @@ import ProfileCard from './profile-card/profile-card';
 import TrainingJournal from './training-journal/training-journal';
 import './left-menu.css';
 import OurActivity from './our-activity/our-activity';
-import { User } from '../../../app/loader/loader.types';
+import { UpdateUserData, User } from '../../../app/loader/loader.types';
 import DefaultUserInfo from './left-menu.types';
 import AvatarSources from '../../../components/avatar-modal/avatar-modal.types';
 import eventEmitter from '../../../utils/event-emitter';
+import { updateUser } from '../../../app/loader/services/user-services';
 
 export default class LeftMenu extends BaseComponent<'aside'> {
   public profileCard: ProfileCard;
@@ -15,7 +16,7 @@ export default class LeftMenu extends BaseComponent<'aside'> {
 
   public ourActivity: OurActivity;
 
-  constructor(user: User, private replaceMainCallback: () => void, parent?: HTMLElement) {
+  constructor(private user: User, private replaceMainCallback: () => void, parent?: HTMLElement) {
     super('aside', parent, 'left-menu');
     const name: string = LeftMenu.transformNameFormat(user.username);
     const avatarSource: string = user.avatarUrl || AvatarSources.Default;
@@ -23,7 +24,7 @@ export default class LeftMenu extends BaseComponent<'aside'> {
     this.profileCard = new ProfileCard(this.element, avatarSource, name, bio, replaceMainCallback);
     this.trainingJournal = new TrainingJournal(this.element);
     this.ourActivity = new OurActivity(this.element);
-    eventEmitter.emit('updateAvatar', { url: avatarSource });
+    LeftMenu.updateUser(user.id, { avatar_url: avatarSource });
   }
 
   private static transformNameFormat(name: string): string {
@@ -32,5 +33,15 @@ export default class LeftMenu extends BaseComponent<'aside'> {
       username[i] = username[i].charAt(0).toUpperCase() + username[i].slice(1).toLowerCase();
     }
     return username.join(' ');
+  }
+
+  private static updateUser(id: string, data: UpdateUserData): Promise<void | null> {
+    return updateUser(id, data)
+      .then((user: User) => {
+        if (user) {
+          eventEmitter.emit('updateAvatar', { url: user.avatarUrl });
+        }
+      })
+      .catch(() => null);
   }
 }
