@@ -236,24 +236,23 @@ export default class AddActivity extends BaseComponent<'section'> {
 
   private addListeners(): void {
     // слушатель для селекта
-    this.training.element.addEventListener('input', (e) => {
+    this.training.element.addEventListener('input', (e: Event): void => {
       e.preventDefault();
-      const updatedValue = AddActivity.checkSelect(this.training.element.value);
+      const updatedValue: string = AddActivity.checkSelect(this.training.element.value);
       if ((this.map.startPoint, this.map.endPoint)) {
-        console.log(updatedValue);
-        this.map.updateTravelMode(updatedValue, this.map.startPoint, this.map.endPoint).then(() => {
+        this.map.updateTravelMode(updatedValue, this.map.startPoint, this.map.endPoint).then((): void => {
           console.log(this.map.distanceTotal, this.map.timeTotal, this.map.elevationTotal, this.map);
           // Тут актуальные данные высоты и тд, если тип активности был изменен
           // нужно вызвать метод, чтобы данные обновились
         });
       } else {
-        const mode = GoogleMaps.getTravelMode(updatedValue);
+        const travelModeInfo: google.maps.TravelMode = GoogleMaps.getTravelMode(updatedValue);
         this.map.deleteMap();
         this.map = new GoogleMaps(
           this.mapDiv.element,
           'map add-activity-map',
           { lat: -33.397, lng: 150.644 },
-          mode,
+          travelModeInfo,
           true,
         );
       }

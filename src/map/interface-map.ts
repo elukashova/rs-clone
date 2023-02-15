@@ -8,7 +8,14 @@ export type MapRequest = {
   destination: Coordinates;
   waypoints?: { location: Coordinates; stopover: false }[] | undefined;
   travelMode: google.maps.TravelMode;
-  unitSystem: google.maps.UnitSystem;
+  unitSystem?: google.maps.UnitSystem;
+};
+
+export type StaticMapRequest = {
+  key: string;
+  size: string;
+  path: string;
+  markers: string;
 };
 
 export type OptionsForMap = {

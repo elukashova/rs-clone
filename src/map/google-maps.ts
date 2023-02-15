@@ -2,7 +2,7 @@
 /* eslint-disable object-curly-newline */
 /* eslint-disable max-lines-per-function */
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { decode } from '@googlemaps/polyline-codec';
+import { decode, LatLngTuple } from '@googlemaps/polyline-codec';
 import './google-maps.css';
 import BaseComponent from '../components/base-component/base-component';
 import Button from '../components/base-component/button/button';
@@ -15,6 +15,7 @@ import {
   OptionsForMap,
   ZoomSettings,
   APIKey,
+  StaticMapRequest,
 } from './interface-map';
 
 export default class GoogleMaps {
@@ -128,19 +129,19 @@ export default class GoogleMaps {
       }
     });
 
-    this.locationButton.element.addEventListener('click', (event): void => {
+    this.locationButton.element.addEventListener('click', (event: MouseEvent): void => {
       event.preventDefault();
       this.changeGeolocation();
     });
 
-    this.directionsRenderer.addListener('directions_changed', () => {
-      const directions = this.directionsRenderer.getDirections();
+    this.directionsRenderer.addListener('directions_changed', (): void => {
+      const directions: google.maps.DirectionsResult | null = this.directionsRenderer.getDirections();
       if (directions) {
         this.getTotalDistanceAndTime(directions.routes[0]);
       }
     });
 
-    this.clearButton.element.addEventListener('click', (event) => {
+    this.clearButton.element.addEventListener('click', (event: MouseEvent): void => {
       event.preventDefault();
       this.deleteRoute();
       if (this.chartElevation) {
@@ -175,7 +176,6 @@ export default class GoogleMaps {
   }
 
   // передаем актуальные данные маркера и перемещаем на него карту
-  // eslint-disable-next-line max-len
   public placeMarkerAndPanTo(location: google.maps.LatLng, map: google.maps.Map): google.maps.Marker {
     this.marker = new google.maps.Marker({
       position: location,
@@ -202,9 +202,8 @@ export default class GoogleMaps {
   }
 
   // запрос в Direction API на отрисовку пути
-  // eslint-disable-next-line max-len
   public async doDirectionRequest(startPoint: Coordinates, endPoint: Coordinates, selectedMode: string): Promise<void> {
-    const travelMode = GoogleMaps.getTravelMode(selectedMode);
+    const travelMode: google.maps.TravelMode = GoogleMaps.getTravelMode(selectedMode);
     const request: MapRequest = {
       origin: startPoint,
       destination: endPoint,
@@ -212,7 +211,7 @@ export default class GoogleMaps {
       unitSystem: google.maps.UnitSystem.METRIC,
     };
     await this.directionsService
-      .route(request, (result: DirectionsRenderer, status: google.maps.DirectionsStatus) => {
+      .route(request, (result: DirectionsRenderer, status: google.maps.DirectionsStatus): void => {
         if (status === 'OK' && result) {
           this.directionsRenderer.setMap(this.map);
           this.directionsRenderer.setDirections(result);
@@ -239,7 +238,7 @@ export default class GoogleMaps {
           this.drawPlotElevation(response);
         }
       }
-    } catch (error) {
+    } catch (error: unknown) {
       console.log(`Can't show elevation: ${error}`);
     }
   }
@@ -251,13 +250,13 @@ export default class GoogleMaps {
     this.chartElevation = new BaseComponent('div', this.parentElement, 'chart-div', '', {
       id: 'chart-div',
     });
-    const chart = new google.visualization.ColumnChart(this.chartElevation.element);
+    const chart: google.visualization.ColumnChart = new google.visualization.ColumnChart(this.chartElevation.element);
     const data: google.visualization.DataTable = new google.visualization.DataTable();
 
     data.addColumn('string', 'Sample');
     data.addColumn('number', 'Elevation');
 
-    for (let i = 0; i < results.length; i += 1) {
+    for (let i: number = 0; i < results.length; i += 1) {
       data.addRow(['', results[i].elevation]);
     }
 
@@ -275,8 +274,8 @@ export default class GoogleMaps {
     let elevationGain = 0;
     let elevationLoss = 0;
     for (let i = 0; i < results.length - 1; i += 1) {
-      const currentElevation = results[i].elevation;
-      const nextElevation = results[i + 1].elevation;
+      const currentElevation: number = results[i].elevation;
+      const nextElevation: number = results[i + 1].elevation;
       if (currentElevation < nextElevation) {
         elevationGain += nextElevation - currentElevation;
       } else {
@@ -336,17 +335,17 @@ export default class GoogleMaps {
   }
 
   public showMessage(): void {
-    const popup = new google.maps.InfoWindow();
-    const block = document.createElement('div');
+    const popup: google.maps.InfoWindow = new google.maps.InfoWindow();
+    const block: HTMLDivElement = document.createElement('div');
     block.classList.add('google-maps__popup');
     block.textContent = 'Unfortunately, we were unable to find such a route. Do you want to build a different route?';
-    const button = new Button(block, 'OK', 'google-maps__popup-button');
+    const button: Button = new Button(block, 'OK', 'google-maps__popup-button');
 
     block.append(button.element);
     popup.setContent(block);
     popup.open(this.map);
 
-    button.element.addEventListener('click', (event) => {
+    button.element.addEventListener('click', (event: MouseEvent): void => {
       event.preventDefault();
       this.deleteRoute();
       block.style.visibility = 'hidden';
@@ -357,7 +356,7 @@ export default class GoogleMaps {
     if (this.directionsRenderer) {
       this.directionsRenderer.setMap(null);
     }
-    this.markers.forEach((marker) => marker.setMap(null));
+    this.markers.forEach((marker: google.maps.Marker): void => marker.setMap(null));
     this.markers.length = 0;
   }
 
@@ -371,8 +370,8 @@ export default class GoogleMaps {
     activityType: string,
   ): Promise<string> {
     const travelMode = activityType === 'BICYCLING' ? google.maps.TravelMode.BICYCLING : google.maps.TravelMode.WALKING;
-    const data = await GoogleMaps.doRequestForStaticMap(startPoint, endPoint, travelMode);
-    const url = GoogleMaps.createURL(startPoint, endPoint, data);
+    const data: string = await GoogleMaps.doRequestForStaticMap(startPoint, endPoint, travelMode);
+    const url: string = GoogleMaps.createURL(startPoint, endPoint, data);
     return url;
   }
 
@@ -381,36 +380,36 @@ export default class GoogleMaps {
     endPoint: Coordinates,
     activityType: google.maps.TravelMode,
   ): Promise<string> {
-    const request = {
+    const request: MapRequest = {
       origin: startPoint,
       destination: endPoint,
       travelMode: activityType,
     };
-    let res: string = '';
-    const service = new google.maps.DirectionsService();
+    let response: string = '';
+    const service: google.maps.DirectionsService = new google.maps.DirectionsService();
     try {
-      const result = await service.route(request);
+      const result: google.maps.DirectionsResult = await service.route(request);
       if (result) {
-        const decodedLine = decode(result.routes[0].overview_polyline);
-        res = decodedLine.map((coordinate) => coordinate.join(',')).join('|');
-        return res;
+        const decodedLine: LatLngTuple[] = decode(result.routes[0].overview_polyline);
+        response = decodedLine.map((coordinate: LatLngTuple): string => coordinate.join(',')).join('|');
+        return response;
       }
-    } catch (error) {
+    } catch (error: unknown) {
       console.error(`Directions request failed: ${error}`);
     }
-    return res;
+    return response;
   }
 
   public static createURL(start: Coordinates, end: Coordinates, line: string): string {
-    const request = {
+    const request: StaticMapRequest = {
       key: `${APIKey.maps}`,
       size: '800x400',
       path: `color:0xFF8D24ff|weight:5|${line}`,
       markers: `color:0xFFAE0B|${start.lat},${start.lng}|${end.lat},${end.lng}`,
     };
 
-    const url = `https://maps.googleapis.com/maps/api/staticmap?${Object.entries(request)
-      .map(([key, value]) => `${key}=${value}`)
+    const url: string = `https://maps.googleapis.com/maps/api/staticmap?${Object.entries(request)
+      .map(([key, value]: [string, string]): string => `${key}=${value}`)
       .join('&')}`;
     return url;
   }
@@ -428,7 +427,7 @@ export default class GoogleMaps {
 
   public async updateTravelMode(travelMode: string, origin: Coordinates, destination: Coordinates): Promise<void> {
     this.currentTravelMode = travelMode;
-    const temp = await this.doDirectionRequest(origin, destination, travelMode);
+    const temp: void = await this.doDirectionRequest(origin, destination, travelMode);
     return temp;
   }
 }
