@@ -243,7 +243,7 @@ export default class AddActivity extends BaseComponent<'section'> {
         this.map.updateTravelMode(updatedValue, this.map.startPoint, this.map.endPoint).then(() => {
           console.log(this.map.distanceTotal, this.map.timeTotal, this.map.elevationTotal, this.map);
           // Тут актуальные данные высоты и тд, если тип активности был изменен
-          // предполагаю тут надо добавить this.setMap(), чтобы данные обновились
+          // нужно вызвать метод, чтобы данные обновились
         });
       } else {
         const mode = GoogleMaps.getTravelMode(updatedValue);

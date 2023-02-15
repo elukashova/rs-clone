@@ -143,13 +143,9 @@ export default class GoogleMaps {
     this.clearButton.element.addEventListener('click', (event) => {
       event.preventDefault();
       this.deleteRoute();
-    });
-
-    this.map.addListener('bounds_changed', () => {
-      // console.log(this.startPoint, this.endPoint, this.currentTravelMode);
-      /* this.updateTravelMode(this.currentTravelMode, this.startPoint, this.endPoint); */
-      // this.directionsRenderer.setOptions();
-      // this.doDirectionRequest();
+      if (this.chartElevation) {
+        this.chartElevation.element.remove();
+      }
     });
   }
 
