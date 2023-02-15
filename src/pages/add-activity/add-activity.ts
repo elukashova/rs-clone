@@ -128,6 +128,8 @@ export default class AddActivity extends BaseComponent<'section'> {
     },
   );
 
+  public testElement = new Button(this.formFieldset.element, 'WALKING', 'test', { id: 'test' });
+
   private mapBlock = new BaseComponent('div', this.formFieldset.element, 'map_container add-activity__block', '');
 
   private mapDiv: BaseComponent<'div'> = new BaseComponent('div', this.mapBlock.element, 'map', '', { id: 'map' });
@@ -137,7 +139,7 @@ export default class AddActivity extends BaseComponent<'section'> {
     'map add-activity-map',
     { lat: -33.397, lng: 150.644 },
     google.maps.TravelMode.BICYCLING,
-    false,
+    true,
   );
 
   public saveButton = new Button(this.formElement.element, 'Save', 'btn-activity');
@@ -148,14 +150,30 @@ export default class AddActivity extends BaseComponent<'section'> {
     // this.map.doDirectionRequest
     // (this.map.startPoint, this.map.endPoint, this.map.currentTravelMode);
     this.initStaticMap();
-    console.log(this.map.distanceTotal, this.map.timeTotal, this.map.elevationTotal);
+    this.testElement.element.addEventListener('click', (e) => {
+      console.log(this.map.distanceTotal, this.map.timeTotal, this.map.elevationTotal);
+      e.preventDefault();
+      if (this.testElement.element.textContent) {
+        const travelMode: google.maps.TravelMode = GoogleMaps.getTravelModeFromButton(
+          this.testElement.element.textContent,
+        );
+        this.map.updateTravelMode(travelMode, this.map.startPoint, this.map.endPoint);
+        console.log(travelMode, this.map.startPoint, this.map);
+      }
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      if (this.testElement.element.textContent === 'WALKING') {
+        this.testElement.element.textContent = 'BICYCLING';
+      } else {
+        this.testElement.element.textContent = 'WALKING';
+      }
+    });
   }
 
   public async initStaticMap(): Promise<void> {
     const url = await GoogleMaps.drawStaticMap(
       { lat: -33.77341785585683, lng: 151.02294751876593 },
       { lat: -33.78387945569748, lng: 150.70936384113133 },
-      google.maps.TravelMode.WALKING,
+      'WALKING',
     );
     const mapImg = new BaseComponent('img', this.mapDiv.element, '', '', {
       src: `${url}`,

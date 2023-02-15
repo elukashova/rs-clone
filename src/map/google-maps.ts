@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable object-curly-newline */
 /* eslint-disable max-lines-per-function */
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -50,11 +51,11 @@ export default class GoogleMaps {
 
   public waypoints!: google.maps.DirectionsWaypoint[];
 
-  public elevationTotal: number[] = [0, 0];
+  public elevationTotal: string = '0,0';
 
-  public distanceTotal: google.maps.Distance = { text: '', value: 0 };
+  public distanceTotal: string = '0';
 
-  public timeTotal: google.maps.Duration = { text: '', value: 0 };
+  public timeTotal: string = '0';
 
   public maxMarkerCount: number = 2;
 
@@ -145,6 +146,13 @@ export default class GoogleMaps {
     this.clearButton.element.addEventListener('click', (event) => {
       event.preventDefault();
       this.deleteRoute();
+    });
+
+    this.map.addListener('bounds_changed', () => {
+      // console.log(this.startPoint, this.endPoint, this.currentTravelMode);
+      /* this.updateTravelMode(this.currentTravelMode, this.startPoint, this.endPoint); */
+      // this.directionsRenderer.setOptions();
+      // this.doDirectionRequest();
     });
   }
 
@@ -246,6 +254,7 @@ export default class GoogleMaps {
 
   public drawPlotElevation({ results }: google.maps.PathElevationResponse): void {
     const chart = new google.visualization.ColumnChart(this.chartElevation.element);
+    chart.clearChart();
     const data: google.visualization.DataTable = new google.visualization.DataTable();
 
     data.addColumn('string', 'Sample');
@@ -265,7 +274,7 @@ export default class GoogleMaps {
   }
 
   // получение всего подъема на пути и всего спуска в метрах
-  public getMapElevationInfo(results: google.maps.ElevationResult[]): number[] {
+  public getMapElevationInfo(results: google.maps.ElevationResult[]): string {
     let elevationGain = 0;
     let elevationLoss = 0;
     for (let i = 0; i < results.length - 1; i += 1) {
@@ -277,21 +286,30 @@ export default class GoogleMaps {
         elevationLoss += currentElevation - nextElevation;
       }
     }
-    this.elevationTotal = [elevationGain, elevationLoss];
+    this.elevationTotal = `${elevationGain.toFixed(0)},${elevationLoss.toFixed(0)}`;
     return this.elevationTotal;
   }
 
   // получение всей протяженности маршрута в метрах
   public getTotalDistanceAndTime(route: google.maps.DirectionsRoute): void {
-    // const [myRoute]: google.maps.DirectionsRoute[] = result.routes;
     const [legs]: google.maps.DirectionsLeg[] = route.legs;
-    this.distanceTotal = legs.distance ?? { text: '', value: 0 };
-    this.timeTotal = legs.duration ?? { text: '', value: 0 };
+    if (legs.distance) {
+      this.distanceTotal = legs.distance.text ?? '0';
+    }
+    if (legs.duration) {
+      this.timeTotal = legs.duration.text ?? '0';
+    }
   }
 
-  // TODO:
-  public setTravelMode(travelMode: google.maps.TravelMode): void {
-    this.map.setMapTypeId(travelMode);
+  // eslint-disable-next-line max-len
+  public setTravelMode(startPoint: Coordinates, endPoint: Coordinates, id: string): void {
+    const selected = document.getElementById(`${id}`);
+    if (selected) {
+      const selectedValue = selected.textContent;
+      if (selectedValue === 'test') {
+        this.doDirectionRequest(startPoint, endPoint, 'WALKING');
+      }
+    }
   }
 
   public catchLocationError(browserHasGeolocation: boolean, pos: google.maps.LatLng): void {
@@ -349,7 +367,6 @@ export default class GoogleMaps {
     });
   }
 
-  // TODO:
   public deleteRoute(): void {
     if (this.directionsRenderer) {
       this.directionsRenderer.setMap(null);
@@ -410,5 +427,38 @@ export default class GoogleMaps {
       .map(([key, value]) => `${key}=${value}`)
       .join('&')}`;
     return url;
+  }
+
+  public static getTravelModeFromButton(value: string): google.maps.TravelMode {
+    switch (value) {
+      case 'WALKING':
+        return google.maps.TravelMode.WALKING;
+      case 'BICYCLING':
+        return google.maps.TravelMode.BICYCLING;
+      default:
+        return google.maps.TravelMode.WALKING;
+    }
+  }
+
+  public updateTravelMode(travelMode: google.maps.TravelMode, origin: Coordinates, destination: Coordinates): void {
+    this.changeTravelMode(travelMode, origin, destination);
+    this.currentTravelMode = travelMode;
+  }
+
+  public changeTravelMode(travelMode: google.maps.TravelMode, origin: Coordinates, destination: Coordinates): void {
+    const request = {
+      origin,
+      destination,
+      travelMode,
+      unitSystem: google.maps.UnitSystem.METRIC,
+    };
+
+    this.directionsService
+      .route(request)
+      .then((response) => {
+        this.directionsRenderer.setDirections(response);
+        this.doElevationRequest(request);
+      })
+      .catch((error) => console.log(`Directions request failed: ${error}`));
   }
 }
