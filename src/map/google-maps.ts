@@ -294,7 +294,6 @@ export default class GoogleMaps {
   // получение всей протяженности маршрута в метрах
   public getTotalDistanceAndTime(route: google.maps.DirectionsRoute): void {
     const [legs]: google.maps.DirectionsLeg[] = route.legs;
-    console.log(legs);
     if (legs.distance) {
       this.distanceTotal = legs.distance.text ?? '0';
     }
@@ -367,7 +366,7 @@ export default class GoogleMaps {
   }
 
   public deleteMap(): void {
-    this.parentElement.remove();
+    this.parentElement.removeChild(this.mapWrapper.element);
   }
 
   public static async drawStaticMap(

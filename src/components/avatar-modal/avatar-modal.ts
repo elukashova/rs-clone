@@ -50,7 +50,6 @@ export default class ModalAvatar extends BaseComponent<'div'> {
 
   constructor(private root: HTMLElement, source: EventData) {
     super('div', root, 'avatars__background');
-    console.log(source);
     this.currentAvatarUrl = `${source.url}`;
     this.renderAllAvatars();
     this.cancelButton.element.addEventListener('click', this.cancelButtonCallback);

@@ -1,5 +1,3 @@
-import { MapPoints } from '../../map/interface-map';
-
 export interface LogIn {
   email: string;
   google: boolean;
@@ -20,7 +18,7 @@ export type FriendId = {
   friendId: string;
 };
 
-export type RequestData = SignUp | LogIn | FriendId;
+export type RequestData = SignUp | LogIn | FriendId | Activity;
 
 export enum Endpoints {
   Login = 'auth/signin',
@@ -31,6 +29,9 @@ export enum Endpoints {
   GetNotFriends = 'no-friends',
   AddFriend = 'friends',
   DeleteFriend = 'friends',
+  AddActivity = 'activity',
+  GetAllActivities = 'activity',
+  GetOneActivity = 'activity/', // необходимо приписывать айди активности
 }
 
 export type LoadRequest = {
@@ -61,16 +62,23 @@ export type User = {
   email: string;
   id: string;
   username: string;
-  followees: FolloweeId[];
-  followers: FollowerId[];
+  following: Following[];
+  followedBy: Follower[];
 };
 
-type FollowerId = {
-  follower_id: string;
+type Follower = {
+  follower: Follow;
 };
 
-type FolloweeId = {
-  followee_id: string;
+type Following = {
+  following: Follow;
+};
+
+type Follow = {
+  id: string;
+  username: string;
+  country: string;
+  avatar_url: string;
 };
 
 export type FriendData = {
@@ -87,31 +95,31 @@ export enum SportType {
   CYCLING = 'cycling',
 }
 
-export type Route = {
-  id: number;
-  user_id: string;
-  user: User;
-  route_data: string;
-  title: string;
-  sport: SportType;
-  description: string;
-  date: Date;
-  created_at: Date;
-  updated_at: Date;
-  location: Location;
-  activity: Activity;
-};
+// export type Route = {
+//   id: number;
+//   user_id: string;
+//   user: User;
+//   route_data: string;
+//   title: string;
+//   sport: SportType;
+//   description: string;
+//   date: Date;
+//   created_at: Date;
+//   updated_at: Date;
+//   location: Location;
+//   activity: Activity;
+// };
 
-export type Location = {
-  id: number;
-  latitude: number;
-  longtitude: number;
-  route_id: number;
-  route: Route;
-  order: number;
-  created_at: Date;
-  updated_at: Date;
-};
+// export type Location = {
+//   id: number;
+//   latitude: number;
+//   longtitude: number;
+//   route_id: number;
+//   route: Route;
+//   order: number;
+//   created_at: Date;
+//   updated_at: Date;
+// };
 
 export type Kudo = {
   id: number;
@@ -135,21 +143,21 @@ export type Comment = {
 };
 
 export type Activity = {
-  id: number;
-  user_id: string;
-  user: User;
-  distance: string;
-  duration: string;
-  elevation: number;
-  sport: SportType;
-  date: string;
   time: string;
+  date: string;
   title: string;
+  elevation: string;
+  duration: string;
+  sport: string;
   description?: string;
-  mapPoints?: MapPoints;
-  created_at?: Date;
-  updated_at?: Date;
+  distance?: string;
+  companionId?: string;
+  startLat?: string;
+  startLng?: string;
+  endLat?: string;
+  endLng?: string;
   location?: string;
+  travelMode?: string;
 };
 
 export type UpdateUserData = {
