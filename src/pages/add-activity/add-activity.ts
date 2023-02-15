@@ -192,6 +192,7 @@ export default class AddActivity extends BaseComponent<'section'> {
       e.preventDefault();
       this.collectActivityData();
       if (this.token) {
+        console.log(this.token);
         createActivity(this.data, this.token);
       }
     });

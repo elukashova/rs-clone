@@ -19,41 +19,41 @@ import USER_DATA from '../../../../mock/user.data';
 export default class Post extends BaseComponent<'div'> {
   private userInfo = new BaseComponent('div', this.element, 'post__user-info');
 
-  private photo: BaseComponent<'img'> = new Picture(this.userInfo.element, 'post__photo');
+  public photo: BaseComponent<'img'> = new Picture(this.userInfo.element, 'post__photo');
 
   private userContainer = new BaseComponent('div', this.userInfo.element, 'post__user-info-container');
 
-  private name = new BaseComponent('span', this.userContainer.element, 'post__name');
+  public name = new BaseComponent('span', this.userContainer.element, 'post__name');
 
   private datePlaceContainer = new BaseComponent('div', this.userContainer.element, 'post__data-place');
 
-  private date = new BaseComponent('span', this.datePlaceContainer.element);
+  public date = new BaseComponent('span', this.datePlaceContainer.element);
 
-  private place = new BaseComponent('span', this.datePlaceContainer.element);
+  public place = new BaseComponent('span', this.datePlaceContainer.element);
 
   private edit = new BaseComponent('span', this.userInfo.element, 'post__edit');
 
   private activityContainer = new BaseComponent('div', this.element, 'post__activity-container');
 
-  private activityIcon = new BaseComponent('span', this.activityContainer.element, 'post__activity-icon');
+  public activityIcon = new BaseComponent('span', this.activityContainer.element, 'post__activity-icon');
 
-  private activityIconSvg: Svg | undefined;
+  public activityIconSvg: Svg | undefined;
 
-  private activityTitle = new BaseComponent('h4', this.activityContainer.element, 'post__activity-title');
+  public activityTitle = new BaseComponent('h4', this.activityContainer.element, 'post__activity-title');
 
   private info = new BaseComponent('div', this.element, 'post__info');
 
-  private distance = new PostInfo(this.info.element, 'Distance');
+  public distance = new PostInfo(this.info.element, 'Distance');
 
-  private speed = new PostInfo(this.info.element, 'Speed');
+  public speed = new PostInfo(this.info.element, 'Speed');
 
-  private time = new PostInfo(this.info.element, 'Time');
+  public time = new PostInfo(this.info.element, 'Time');
 
-  private elevation = new PostInfo(this.info.element, 'Altitude');
+  public elevation = new PostInfo(this.info.element, 'Altitude');
 
-  private map = new BaseComponent('div', this.element);
+  public map = new BaseComponent('div', this.element, 'map');
 
-  private googleMap: GoogleMaps | undefined;
+  public googleMap: GoogleMaps | undefined;
 
   private icons = new BaseComponent('div', this.element, 'post__icons');
 
@@ -68,49 +68,14 @@ export default class Post extends BaseComponent<'div'> {
 
   private addCommentButton = new Button(this.commentArea.element, 'Comment', 'post__button');
 
-  constructor(data: Activity) {
+  constructor() {
     super('div', undefined, 'post');
     this.deletePost();
     this.openComments();
     this.postComment();
     this.addLike();
-    // this.setContent(data);
     this.toggleAddCommentButtonState();
   }
-
-  // private setContent(data: Activity): void {
-  //   this.photo.element.src = USER_DATA.avatarUrl;
-  //   this.name.element.textContent = USER_DATA.username;
-  //   this.activityTitle.element.textContent = data.title;
-  //   this.date.element.textContent = `${data.date.toDateString()} at ${data.time}`;
-  //   this.distance.value = `${data.distance} km`;
-  //   this.speed.value = 'later';
-  //   this.time.value = `${data.duration}`;
-  //   this.elevation.value = `${data.elevation} m`;
-  //   this.activityIconSvg = new Svg(this.activityIcon.element, data.sport, ProjectColors.Grey, 'activity__icon-svg');
-  //   if (data.startLat) {
-  //     this.googleMap = new GoogleMaps(
-  //       this.map.element,
-  //       '1',
-  //       8,
-  //       { lat: -33.397, lng: 150.644 },
-  //       google.maps.TravelMode.BICYCLING,
-  //     );
-  //     // this.googleMap.doDirectionRequest(data.mapPoints.startPoint, data.mapPoints.endPoint);
-  //   }
-  // }
-
-  // Метод вывода статичной карты
-  /*   public async initStaticMap(): Promise<void> {
-    const url = await GoogleMaps.drawStaticMap(
-      { lat: -33.77341785585683, lng: 151.02294751876593 }, // передаем с сервера стартовую точку
-      { lat: -33.78387945569748, lng: 150.70936384113133 }, // передаем с сервера конечную точку
-      'WALKING', // передаем с сервера travelMode
-    );
-    const mapImg = new BaseComponent('img', this.mapDiv.element, '', '', {
-      src: `${url}`,
-    });
-  } */
 
   private openComments(): void {
     this.commentIcon.element.addEventListener('click', () => {
@@ -156,6 +121,18 @@ export default class Post extends BaseComponent<'div'> {
       } else {
         this.addCommentButton.element.disabled = true;
       }
+    });
+  }
+
+  // Метод вывода статичной карты
+  public async initStaticMap(): Promise<void> {
+    const url = await GoogleMaps.drawStaticMap(
+      { lat: -33.77341785585683, lng: 151.02294751876593 }, // надо будет заменить с сервера стартовую точку
+      { lat: -33.78387945569748, lng: 150.70936384113133 }, // надо будет заменить с сервера конечную точку
+      'WALKING', // надо будет заменить с сервера travelMode
+    );
+    const mapImg = new BaseComponent('img', this.map.element, '', '', {
+      src: `${url}`,
     });
   }
 }
