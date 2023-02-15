@@ -26,8 +26,8 @@ export default class Dashboard extends BaseComponent<'section'> {
     email: '',
     country: '',
     bio: '',
-    followees: [],
-    followers: [],
+    following: [],
+    followedBy: [],
     avatarUrl: '',
   };
 

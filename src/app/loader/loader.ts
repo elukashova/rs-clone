@@ -1,4 +1,4 @@
-// import { PRODUCTION_ENV } from '../../utils/consts';
+// import { DEVELOPMENT_ENV } from '../../utils/consts';
 import { RequestData, Token, LoadRequest, Methods, UpdateUserData, FriendId } from './loader.types';
 import { PRODUCTION_ENV } from '../../utils/consts';
 
