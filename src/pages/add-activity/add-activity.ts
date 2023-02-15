@@ -138,7 +138,7 @@ export default class AddActivity extends BaseComponent<'section'> {
     this.mapDiv.element,
     'map add-activity-map',
     { lat: -33.397, lng: 150.644 },
-    google.maps.TravelMode.BICYCLING,
+    google.maps.TravelMode.WALKING,
     true,
   );
 
@@ -151,20 +151,26 @@ export default class AddActivity extends BaseComponent<'section'> {
     // (this.map.startPoint, this.map.endPoint, this.map.currentTravelMode);
     // this.initStaticMap();
     this.testElement.element.addEventListener('click', (e) => {
-      console.log(this.map.distanceTotal, this.map.timeTotal, this.map.elevationTotal);
       e.preventDefault();
       if (this.testElement.element.textContent) {
-        /* const travelMode: google.maps.TravelMode = GoogleMaps.getTravelModeFromButton(
-          this.testElement.element.textContent,
-        ); */
-        // eslint-disable-next-line max-len
-        this.map.updateTravelMode(this.testElement.element.textContent, this.map.startPoint, this.map.endPoint);
-      }
-      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-      if (this.testElement.element.textContent === 'WALKING') {
-        this.testElement.element.textContent = 'BICYCLING';
-      } else {
-        this.testElement.element.textContent = 'WALKING';
+        if (this.testElement.element.textContent === 'WALKING') {
+          this.testElement.element.textContent = 'BICYCLING';
+        } else {
+          this.testElement.element.textContent = 'WALKING';
+        }
+
+        this.map
+          // eslint-disable-next-line max-len
+          .updateTravelMode(this.testElement.element.textContent, this.map.startPoint, this.map.endPoint)
+          .then(() => {
+            console.log(
+              this.testElement.element.textContent,
+              this.map.distanceTotal,
+              this.map.timeTotal,
+              this.map.elevationTotal,
+              this.map,
+            );
+          });
       }
     });
   }

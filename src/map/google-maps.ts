@@ -209,7 +209,6 @@ export default class GoogleMaps {
   // eslint-disable-next-line max-len
   public async doDirectionRequest(startPoint: Coordinates, endPoint: Coordinates, selectedMode: string): Promise<void> {
     const travelMode = GoogleMaps.getTravelMode(selectedMode);
-    console.log(selectedMode, travelMode);
     const request: MapRequest = {
       origin: startPoint,
       destination: endPoint,
@@ -295,6 +294,7 @@ export default class GoogleMaps {
   // получение всей протяженности маршрута в метрах
   public getTotalDistanceAndTime(route: google.maps.DirectionsRoute): void {
     const [legs]: google.maps.DirectionsLeg[] = route.legs;
+    console.log(legs);
     if (legs.distance) {
       this.distanceTotal = legs.distance.text ?? '0';
     }
@@ -431,8 +431,9 @@ export default class GoogleMaps {
     }
   }
 
-  public updateTravelMode(travelMode: string, origin: Coordinates, destination: Coordinates): void {
-    this.doDirectionRequest(origin, destination, travelMode);
+  public async updateTravelMode(travelMode: string, origin: Coordinates, destination: Coordinates): Promise<void> {
     this.currentTravelMode = travelMode;
+    const temp = await this.doDirectionRequest(origin, destination, travelMode);
+    return temp;
   }
 }
