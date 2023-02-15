@@ -31,20 +31,20 @@ export default class ProfileCard extends BaseComponent<'div'> {
 
   private profileScore: BaseComponent<'div'> | undefined;
 
-  private followeesCounter: number = this.user.followees.length;
+  private followeesCounter: number = this.user.following.length;
 
   public followers: ProfileInfo = new ProfileInfo(
     'followers',
     Routes.FindFriends,
     this.replaceMainCallback,
-    this.user.followers.length,
+    this.user.followedBy.length,
   );
 
   public followees: ProfileInfo = new ProfileInfo(
     'followees',
     Routes.FindFriends,
     this.replaceMainCallback,
-    this.user.followees.length,
+    this.user.following.length,
   );
 
   public trainings: ProfileInfo = new ProfileInfo('activities', Routes.AddActivity, this.replaceMainCallback);
