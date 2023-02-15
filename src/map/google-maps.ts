@@ -1,7 +1,5 @@
-/* eslint-disable max-len */
 /* eslint-disable object-curly-newline */
-/* eslint-disable max-lines-per-function */
-// eslint-disable-next-line import/no-extraneous-dependencies
+/* eslint-disable max-len */
 import { decode, LatLngTuple } from '@googlemaps/polyline-codec';
 import './google-maps.css';
 import BaseComponent from '../components/base-component/base-component';
@@ -54,9 +52,9 @@ export default class GoogleMaps {
 
   public elevationTotal: string = '0,0';
 
-  public distanceTotal: string = '0';
+  public distanceTotal: number = 0;
 
-  public timeTotal: string = '0';
+  public timeTotal!: { hours: string; minutes: string; seconds: string };
 
   public maxMarkerCount: number = 2;
 
@@ -76,17 +74,17 @@ export default class GoogleMaps {
 
   constructor(
     parent: HTMLElement,
-    mapId: string,
+    mapId: string, // можно указать любой id, главное - чтобы уникальный
     center: Coordinates,
-    travelMode: google.maps.TravelMode,
-    elevationChart: boolean,
+    travelMode: string, // 'WALKING' или 'BICYCLING'
+    elevationChart: boolean, // нужен график с высотой или нет
   ) {
     this.mapId = mapId;
     this.latLng = center;
     this.elevationChart = elevationChart;
     this.renderMap(parent);
     this.initMap(this.mapWrapper.element, center);
-    this.currentTravelMode = travelMode;
+    this.currentTravelMode = GoogleMaps.getTravelMode(travelMode.toUpperCase());
     this.parentElement = parent;
   }
 
@@ -216,7 +214,9 @@ export default class GoogleMaps {
           this.directionsRenderer.setMap(this.map);
           this.directionsRenderer.setDirections(result);
           this.getTotalDistanceAndTime(result.routes[0]);
-          this.doElevationRequest(result);
+          if (this.elevationChart) {
+            this.doElevationRequest(result);
+          }
         } else if (status === 'ZERO_RESULTS') {
           this.showMessage();
         } else {
@@ -283,6 +283,7 @@ export default class GoogleMaps {
       }
     }
     this.elevationTotal = `${elevationGain.toFixed(0)},${elevationLoss.toFixed(0)}`;
+    console.log(this.elevationTotal);
     return this.elevationTotal;
   }
 
@@ -290,11 +291,24 @@ export default class GoogleMaps {
   public getTotalDistanceAndTime(route: google.maps.DirectionsRoute): void {
     const [legs]: google.maps.DirectionsLeg[] = route.legs;
     if (legs.distance) {
-      this.distanceTotal = legs.distance.text ?? '0';
+      console.log(legs.distance);
+      this.distanceTotal = +(legs.distance.value / 1000).toFixed(1) ?? 0;
     }
     if (legs.duration) {
-      this.timeTotal = legs.duration.text ?? '0';
+      console.log(legs.duration);
+      const hoursFull = Math.floor(legs.duration.value / 60 / 60);
+      const minutesFull = Math.floor(legs.duration.value / 60) - hoursFull * 60;
+      const secondsFull = legs.duration.value % 60;
+      const hours = GoogleMaps.addPadStart(hoursFull);
+      const minutes = GoogleMaps.addPadStart(minutesFull);
+      const seconds = GoogleMaps.addPadStart(secondsFull);
+      this.timeTotal = { hours, minutes, seconds } ?? { hours: 0, minutes: 0, seconds: 0 };
     }
+  }
+
+  private static addPadStart(time: number): string {
+    const result = time.toString().padStart(2, '0');
+    return result;
   }
 
   public catchLocationError(browserHasGeolocation: boolean, pos: google.maps.LatLng): void {

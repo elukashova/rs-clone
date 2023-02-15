@@ -166,6 +166,7 @@ export default class AddActivity extends BaseComponent<'section'> {
     this.search.addSvgIcon(SvgNames.Search, ProjectColors.Grey, 'search');
     this.addListeners();
     this.sendData();
+
     /* this.map.doDirectionRequest(
       { lat: -33.397, lng: 150.644 },
       { lat: -33.393, lng: 150.641 },
@@ -238,25 +239,35 @@ export default class AddActivity extends BaseComponent<'section'> {
     // слушатель для селекта
     this.training.element.addEventListener('input', (e: Event): void => {
       e.preventDefault();
-      const updatedValue: string = AddActivity.checkSelect(this.training.element.value);
-      if ((this.map.startPoint, this.map.endPoint)) {
-        this.map.updateTravelMode(updatedValue, this.map.startPoint, this.map.endPoint).then((): void => {
-          console.log(this.map.distanceTotal, this.map.timeTotal, this.map.elevationTotal, this.map);
-          // Тут актуальные данные высоты и тд, если тип активности был изменен
-          // нужно вызвать метод, чтобы данные обновились
-        });
-      } else {
-        const travelModeInfo: google.maps.TravelMode = GoogleMaps.getTravelMode(updatedValue);
-        this.map.deleteMap();
-        this.map = new GoogleMaps(
-          this.mapDiv.element,
-          'map add-activity-map',
-          { lat: -33.397, lng: 150.644 },
-          travelModeInfo,
-          true,
-        );
+      this.updateMap();
+    });
+    this.element.addEventListener('click', () => {
+      if (this.map.marker && this.map.markers.length === 2) {
+        // this.updateInputsFromMap();
+        this.updateMap();
       }
     });
+  }
+
+  private updateMap(): void {
+    const updatedValue: string = AddActivity.checkSelect(this.training.element.value);
+    if ((this.map.startPoint, this.map.endPoint)) {
+      this.map.updateTravelMode(updatedValue, this.map.startPoint, this.map.endPoint).then((): void => {
+        console.log(this.map.distanceTotal, this.map.timeTotal, this.map.elevationTotal, this.map);
+        // Тут актуальные данные высоты и тд, если тип активности был изменен
+        // нужно вызвать метод, чтобы данные обновились
+        this.updateInputsFromMap();
+      });
+    } else {
+      this.map.deleteMap();
+      this.map = new GoogleMaps(
+        this.mapDiv.element,
+        'map add-activity-map',
+        { lat: -33.397, lng: 150.644 },
+        updatedValue,
+        true,
+      );
+    }
   }
 
   private static checkSelect(value: string): string {
@@ -266,5 +277,15 @@ export default class AddActivity extends BaseComponent<'section'> {
       default:
         return 'WALKING';
     }
+  }
+
+  private updateInputsFromMap(): void {
+    this.distance.newInputValue = `${this.map.distanceTotal}`;
+    const { hours, minutes, seconds } = this.map.timeTotal;
+    this.durationHours.newInputValue = `${hours}`;
+    this.durationMinutes.newInputValue = `${minutes}`;
+    this.durationSeconds.newInputValue = `${seconds}`;
+    const elevationCount = this.map.elevationTotal.split(',')[0];
+    this.elevation.newInputValue = `${elevationCount}`;
   }
 }

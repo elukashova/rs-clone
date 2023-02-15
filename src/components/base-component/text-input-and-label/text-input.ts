@@ -38,6 +38,12 @@ export default class Input extends BaseComponent<'div'> {
     return this.input.element.value;
   }
 
+  public set newInputValue(text: string) {
+    /* this.input.element.setAttribute('value', `${text}`); */
+    this.input.element.value = text;
+    /* this.input.element.textContent = text; */
+  }
+
   public checkInput(message: ValidityMessages): boolean {
     const validityState: ValidityState = this.input.element.validity;
     this.message = message;
