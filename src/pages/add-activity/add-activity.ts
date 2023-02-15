@@ -7,6 +7,9 @@ import GoogleMaps from '../../map/google-maps';
 import TextArea from '../../components/base-component/textarea/textarea';
 import SvgNames from '../../components/base-component/svg/svg.types';
 import { ProjectColors } from '../../utils/consts';
+import { Activity, Token } from '../../app/loader/loader.types';
+import { createActivity } from '../../app/loader/services/activity-services';
+import { checkDataInLocalStorage } from '../../utils/local-storage';
 
 export default class AddActivity extends BaseComponent<'section'> {
   private formContainer = new BaseComponent('div', this.element, 'add-activity__container');
@@ -30,16 +33,19 @@ export default class AddActivity extends BaseComponent<'section'> {
   private durationHours = new Input(this.durationContainer.element, 'add-activity__input input-hours', 'Duration', {
     type: 'number',
     placeholder: '01',
+    value: '01',
   });
 
   private durationMinutes = new Input(this.durationContainer.element, 'add-activity__input input-minutes', '', {
     type: 'number',
     placeholder: '00',
+    value: '00',
   });
 
   private durationSeconds = new Input(this.durationContainer.element, 'add-activity__input input-seconds', '', {
     type: 'number',
     placeholder: '00',
+    value: '00',
   });
 
   private elevationContainer = new BaseComponent('div', this.pathInfoBlock.element, 'add-activity__block-container');
@@ -50,6 +56,7 @@ export default class AddActivity extends BaseComponent<'section'> {
     'Elevation (m)',
     {
       type: 'number',
+      value: '0',
     },
   );
 
@@ -71,7 +78,7 @@ export default class AddActivity extends BaseComponent<'section'> {
 
   private training = new Select(
     this.trainingContainer.element,
-    ['Running', 'Hiking', 'Walking', 'Cycling'],
+    ['Walking', 'Running', 'Hiking', 'Cycling'],
     'add-activity__input input-training',
     false,
     { id: 'training' },
@@ -99,7 +106,7 @@ export default class AddActivity extends BaseComponent<'section'> {
 
   private title = new Input(this.titleContainer.element, 'add-activity__input input-title', 'Name of activity', {
     type: 'text',
-    placeholder: ' Morning race',
+    placeholder: ' Morning walk',
   });
 
   private descriptionBlock = new BaseComponent(
@@ -141,9 +148,22 @@ export default class AddActivity extends BaseComponent<'section'> {
 
   public saveButton = new Button(this.formElement.element, 'Save', 'btn-activity');
 
+  private data: Activity = {
+    time: '',
+    date: '',
+    title: '',
+    elevation: '',
+    duration: '',
+    sport: '',
+    travelMode: 'travelMode',
+  };
+
+  private token: Token | null = checkDataInLocalStorage('userSessionToken');
+
   constructor(parent: HTMLElement) {
     super('section', parent, 'add-activity add-activity-section');
     this.search.addSvgIcon(SvgNames.Search, ProjectColors.Grey, 'search');
+    this.sendData();
     /* this.map.doDirectionRequest(
       { lat: -33.397, lng: 150.644 },
       { lat: -33.393, lng: 150.641 },
@@ -151,5 +171,64 @@ export default class AddActivity extends BaseComponent<'section'> {
     );
     google.maps.event.clearInstanceListeners(this.map);
     this.map.doMapRequired(); */
+  }
+
+  private collectActivityData(): void {
+    if (this.distance.inputValue) this.data.distance = this.distance.inputValue;
+    this.data.duration = this.setDuration();
+    this.data.elevation = this.elevation.inputValue;
+    this.data.sport = this.training.getSelectedValue().toLowerCase();
+    this.data.date = this.setDate();
+    this.data.time = this.time.inputValue || AddActivity.getTime();
+    this.data.title = this.title.inputValue ? this.title.inputValue : AddActivity.setTitle();
+    this.data.description = this.description.textValue ? this.description.textValue : undefined;
+    this.setMap();
+  }
+
+  private sendData(): void {
+    this.saveButton.element.addEventListener('click', (e) => {
+      e.preventDefault();
+      this.collectActivityData();
+      if (this.token) {
+        createActivity(this.data, this.token);
+      }
+    });
+  }
+
+  private static setTitle(): string {
+    const hours: number = new Date().getHours();
+    if (hours >= 6 && hours <= 11) return 'Morning walk';
+    if (hours >= 12 && hours <= 18) return 'Afternoon walk';
+    if (hours >= 19 && hours <= 23) return 'Evening walk';
+    if (hours >= 0 && hours <= 5) return 'Night walk';
+    return '';
+  }
+
+  private setDuration(): string {
+    const hours = this.durationHours.inputValue || '01';
+    const minutes = this.durationMinutes.inputValue || '00';
+    const seconds = this.durationSeconds.inputValue || '00';
+    return `${hours}:${minutes}:${seconds}`;
+  }
+
+  private static getTime(): string {
+    const date: Date = new Date();
+    const hours: number = date.getHours() % 12;
+    const minutes: string = date.getMinutes().toString().padStart(2, '0');
+    return `${hours}:${minutes}`;
+  }
+
+  private setMap(): void {
+    if (this.map.markers.length) {
+      this.data.startLat = this.map.startPoint.lat.toString();
+      this.data.startLng = this.map.startPoint.lng.toString();
+      this.data.endLat = this.map.endPoint.lat.toString();
+      this.data.endLng = this.map.endPoint.lng.toString();
+    }
+  }
+
+  private setDate(): string {
+    // eslint-disable-next-line max-len
+    return this.date.inputValue ? new Date(this.date.inputValue).toISOString() : new Date().toISOString();
   }
 }

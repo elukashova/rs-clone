@@ -1,10 +1,33 @@
 const USER_DATA = {
-  avatarUrl: './assets/images/avatars/avatar9.png',
-  bio: 'I am Batman',
-  country: 'unknown',
-  email: 'noneofyourbuisiness@nope.com',
-  id: '2',
-  username: 'Michael Knowles',
+  id: '',
+  username: '',
+  email: '',
+  country: '',
+  bio: '',
+  following: [],
+  followedBy: [],
+  avatarUrl: '',
 };
 
 export default USER_DATA;
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// export class Singleton {
+//   private data: User | undefined;
+
+//   public id = '';
+
+//   public username = '';
+
+//   public email = '';
+
+//   public country = '';
+
+//   public bio = '';
+
+//   public following = [];
+
+//   public followedBy = [];
+
+//   public avatarUrl = '';
+// }
