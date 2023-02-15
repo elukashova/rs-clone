@@ -35,6 +35,10 @@ export enum ZoomSettings {
   Closer = 11,
 }
 
+export enum MaxMarkers {
+  Count = 2,
+}
+
 export type MapPoints = {
   startPoint: Coordinates;
   endPoint: Coordinates;
