@@ -147,10 +147,11 @@ export default class AddActivity extends BaseComponent<'section'> {
   constructor(parent: HTMLElement) {
     super('section', parent, 'add-activity add-activity-section');
     this.search.addSvgIcon(SvgNames.Search, ProjectColors.Grey, 'search');
-    // this.map.doDirectionRequest
-    // (this.map.startPoint, this.map.endPoint, this.map.currentTravelMode);
-    // this.initStaticMap();
-    this.testElement.element.addEventListener('click', (e) => {
+    this.addListeners();
+  }
+
+  private addListeners(): void {
+    this.training.element.addEventListener('click', (e) => {
       e.preventDefault();
       if (this.testElement.element.textContent) {
         if (this.testElement.element.textContent === 'WALKING') {
@@ -158,7 +159,6 @@ export default class AddActivity extends BaseComponent<'section'> {
         } else {
           this.testElement.element.textContent = 'WALKING';
         }
-
         this.map
           // eslint-disable-next-line max-len
           .updateTravelMode(this.testElement.element.textContent, this.map.startPoint, this.map.endPoint)
@@ -175,15 +175,16 @@ export default class AddActivity extends BaseComponent<'section'> {
     });
   }
 
-  public async initStaticMap(): Promise<void> {
+  // Метод вывода статичной карты
+  /*   public async initStaticMap(): Promise<void> {
     const url = await GoogleMaps.drawStaticMap(
-      { lat: -33.77341785585683, lng: 151.02294751876593 },
-      { lat: -33.78387945569748, lng: 150.70936384113133 },
-      'WALKING',
+      { lat: -33.77341785585683, lng: 151.02294751876593 }, // передаем с сервера стартовую точку
+      { lat: -33.78387945569748, lng: 150.70936384113133 }, // передаем с сервера конечную точку
+      'WALKING', // передаем с сервера travelMode
     );
     const mapImg = new BaseComponent('img', this.mapDiv.element, '', '', {
       src: `${url}`,
     });
     console.log(mapImg);
-  }
+  } */
 }
