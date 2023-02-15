@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import './post.css';
 import BaseComponent from '../../../../components/base-component/base-component';
@@ -13,6 +14,7 @@ import GoogleMaps from '../../../../map/google-maps';
 import Comment from './comment/comment';
 import COMMENT_DATA from '../../../../mock/comment.data';
 import { ProjectColors } from '../../../../utils/consts';
+import USER_DATA from '../../../../mock/user.data';
 
 export default class Post extends BaseComponent<'div'> {
   private userInfo = new BaseComponent('div', this.element, 'post__user-info');
@@ -72,31 +74,31 @@ export default class Post extends BaseComponent<'div'> {
     this.openComments();
     this.postComment();
     this.addLike();
-    this.setContent(data);
+    // this.setContent(data);
     this.toggleAddCommentButtonState();
   }
 
-  private setContent(data: Activity): void {
-    this.photo.element.src = data.user.avatarUrl;
-    this.name.element.textContent = data.user.username;
-    this.activityTitle.element.textContent = data.title;
-    this.date.element.textContent = `${data.date} at ${data.time}`;
-    this.distance.value = `${data.distance} km`;
-    this.speed.value = 'later';
-    this.time.value = `${data.duration}`;
-    this.elevation.value = `${data.elevation} m`;
-    this.activityIconSvg = new Svg(this.activityIcon.element, data.sport, ProjectColors.Grey, 'activity__icon-svg');
-    if (data.mapPoints) {
-      this.googleMap = new GoogleMaps(
-        this.map.element,
-        '1',
-        8,
-        { lat: -33.397, lng: 150.644 },
-        google.maps.TravelMode.BICYCLING,
-      );
-      // this.googleMap.doDirectionRequest(data.mapPoints.startPoint, data.mapPoints.endPoint);
-    }
-  }
+  // private setContent(data: Activity): void {
+  //   this.photo.element.src = USER_DATA.avatarUrl;
+  //   this.name.element.textContent = USER_DATA.username;
+  //   this.activityTitle.element.textContent = data.title;
+  //   this.date.element.textContent = `${data.date.toDateString()} at ${data.time}`;
+  //   this.distance.value = `${data.distance} km`;
+  //   this.speed.value = 'later';
+  //   this.time.value = `${data.duration}`;
+  //   this.elevation.value = `${data.elevation} m`;
+  //   this.activityIconSvg = new Svg(this.activityIcon.element, data.sport, ProjectColors.Grey, 'activity__icon-svg');
+  //   if (data.startLat) {
+  //     this.googleMap = new GoogleMaps(
+  //       this.map.element,
+  //       '1',
+  //       8,
+  //       { lat: -33.397, lng: 150.644 },
+  //       google.maps.TravelMode.BICYCLING,
+  //     );
+  //     // this.googleMap.doDirectionRequest(data.mapPoints.startPoint, data.mapPoints.endPoint);
+  //   }
+  // }
 
   private openComments(): void {
     this.commentIcon.element.addEventListener('click', () => {
