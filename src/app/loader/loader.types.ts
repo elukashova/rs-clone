@@ -64,6 +64,7 @@ export type User = {
   username: string;
   following: Following[];
   followedBy: Follower[];
+  activities: Activity[];
 };
 
 type Follower = {
