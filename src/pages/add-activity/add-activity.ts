@@ -149,16 +149,16 @@ export default class AddActivity extends BaseComponent<'section'> {
     this.search.addSvgIcon(SvgNames.Search, ProjectColors.Grey, 'search');
     // this.map.doDirectionRequest
     // (this.map.startPoint, this.map.endPoint, this.map.currentTravelMode);
-    this.initStaticMap();
+    // this.initStaticMap();
     this.testElement.element.addEventListener('click', (e) => {
       console.log(this.map.distanceTotal, this.map.timeTotal, this.map.elevationTotal);
       e.preventDefault();
       if (this.testElement.element.textContent) {
-        const travelMode: google.maps.TravelMode = GoogleMaps.getTravelModeFromButton(
+        /* const travelMode: google.maps.TravelMode = GoogleMaps.getTravelModeFromButton(
           this.testElement.element.textContent,
-        );
-        this.map.updateTravelMode(travelMode, this.map.startPoint, this.map.endPoint);
-        console.log(travelMode, this.map.startPoint, this.map);
+        ); */
+        // eslint-disable-next-line max-len
+        this.map.updateTravelMode(this.testElement.element.textContent, this.map.startPoint, this.map.endPoint);
       }
       // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       if (this.testElement.element.textContent === 'WALKING') {

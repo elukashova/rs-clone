@@ -47,7 +47,7 @@ export default class GoogleMaps {
 
   public endPoint!: Coordinates;
 
-  public currentTravelMode: google.maps.TravelMode;
+  public currentTravelMode: string;
 
   public waypoints!: google.maps.DirectionsWaypoint[];
 
@@ -65,7 +65,7 @@ export default class GoogleMaps {
 
   public mapWrapper!: BaseComponent<'div'>;
 
-  public chartElevation!: BaseComponent<'div'>;
+  public chartElevation!: BaseComponent<'div'> | undefined;
 
   public locationButton!: Button;
 
@@ -93,9 +93,6 @@ export default class GoogleMaps {
     this.mapWrapper = new BaseComponent('div', parent, 'map-wrapper', '', {
       id: 'map-wrapper',
       style: 'height: 50vh',
-    });
-    this.chartElevation = new BaseComponent('div', parent, 'chart-div', '', {
-      id: 'chart-div',
     });
   }
 
@@ -211,11 +208,12 @@ export default class GoogleMaps {
   // запрос в Direction API на отрисовку пути
   // eslint-disable-next-line max-len
   public async doDirectionRequest(startPoint: Coordinates, endPoint: Coordinates, selectedMode: string): Promise<void> {
-    const travelType = selectedMode === 'BICYCLING' ? google.maps.TravelMode.BICYCLING : google.maps.TravelMode.WALKING;
+    const travelMode = GoogleMaps.getTravelMode(selectedMode);
+    console.log(selectedMode, travelMode);
     const request: MapRequest = {
-      origin: startPoint, // start coordinates
-      destination: endPoint, // end coordinates
-      travelMode: travelType || google.maps.TravelMode.WALKING,
+      origin: startPoint,
+      destination: endPoint,
+      travelMode: travelMode || google.maps.TravelMode.WALKING,
       unitSystem: google.maps.UnitSystem.METRIC,
     };
     await this.directionsService
@@ -223,9 +221,8 @@ export default class GoogleMaps {
         if (status === 'OK' && result) {
           this.directionsRenderer.setMap(this.map);
           this.directionsRenderer.setDirections(result);
-
           this.getTotalDistanceAndTime(result.routes[0]);
-          this.doElevationRequest(request);
+          this.doElevationRequest(result);
         } else if (status === 'ZERO_RESULTS') {
           this.showMessage();
         } else {
@@ -236,25 +233,30 @@ export default class GoogleMaps {
   }
 
   // eslint-disable-next-line max-len
-  public async doElevationRequest(request: MapRequest): Promise<void> {
+  public async doElevationRequest(result: DirectionsRenderer): Promise<void> {
     try {
-      const response = await this.elevation.getElevationAlongPath({
-        path: [request?.origin, request?.destination],
-        samples: 200,
-      });
-      if (response) {
-        if (this.elevationChart) {
+      if (result) {
+        const response = await this.elevation.getElevationAlongPath({
+          path: result.routes[0].overview_path,
+          samples: 200,
+        });
+        if (response) {
           this.drawPlotElevation(response);
         }
       }
     } catch (error) {
-      this.chartElevation.element.textContent = "Can't show elevation";
+      console.log(`Can't show elevation: ${error}`);
     }
   }
 
   public drawPlotElevation({ results }: google.maps.PathElevationResponse): void {
+    if (this.chartElevation) {
+      this.chartElevation.element.remove();
+    }
+    this.chartElevation = new BaseComponent('div', this.parentElement, 'chart-div', '', {
+      id: 'chart-div',
+    });
     const chart = new google.visualization.ColumnChart(this.chartElevation.element);
-    chart.clearChart();
     const data: google.visualization.DataTable = new google.visualization.DataTable();
 
     data.addColumn('string', 'Sample');
@@ -298,17 +300,6 @@ export default class GoogleMaps {
     }
     if (legs.duration) {
       this.timeTotal = legs.duration.text ?? '0';
-    }
-  }
-
-  // eslint-disable-next-line max-len
-  public setTravelMode(startPoint: Coordinates, endPoint: Coordinates, id: string): void {
-    const selected = document.getElementById(`${id}`);
-    if (selected) {
-      const selectedValue = selected.textContent;
-      if (selectedValue === 'test') {
-        this.doDirectionRequest(startPoint, endPoint, 'WALKING');
-      }
     }
   }
 
@@ -384,8 +375,8 @@ export default class GoogleMaps {
     endPoint: Coordinates,
     activityType: string,
   ): Promise<string> {
-    const travelType = activityType === 'BICYCLING' ? google.maps.TravelMode.BICYCLING : google.maps.TravelMode.WALKING;
-    const data = await GoogleMaps.doRequestForStaticMap(startPoint, endPoint, travelType);
+    const travelMode = activityType === 'BICYCLING' ? google.maps.TravelMode.BICYCLING : google.maps.TravelMode.WALKING;
+    const data = await GoogleMaps.doRequestForStaticMap(startPoint, endPoint, travelMode);
     const url = GoogleMaps.createURL(startPoint, endPoint, data);
     return url;
   }
@@ -429,7 +420,7 @@ export default class GoogleMaps {
     return url;
   }
 
-  public static getTravelModeFromButton(value: string): google.maps.TravelMode {
+  public static getTravelMode(value: string): google.maps.TravelMode {
     switch (value) {
       case 'WALKING':
         return google.maps.TravelMode.WALKING;
@@ -440,25 +431,8 @@ export default class GoogleMaps {
     }
   }
 
-  public updateTravelMode(travelMode: google.maps.TravelMode, origin: Coordinates, destination: Coordinates): void {
-    this.changeTravelMode(travelMode, origin, destination);
+  public updateTravelMode(travelMode: string, origin: Coordinates, destination: Coordinates): void {
+    this.doDirectionRequest(origin, destination, travelMode);
     this.currentTravelMode = travelMode;
-  }
-
-  public changeTravelMode(travelMode: google.maps.TravelMode, origin: Coordinates, destination: Coordinates): void {
-    const request = {
-      origin,
-      destination,
-      travelMode,
-      unitSystem: google.maps.UnitSystem.METRIC,
-    };
-
-    this.directionsService
-      .route(request)
-      .then((response) => {
-        this.directionsRenderer.setDirections(response);
-        this.doElevationRequest(request);
-      })
-      .catch((error) => console.log(`Directions request failed: ${error}`));
   }
 }
