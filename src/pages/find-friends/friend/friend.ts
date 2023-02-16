@@ -3,14 +3,16 @@ import Avatar from '../../../components/base-component/avatar-image/avatar';
 import BaseComponent from '../../../components/base-component/base-component';
 import Button from '../../../components/base-component/button/button';
 import { getClassNames } from '../../../utils/utils';
-import { UserData } from '../type-friends';
+import { FriendData } from '../../../app/loader/loader.types';
 
 export default class Friend extends BaseComponent<'div'> {
+  private userId!: string;
+
   public avatarUrl: string | undefined;
 
   public country: string | undefined;
 
-  public username: string | undefined;
+  public username!: string;
 
   public avatar?: Avatar;
 
@@ -26,18 +28,20 @@ export default class Friend extends BaseComponent<'div'> {
 
   constructor(
     parent: HTMLElement,
+    userData: FriendData,
     additionalClasses?: string,
     attributes?: {
       [key: string]: string;
     },
-    userData?: UserData,
   ) {
     const classes = getClassNames('icon', additionalClasses);
     super('div', parent, classes, '', attributes);
+
     if (userData) {
       this.avatarUrl = userData.avatarUrl;
-      this.country = userData.country;
+      this.country = userData.country || '';
       this.username = userData.username;
+      this.userId = userData.id;
     }
     this.renderElements();
   }
