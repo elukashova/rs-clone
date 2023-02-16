@@ -35,6 +35,7 @@ export default class Dashboard extends BaseComponent<'section'> {
   constructor(private replaceMainCallback: () => void) {
     super('section', undefined, 'dashboard section');
     if (this.token) {
+      console.log(this.token);
       getUser(this.token).then((user: User) => {
         this.currentUser = {
           ...user,
@@ -52,7 +53,7 @@ export default class Dashboard extends BaseComponent<'section'> {
     this.currentUser.avatarUrl = user.avatarUrl || AvatarSources.Default;
     this.currentUser.bio = user.bio || DefaultUserInfo.DefaultBio;
     if (this.token) {
-      Dashboard.updateUser(this.token, { avatar_url: this.currentUser.avatarUrl });
+      Dashboard.updateUser(this.token, { avatarUrl: this.currentUser.avatarUrl });
     }
   }
 

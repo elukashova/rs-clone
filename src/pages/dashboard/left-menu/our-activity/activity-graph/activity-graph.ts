@@ -27,12 +27,11 @@ export default class ActivityGraph extends BaseComponent<'div'> {
 
   private IdxCorrector: number = 1;
 
-  constructor(parent: HTMLElement, activities: Activity[]) {
+  constructor(parent: HTMLElement) {
     super('div', parent, 'our-activity__graph');
     this.renderDivs();
     this.renderSpans();
     this.highlightCurrentDay();
-    this.calculateDailyActivity(activities);
   }
 
   private renderDivs(): void {
@@ -100,6 +99,13 @@ export default class ActivityGraph extends BaseComponent<'div'> {
     this.allGraphicSpans[dayIndex].style.height = `calc(${height}em + 0.15vw)`;
   }
 
+  private setHeightToDefault(): void {
+    const defaultHeight: number = 0.1;
+    for (let i: number = 0; i < this.allGraphicSpans.length; i += 1) {
+      this.allGraphicSpans[i].style.height = `calc(${defaultHeight}em + 0.15vw)`;
+    }
+  }
+
   private static calculateGraphData(km: number): number {
     const minEmHeight: number = 0.1;
     const maxEmHeight: number = 2.5;
@@ -109,14 +115,15 @@ export default class ActivityGraph extends BaseComponent<'div'> {
     if (km === 0) {
       height = minEmHeight;
     } else {
-      height = dayHours / km < maxEmHeight ? km / dayHours : maxEmHeight;
+      height = km / dayHours < maxEmHeight ? km / dayHours : maxEmHeight;
     }
 
     return Number(height.toFixed(1));
   }
 
-  // eslint-disable-next-line max-lines-per-function
-  private calculateDailyActivity(activities: Activity[]): void {
+  public calculateDailyActivity(activities: Activity[]): void {
+    this.setHeightToDefault();
+
     const today = new Date();
     const sunday: number = 6;
     const currentMonday: Date = new Date(today.setDate(today.getDate() - today.getDay()));

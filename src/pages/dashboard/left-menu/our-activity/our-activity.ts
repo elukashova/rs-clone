@@ -53,7 +53,7 @@ export default class OurActivity extends BaseComponent<'div'> {
 
   private statistics = new BaseComponent('div', this.element, 'our-activity__statistics');
 
-  private graph = new ActivityGraph(this.statistics.element, this.user.activities);
+  private graph = new ActivityGraph(this.statistics.element);
 
   private timeAndElevationContainer = new BaseComponent('div', this.statistics.element, 'our-activity__time-container');
 
@@ -117,8 +117,7 @@ export default class OurActivity extends BaseComponent<'div'> {
     this.checkPageLimit();
     this.highlightCurrentIcon();
     this.setSvgEventListeners();
-    this.calculateStats();
-    this.updateStats();
+    this.updateSportActivityData();
     this.editBlock.editBtn.element.addEventListener('click', this.activateSportChanging);
   }
 
@@ -169,6 +168,7 @@ export default class OurActivity extends BaseComponent<'div'> {
         this.currentIcon = icon;
         this.currentIconIndex = this.currentSvgElements.indexOf(icon);
         this.highlightCurrentIcon();
+        this.updateSportActivityData();
       }
     });
   };
@@ -370,13 +370,20 @@ export default class OurActivity extends BaseComponent<'div'> {
     this.totalWeeklyKm.element.textContent = `${this.kmCounter} km`;
     this.time.element.textContent = `${this.hoursCounter} hr`;
     this.elevation.element.innerHTML = `&uarr; ${this.elevationCounter} m`;
+    this.totalYearlyKm.element.textContent = `${this.yearKmCounter} km`;
   }
 
-  private calculateStats(): void {
+  private updateSportActivityData(): void {
+    this.setValuesToNull();
     const activities: Activity[] = this.user.activities.filter(
       (record) => record.sport === `${this.currentIcon?.svg.id}`,
     );
+    this.calculateStats(activities);
+    this.graph.calculateDailyActivity(activities);
+    this.updateStats();
+  }
 
+  private calculateStats(activities: Activity[]): void {
     const today = new Date();
     const sunday: number = 6;
     const currentMonday: Date = new Date(today.setDate(today.getDate() - today.getDay()));
@@ -394,17 +401,31 @@ export default class OurActivity extends BaseComponent<'div'> {
     });
 
     this.hoursCounter = OurActivity.calculateTotalTime(timeData);
-    this.updateStats();
+    this.yearKmCounter = OurActivity.calculateYearDistance(activities);
+  }
+
+  private static calculateYearDistance(activities: Activity[]): number {
+    const year: number = new Date().getFullYear();
+    const yearStart: Date = new Date(year, 0, 1);
+    const yearEnd: Date = new Date(year, 11, 31);
+
+    let distance: number = 0;
+
+    activities.forEach((activity) => {
+      const date = new Date(activity.date);
+
+      if (date.getTime() <= yearEnd.getTime() && date.getTime() >= yearStart.getTime()) {
+        distance += Number(activity.distance);
+      }
+    });
+
+    return distance;
   }
 
   private static calculateTotalTime(timings: string[]): number {
-    // const data: string[] = activities.map((record) => [record.duration]).flat();
-    console.log(timings);
-    const data = ['58:00:15', '32:00:46'];
-
     const dividers: number[] = [3600, 60, 1];
 
-    let totalSeconds: number = data.reduce(
+    let totalSeconds: number = timings.reduce(
       (seconds, time) => time.split(':').reduce((sec, t, idx) => sec + Number(t) * dividers[idx], seconds),
       0,
     );
@@ -416,5 +437,12 @@ export default class OurActivity extends BaseComponent<'div'> {
     });
 
     return parseInt(totalTime[0], 10);
+  }
+
+  private setValuesToNull(): void {
+    this.hoursCounter = 0;
+    this.elevationCounter = 0;
+    this.kmCounter = 0;
+    this.yearKmCounter = 0;
   }
 }

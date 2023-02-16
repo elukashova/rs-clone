@@ -96,7 +96,7 @@ export default class ModalAvatar extends BaseComponent<'div'> {
 
   private okButtonCallback = (): void => {
     if (this.token) {
-      ModalAvatar.updateUser(this.token, { avatar_url: this.currentAvatarUrl })
+      ModalAvatar.updateUser(this.token, { avatarUrl: this.currentAvatarUrl })
         .then((user: User) => {
           if (user) {
             eventEmitter.emit('updateAvatar', { url: user.avatarUrl });
