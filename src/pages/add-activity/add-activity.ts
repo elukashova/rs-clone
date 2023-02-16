@@ -11,6 +11,7 @@ import GoogleMaps from '../../map/google-maps';
 import { Activity, Token } from '../../app/loader/loader.types';
 import { createActivity } from '../../app/loader/services/activity-services';
 import { checkDataInLocalStorage } from '../../utils/local-storage';
+import Picture from '../../components/base-component/picture/picture';
 
 export default class AddActivity extends BaseComponent<'section'> {
   private formContainer = new BaseComponent('div', this.element, 'add-activity__container');
@@ -139,13 +140,7 @@ export default class AddActivity extends BaseComponent<'section'> {
 
   private mapDiv: BaseComponent<'div'> = new BaseComponent('div', this.mapBlock.element, 'map', '', { id: 'map' });
 
-  private map = new GoogleMaps(
-    this.mapDiv.element,
-    'map add-activity-map',
-    { lat: -33.397, lng: 150.644 },
-    google.maps.TravelMode.WALKING,
-    true,
-  );
+  private map = new GoogleMaps(this.mapDiv.element, { lat: 38.771, lng: -9.058 }, google.maps.TravelMode.WALKING, true);
 
   public saveButton = new Button(this.formElement.element, 'Save', 'btn-activity');
 
@@ -161,12 +156,13 @@ export default class AddActivity extends BaseComponent<'section'> {
 
   private token: Token | null = checkDataInLocalStorage('userSessionToken');
 
+  private static circle: Picture;
+
   constructor(parent: HTMLElement) {
     super('section', parent, 'add-activity add-activity-section');
     this.search.addSvgIcon(SvgNames.Search, ProjectColors.Grey, 'search');
     this.addListeners();
     this.sendData();
-
     /* this.map.doDirectionRequest(
       { lat: -33.397, lng: 150.644 },
       { lat: -33.393, lng: 150.641 },
@@ -241,11 +237,13 @@ export default class AddActivity extends BaseComponent<'section'> {
       e.preventDefault();
       this.updateMap();
     });
-    this.element.addEventListener('click', () => {
+    this.mapBlock.element.addEventListener('click', () => {
       if (this.map.marker && this.map.markers.length === 2) {
-        // this.updateInputsFromMap();
         this.updateMap();
       }
+    });
+    this.map.clearButton.element.addEventListener('click', () => {
+      this.resetResults();
     });
   }
 
@@ -253,20 +251,12 @@ export default class AddActivity extends BaseComponent<'section'> {
     const updatedValue: string = AddActivity.checkSelect(this.training.element.value);
     if ((this.map.startPoint, this.map.endPoint)) {
       this.map.updateTravelMode(updatedValue, this.map.startPoint, this.map.endPoint).then((): void => {
-        console.log(this.map.distanceTotal, this.map.timeTotal, this.map.elevationTotal, this.map);
-        // Тут актуальные данные высоты и тд, если тип активности был изменен
-        // нужно вызвать метод, чтобы данные обновились
+        AddActivity.showLoadingCircle();
         this.updateInputsFromMap();
       });
     } else {
       this.map.deleteMap();
-      this.map = new GoogleMaps(
-        this.mapDiv.element,
-        'map add-activity-map',
-        { lat: -33.397, lng: 150.644 },
-        updatedValue,
-        true,
-      );
+      this.map = new GoogleMaps(this.mapDiv.element, { lat: -33.397, lng: 150.644 }, updatedValue, true);
     }
   }
 
@@ -280,12 +270,36 @@ export default class AddActivity extends BaseComponent<'section'> {
   }
 
   private updateInputsFromMap(): void {
-    this.distance.newInputValue = `${this.map.distanceTotal}`;
-    const { hours, minutes, seconds } = this.map.timeTotal;
-    this.durationHours.newInputValue = `${hours}`;
-    this.durationMinutes.newInputValue = `${minutes}`;
-    this.durationSeconds.newInputValue = `${seconds}`;
-    const elevationCount = this.map.elevationTotal.split(',')[0];
-    this.elevation.newInputValue = `${elevationCount}`;
+    setTimeout(() => {
+      this.distance.newInputValue = `${this.map.distanceTotal}`;
+      const { hours, minutes, seconds } = this.map.timeTotal;
+      this.durationHours.newInputValue = `${hours}`;
+      this.durationMinutes.newInputValue = `${minutes}`;
+      this.durationSeconds.newInputValue = `${seconds}`;
+      const elevationCount = this.map.elevationTotal.split(',')[0];
+      this.elevation.newInputValue = `${elevationCount}`;
+      AddActivity.deleteLoadingCircle();
+    }, 3000);
+  }
+
+  private static showLoadingCircle(): void {
+    this.circle = new Picture(document.body, 'circle', { src: './assets/icons/timer.gif' });
+    this.circle.element.style.position = 'fixed';
+    this.circle.element.style.top = '50%';
+    this.circle.element.style.left = '50%';
+    this.circle.element.style.transform = 'translate(-50%, -50%)';
+    this.circle.element.style.zIndex = '150';
+  }
+
+  private static deleteLoadingCircle(): void {
+    document.body.removeChild(this.circle.element);
+  }
+
+  private resetResults(): void {
+    this.distance.newInputValue = '0';
+    this.durationHours.newInputValue = '01';
+    this.durationMinutes.newInputValue = '00';
+    this.durationSeconds.newInputValue = '00';
+    this.elevation.newInputValue = '0';
   }
 }
