@@ -1,10 +1,12 @@
 import './training-feed.css';
 import BaseComponent from '../../../components/base-component/base-component';
 import Button from '../../../components/base-component/button/button';
-import ACTIVITY_DATA from '../../../mock/activity.data';
-import Post from './post/post';
 import Routes from '../../../app/router/router.types';
 import NavigationLink from '../../../components/base-component/link/link';
+import { User } from '../../../app/loader/loader.types';
+import Post from './post/post';
+import { ProjectColors } from '../../../utils/consts';
+import Svg from '../../../components/base-component/svg/svg';
 
 export default class TrainingFeed extends BaseComponent<'article'> {
   public message = new BaseComponent('span', undefined, 'training-feed__message', 'Лента пока пуста, Вы можете');
@@ -17,14 +19,29 @@ export default class TrainingFeed extends BaseComponent<'article'> {
 
   constructor(parent: HTMLElement, private replaceMainCallback: () => void) {
     super('article', parent, 'training-feed');
-    this.showGreetingMessage();
-    this.addTrainingButton?.element.addEventListener('click', () => {
-      this.addPost();
-    });
   }
 
-  private addPost(): void {
-    this.element.append(new Post(ACTIVITY_DATA).element); // добавляем один пост
+  public static addPosts(data: User): HTMLDivElement[] {
+    const posts: HTMLDivElement[] = [];
+    data.activities.forEach((activity) => {
+      const post: Post = new Post();
+      post.photo.element.src = data.avatarUrl;
+      post.name.element.textContent = data.username;
+      post.activityTitle.element.textContent = activity.title;
+      post.date.element.textContent = `${new Date(activity.date).toDateString()} at ${activity.time}`;
+      post.distance.value = `${activity.distance} km`;
+      post.speed.value = '0';
+      post.time.value = `${activity.duration}`;
+      post.elevation.value = `${activity.elevation} m`;
+      post.activityIconSvg = new Svg(
+        post.activityIcon.element,
+        activity.sport,
+        ProjectColors.Grey,
+        'activity__icon-svg',
+      );
+      posts.unshift(post.element);
+    });
+    return posts;
   }
 
   public showGreetingMessage(): void {

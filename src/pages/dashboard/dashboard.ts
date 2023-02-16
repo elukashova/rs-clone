@@ -32,6 +32,8 @@ export default class Dashboard extends BaseComponent<'section'> {
     activities: [],
   };
 
+  private posts: HTMLDivElement[] = [];
+
   constructor(private replaceMainCallback: () => void) {
     super('section', undefined, 'dashboard section');
     if (this.token) {
@@ -43,6 +45,14 @@ export default class Dashboard extends BaseComponent<'section'> {
         this.setUserInfo(user);
         this.leftMenu = new LeftMenu(this.currentUser, replaceMainCallback);
         this.element.insertBefore(this.leftMenu.element, this.trainingFeed.element);
+        this.posts = TrainingFeed.addPosts(this.currentUser);
+        if (this.posts.length) {
+          this.trainingFeed.deleteGreetingMessage();
+          this.trainingFeed.element.append(...this.posts);
+        } else {
+          this.trainingFeed.element.innerHTML = '';
+          this.trainingFeed.showGreetingMessage();
+        }
       });
     }
   }

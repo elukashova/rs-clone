@@ -18,7 +18,7 @@ export type FriendId = {
   friendId: string;
 };
 
-export type RequestData = SignUp | LogIn | FriendId;
+export type RequestData = SignUp | LogIn | FriendId | Activity;
 
 export enum Endpoints {
   Login = 'auth/signin',
@@ -137,7 +137,7 @@ export type Comment = {
 
 export type Activity = {
   time: string;
-  date: Date;
+  date: string;
   title: string;
   elevation: string;
   duration: string;
