@@ -18,7 +18,7 @@ export type FriendId = {
   friendId: string;
 };
 
-export type RequestData = SignUp | LogIn | FriendId | Activity;
+export type RequestData = SignUp | LogIn | FriendId | Activity | UpdateRequestData;
 
 export enum Endpoints {
   Login = 'auth/signin',
@@ -32,6 +32,7 @@ export enum Endpoints {
   AddActivity = 'activity',
   GetAllActivities = 'activity',
   GetOneActivity = 'activity/', // необходимо приписывать айди активности
+  UpdateActivity = 'activity/', // необходимо приписывать айди активности
 }
 
 export type LoadRequest = {
@@ -62,16 +63,9 @@ export type User = {
   email: string;
   id: string;
   username: string;
-  following: Follow[];
-  followedBy: Follow[];
+  following: FriendData[];
+  followedBy: FriendData[];
   activities: Activity[];
-};
-
-type Follow = {
-  id: string;
-  username: string;
-  country: string;
-  avatarUrl: string;
 };
 
 export type FriendData = {
@@ -79,6 +73,7 @@ export type FriendData = {
   username: string;
   country?: string;
   avatarUrl: string;
+  activities: Activity[];
 };
 
 export enum SportType {
@@ -88,51 +83,12 @@ export enum SportType {
   CYCLING = 'cycling',
 }
 
-// export type Route = {
-//   id: number;
-//   user_id: string;
-//   user: User;
-//   route_data: string;
-//   title: string;
-//   sport: SportType;
-//   description: string;
-//   date: Date;
-//   created_at: Date;
-//   updated_at: Date;
-//   location: Location;
-//   activity: Activity;
-// };
-
-// export type Location = {
-//   id: number;
-//   latitude: number;
-//   longtitude: number;
-//   route_id: number;
-//   route: Route;
-//   order: number;
-//   created_at: Date;
-//   updated_at: Date;
-// };
-
-export type Kudo = {
-  id: number;
-  activity_id: number;
-  activity: Activity;
-  user_id: string;
-  user: User;
-  created_at: Date;
-  updated_at: Date;
-};
-
 export type Comment = {
-  id: number;
   body: string;
-  user_id: string;
-  user: User;
-  activity_id: number;
-  activity: Activity;
-  created_at: Date;
-  updated_at: Date;
+  username: string;
+  avatarUrl: string;
+  createdAt: Date;
+  updatedAt: Date;
 };
 
 export type Activity = {
@@ -145,12 +101,12 @@ export type Activity = {
   description?: string;
   distance?: string;
   companionId?: string;
-  startLat?: string;
-  startLng?: string;
-  endLat?: string;
-  endLng?: string;
-  location?: string;
   travelMode?: string;
+  startPoint?: string;
+  endPoint?: string;
+  mapId?: string;
+  kudos?: string[];
+  comments?: Comment[];
 };
 
 export type UpdateUserData = {
@@ -161,3 +117,10 @@ export type UpdateUserData = {
   id?: string;
   username?: string;
 };
+
+export type UpdateActivity = {
+  body?: string;
+  kudos?: boolean;
+};
+
+export type UpdateRequestData = UpdateUserData | UpdateActivity;
