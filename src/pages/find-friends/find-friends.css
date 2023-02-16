@@ -1,20 +1,22 @@
 .find-friends-section {
   display: flex;
   justify-content: center;
-  width: 100%;
+  width: 90%;
+  margin: 0 auto;
 }
 
 .find-friends__container {
-  display: grid;
-  grid-template-columns: repeat(2, 40%);
-  gap: 10%;
-  width: 90%;
-  margin-bottom: 4%;
+  display: flex;
+  justify-content: center;
+  gap: 3em;
+  width: 100%;
+  margin-bottom: 2%;
 }
 
 .not-friends__title,
 .friends__title {
-  margin: 6% 0 4% 0;
+  margin: 4% 0 2% 0;
+  font-size: 1.5em;
 }
 
 .not-friends__input-search input,
@@ -23,12 +25,76 @@
   border: 1px solid #8c8c8c;
 }
 
+.not-friends__input-search label,
+.friends__input-search label {
+  font-size: 1em;
+}
+
 .not-friends__element,
 .friends__element {
+  display: grid;
+  grid-template-columns: 20% 35% 30%;
+  align-items: flex-start;
+  gap: 0.3em;
+  width: 90%;
   height: max-content;
+  margin: 2em 0;
+}
+
+.friend__username,
+.not-friend__username,
+.friend__activity-data,
+.not-friend__activity-data {
+  font-size: 1em;
+}
+
+.friend__user-country,
+.not-friend__user-country {
+  font-size: 0.9em;
+}
+
+.friend__button,
+.not-friend__button {
+  font-size: 1em;
+}
+
+.not-friend__avatar-container,
+.not-friend__avatar,
+.friend__avatar-container,
+.friend__avatar {
+  width: calc(2em + 3vw);
+  height: calc(2em + 3vw);
 }
 
 .not-friends__element.hidden,
 .friends__element.hidden {
   display: none;
+}
+
+.not-friends__block-container,
+.friends__block-container {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.not-friend__user-data {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.not-friend__button {
+  width: calc(3em + 4vw);
+}
+
+.friend__button {
+  width: calc(3em + 4vw);
+  background-color: #949494;
+}
+
+.friend__button:hover {
+  background-color: #ff8d24;
 }
