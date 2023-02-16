@@ -53,7 +53,6 @@ export default class Post extends BaseComponent<'div'> {
 
   public map = new BaseComponent('div', this.element, 'map');
 
-
   public googleMap: GoogleMaps | undefined;
 
   private icons = new BaseComponent('div', this.element, 'post__icons');

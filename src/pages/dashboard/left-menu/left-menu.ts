@@ -16,7 +16,7 @@ export default class LeftMenu extends BaseComponent<'aside'> {
     super('aside', parent, 'left-menu');
 
     this.profileCard = new ProfileCard(this.element, user, replaceMainCallback);
-    this.trainingJournal = new TrainingJournal(this.element);
+    this.trainingJournal = new TrainingJournal(this.element, user.activities);
     this.ourActivity = new OurActivity(this.element, user);
   }
 }

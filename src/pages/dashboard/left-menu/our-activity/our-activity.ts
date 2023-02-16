@@ -384,16 +384,22 @@ export default class OurActivity extends BaseComponent<'div'> {
   }
 
   private calculateStats(activities: Activity[]): void {
-    const today = new Date();
-    const sunday: number = 6;
-    const currentMonday: Date = new Date(today.setDate(today.getDate() - today.getDay()));
-    const currentSunday: Date = new Date(today.setDate(today.getDate() - today.getDay() + sunday));
+    const currentDay: Date = new Date();
+    const sundayIndex: number = 6;
+    // eslint-disable-next-line max-len
+    const currentWeekMonday: Date = new Date(currentDay.setDate(currentDay.getDate() - currentDay.getDay()));
+    // eslint-disable-next-line max-len
+    const currentWeekSunday: Date = new Date(
+      currentDay.setDate(currentDay.getDate() - currentDay.getDay() + sundayIndex),
+    );
 
     const timeData: string[] = [];
 
     activities.forEach((activity) => {
-      const date = new Date(activity.date);
-      if (date.getTime() <= currentSunday.getTime() && date.getTime() >= currentMonday.getTime()) {
+      const date: Date = new Date(activity.date);
+      const dateMs = date.getTime();
+
+      if (dateMs <= currentWeekSunday.getTime() && dateMs >= currentWeekMonday.getTime()) {
         this.kmCounter += Number(activity.distance);
         timeData.push(activity.duration);
         this.elevationCounter += Number(activity.elevation);
@@ -413,8 +419,9 @@ export default class OurActivity extends BaseComponent<'div'> {
 
     activities.forEach((activity) => {
       const date = new Date(activity.date);
+      const dateMs = date.getTime();
 
-      if (date.getTime() <= yearEnd.getTime() && date.getTime() >= yearStart.getTime()) {
+      if (dateMs <= yearEnd.getTime() && dateMs >= yearStart.getTime()) {
         distance += Number(activity.distance);
       }
     });
@@ -431,9 +438,9 @@ export default class OurActivity extends BaseComponent<'div'> {
     );
 
     const totalTime: string[] = dividers.map((divider) => {
-      const value: number = Math.floor(totalSeconds / divider);
-      totalSeconds -= value * divider;
-      return value.toString().padStart(2, '0');
+      const hours: number = Math.floor(totalSeconds / divider);
+      totalSeconds -= hours * divider;
+      return hours.toString().padStart(2, '0');
     });
 
     return parseInt(totalTime[0], 10);
