@@ -75,7 +75,6 @@ export default class GoogleMaps {
 
   constructor(
     parent: HTMLElement,
-    // mapId: string, // можно указать любой id, главное - чтобы уникальный
     center: Coordinates,
     travelMode: string, // 'WALKING' или 'BICYCLING'
     elevationChart: boolean, // нужен график с высотой или нет
@@ -102,6 +101,8 @@ export default class GoogleMaps {
       zoom: this.zoom,
       center: latLng,
       mapTypeId: google.maps.MapTypeId.ROADMAP,
+      mapTypeControl: false,
+      streetViewControl: false,
     };
     this.map = new google.maps.Map(parent, myOptions);
     this.directionsRenderer.setMap(this.map);
@@ -236,7 +237,9 @@ export default class GoogleMaps {
           samples: 200,
         });
         if (response) {
-          this.drawPlotElevation(response);
+          const { results } = response;
+          const elevationInfo = this.getMapElevationInfo(results);
+          this.drawPlotElevation(response, elevationInfo);
         }
       }
     } catch (error: unknown) {
@@ -244,12 +247,13 @@ export default class GoogleMaps {
     }
   }
 
-  public drawPlotElevation({ results }: google.maps.PathElevationResponse): void {
+  public drawPlotElevation({ results }: google.maps.PathElevationResponse, elevationInfo: string): void {
     if (this.chartElevation) {
       this.chartElevation.element.remove();
     }
     this.chartElevation = new BaseComponent('div', this.parentElement, 'chart-div', '', {
       id: 'chart-div',
+      'data-el': `${elevationInfo}`,
     });
     const chart: google.visualization.ColumnChart = new google.visualization.ColumnChart(this.chartElevation.element);
     const data: google.visualization.DataTable = new google.visualization.DataTable();
@@ -267,7 +271,6 @@ export default class GoogleMaps {
       title: 'Elevation (meters)',
       colors: [ProjectColors.DarkTurquoise, ProjectColors.Turquoise],
     });
-    this.getMapElevationInfo(results);
   }
 
   // получение всего подъема на пути и всего спуска в метрах
@@ -284,7 +287,6 @@ export default class GoogleMaps {
       }
     }
     this.elevationTotal = `${elevationGain.toFixed(0)},${elevationLoss.toFixed(0)}`;
-    console.log(this.elevationTotal);
     return this.elevationTotal;
   }
 
@@ -292,11 +294,9 @@ export default class GoogleMaps {
   public getTotalDistanceAndTime(route: google.maps.DirectionsRoute): void {
     const [legs]: google.maps.DirectionsLeg[] = route.legs;
     if (legs.distance) {
-      console.log(legs.distance);
       this.distanceTotal = +(legs.distance.value / 1000).toFixed(1) ?? 0;
     }
     if (legs.duration) {
-      console.log(legs.duration);
       const hoursFull = Math.floor(legs.duration.value / 60 / 60);
       const minutesFull = Math.floor(legs.duration.value / 60) - hoursFull * 60;
       const secondsFull = legs.duration.value % 60;
@@ -371,11 +371,15 @@ export default class GoogleMaps {
     if (this.directionsRenderer) {
       this.directionsRenderer.setMap(null);
     }
+    this.timeTotal = { hours: '00', minutes: '00', seconds: '00' };
+    this.distanceTotal = 0;
+    this.elevationTotal = '0,0';
     this.markers.forEach((marker: google.maps.Marker): void => marker.setMap(null));
     this.markers.length = 0;
   }
 
   public deleteMap(): void {
+    this.deleteRoute();
     this.parentElement.removeChild(this.mapWrapper.element);
   }
 
