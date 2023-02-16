@@ -102,12 +102,12 @@ export default class Friends extends BaseComponent<'section'> {
       Friends.search(this.friendsAll, this.friendsSearch);
     });
 
-    this.friendsAll.forEach((friend) => {
+    /*  this.friendsAll.forEach((friend) => {
       friend.unsubscribeButton.element.addEventListener('click', (): void => {
         // Friends.removeElement(friend.element);
         // метод, который удалит пользователя из друзей
       });
-    });
+    }); */
   }
 
   /* private addFriendCallback = (): void => {
@@ -170,9 +170,5 @@ export default class Friends extends BaseComponent<'section'> {
         user.element.classList.remove('hidden');
       }
     });
-  }
-
-  private static removeElement(element: HTMLElement): void {
-    element.remove();
   }
 }
