@@ -141,7 +141,6 @@ export default class AddActivity extends BaseComponent<'section'> {
 
   private map = new GoogleMaps(
     this.mapDiv.element,
-    'map add-activity-map',
     { lat: -33.397, lng: 150.644 },
     google.maps.TravelMode.WALKING,
     true,
@@ -166,7 +165,6 @@ export default class AddActivity extends BaseComponent<'section'> {
     this.search.addSvgIcon(SvgNames.Search, ProjectColors.Grey, 'search');
     this.addListeners();
     this.sendData();
-
     /* this.map.doDirectionRequest(
       { lat: -33.397, lng: 150.644 },
       { lat: -33.393, lng: 150.641 },
@@ -260,13 +258,7 @@ export default class AddActivity extends BaseComponent<'section'> {
       });
     } else {
       this.map.deleteMap();
-      this.map = new GoogleMaps(
-        this.mapDiv.element,
-        'map add-activity-map',
-        { lat: -33.397, lng: 150.644 },
-        updatedValue,
-        true,
-      );
+      this.map = new GoogleMaps(this.mapDiv.element, { lat: -33.397, lng: 150.644 }, updatedValue, true);
     }
   }
 

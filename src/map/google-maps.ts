@@ -1,5 +1,6 @@
 /* eslint-disable object-curly-newline */
 /* eslint-disable max-len */
+import { v4 } from 'uuid';
 import { decode, LatLngTuple } from '@googlemaps/polyline-codec';
 import './google-maps.css';
 import BaseComponent from '../components/base-component/base-component';
@@ -74,12 +75,12 @@ export default class GoogleMaps {
 
   constructor(
     parent: HTMLElement,
-    mapId: string, // можно указать любой id, главное - чтобы уникальный
+    // mapId: string, // можно указать любой id, главное - чтобы уникальный
     center: Coordinates,
     travelMode: string, // 'WALKING' или 'BICYCLING'
     elevationChart: boolean, // нужен график с высотой или нет
   ) {
-    this.mapId = mapId;
+    this.mapId = v4();
     this.latLng = center;
     this.elevationChart = elevationChart;
     this.renderMap(parent);
