@@ -1,7 +1,10 @@
+import { Activity } from '../../../../../app/loader/loader.types';
 import BaseComponent from '../../../../../components/base-component/base-component';
 import Svg from '../../../../../components/base-component/svg/svg';
 import { ProjectColors } from '../../../../../utils/consts';
+import { DailyData } from '../our-activity.types';
 import './activity-graph.css';
+// import moment from 'moment';
 
 export default class ActivityGraph extends BaseComponent<'div'> {
   private allDaysWrapper: BaseComponent<'div'> = new BaseComponent(
@@ -29,11 +32,6 @@ export default class ActivityGraph extends BaseComponent<'div'> {
     this.renderDivs();
     this.renderSpans();
     this.highlightCurrentDay();
-
-    // данные для теста функции
-    const day: Date = new Date('February 11, 2023');
-    const hours: number = 5;
-    this.updateStats(day, hours);
   }
 
   private renderDivs(): void {
@@ -94,25 +92,69 @@ export default class ActivityGraph extends BaseComponent<'div'> {
     svg.updateFillColor(ProjectColors.Turquoise);
   }
 
-  private updateStats(day: Date, hours: number): void {
-    const height: number = ActivityGraph.calculateStats(hours);
+  private updateStats(day: Date, km: number): void {
+    const height: number = ActivityGraph.calculateGraphData(km);
     // eslint-disable-next-line max-len, prettier/prettier
     const dayIndex: number = ActivityGraph.getDayIndex(day) === 0 ? this.allGraphicSpans.length - 1 : ActivityGraph.getDayIndex(day) - 1;
     this.allGraphicSpans[dayIndex].style.height = `calc(${height}em + 0.15vw)`;
   }
 
-  private static calculateStats(hours: number): number {
+  private setHeightToDefault(): void {
+    const defaultHeight: number = 0.1;
+    for (let i: number = 0; i < this.allGraphicSpans.length; i += 1) {
+      this.allGraphicSpans[i].style.height = `calc(${defaultHeight}em + 0.15vw)`;
+    }
+  }
+
+  private static calculateGraphData(km: number): number {
     const minEmHeight: number = 0.1;
-    const maxEmHeight: number = 5;
+    const maxEmHeight: number = 2.5;
     const dayHours: number = 24;
 
     let height: number;
-    if (hours === 0) {
+    if (km === 0) {
       height = minEmHeight;
     } else {
-      height = maxEmHeight / (dayHours / hours);
+      height = km / dayHours < maxEmHeight ? km / dayHours : maxEmHeight;
     }
 
     return Number(height.toFixed(1));
+  }
+
+  public calculateDailyActivity(activities: Activity[]): void {
+    this.setHeightToDefault();
+
+    const today = new Date();
+    const sunday: number = 6;
+    const currentMonday: Date = new Date(today.setDate(today.getDate() - today.getDay()));
+    const currentSunday: Date = new Date(today.setDate(today.getDate() - today.getDay() + sunday));
+
+    const accumulatedData: DailyData[] = [];
+    activities.forEach((ac) => {
+      const shorten = new Date(ac.date).toDateString();
+      const data: DailyData = {
+        date: shorten,
+        distance: Number(ac.distance),
+      };
+
+      if (accumulatedData.filter((el) => el.date === data.date).length === 0) {
+        accumulatedData.push(data);
+      } else {
+        accumulatedData.map((record) => {
+          if (record.date === data.date) {
+            // eslint-disable-next-line no-param-reassign
+            record.distance += data.distance;
+          }
+          return record;
+        });
+      }
+    });
+
+    accumulatedData.forEach((activity) => {
+      const date = new Date(activity.date);
+      if (date.getTime() <= currentSunday.getTime() && date.getTime() >= currentMonday.getTime()) {
+        this.updateStats(date, Number(activity.distance));
+      }
+    });
   }
 }

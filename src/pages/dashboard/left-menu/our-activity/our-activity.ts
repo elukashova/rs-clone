@@ -5,6 +5,8 @@ import Svg from '../../../../components/base-component/svg/svg';
 import SvgNames from '../../../../components/base-component/svg/svg.types';
 import { ProjectColors } from '../../../../utils/consts';
 import EditBlock from '../../../../components/base-component/edit-block/edit-block';
+import { Activity, User } from '../../../../app/loader/loader.types';
+// import { StatsKeys } from './our-activity.types';
 
 export default class OurActivity extends BaseComponent<'div'> {
   private activityIcons: BaseComponent<'div'> = new BaseComponent('div', this.element, 'our-activity__icons');
@@ -40,7 +42,6 @@ export default class OurActivity extends BaseComponent<'div'> {
     'span',
     this.weekHeaderWrapper.element,
     'our-activity__week-km',
-    '0 km',
   );
 
   private chooseSportsHeading: BaseComponent<'h6'> = new BaseComponent(
@@ -54,11 +55,11 @@ export default class OurActivity extends BaseComponent<'div'> {
 
   private graph = new ActivityGraph(this.statistics.element);
 
-  private timeAndStepContainer = new BaseComponent('div', this.statistics.element, 'our-activity__time-container');
+  private timeAndElevationContainer = new BaseComponent('div', this.statistics.element, 'our-activity__time-container');
 
-  private time = new BaseComponent('span', this.timeAndStepContainer.element, 'our-activity__time');
+  private time = new BaseComponent('span', this.timeAndElevationContainer.element, 'our-activity__time');
 
-  private steps = new BaseComponent('span', this.timeAndStepContainer.element, 'our-activity__steps');
+  private elevation = new BaseComponent('span', this.timeAndElevationContainer.element, 'our-activity__elevation');
 
   private yearHeaderWrapper: BaseComponent<'div'> = new BaseComponent(
     'div',
@@ -77,7 +78,6 @@ export default class OurActivity extends BaseComponent<'div'> {
     'span',
     this.yearHeaderWrapper.element,
     'our-activity__year-km',
-    '0 km',
   );
 
   private svgNumberOnPage: number = 3;
@@ -103,19 +103,22 @@ export default class OurActivity extends BaseComponent<'div'> {
 
   private isNoChoice: boolean = false;
 
-  constructor(parent: HTMLElement) {
+  private kmCounter: number = 0;
+
+  private hoursCounter: number = 0;
+
+  private elevationCounter: number = 0;
+
+  private yearKmCounter: number = 0;
+
+  constructor(parent: HTMLElement, private user: User) {
     super('div', parent, 'our-activity');
-    this.setTimeAndSteps('0 hr', '0 steps');
     this.renderSportSVGs();
     this.checkPageLimit();
     this.highlightCurrentIcon();
     this.setSvgEventListeners();
+    this.updateSportActivityData();
     this.editBlock.editBtn.element.addEventListener('click', this.activateSportChanging);
-  }
-
-  public setTimeAndSteps(time: string, steps: string): void {
-    this.time.element.textContent = time;
-    this.steps.element.textContent = steps;
   }
 
   private renderSportSVGs(): void {
@@ -165,6 +168,7 @@ export default class OurActivity extends BaseComponent<'div'> {
         this.currentIcon = icon;
         this.currentIconIndex = this.currentSvgElements.indexOf(icon);
         this.highlightCurrentIcon();
+        this.updateSportActivityData();
       }
     });
   };
@@ -247,7 +251,6 @@ export default class OurActivity extends BaseComponent<'div'> {
   }
 
   private highlightAlreadyChosenSports(): void {
-    // eslint-disable-next-line max-len
     this.currentSvgElements.forEach((sport) => {
       sport.updateFillColor(ProjectColors.Orange);
       sport.svg.classList.add('chosen-sport');
@@ -361,5 +364,85 @@ export default class OurActivity extends BaseComponent<'div'> {
       'our-activity__icons_header',
       'No sport chosen yet',
     );
+  }
+
+  private updateStats(): void {
+    this.totalWeeklyKm.element.textContent = `${this.kmCounter} km`;
+    this.time.element.textContent = `${this.hoursCounter} hr`;
+    this.elevation.element.innerHTML = `&uarr; ${this.elevationCounter} m`;
+    this.totalYearlyKm.element.textContent = `${this.yearKmCounter} km`;
+  }
+
+  private updateSportActivityData(): void {
+    this.setValuesToNull();
+    const activities: Activity[] = this.user.activities.filter(
+      (record) => record.sport === `${this.currentIcon?.svg.id}`,
+    );
+    this.calculateStats(activities);
+    this.graph.calculateDailyActivity(activities);
+    this.updateStats();
+  }
+
+  private calculateStats(activities: Activity[]): void {
+    const today = new Date();
+    const sunday: number = 6;
+    const currentMonday: Date = new Date(today.setDate(today.getDate() - today.getDay()));
+    const currentSunday: Date = new Date(today.setDate(today.getDate() - today.getDay() + sunday));
+
+    const timeData: string[] = [];
+
+    activities.forEach((activity) => {
+      const date = new Date(activity.date);
+      if (date.getTime() <= currentSunday.getTime() && date.getTime() >= currentMonday.getTime()) {
+        this.kmCounter += Number(activity.distance);
+        timeData.push(activity.duration);
+        this.elevationCounter += Number(activity.elevation);
+      }
+    });
+
+    this.hoursCounter = OurActivity.calculateTotalTime(timeData);
+    this.yearKmCounter = OurActivity.calculateYearDistance(activities);
+  }
+
+  private static calculateYearDistance(activities: Activity[]): number {
+    const year: number = new Date().getFullYear();
+    const yearStart: Date = new Date(year, 0, 1);
+    const yearEnd: Date = new Date(year, 11, 31);
+
+    let distance: number = 0;
+
+    activities.forEach((activity) => {
+      const date = new Date(activity.date);
+
+      if (date.getTime() <= yearEnd.getTime() && date.getTime() >= yearStart.getTime()) {
+        distance += Number(activity.distance);
+      }
+    });
+
+    return distance;
+  }
+
+  private static calculateTotalTime(timings: string[]): number {
+    const dividers: number[] = [3600, 60, 1];
+
+    let totalSeconds: number = timings.reduce(
+      (seconds, time) => time.split(':').reduce((sec, t, idx) => sec + Number(t) * dividers[idx], seconds),
+      0,
+    );
+
+    const totalTime: string[] = dividers.map((divider) => {
+      const value: number = Math.floor(totalSeconds / divider);
+      totalSeconds -= value * divider;
+      return value.toString().padStart(2, '0');
+    });
+
+    return parseInt(totalTime[0], 10);
+  }
+
+  private setValuesToNull(): void {
+    this.hoursCounter = 0;
+    this.elevationCounter = 0;
+    this.kmCounter = 0;
+    this.yearKmCounter = 0;
   }
 }
