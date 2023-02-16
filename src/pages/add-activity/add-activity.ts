@@ -151,7 +151,6 @@ export default class AddActivity extends BaseComponent<'section'> {
     elevation: '',
     duration: '',
     sport: '',
-    travelMode: 'travelMode',
   };
 
   private token: Token | null = checkDataInLocalStorage('userSessionToken');
@@ -220,10 +219,15 @@ export default class AddActivity extends BaseComponent<'section'> {
 
   private setMap(): void {
     if (this.map.markers.length) {
-      this.data.startLat = this.map.startPoint.lat.toString();
-      this.data.startLng = this.map.startPoint.lng.toString();
-      this.data.endLat = this.map.endPoint.lat.toString();
-      this.data.endLng = this.map.endPoint.lng.toString();
+      this.data.startPoint = AddActivity.joinMapDataIntoString(
+        this.map.startPoint.lat.toString(),
+        this.map.startPoint.lng.toString(),
+      );
+
+      this.data.endPoint = AddActivity.joinMapDataIntoString(
+        this.map.endPoint.lat.toString(),
+        this.map.endPoint.lng.toString(),
+      );
     }
   }
 
@@ -301,5 +305,9 @@ export default class AddActivity extends BaseComponent<'section'> {
     this.durationMinutes.newInputValue = '00';
     this.durationSeconds.newInputValue = '00';
     this.elevation.newInputValue = '0';
+  }
+
+  private static joinMapDataIntoString(lat: string, lng: string): string {
+    return `${lat},${lng}`;
   }
 }

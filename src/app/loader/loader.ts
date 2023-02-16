@@ -1,11 +1,11 @@
-// import { DEVELOPMENT_ENV } from '../../utils/consts';
-import { RequestData, Token, LoadRequest, Methods, UpdateUserData, FriendId } from './loader.types';
-import { PRODUCTION_ENV } from '../../utils/consts';
+import { DEVELOPMENT_ENV } from '../../utils/consts';
+import { RequestData, Token, LoadRequest, Methods, FriendId, UpdateRequestData } from './loader.types';
+// import { PRODUCTION_ENV } from '../../utils/consts';
 
 export default class Loader {
   // DEVELOPMENT_ENV
   // PRODUCTION_ENV
-  private static server: string = PRODUCTION_ENV;
+  private static server: string = DEVELOPMENT_ENV;
 
   private static errorHandler(response: Response): Response {
     if (!response.ok) {
@@ -40,15 +40,15 @@ export default class Loader {
     return this.load({ url, method, params, token }).then((response: Response) => response.json());
   }
 
-  public static getUserData<T>(method: Methods, view: string, { token }: Token): Promise<T> {
+  public static getData<T>(method: Methods, view: string, { token }: Token): Promise<T> {
     const url: URL = Loader.createURL(view);
     return this.load({ url, method, token }).then((response: Response) => response.json());
   }
 
-  public static putUserData<T>(
+  public static putData<T>(
     method: Methods,
     view: string,
-    params: UpdateUserData,
+    params: UpdateRequestData,
     { token }: { token?: string } = {},
   ): Promise<T> {
     const url: URL = Loader.createURL(view);
