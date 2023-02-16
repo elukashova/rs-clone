@@ -182,7 +182,6 @@ export default class AddActivity extends BaseComponent<'section'> {
     this.data.title = this.title.inputValue ? this.title.inputValue : AddActivity.setTitle();
     this.data.description = this.description.textValue ? this.description.textValue : undefined;
     this.setMap();
-    console.log(this.data);
   }
 
   private sendData(): void {
@@ -229,7 +228,7 @@ export default class AddActivity extends BaseComponent<'section'> {
         this.map.endPoint.lat.toString(),
         this.map.endPoint.lng.toString(),
       );
-
+      this.data.travelMode = this.map.currentTravelMode;
       this.data.mapId = this.map.mapId;
     }
   }

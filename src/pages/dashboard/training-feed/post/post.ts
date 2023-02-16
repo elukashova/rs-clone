@@ -126,20 +126,16 @@ export default class Post extends BaseComponent<'div'> {
 
   // Метод вывода статичной карты
   public async initStaticMap(activity: Activity): Promise<void> {
-    console.log('not sucsess');
-    console.log(activity.startPoint, activity.endPoint);
-    if (activity.startPoint && activity.endPoint) {
-      console.log('sucsess');
-      const startLat = +activity.startPoint.split(',')[0];
-      const startLng = +activity.startPoint.split(',')[1];
-      const endLat = +activity.endPoint.split(',')[0];
-      const endLng = +activity.endPoint.split(',')[1];
+    if (activity.route && activity.route.startPoint && activity.route.endPoint) {
+      const startLat = +activity.route.startPoint.split(',')[0];
+      const startLng = +activity.route.startPoint.split(',')[1];
+      const endLat = +activity.route.endPoint.split(',')[0];
+      const endLng = +activity.route.endPoint.split(',')[1];
       const url = await GoogleMaps.drawStaticMap(
         { lat: startLat, lng: startLng }, // надо будет заменить с сервера стартовую точку
         { lat: endLat, lng: endLng }, // надо будет заменить с сервера конечную точку
-        activity.travelMode || 'walking', // надо будет заменить с сервера travelMode
+        activity.route.travelMode || 'walking', // надо будет заменить с сервера travelMode
       );
-      console.log(url);
       this.googleMap = new BaseComponent('img', this.map.element, '', '', {
         src: `${url}`,
       });
