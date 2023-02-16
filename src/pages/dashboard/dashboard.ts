@@ -37,7 +37,6 @@ export default class Dashboard extends BaseComponent<'section'> {
   constructor(private replaceMainCallback: () => void) {
     super('section', undefined, 'dashboard section');
     if (this.token) {
-      console.log(this.token);
       getUser(this.token).then((user: User) => {
         this.currentUser = {
           ...user,

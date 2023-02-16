@@ -174,6 +174,7 @@ export default class AddActivity extends BaseComponent<'section'> {
   private collectActivityData(): void {
     if (this.distance.inputValue) this.data.distance = this.distance.inputValue;
     this.data.duration = this.setDuration();
+    this.data.distance = this.distance.inputValue || '0';
     this.data.elevation = this.elevation.inputValue;
     this.data.sport = this.training.getSelectedValue().toLowerCase();
     this.data.date = this.setDate();
@@ -181,6 +182,7 @@ export default class AddActivity extends BaseComponent<'section'> {
     this.data.title = this.title.inputValue ? this.title.inputValue : AddActivity.setTitle();
     this.data.description = this.description.textValue ? this.description.textValue : undefined;
     this.setMap();
+    console.log(this.data);
   }
 
   private sendData(): void {
@@ -188,7 +190,6 @@ export default class AddActivity extends BaseComponent<'section'> {
       e.preventDefault();
       this.collectActivityData();
       if (this.token) {
-        console.log(this.token);
         createActivity(this.data, this.token);
       }
     });
@@ -228,6 +229,8 @@ export default class AddActivity extends BaseComponent<'section'> {
         this.map.endPoint.lat.toString(),
         this.map.endPoint.lng.toString(),
       );
+
+      this.data.mapId = this.map.mapId;
     }
   }
 

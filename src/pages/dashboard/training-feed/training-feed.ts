@@ -33,6 +33,8 @@ export default class TrainingFeed extends BaseComponent<'article'> {
       post.speed.value = '0';
       post.time.value = `${activity.duration}`;
       post.elevation.value = `${activity.elevation} m`;
+      post.initStaticMap(activity);
+      console.log(activity);
       post.activityIconSvg = new Svg(
         post.activityIcon.element,
         activity.sport,
