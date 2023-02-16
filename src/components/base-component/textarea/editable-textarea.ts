@@ -18,7 +18,6 @@ export default class EditableTextarea extends BaseComponent<'div'> {
     '',
     {
       spellcheck: 'false',
-      autofocus: 'off',
       autocomplete: 'off',
       required: '',
       rows: '1',

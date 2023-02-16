@@ -1,4 +1,4 @@
-/* eslint-disable max-len */
+import './link.css';
 import { getClassNames } from '../../../utils/utils';
 import BaseComponent from '../base-component';
 import { Link } from './link.types';

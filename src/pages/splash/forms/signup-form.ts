@@ -11,8 +11,8 @@ import { GoogleBtnClasses, GoogleBtnTypes } from '../google-button/google-btn.ty
 import GoogleButton from '../google-button/google-btn';
 import { VALID_EMAIL, VALID_NAME, VALID_PASSWORD } from '../../../utils/consts';
 import { InputConflictMessages, ValidityMessages } from './form.types';
-import Select from '../../../components/base-component/select/select';
 import { convertRegexToPattern } from '../../../utils/utils';
+import Select from '../../../components/base-component/select/select';
 
 export default class SignupForm extends BaseComponent<'form'> {
   private formHeader: BaseComponent<'h4'> = new BaseComponent(
@@ -47,7 +47,13 @@ export default class SignupForm extends BaseComponent<'form'> {
     required: '',
   });
 
-  private countrySelect: Select = new Select(this.element, [], 'signup__form-select form-select', true);
+  private selectWrapper: BaseComponent<'div'> = new BaseComponent(
+    'div',
+    this.element,
+    'signup__form-select form-select-wrapper',
+  );
+
+  private countrySelect: Select = new Select(this.selectWrapper.element, [], 'signup__form-select form-select', true);
 
   private signupButton: Button = new Button(this.element, 'Sign up', 'signup__btn-main btn_main', {
     type: 'submit',

@@ -1,10 +1,11 @@
+import './select.css';
 import { REST_COUNTRIES } from '../../../utils/consts';
 import { getClassNames } from '../../../utils/utils';
 import BaseComponent from '../base-component';
 import { CountryResponse } from '../../../pages/splash/forms/form.types';
 
 export default class Select extends BaseComponent<'select'> {
-  private label: BaseComponent<'label'> = new BaseComponent('label', undefined, '', 'Country');
+  private label: BaseComponent<'label'> = new BaseComponent('label', undefined, 'label', 'Country');
 
   private options: string[];
 
@@ -64,8 +65,9 @@ export default class Select extends BaseComponent<'select'> {
 
   private static async retrieveCountriesData(): Promise<string[]> {
     return Select.loadCountrySelectOptions().then((countries: CountryResponse[]) => {
+      console.log(countries);
       const names: string[] = countries.reduce((result: string[], country: CountryResponse) => {
-        result.push(country.name);
+        result.push(country.name.replace(/\(.*?\)/g, '').split(',')[0]);
         return result;
       }, []);
       return names;

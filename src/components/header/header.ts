@@ -109,16 +109,9 @@ export default class Header extends BaseComponent<'header'> {
 
   constructor(parent: HTMLElement, private replaceMainCallback: () => void) {
     super('header', parent, 'header');
-    this.openMenu();
     this.changeLanguage();
     this.changeTheme();
     this.subscribeToEvents();
-  }
-
-  public openMenu(): void {
-    this.avatarIcon.element.addEventListener('click', () => {
-      console.log('open avatar menu');
-    });
   }
 
   public changeLanguage(): void {

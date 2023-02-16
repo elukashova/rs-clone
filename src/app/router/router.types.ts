@@ -8,7 +8,7 @@ enum Routes {
   Settings = '/settings',
   AddActivity = '/add-activity',
   AddRoute = '/add-route',
-  FindFriends = '/friends',
+  FindFriends = '/find-friends',
   AboutTeam = '/team',
 }
 

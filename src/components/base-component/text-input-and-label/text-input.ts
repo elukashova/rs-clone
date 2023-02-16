@@ -25,8 +25,8 @@ export default class Input extends BaseComponent<'div'> {
   ) {
     const classes = getClassNames('input', additionalClasses);
     super('div', parent, classes);
-    this.label = new BaseComponent('label', this.element, '', text);
-    this.input = new BaseComponent('input', this.label.element, '', '', attributes);
+    this.label = new BaseComponent('label', this.element, 'label', text);
+    this.input = new BaseComponent('input', this.label.element, 'input', '', attributes);
     this.inputName = this.label.element.innerText.toLowerCase();
   }
 

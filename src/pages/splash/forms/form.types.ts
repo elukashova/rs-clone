@@ -13,8 +13,7 @@ export enum ValidityMessages {
 }
 
 export type CountryResponse = {
-  name: 'string';
-  independent: 'string';
+  name: string;
 };
 
 export enum InputConflictMessages {
