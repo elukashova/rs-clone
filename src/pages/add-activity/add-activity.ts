@@ -1,12 +1,13 @@
+/* eslint-disable max-len */
 import './add-activity.css';
 import BaseComponent from '../../components/base-component/base-component';
 import Button from '../../components/base-component/button/button';
 import Select from '../../components/base-component/select/select';
 import Input from '../../components/base-component/text-input-and-label/text-input';
-import GoogleMaps from '../../map/google-maps';
 import TextArea from '../../components/base-component/textarea/textarea';
 import SvgNames from '../../components/base-component/svg/svg.types';
 import { ProjectColors } from '../../utils/consts';
+import GoogleMaps from '../../map/google-maps';
 import { Activity, Token } from '../../app/loader/loader.types';
 import { createActivity } from '../../app/loader/services/activity-services';
 import { checkDataInLocalStorage } from '../../utils/local-storage';
@@ -141,9 +142,9 @@ export default class AddActivity extends BaseComponent<'section'> {
   private map = new GoogleMaps(
     this.mapDiv.element,
     'map add-activity-map',
-    8,
     { lat: -33.397, lng: 150.644 },
-    google.maps.TravelMode.BICYCLING,
+    google.maps.TravelMode.WALKING,
+    true,
   );
 
   public saveButton = new Button(this.formElement.element, 'Save', 'btn-activity');
@@ -163,7 +164,9 @@ export default class AddActivity extends BaseComponent<'section'> {
   constructor(parent: HTMLElement) {
     super('section', parent, 'add-activity add-activity-section');
     this.search.addSvgIcon(SvgNames.Search, ProjectColors.Grey, 'search');
+    this.addListeners();
     this.sendData();
+
     /* this.map.doDirectionRequest(
       { lat: -33.397, lng: 150.644 },
       { lat: -33.393, lng: 150.641 },
@@ -229,7 +232,60 @@ export default class AddActivity extends BaseComponent<'section'> {
   }
 
   private setDate(): string {
-    // eslint-disable-next-line max-len
     return this.date.inputValue ? new Date(this.date.inputValue).toISOString() : new Date().toISOString();
+  }
+
+  private addListeners(): void {
+    // слушатель для селекта
+    this.training.element.addEventListener('input', (e: Event): void => {
+      e.preventDefault();
+      this.updateMap();
+    });
+    this.element.addEventListener('click', () => {
+      if (this.map.marker && this.map.markers.length === 2) {
+        // this.updateInputsFromMap();
+        this.updateMap();
+      }
+    });
+  }
+
+  private updateMap(): void {
+    const updatedValue: string = AddActivity.checkSelect(this.training.element.value);
+    if ((this.map.startPoint, this.map.endPoint)) {
+      this.map.updateTravelMode(updatedValue, this.map.startPoint, this.map.endPoint).then((): void => {
+        console.log(this.map.distanceTotal, this.map.timeTotal, this.map.elevationTotal, this.map);
+        // Тут актуальные данные высоты и тд, если тип активности был изменен
+        // нужно вызвать метод, чтобы данные обновились
+        this.updateInputsFromMap();
+      });
+    } else {
+      this.map.deleteMap();
+      this.map = new GoogleMaps(
+        this.mapDiv.element,
+        'map add-activity-map',
+        { lat: -33.397, lng: 150.644 },
+        updatedValue,
+        true,
+      );
+    }
+  }
+
+  private static checkSelect(value: string): string {
+    switch (value) {
+      case 'Cycling':
+        return 'BICYCLING';
+      default:
+        return 'WALKING';
+    }
+  }
+
+  private updateInputsFromMap(): void {
+    this.distance.newInputValue = `${this.map.distanceTotal}`;
+    const { hours, minutes, seconds } = this.map.timeTotal;
+    this.durationHours.newInputValue = `${hours}`;
+    this.durationMinutes.newInputValue = `${minutes}`;
+    this.durationSeconds.newInputValue = `${seconds}`;
+    const elevationCount = this.map.elevationTotal.split(',')[0];
+    this.elevation.newInputValue = `${elevationCount}`;
   }
 }

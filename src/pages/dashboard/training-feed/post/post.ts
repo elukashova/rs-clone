@@ -51,7 +51,8 @@ export default class Post extends BaseComponent<'div'> {
 
   public elevation = new PostInfo(this.info.element, 'Altitude');
 
-  public map = new BaseComponent('div', this.element);
+  public map = new BaseComponent('div', this.element, 'map');
+
 
   public googleMap: GoogleMaps | undefined;
 
@@ -121,6 +122,18 @@ export default class Post extends BaseComponent<'div'> {
       } else {
         this.addCommentButton.element.disabled = true;
       }
+    });
+  }
+
+  // Метод вывода статичной карты
+  public async initStaticMap(): Promise<void> {
+    const url = await GoogleMaps.drawStaticMap(
+      { lat: -33.77341785585683, lng: 151.02294751876593 }, // надо будет заменить с сервера стартовую точку
+      { lat: -33.78387945569748, lng: 150.70936384113133 }, // надо будет заменить с сервера конечную точку
+      'WALKING', // надо будет заменить с сервера travelMode
+    );
+    const mapImg = new BaseComponent('img', this.map.element, '', '', {
+      src: `${url}`,
     });
   }
 }
