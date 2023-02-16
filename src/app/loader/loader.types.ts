@@ -62,16 +62,9 @@ export type User = {
   email: string;
   id: string;
   username: string;
-  following: Following[];
-  followedBy: Follower[];
-};
-
-type Follower = {
-  follower: Follow;
-};
-
-type Following = {
-  following: Follow;
+  following: Follow[];
+  followedBy: Follow[];
+  activities: Activity[];
 };
 
 type Follow = {

@@ -17,6 +17,6 @@ export default class LeftMenu extends BaseComponent<'aside'> {
 
     this.profileCard = new ProfileCard(this.element, user, replaceMainCallback);
     this.trainingJournal = new TrainingJournal(this.element);
-    this.ourActivity = new OurActivity(this.element);
+    this.ourActivity = new OurActivity(this.element, user);
   }
 }

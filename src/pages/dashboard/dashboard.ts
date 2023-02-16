@@ -29,6 +29,7 @@ export default class Dashboard extends BaseComponent<'section'> {
     following: [],
     followedBy: [],
     avatarUrl: '',
+    activities: [],
   };
 
   constructor(private replaceMainCallback: () => void) {
