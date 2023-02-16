@@ -13,22 +13,25 @@ export default class TrainingJournal extends BaseComponent<'div'> {
     'training-journal__activity-wrapper',
   );
 
-  private activityName: BaseComponent<'span'> = new BaseComponent(
+  private defaultMessage: BaseComponent<'span'> = new BaseComponent(
     'span',
-    this.activityWrapper.element,
-    'training-journal__activity_name',
+    undefined,
+    'training-journal__default-message',
+    'No activities to show yet',
   );
 
-  private activityDate: BaseComponent<'span'> = new BaseComponent(
-    'span',
-    this.activityWrapper.element,
-    'training-journal__activity_date',
-    'January 1, 2023',
-  );
+  private activityName: BaseComponent<'span'> = new BaseComponent('span', undefined, 'training-journal__activity_name');
+
+  private activityDate: BaseComponent<'span'> = new BaseComponent('span', undefined, 'training-journal__activity_date');
 
   constructor(parent: HTMLElement, activities: Activity[]) {
     super('div', parent, 'training-journal');
-    this.showLastActivity(activities);
+    if (activities.length > 0) {
+      this.activityWrapper.element.append(this.activityName.element, this.activityDate.element);
+      this.showLastActivity(activities);
+    } else {
+      this.element.append(this.defaultMessage.element);
+    }
   }
 
   private showLastActivity(activities: Activity[]): void {

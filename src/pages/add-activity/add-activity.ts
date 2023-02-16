@@ -308,6 +308,6 @@ export default class AddActivity extends BaseComponent<'section'> {
   }
 
   private static joinMapDataIntoString(lat: string, lng: string): string {
-    return `${lat} ${lng}`;
+    return `${lat},${lng}`;
   }
 }

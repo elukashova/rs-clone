@@ -40,6 +40,10 @@
   font-size: calc(0.7em + 0.3vw);
 }
 
+.training-journal__default-message {
+  align-self: center;
+}
+
 .training-journal__activity_name {
   font-weight: 400;
 }
