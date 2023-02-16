@@ -5,7 +5,7 @@ import Button from '../../../components/base-component/button/button';
 import { getClassNames } from '../../../utils/utils';
 import { FriendData, FriendId, Token } from '../../../app/loader/loader.types';
 import { checkDataInLocalStorage } from '../../../utils/local-storage';
-import { addFriend } from '../../../app/loader/services/friends-services';
+import { addFriend, deleteFriend } from '../../../app/loader/services/friends-services';
 import eventEmitter from '../../../utils/event-emitter';
 import { ProjectColors } from '../../../utils/consts';
 
@@ -105,21 +105,35 @@ export default class NotFriend extends BaseComponent<'div'> {
     }
   };
 
+  private deleteFriendCallback = (): void => {
+    if (this.token) {
+      NotFriend.deleteFriend(this.token, this.requestInfo);
+      this.notFriendsIsAdded = false;
+      eventEmitter.emit('friendDeleted', {});
+      this.setButtonFunction();
+    }
+  };
+
   private static addNewFriend(token: Token, data: FriendId): Promise<void> {
-    console.log(token, data);
     return addFriend(token, data);
+  }
+
+  private static deleteFriend(token: Token, data: FriendId): Promise<void> {
+    return deleteFriend(token, data);
   }
 
   private setButtonFunction(): void {
     console.log(this.subscribeButton);
     if (this.notFriendsIsAdded === false) {
       this.subscribeButton.element.style.backgroundColor = ProjectColors.LightTurquoise;
-      // this.subscribeButton.element.removeEventListener('click', this.deleteFriendCallback);
+      this.subscribeButton.element.textContent = 'Subscribe';
+      this.subscribeButton.element.removeEventListener('click', this.deleteFriendCallback);
       this.subscribeButton.element.addEventListener('click', this.addFriendCallback);
     } else {
       this.subscribeButton.element.style.backgroundColor = ProjectColors.Orange;
+      this.subscribeButton.element.textContent = 'Unsubscribe';
       this.subscribeButton.element.removeEventListener('click', this.addFriendCallback);
-      //  this.subscribeButton.element.addEventListener('click', this.deleteFriendCallback);
+      this.subscribeButton.element.addEventListener('click', this.deleteFriendCallback);
     }
   }
 }
