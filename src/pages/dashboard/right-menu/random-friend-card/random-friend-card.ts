@@ -42,7 +42,7 @@ export default class RandomFriendCard extends BaseComponent<'div'> {
 
   private isAdded: boolean = false;
 
-  private testInfo = {
+  private requestInfo = {
     friendId: this.user.id,
   };
 
@@ -53,8 +53,8 @@ export default class RandomFriendCard extends BaseComponent<'div'> {
   }
 
   private addFriendCallback = (): void => {
-    if (this.token && this.isAdded === false) {
-      RandomFriendCard.addNewFriend(this.token, this.testInfo);
+    if (this.token) {
+      RandomFriendCard.addNewFriend(this.token, this.requestInfo);
       this.isAdded = true;
       eventEmitter.emit('friendAdded', {});
       this.setButtonFunction();
@@ -62,8 +62,8 @@ export default class RandomFriendCard extends BaseComponent<'div'> {
   };
 
   private deleteFriendCallback = (): void => {
-    if (this.token && this.isAdded === true) {
-      RandomFriendCard.deleteFriend(this.token, this.testInfo);
+    if (this.token) {
+      RandomFriendCard.deleteFriend(this.token, this.requestInfo);
       this.isAdded = false;
       eventEmitter.emit('friendDeleted', {});
       this.setButtonFunction();

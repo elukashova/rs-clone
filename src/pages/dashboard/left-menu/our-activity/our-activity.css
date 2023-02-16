@@ -146,7 +146,7 @@
 }
 
 .our-activity__time,
-.our-activity__steps {
+.our-activity__elevation {
   font-size: calc(0.7em + 0.3vw);
   font-weight: 300;
 }

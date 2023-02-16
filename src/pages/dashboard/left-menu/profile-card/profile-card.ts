@@ -47,7 +47,12 @@ export default class ProfileCard extends BaseComponent<'div'> {
     this.user.following.length,
   );
 
-  public trainings: ProfileInfo = new ProfileInfo('activities', Routes.AddActivity, this.replaceMainCallback);
+  public trainings: ProfileInfo = new ProfileInfo(
+    'activities',
+    Routes.AddActivity,
+    this.replaceMainCallback,
+    this.user.activities.length,
+  );
 
   // eslint-disable-next-line max-len
   constructor(parent: HTMLElement, private user: User, private replaceMainCallback: () => void) {

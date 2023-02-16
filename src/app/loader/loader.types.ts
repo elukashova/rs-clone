@@ -62,24 +62,16 @@ export type User = {
   email: string;
   id: string;
   username: string;
-  following: Following[];
-  followedBy: Follower[];
+  following: Follow[];
+  followedBy: Follow[];
   activities: Activity[];
-};
-
-type Follower = {
-  follower: Follow;
-};
-
-type Following = {
-  following: Follow;
 };
 
 type Follow = {
   id: string;
   username: string;
   country: string;
-  avatar_url: string;
+  avatarUrl: string;
 };
 
 export type FriendData = {
@@ -162,7 +154,7 @@ export type Activity = {
 };
 
 export type UpdateUserData = {
-  avatar_url?: string;
+  avatarUrl?: string;
   bio?: string;
   country?: string;
   email?: string;
