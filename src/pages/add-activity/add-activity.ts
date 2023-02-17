@@ -2,7 +2,7 @@
 import './add-activity.css';
 import BaseComponent from '../../components/base-component/base-component';
 import Button from '../../components/base-component/button/button';
-import Select from '../../components/base-component/select/select';
+// import Select from '../../components/base-component/select/select';
 import Input from '../../components/base-component/text-input-and-label/text-input';
 import TextArea from '../../components/base-component/textarea/textarea';
 import SvgNames from '../../components/base-component/svg/svg.types';
@@ -12,6 +12,7 @@ import { Activity, Token } from '../../app/loader/loader.types';
 import { createActivity } from '../../app/loader/services/activity-services';
 import { checkDataInLocalStorage } from '../../utils/local-storage';
 import Picture from '../../components/base-component/picture/picture';
+import DropdownInput from '../splash/forms/dropdown-input/dropdown';
 
 export default class AddActivity extends BaseComponent<'section'> {
   private formContainer = new BaseComponent('div', this.element, 'add-activity__container');
@@ -34,19 +35,16 @@ export default class AddActivity extends BaseComponent<'section'> {
 
   private durationHours = new Input(this.durationContainer.element, 'add-activity__input input-hours', 'Duration', {
     type: 'number',
-    placeholder: '01',
     value: '01',
   });
 
   private durationMinutes = new Input(this.durationContainer.element, 'add-activity__input input-minutes', '', {
     type: 'number',
-    placeholder: '00',
     value: '00',
   });
 
   private durationSeconds = new Input(this.durationContainer.element, 'add-activity__input input-seconds', '', {
     type: 'number',
-    placeholder: '00',
     value: '00',
   });
 
@@ -62,7 +60,7 @@ export default class AddActivity extends BaseComponent<'section'> {
     },
   );
 
-  private trainingBlock = new BaseComponent('div', this.formFieldset.element, 'add-activity__block', '');
+  private trainingBlock = new BaseComponent('div', this.formFieldset.element, 'add-activity__block block-type', '');
 
   private trainingContainer = new BaseComponent(
     'div',
@@ -70,21 +68,23 @@ export default class AddActivity extends BaseComponent<'section'> {
     'add-activity__block-container block-training',
   );
 
-  private trainingLabel = new BaseComponent(
-    'label',
-    this.trainingContainer.element,
-    'add-activity__label',
-    'Type of activity',
-    { for: 'training' },
-  );
+  private trainingInput = new DropdownInput(this.trainingContainer.element, 'add-activity', 'walking');
 
-  private training = new Select(
-    this.trainingContainer.element,
-    ['Walking', 'Running', 'Hiking', 'Cycling'],
-    'add-activity__input input-training',
-    false,
-    { id: 'training' },
-  );
+  // private trainingLabel = new BaseComponent(
+  //   'label',
+  //   this.trainingContainer.element,
+  //   'add-activity__label',
+  //   'Type of activity',
+  //   { for: 'training' },
+  // );
+
+  // private training = new Select(
+  //   this.trainingContainer.element,
+  //   ['Walking', 'Running', 'Hiking', 'Cycling'],
+  //   'add-activity__input input-training',
+  //   false,
+  //   { id: 'training' },
+  // );
 
   private dateContainer = new BaseComponent('div', this.trainingBlock.element, 'add-activity__block-container');
 
@@ -136,7 +136,7 @@ export default class AddActivity extends BaseComponent<'section'> {
     },
   );
 
-  private mapBlock = new BaseComponent('div', this.formFieldset.element, 'map_container add-activity__block', '');
+  private mapBlock = new BaseComponent('div', this.formFieldset.element, 'map_container', '');
 
   private mapDiv: BaseComponent<'div'> = new BaseComponent('div', this.mapBlock.element, 'map', '', { id: 'map' });
 
