@@ -6,11 +6,11 @@ import SvgNames from '../svg/svg.types';
 import { ProjectColors } from '../../../utils/consts';
 
 export default class Pagination extends BaseComponent<'div'> {
-  public leftArrowBtn: BaseComponent<'button'> | null = null;
+  public leftArrowBtn!: BaseComponent<'button'>;
 
-  public rightArrowBtn: BaseComponent<'button'> | null = null;
+  public rightArrowBtn!: BaseComponent<'button'>;
 
-  public currentPageElement: BaseComponent<'span'> | null = null;
+  public currentPageElement!: BaseComponent<'span'>;
 
   public currentPage: number = 1;
 
@@ -28,33 +28,43 @@ export default class Pagination extends BaseComponent<'div'> {
 
   private rightSvg!: Svg;
 
-  constructor(parent: BaseComponent<'div'>, classes: string, page: number, limit: number, totalPages: number) {
+  private elementsCount: number;
+
+  constructor(parent: BaseComponent<'div'>, classes: string, page: number, limit: number, elementCounts: number) {
     super('div', parent.element, `${classes} pagination`);
     this.currentPage = page;
     this.itemsPerPage = limit;
-    this.totalPages = totalPages;
+    this.elementsCount = elementCounts;
+    this.totalPages = Math.ceil(this.elementsCount / this.itemsPerPage);
     this.classes = classes;
     this.render();
     this.disableArrowsFirstLastPage(this.currentPage);
+    // this.addListeners();
   }
 
   private render(): void {
-    this.leftSvgContainer = new Button(this.element, '', 'left-svg__block');
-    this.leftSvg = new Svg(this.leftSvgContainer.element, SvgNames.PaginationLeft, ProjectColors.White, 'left-svg');
+    this.leftArrowBtn = new Button(this.element, '', 'left-svg__block');
+    this.leftSvg = new Svg(this.leftArrowBtn.element, SvgNames.PaginationLeft, ProjectColors.White, 'left-svg');
     this.currentPageElement = new BaseComponent(
       'span',
       this.element,
       `${this.classes}__current-page`,
-      `${this.currentPage}`,
+      `${this.currentPage} / ${this.totalPages}`,
     );
-    this.rightSvgContainer = new Button(this.element, '', 'right-svg__block');
-    this.rightSvg = new Svg(this.rightSvgContainer.element, SvgNames.PaginationRight, ProjectColors.White, 'right-svg');
+    this.rightArrowBtn = new Button(this.element, '', 'right-svg__block');
+    this.rightSvg = new Svg(this.rightArrowBtn.element, SvgNames.PaginationRight, ProjectColors.White, 'right-svg');
   }
 
   public updateCurrentPage(page: number): void {
     this.currentPage = page;
     this.updatePages();
   }
+
+  /*   private addListeners(): void {
+    this.leftSvgContainer.element.addEventListener('click', this.rightArrowBtnCallback);
+    this.rightSvgContainer.element.addEventListener
+    ('click', () => this.updateCurrentPage(this.currentPage));
+  } */
 
   public updateTotalPages(page: number): void {
     this.totalPages = page;

@@ -1,6 +1,6 @@
 .pagination {
   display: grid;
-  grid-template-columns: 5% 4% 5%;
+  grid-template-columns: 5% 4em 5%;
   align-items: center;
   justify-items: center;
   gap: 0.5em;

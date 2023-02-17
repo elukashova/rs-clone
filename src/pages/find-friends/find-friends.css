@@ -71,6 +71,11 @@
   display: none;
 }
 
+.not-friends__element.hidden-user,
+.friends__element.hidden-user {
+  display: none;
+}
+
 .not-friends__block-container,
 .friends__block-container {
   width: 80%;

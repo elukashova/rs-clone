@@ -1,7 +1,6 @@
 import Avatar from '../../../components/base-component/avatar-image/avatar';
 import BaseComponent from '../../../components/base-component/base-component';
 import Button from '../../../components/base-component/button/button';
-import eventEmitter from '../../../utils/event-emitter';
 import { ProjectColors } from '../../../utils/consts';
 import BaseFriend from '../base-friend';
 import { FriendData, Token } from '../../../app/loader/loader.types';
@@ -51,7 +50,6 @@ export default class Friend extends BaseFriend {
     if (this.token) {
       Friend.addNewFriend(this.token, this.requestInfo);
       this.friendsIsAdded = true;
-      eventEmitter.emit('addFriend', {});
       this.setButtonFunction();
     }
   };
@@ -60,7 +58,6 @@ export default class Friend extends BaseFriend {
     if (this.token) {
       Friend.deleteFriend(this.token, this.requestInfo);
       this.friendsIsAdded = false;
-      eventEmitter.emit('deleteFriend', {});
       this.setButtonFunction();
     }
   };

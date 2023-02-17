@@ -17,13 +17,7 @@ export default class BaseFriend extends BaseComponent<'div'> {
 
   public userCountry?: BaseComponent<'p'>;
 
-  /*  public avatarContainer = new BaseComponent('div', this.element, 'avatar-container');
-
-  public userData = new BaseComponent('div', this.element, 'user-data');
-
-  private userDataBlock = new BaseComponent('div', this.element, 'activity-data'); */
-
-  private userId!: string;
+  public userId!: string;
 
   public requestInfo = {
     friendId: '',

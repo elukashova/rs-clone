@@ -1,6 +1,6 @@
 import './find-friends.css';
 import BaseComponent from '../../components/base-component/base-component';
-import { Token } from '../../app/loader/loader.types';
+import { FriendData, Token } from '../../app/loader/loader.types';
 import { checkDataInLocalStorage } from '../../utils/local-storage';
 import { ProjectColors } from '../../utils/consts';
 import NotFriend from './not-friend/not-friend';
@@ -15,6 +15,14 @@ export default class Friends extends BaseComponent<'section'> {
   public notFriendsAll: NotFriend[] = [];
 
   public friendsAll: Friend[] = [];
+
+  public visibleFriends: Friend[] = [];
+
+  public visibleNotFriends: NotFriend[] = [];
+
+  private friendsPage = 1;
+
+  private notFriendsPage = 1;
 
   private findingContainer = new BaseComponent('div', this.element, 'find-friends__container');
 
@@ -49,28 +57,40 @@ export default class Friends extends BaseComponent<'section'> {
 
   private friendsPagination!: Pagination;
 
+  private searchString: string = '';
+
   constructor(parent: HTMLElement) {
     super('section', parent, 'find-friends find-friends-section');
     this.renderPage();
-    this.addListeners();
+    this.addSvgIcons();
   }
 
   private renderPage(): void {
     this.getFriendsForRender();
     this.getNotFriendsForRender();
-    this.addSvgIcons();
-    this.renderPaginations();
   }
 
   private getFriendsForRender(): void {
     if (this.token) {
-      getFriends(this.token).then((usersData) => {
+      getFriends(this.token).then((usersData: FriendData[]) => {
         usersData.forEach((user, index) => {
           const friend = new Friend(this.friendsBlock.element, user, 'friends__element', {
             id: `friends-${index}`,
           });
           this.friendsAll.push(friend);
         });
+        this.friendsPagination = new Pagination(
+          this.friendsContainer,
+          'friends__pagination',
+          1,
+          4,
+          this.friendsAll.length,
+        );
+        this.addListenersForFriends();
+        /* Friends.search(this.friendsAll, this.friendsSearch); */
+        const visibleFriends = Friends.getPage(1, this.friendsAll);
+        Friends.hiddenUsers(this.friendsAll);
+        Friends.doVisibleUsers(visibleFriends);
       });
     }
   }
@@ -84,28 +104,90 @@ export default class Friends extends BaseComponent<'section'> {
           });
           this.notFriendsAll.push(notFriend);
         });
+        this.notFriendsPagination = new Pagination(
+          this.notFriendsContainer,
+          'not-friends__pagination',
+          1,
+          4,
+          this.notFriendsAll.length,
+        );
+        this.addListenersForNotFriends();
+        const visibleNotFriends = Friends.getPage(1, this.notFriendsAll);
+        Friends.hiddenUsers(this.notFriendsAll);
+        Friends.doVisibleUsers(visibleNotFriends);
       });
     }
   }
 
-  private addListeners(): void {
+  private static hiddenUsers(userArray: Friend[] | NotFriend[]): void {
+    userArray.forEach((user) => user.element.classList.add('hidden-user'));
+  }
+
+  private static doVisibleUsers(userArray: Friend[] | NotFriend[]): void {
+    userArray.forEach((user) => user.element.classList.remove('hidden-user'));
+  }
+
+  private addListenersForNotFriends(): void {
     this.notFriendsSearch.element.addEventListener('input', (): void => {
       Friends.search(this.notFriendsAll, this.notFriendsSearch);
     });
+    this.notFriendsPagination.rightArrowBtn?.element.addEventListener('click', () => {
+      this.rightArrowBtnCallback(this.notFriendsPagination);
+    });
+    this.notFriendsPagination.leftArrowBtn?.element.addEventListener('click', () => {
+      this.leftArrowBtnCallback(this.notFriendsPagination);
+    });
+  }
+
+  private addListenersForFriends(): void {
     this.friendsSearch.element.addEventListener('input', (): void => {
       Friends.search(this.friendsAll, this.friendsSearch);
     });
+    this.friendsPagination.rightArrowBtn?.element.addEventListener('click', () => {
+      this.rightArrowBtnCallback(this.friendsPagination);
+    });
+    this.friendsPagination.leftArrowBtn?.element.addEventListener('click', () => {
+      this.leftArrowBtnCallback(this.friendsPagination);
+    });
   }
+
+  private static getPage(page: number, array: Friend[] | NotFriend[]): Friend[] | NotFriend[] {
+    const startIndex = (page - 1) * 4;
+    const endIndex = startIndex + 4;
+    return array.slice(startIndex, endIndex);
+  }
+
+  private rightArrowBtnCallback = (pagination: Pagination): void => {
+    pagination.enableLeftArrowBtn();
+    let current;
+    if (pagination === this.friendsPagination) {
+      this.friendsPage += 1;
+      current = this.friendsPage;
+    } else {
+      this.notFriendsPage += 1;
+      current = this.notFriendsPage;
+    }
+    pagination.updateCurrentPage(current);
+    pagination.disableArrowsFirstLastPage(current);
+  };
+
+  private leftArrowBtnCallback = (pagination: Pagination): void => {
+    let current;
+    if (pagination === this.friendsPagination) {
+      this.friendsPage -= 1;
+      current = this.friendsPage;
+    } else {
+      this.notFriendsPage -= 1;
+      current = this.notFriendsPage;
+    }
+    pagination.enableRightArrowBtn();
+    pagination.updateCurrentPage(current);
+    pagination.disableArrowsFirstLastPage(current);
+  };
 
   private addSvgIcons(): void {
     this.notFriendsSearch.addSvgIcon(SvgNames.Search, ProjectColors.Grey, 'search');
     this.friendsSearch.addSvgIcon(SvgNames.Search, ProjectColors.Grey, 'search');
-  }
-
-  private renderPaginations(): void {
-    this.notFriendsPagination = new Pagination(this.notFriendsContainer, 'not-friends__pagination', 1, 4, 10);
-
-    this.friendsPagination = new Pagination(this.friendsContainer, 'friends__pagination', 1, 4, 10);
   }
 
   public static search(array: NotFriend[] | Friend[], input: Input): void {
