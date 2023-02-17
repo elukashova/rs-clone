@@ -9,10 +9,10 @@ import { createUser } from '../../../app/loader/services/user-services';
 import { setDataToLocalStorage } from '../../../utils/local-storage';
 import { GoogleBtnClasses, GoogleBtnTypes } from '../google-button/google-btn.types';
 import GoogleButton from '../google-button/google-btn';
-import { VALID_EMAIL, VALID_NAME, VALID_PASSWORD } from '../../../utils/consts';
-import { InputConflictMessages, ValidityMessages } from './form.types';
-import Select from '../../../components/base-component/select/select';
+import { REST_COUNTRIES, VALID_EMAIL, VALID_NAME, VALID_PASSWORD } from '../../../utils/consts';
+import { CountryResponse, InputConflictMessages, ValidityMessages } from './form.types';
 import { convertRegexToPattern } from '../../../utils/utils';
+import DropdownInput from './dropdown-input/dropdown';
 
 export default class SignupForm extends BaseComponent<'form'> {
   private formHeader: BaseComponent<'h4'> = new BaseComponent(
@@ -47,7 +47,7 @@ export default class SignupForm extends BaseComponent<'form'> {
     required: '',
   });
 
-  private countrySelect: Select = new Select(this.element, [], 'signup__form-select form-select', true);
+  private countryInput: DropdownInput = new DropdownInput(this.element, 'signup', 'Country');
 
   private signupButton: Button = new Button(this.element, 'Sign up', 'signup__btn-main btn_main', {
     type: 'submit',
@@ -78,12 +78,13 @@ export default class SignupForm extends BaseComponent<'form'> {
 
   private isNewUser: boolean = true;
 
+  private isRegisteredEmail: boolean = false;
+
   constructor(parent: HTMLElement, private replaceMainCallback: () => void) {
     super('form', parent, 'signup-form signup', '', {
-      autocomplete: 'on',
+      autocomplete: 'off',
     });
 
-    this.loginLink.element.setAttribute('href', Routes.LogIn);
     this.googleButton = new GoogleButton(
       {
         parent: this.element,
@@ -94,6 +95,8 @@ export default class SignupForm extends BaseComponent<'form'> {
       this.isNewUser,
     );
 
+    this.createCountriesList();
+    this.loginLink.element.setAttribute('href', Routes.LogIn);
     this.signupButton.element.addEventListener('click', this.signupBtnCallback);
   }
 
@@ -109,15 +112,15 @@ export default class SignupForm extends BaseComponent<'form'> {
     this.newUser.username = this.nameInput.inputValue;
     this.newUser.email = this.emailInput.inputValue;
     this.newUser.password = this.passwordInput.inputValue;
-    this.newUser.country = this.countrySelect.selectValue;
+    this.newUser.country = this.countryInput.inputValue;
   }
 
   private checkInputs = (e: Event): boolean => {
     const conditionsArray: boolean[] = [
+      this.countryInput.checkIfValidCountry(),
       this.passwordInput.checkInput(ValidityMessages.Password),
       this.emailInput.checkInput(ValidityMessages.Email),
       this.nameInput.checkInput(ValidityMessages.Name),
-      Boolean(this.countrySelect.selectValue),
     ];
 
     if (conditionsArray.includes(false)) {
@@ -136,8 +139,9 @@ export default class SignupForm extends BaseComponent<'form'> {
         }
       })
       .catch((err: Error) => {
-        if (err.message === Errors.UserAlreadyExists) {
+        if (err.message === Errors.UserAlreadyExists && this.isRegisteredEmail === false) {
           this.showUserAlreadyRegisteredMessage();
+          this.isRegisteredEmail = true;
         }
       });
   };
@@ -155,14 +159,39 @@ export default class SignupForm extends BaseComponent<'form'> {
   }
 
   private showUserAlreadyRegisteredMessage(): void {
-    const message: HTMLSpanElement = document.createElement('span');
-    message.textContent = InputConflictMessages.UserAlreadyExists;
+    const message: BaseComponent<'span'> = new BaseComponent(
+      'span',
+      undefined,
+      'signup__error-message',
+      InputConflictMessages.UserAlreadyExists,
+    );
+
     const logInLink: NavigationLink = new NavigationLink(this.replaceMainCallback, {
       text: 'log in',
-      parent: message,
+      parent: message.element,
       additionalClasses: 'signup__link-login',
     });
     logInLink.element.setAttribute('href', Routes.LogIn);
-    this.element.insertBefore(message, this.signupButton.element);
+    this.element.insertBefore(message.element, this.signupButton.element);
+  }
+
+  private createCountriesList(): void {
+    SignupForm.retrieveCountriesData().then((countriesList: string[]) => {
+      this.countryInput.retrieveDataForDropdown(countriesList);
+    });
+  }
+
+  private static async retrieveCountriesData(): Promise<string[]> {
+    return SignupForm.loadCountryInputOptions().then((countries: CountryResponse[]) => {
+      const names: string[] = countries.reduce((result: string[], country: CountryResponse) => {
+        result.push(country.name.replace(/\(.*?\)/g, '').split(',')[0]);
+        return result;
+      }, []);
+      return names;
+    });
+  }
+
+  private static loadCountryInputOptions(): Promise<CountryResponse[]> {
+    return fetch(REST_COUNTRIES).then((response: Response) => response.json());
   }
 }

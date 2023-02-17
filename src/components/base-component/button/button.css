@@ -9,6 +9,8 @@
   border: none;
   border-radius: 5px;
   font-size: 1em;
+  font-family: 'Montserrat', sans-serif;
+  text-transform: uppercase;
   cursor: pointer;
   background-color: var(--main-btn-color);
   color: white;

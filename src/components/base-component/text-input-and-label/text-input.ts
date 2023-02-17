@@ -5,15 +5,15 @@ import Svg from '../svg/svg';
 import { ValidityMessages } from '../../../pages/splash/forms/form.types';
 
 export default class Input extends BaseComponent<'div'> {
-  public input: BaseComponent<'input'>;
+  public input!: BaseComponent<'input'>;
 
-  public label: BaseComponent<'label'>;
+  public label!: BaseComponent<'label'>;
 
   public svgIcon?: Svg;
 
-  private inputName: string;
+  public inputName!: string;
 
-  private message: ValidityMessages | null = null;
+  public message: ValidityMessages | null = null;
 
   constructor(
     parent: HTMLElement,
@@ -25,8 +25,8 @@ export default class Input extends BaseComponent<'div'> {
   ) {
     const classes = getClassNames('input', additionalClasses);
     super('div', parent, classes);
-    this.label = new BaseComponent('label', this.element, '', text);
-    this.input = new BaseComponent('input', this.label.element, '', '', attributes);
+    this.label = new BaseComponent('label', this.element, 'label', text);
+    this.input = new BaseComponent('input', this.label.element, 'input-text', '', attributes);
     this.inputName = this.label.element.innerText.toLowerCase();
   }
 
@@ -39,9 +39,7 @@ export default class Input extends BaseComponent<'div'> {
   }
 
   public set newInputValue(text: string) {
-    /* this.input.element.setAttribute('value', `${text}`); */
     this.input.element.value = text;
-    /* this.input.element.textContent = text; */
   }
 
   public checkInput(message: ValidityMessages): boolean {
@@ -62,21 +60,21 @@ export default class Input extends BaseComponent<'div'> {
     return true;
   }
 
-  private checkInputValidity(message: string): void {
+  public checkInputValidity(message: string): void {
     this.input.element.setCustomValidity(message);
     this.input.element.reportValidity();
     this.showInvalidState();
     this.input.element.addEventListener('input', this.checkIfValidInputCallback);
   }
 
-  private showInvalidState = (): void => {
+  public showInvalidState = (): void => {
     this.element.classList.add('invalid');
   };
 
   private checkIfValidInputCallback = (): void => {
     if (this.message && this.checkInput(this.message)) {
-      this.element.classList.remove('invalid');
       this.input.element.removeEventListener('input', this.checkIfValidInputCallback);
+      this.element.classList.remove('invalid');
     }
   };
 

@@ -1,0 +1,11 @@
+.select {
+  appearance: none;
+  outline: none;
+  margin: 0;
+  display: grid;
+}
+
+.select:active {
+  appearance: none;
+  background-color: white;
+}

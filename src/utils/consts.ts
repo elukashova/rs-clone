@@ -3,7 +3,7 @@
 export const GOOGLE_CLIENT_ID: string = '867792290204-n80gt7ebkoqsg6cqr8592g0fle342tjj.apps.googleusercontent.com';
 
 // Rest API for countries
-export const REST_COUNTRIES: string = 'https://restcountries.com/v2/all?fields=name';
+export const REST_COUNTRIES: string = 'https://restcountries.com/v2/all';
 
 // Prod and dev environment
 export const PRODUCTION_ENV = 'https://the-big-bug-theory-be.onrender.com';

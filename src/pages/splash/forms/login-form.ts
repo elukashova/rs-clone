@@ -66,6 +66,8 @@ export default class LoginForm extends BaseComponent<'form'> {
 
   private isNewUser: boolean = false;
 
+  private isInvalidEmail: boolean = false;
+
   constructor(parent: HTMLElement, private replaceMainCallback: () => void) {
     super('form', parent, 'login-form login');
     this.signupLink.element.setAttribute('href', Routes.SignUp);
@@ -118,8 +120,9 @@ export default class LoginForm extends BaseComponent<'form'> {
         }
       })
       .catch((err: Error) => {
-        if (err.message === Errors.Unauthorized) {
+        if (err.message === Errors.Unauthorized && this.isInvalidEmail === false) {
           this.showInvalidCredentialsMessage();
+          this.isInvalidEmail = true;
         }
       });
   };
@@ -137,14 +140,19 @@ export default class LoginForm extends BaseComponent<'form'> {
   }
 
   private showInvalidCredentialsMessage(): void {
-    const message: HTMLSpanElement = document.createElement('span');
-    message.textContent = InputConflictMessages.InvalidCredentials;
+    const message: BaseComponent<'span'> = new BaseComponent(
+      'span',
+      undefined,
+      'login__error-message',
+      InputConflictMessages.InvalidCredentials,
+    );
+
     const signUpLink: NavigationLink = new NavigationLink(this.replaceMainCallback, {
       text: 'sign up',
-      parent: message,
+      parent: message.element,
       additionalClasses: 'login__link-signup',
     });
     signUpLink.element.setAttribute('href', Routes.SignUp);
-    this.element.insertBefore(message, this.loginButton.element);
+    this.element.insertBefore(message.element, this.loginButton.element);
   }
 }

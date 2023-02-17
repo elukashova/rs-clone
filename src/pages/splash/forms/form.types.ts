@@ -10,11 +10,11 @@ export enum ValidityMessages {
   Email = 'Please provide a valid email',
   Password = 'The password must contain a minimum of 5 characters, including 1 digit and 1 uppercase letter',
   EmptyValue = 'Please enter your ',
+  Country = 'Please provide a valid country name',
 }
 
 export type CountryResponse = {
-  name: 'string';
-  independent: 'string';
+  name: string;
 };
 
 export enum InputConflictMessages {

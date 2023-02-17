@@ -7,6 +7,8 @@ import AddActivity from '../../pages/add-activity/add-activity';
 import Friends from '../../pages/find-friends/find-friends';
 import NewRoutePage from '../../pages/new-route-page/new-route-page';
 import OurTeam from '../../pages/our-team/our-team';
+import { checkDataInLocalStorage } from '../../utils/local-storage';
+import { Token } from '../loader/loader.types';
 
 export default class Router {
   private main: Main;
@@ -25,14 +27,41 @@ export default class Router {
 
   private aboutTeam: OurTeam | null = null;
 
+  private token: Token | null = null;
+
   constructor(main: Main, private replaceBackgroundCallback: (location: string) => void) {
     this.main = main;
   }
 
   public locationHandler = (): void => {
-    const location: string = window.location.pathname.length === 0 ? '/' : window.location.pathname;
-    this.replaceBackgroundCallback(location);
+    this.checkToken();
 
+    const pathnameLength: number = window.location.pathname.length;
+    // eslint-disable-next-line max-len
+    let location: string = pathnameLength === 0 && !this.token ? Routes.SignUp : window.location.pathname;
+
+    if (location !== Routes.SignUp && location !== Routes.LogIn && !this.token) {
+      location = Routes.SignUp;
+      window.history.pushState({}, '', Routes.SignUp);
+    }
+
+    if (this.token && (location === Routes.SignUp || location === Routes.LogIn)) {
+      location = Routes.Dashboard;
+      window.history.pushState({}, '', Routes.Dashboard);
+    }
+
+    if (location === Routes.LogOut) {
+      localStorage.removeItem('userSessionToken');
+      this.token = null;
+      location = Routes.LogIn;
+      window.history.pushState({}, '', Routes.LogIn);
+    }
+
+    this.replaceBackgroundCallback(location);
+    this.switchLocation(location);
+  };
+
+  private switchLocation(location: string): void {
     switch (location) {
       case Routes.SignUp:
         this.signupPage = new SignupPage(this.locationHandler);
@@ -65,5 +94,13 @@ export default class Router {
       default:
         console.log('will be 404 page'); // temporary placeholder
     }
-  };
+  }
+
+  private checkToken(): boolean {
+    this.token = checkDataInLocalStorage('userSessionToken');
+    if (!this.token) {
+      return false;
+    }
+    return true;
+  }
 }
