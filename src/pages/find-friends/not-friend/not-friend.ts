@@ -15,13 +15,15 @@ export default class NotFriend extends BaseFriend {
 
   public activityCount?: BaseComponent<'p'>;
 
-  private avatarContainer = new BaseComponent('div', this.element, 'not-friend__avatar-container');
+  public avatarContainer = new BaseComponent('div', this.element, 'not-friend__avatar-container');
 
-  private userDataBlock = new BaseComponent('div', this.element, 'not-friend__user-data');
+  public userDataBlock = new BaseComponent('div', this.element, 'not-friend__user-data');
 
-  private activityData = new BaseComponent('div', this.element, 'not-friend__activity-data');
+  public activityData = new BaseComponent('div', this.element, 'not-friend__activity-data');
 
-  private notFriendsIsAdded = false;
+  public notFriendsIsAdded = false;
+
+  public typeChecker = 'NotFriend';
 
   constructor(
     parent: HTMLElement,
@@ -39,7 +41,7 @@ export default class NotFriend extends BaseFriend {
     this.addListeners();
   }
 
-  private renderElements(): void {
+  public renderElements(): void {
     this.avatar = new Avatar(this.avatarContainer.element, 'not-friend__avatar', {
       src: this.avatarUrl || './assets/images/avatars/default.png',
     });
@@ -60,11 +62,11 @@ export default class NotFriend extends BaseFriend {
     );
   }
 
-  private addListeners(): void {
+  public addListeners(): void {
     this.subscribeButton.element.addEventListener('click', this.addFriendCallback);
   }
 
-  private addFriendCallback = (): void => {
+  public addFriendCallback = (): void => {
     if (this.token) {
       NotFriend.addNewFriend(this.token, this.requestInfo);
       this.notFriendsIsAdded = true;
@@ -72,7 +74,7 @@ export default class NotFriend extends BaseFriend {
     }
   };
 
-  private deleteFriendCallback = (): void => {
+  public deleteFriendCallback = (): void => {
     if (this.token) {
       NotFriend.deleteFriend(this.token, this.requestInfo);
       this.notFriendsIsAdded = false;
@@ -80,7 +82,7 @@ export default class NotFriend extends BaseFriend {
     }
   };
 
-  private setButtonFunction(): void {
+  public setButtonFunction(): void {
     console.log(this.subscribeButton);
     if (this.notFriendsIsAdded === false) {
       console.log(this.notFriendsIsAdded);

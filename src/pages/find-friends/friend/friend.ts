@@ -11,11 +11,13 @@ export default class Friend extends BaseFriend {
 
   public unsubscribeButton!: Button;
 
-  private avatarContainer = new BaseComponent('div', this.element, 'friend__avatar-container');
+  public avatarContainer = new BaseComponent('div', this.element, 'friend__avatar-container');
 
-  private userData = new BaseComponent('div', this.element, 'friend__user-data');
+  public userData = new BaseComponent('div', this.element, 'friend__user-data');
 
-  private friendsIsAdded = true;
+  public friendsIsAdded = true;
+
+  public typeChecker = 'Friend';
 
   constructor(
     parent: HTMLElement,
@@ -31,7 +33,7 @@ export default class Friend extends BaseFriend {
     this.addListeners();
   }
 
-  private renderElements(): void {
+  public renderElements(): void {
     this.avatar = new Avatar(this.avatarContainer.element, 'friend__avatar', {
       src: this.avatarUrl || './assets/images/avatars/default.png',
     });
@@ -40,13 +42,13 @@ export default class Friend extends BaseFriend {
     this.unsubscribeButton = new Button(this.element, 'Unsubscribe', 'friend__button');
   }
 
-  private addListeners(): void {
+  public addListeners(): void {
     this.unsubscribeButton.element.addEventListener('click', (): void => {
       this.deleteFriendCallback();
     });
   }
 
-  private addFriendCallback = (): void => {
+  public addFriendCallback = (): void => {
     if (this.token) {
       Friend.addNewFriend(this.token, this.requestInfo);
       this.friendsIsAdded = true;
@@ -54,7 +56,7 @@ export default class Friend extends BaseFriend {
     }
   };
 
-  private deleteFriendCallback = (): void => {
+  public deleteFriendCallback = (): void => {
     if (this.token) {
       Friend.deleteFriend(this.token, this.requestInfo);
       this.friendsIsAdded = false;
@@ -62,7 +64,7 @@ export default class Friend extends BaseFriend {
     }
   };
 
-  private setButtonFunction(): void {
+  public setButtonFunction(): void {
     console.log(this.unsubscribeButton);
     if (this.friendsIsAdded === false) {
       this.unsubscribeButton.element.style.backgroundColor = ProjectColors.Orange;

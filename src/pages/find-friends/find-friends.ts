@@ -16,13 +16,13 @@ export default class Friends extends BaseComponent<'section'> {
 
   public friendsAll: Friend[] = [];
 
-  public visibleFriends: Friend[] = [];
+  public visibleFriends: Friend[] | NotFriend[] = [];
 
-  public visibleNotFriends: NotFriend[] = [];
+  public visibleNotFriends: NotFriend[] | Friend[] = [];
 
   private friendsPage = 1;
 
-  private notFriendsPage = 1;
+  private notFriendsPage = 0;
 
   private findingContainer = new BaseComponent('div', this.element, 'find-friends__container');
 
@@ -87,8 +87,8 @@ export default class Friends extends BaseComponent<'section'> {
           this.friendsAll.length,
         );
         this.addListenersForFriends();
-        /* Friends.search(this.friendsAll, this.friendsSearch); */
-        const visibleFriends = Friends.getPage(1, this.friendsAll);
+        // Friends.search(this.friendsAll, this.friendsSearch);
+        const visibleFriends = Friends.getFriendsPage(1, this.friendsAll);
         Friends.hiddenUsers(this.friendsAll);
         Friends.doVisibleUsers(visibleFriends);
       });
@@ -112,7 +112,7 @@ export default class Friends extends BaseComponent<'section'> {
           this.notFriendsAll.length,
         );
         this.addListenersForNotFriends();
-        const visibleNotFriends = Friends.getPage(1, this.notFriendsAll);
+        const visibleNotFriends = Friends.getNotFriendsPage(1, this.notFriendsAll);
         Friends.hiddenUsers(this.notFriendsAll);
         Friends.doVisibleUsers(visibleNotFriends);
       });
@@ -130,12 +130,27 @@ export default class Friends extends BaseComponent<'section'> {
   private addListenersForNotFriends(): void {
     this.notFriendsSearch.element.addEventListener('input', (): void => {
       Friends.search(this.notFriendsAll, this.notFriendsSearch);
+      if (this.visibleNotFriends.length < 4) {
+        this.visibleNotFriends = Friends.getNotFriendsPage(this.notFriendsPage, this.notFriendsAll);
+        console.log(this.visibleNotFriends);
+        this.visibleNotFriends.forEach((visible) => visible.element.classList.remove('hidden'));
+        Friends.hiddenUsers(this.notFriendsAll);
+        Friends.doVisibleUsers(this.visibleNotFriends);
+      }
     });
     this.notFriendsPagination.rightArrowBtn?.element.addEventListener('click', () => {
+      this.visibleNotFriends.length = 0;
       this.rightArrowBtnCallback(this.notFriendsPagination);
+      this.visibleNotFriends = Friends.getNotFriendsPage(this.notFriendsPage, this.notFriendsAll);
+      Friends.hiddenUsers(this.notFriendsAll);
+      Friends.doVisibleUsers(this.visibleNotFriends);
     });
     this.notFriendsPagination.leftArrowBtn?.element.addEventListener('click', () => {
+      this.visibleNotFriends.length = 0;
       this.leftArrowBtnCallback(this.notFriendsPagination);
+      this.visibleNotFriends = Friends.getNotFriendsPage(this.notFriendsPage, this.notFriendsAll);
+      Friends.hiddenUsers(this.notFriendsAll);
+      Friends.doVisibleUsers(this.visibleNotFriends);
     });
   }
 
@@ -144,17 +159,25 @@ export default class Friends extends BaseComponent<'section'> {
       Friends.search(this.friendsAll, this.friendsSearch);
     });
     this.friendsPagination.rightArrowBtn?.element.addEventListener('click', () => {
+      this.visibleFriends.length = 0;
       this.rightArrowBtnCallback(this.friendsPagination);
     });
     this.friendsPagination.leftArrowBtn?.element.addEventListener('click', () => {
+      this.visibleFriends.length = 0;
       this.leftArrowBtnCallback(this.friendsPagination);
     });
   }
 
-  private static getPage(page: number, array: Friend[] | NotFriend[]): Friend[] | NotFriend[] {
+  private static getFriendsPage(page: number, array: Friend[]): Friend[] {
     const startIndex = (page - 1) * 4;
     const endIndex = startIndex + 4;
-    return array.slice(startIndex, endIndex);
+    return array.filter((friend) => !friend.element.classList.contains('hidden')).slice(startIndex, endIndex);
+  }
+
+  private static getNotFriendsPage(page: number, array: NotFriend[]): NotFriend[] {
+    const startIndex = (page - 1) * 4;
+    const endIndex = startIndex + 4;
+    return array.filter((notFriend) => !notFriend.element.classList.contains('hidden')).slice(startIndex, endIndex);
   }
 
   private rightArrowBtnCallback = (pagination: Pagination): void => {
