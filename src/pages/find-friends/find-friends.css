@@ -66,6 +66,11 @@
   height: calc(2em + 3vw);
 }
 
+.not-friends__not-found,
+.friends__not-found {
+  margin: 2em 0;
+}
+
 .not-friends__element.hidden,
 .friends__element.hidden {
   display: none;

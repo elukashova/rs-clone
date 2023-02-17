@@ -16,7 +16,7 @@ export default class Pagination extends BaseComponent<'div'> {
 
   public totalPages: number = 0;
 
-  public itemsPerPage: number = 5;
+  public itemsPerPage: number = 4;
 
   private classes: string;
 
@@ -39,7 +39,6 @@ export default class Pagination extends BaseComponent<'div'> {
     this.classes = classes;
     this.render();
     this.disableArrowsFirstLastPage(this.currentPage);
-    // this.addListeners();
   }
 
   private render(): void {
@@ -53,6 +52,8 @@ export default class Pagination extends BaseComponent<'div'> {
     );
     this.rightArrowBtn = new Button(this.element, '', 'right-svg__block');
     this.rightSvg = new Svg(this.rightArrowBtn.element, SvgNames.PaginationRight, ProjectColors.White, 'right-svg');
+    this.updateCurrentPage(this.currentPage);
+    this.updateTotalPages(this.totalPages);
   }
 
   public updateCurrentPage(page: number): void {

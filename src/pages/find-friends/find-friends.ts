@@ -79,12 +79,23 @@ export default class Friends extends BaseComponent<'section'> {
   private getNotFriendsForRender(): void {
     if (this.token) {
       getNotFriends(this.token).then((usersData) => {
-        usersData.forEach((user, index) => {
-          const notFriend = new NotFriend(this.notFriendsBlock.element, user, 'not-friends__element', {
-            id: `not-friends-${index}`,
+        if (usersData.length) {
+          usersData.forEach((user, index) => {
+            const notFriend = new NotFriend(this.notFriendsBlock.element, user, 'not-friends__element', {
+              id: `not-friends-${index}`,
+            });
+            this.notFriendsAll.push(notFriend);
           });
-          this.notFriendsAll.push(notFriend);
-        });
+        } else {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const fountNotFriend = new BaseComponent(
+            'div',
+            this.notFriendsBlock.element,
+            'not-friends__not-found',
+            'It seems that you have added all available users as friends.',
+          );
+        }
+
         this.notFriendsPagination = new Pagination(
           this.notFriendsContainer,
           'not-friends__pagination',
@@ -116,10 +127,6 @@ export default class Friends extends BaseComponent<'section'> {
           4,
           this.friendsAll.length,
         );
-        /* this.addListenersForFriends();
-        const visibleFriends = Friends.getFriendsPage(1, this.friendsAll);
-        Friends.hiddenUsers(this.friendsAll);
-        Friends.doVisibleUsers(visibleFriends); */
       });
     }
   }
