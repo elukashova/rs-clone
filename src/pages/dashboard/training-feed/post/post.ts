@@ -53,7 +53,7 @@ export default class Post extends BaseComponent<'div'> {
 
   public map = new BaseComponent('div', this.element, 'map');
 
-  public googleMap: GoogleMaps | undefined;
+  public googleMap: BaseComponent<'img'> | undefined;
 
   private icons = new BaseComponent('div', this.element, 'post__icons');
 
@@ -125,14 +125,20 @@ export default class Post extends BaseComponent<'div'> {
   }
 
   // Метод вывода статичной карты
-  public async initStaticMap(): Promise<void> {
-    const url = await GoogleMaps.drawStaticMap(
-      { lat: -33.77341785585683, lng: 151.02294751876593 }, // надо будет заменить с сервера стартовую точку
-      { lat: -33.78387945569748, lng: 150.70936384113133 }, // надо будет заменить с сервера конечную точку
-      'WALKING', // надо будет заменить с сервера travelMode
-    );
-    const mapImg = new BaseComponent('img', this.map.element, '', '', {
-      src: `${url}`,
-    });
+  public async initStaticMap(activity: Activity): Promise<void> {
+    if (activity.route && activity.route.startPoint && activity.route.endPoint) {
+      const startLat = +activity.route.startPoint.split(',')[0];
+      const startLng = +activity.route.startPoint.split(',')[1];
+      const endLat = +activity.route.endPoint.split(',')[0];
+      const endLng = +activity.route.endPoint.split(',')[1];
+      const url = await GoogleMaps.drawStaticMap(
+        { lat: startLat, lng: startLng }, // надо будет заменить с сервера стартовую точку
+        { lat: endLat, lng: endLng }, // надо будет заменить с сервера конечную точку
+        activity.route.travelMode || 'walking', // надо будет заменить с сервера travelMode
+      );
+      this.googleMap = new BaseComponent('img', this.map.element, '', '', {
+        src: `${url}`,
+      });
+    }
   }
 }
