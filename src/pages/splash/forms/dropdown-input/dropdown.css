@@ -1,0 +1,58 @@
+.signup__dropdown {
+  position: relative;
+}
+
+.dropdown_arrow {
+  position: absolute;
+  right: 0.7em;
+  top: 55%;
+  transition: transform 0.3s ease;
+}
+
+.dropdown-input:focus .dropdown_arrow {
+  transform: rotate(180deg);
+}
+
+.dropdown_list-wrapper {
+  box-shadow: 0 8px 15px 0 rgba(33, 33, 33, 0.2);
+  opacity: 0;
+  position: relative;
+  transform: scaleY(0);
+  visibility: hidden;
+  transform-origin: center top;
+  transition: transform 0.3s ease;
+}
+
+.visible {
+  opacity: 1;
+  transform: scaleY(1);
+  visibility: visible;
+}
+
+.visible .dropdown_list {
+  max-height: 4em;
+}
+
+.dropdown_list {
+  align-content: middle;
+  display: flex;
+  flex-direction: column;
+  max-height: 0;
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  transition: all 0.3s ease;
+  z-index: 1;
+  background: white;
+  opacity: 50%;
+}
+
+.dropdown_list-option {
+  cursor: pointer;
+  padding: 0.5em 0;
+  transition: background 0.5s ease;
+}
+
+.dropdown_list-option:hover {
+  background: #ccc;
+}
