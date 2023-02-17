@@ -1,14 +1,14 @@
 import './find-friends.css';
 import BaseComponent from '../../components/base-component/base-component';
-import { FriendData, Token } from '../../app/loader/loader.types';
+import { /* FriendData */ Token } from '../../app/loader/loader.types';
 import { checkDataInLocalStorage } from '../../utils/local-storage';
-import { ProjectColors } from '../../utils/consts';
 import NotFriend from './not-friend/not-friend';
 import Input from '../../components/base-component/text-input-and-label/text-input';
-import SvgNames from '../../components/base-component/svg/svg.types';
 import Friend from './friend/friend';
 import Pagination from '../../components/base-component/pagination-block/pagination';
-import { /* addFriend, */ getFriends, getNotFriends } from '../../app/loader/services/friends-services';
+import { /* getFriends */ getNotFriends } from '../../app/loader/services/friends-services';
+import SvgNames from '../../components/base-component/svg/svg.types';
+import { ProjectColors } from '../../utils/consts';
 /* import eventEmitter from '../../utils/event-emitter'; */
 
 export default class Friends extends BaseComponent<'section'> {
@@ -16,13 +16,17 @@ export default class Friends extends BaseComponent<'section'> {
 
   public friendsAll: Friend[] = [];
 
-  public visibleFriends: Friend[] | NotFriend[] = [];
+  public visibleFriends: Friend[] = [];
 
-  public visibleNotFriends: NotFriend[] | Friend[] = [];
+  public visibleNotFriends: NotFriend[] = [];
+
+  public unhiddenFriends: Friend[] = [];
+
+  public unhiddenNotFriends: NotFriend[] = [];
 
   private friendsPage = 1;
 
-  private notFriendsPage = 0;
+  private notFriendsPage = 1;
 
   private findingContainer = new BaseComponent('div', this.element, 'find-friends__container');
 
@@ -61,38 +65,13 @@ export default class Friends extends BaseComponent<'section'> {
 
   constructor(parent: HTMLElement) {
     super('section', parent, 'find-friends find-friends-section');
+
     this.renderPage();
     this.addSvgIcons();
   }
 
   private renderPage(): void {
-    this.getFriendsForRender();
     this.getNotFriendsForRender();
-  }
-
-  private getFriendsForRender(): void {
-    if (this.token) {
-      getFriends(this.token).then((usersData: FriendData[]) => {
-        usersData.forEach((user, index) => {
-          const friend = new Friend(this.friendsBlock.element, user, 'friends__element', {
-            id: `friends-${index}`,
-          });
-          this.friendsAll.push(friend);
-        });
-        this.friendsPagination = new Pagination(
-          this.friendsContainer,
-          'friends__pagination',
-          1,
-          4,
-          this.friendsAll.length,
-        );
-        this.addListenersForFriends();
-        // Friends.search(this.friendsAll, this.friendsSearch);
-        const visibleFriends = Friends.getFriendsPage(1, this.friendsAll);
-        Friends.hiddenUsers(this.friendsAll);
-        Friends.doVisibleUsers(visibleFriends);
-      });
-    }
   }
 
   private getNotFriendsForRender(): void {
@@ -112,7 +91,7 @@ export default class Friends extends BaseComponent<'section'> {
           this.notFriendsAll.length,
         );
         this.addListenersForNotFriends();
-        const visibleNotFriends = Friends.getNotFriendsPage(1, this.notFriendsAll);
+        const visibleNotFriends = this.getNotFriendsPage(1, this.notFriendsAll);
         Friends.hiddenUsers(this.notFriendsAll);
         Friends.doVisibleUsers(visibleNotFriends);
       });
@@ -129,55 +108,41 @@ export default class Friends extends BaseComponent<'section'> {
 
   private addListenersForNotFriends(): void {
     this.notFriendsSearch.element.addEventListener('input', (): void => {
-      Friends.search(this.notFriendsAll, this.notFriendsSearch);
-      if (this.visibleNotFriends.length < 4) {
-        this.visibleNotFriends = Friends.getNotFriendsPage(this.notFriendsPage, this.notFriendsAll);
-        console.log(this.visibleNotFriends);
-        this.visibleNotFriends.forEach((visible) => visible.element.classList.remove('hidden'));
+      this.searchByNotFriends();
+      const visible = this.getNotFriendsPage(this.notFriendsPage, this.unhiddenNotFriends);
+      if (visible.length < 4) {
+        Friends.doVisibleUsers(this.notFriendsAll);
+        this.getNotFriendsPage(this.notFriendsPage, visible);
+      }
+      if (visible.length >= 4) {
         Friends.hiddenUsers(this.notFriendsAll);
+        this.getNotFriendsPage(this.notFriendsPage, visible);
         Friends.doVisibleUsers(this.visibleNotFriends);
       }
     });
     this.notFriendsPagination.rightArrowBtn?.element.addEventListener('click', () => {
       this.visibleNotFriends.length = 0;
       this.rightArrowBtnCallback(this.notFriendsPagination);
-      this.visibleNotFriends = Friends.getNotFriendsPage(this.notFriendsPage, this.notFriendsAll);
+      this.visibleNotFriends = this.getNotFriendsPage(this.notFriendsPage, this.notFriendsAll);
       Friends.hiddenUsers(this.notFriendsAll);
       Friends.doVisibleUsers(this.visibleNotFriends);
     });
     this.notFriendsPagination.leftArrowBtn?.element.addEventListener('click', () => {
       this.visibleNotFriends.length = 0;
       this.leftArrowBtnCallback(this.notFriendsPagination);
-      this.visibleNotFriends = Friends.getNotFriendsPage(this.notFriendsPage, this.notFriendsAll);
+      this.visibleNotFriends = this.getNotFriendsPage(this.notFriendsPage, this.notFriendsAll);
       Friends.hiddenUsers(this.notFriendsAll);
       Friends.doVisibleUsers(this.visibleNotFriends);
     });
   }
 
-  private addListenersForFriends(): void {
-    this.friendsSearch.element.addEventListener('input', (): void => {
-      Friends.search(this.friendsAll, this.friendsSearch);
-    });
-    this.friendsPagination.rightArrowBtn?.element.addEventListener('click', () => {
-      this.visibleFriends.length = 0;
-      this.rightArrowBtnCallback(this.friendsPagination);
-    });
-    this.friendsPagination.leftArrowBtn?.element.addEventListener('click', () => {
-      this.visibleFriends.length = 0;
-      this.leftArrowBtnCallback(this.friendsPagination);
-    });
-  }
-
-  private static getFriendsPage(page: number, array: Friend[]): Friend[] {
+  private getNotFriendsPage(page: number, array: NotFriend[]): NotFriend[] {
     const startIndex = (page - 1) * 4;
     const endIndex = startIndex + 4;
-    return array.filter((friend) => !friend.element.classList.contains('hidden')).slice(startIndex, endIndex);
-  }
-
-  private static getNotFriendsPage(page: number, array: NotFriend[]): NotFriend[] {
-    const startIndex = (page - 1) * 4;
-    const endIndex = startIndex + 4;
-    return array.filter((notFriend) => !notFriend.element.classList.contains('hidden')).slice(startIndex, endIndex);
+    this.visibleNotFriends = array
+      .filter((notFriend) => !notFriend.element.classList.contains('hidden'))
+      .slice(startIndex, endIndex);
+    return this.visibleNotFriends;
   }
 
   private rightArrowBtnCallback = (pagination: Pagination): void => {
@@ -213,7 +178,22 @@ export default class Friends extends BaseComponent<'section'> {
     this.friendsSearch.addSvgIcon(SvgNames.Search, ProjectColors.Grey, 'search');
   }
 
-  public static search(array: NotFriend[] | Friend[], input: Input): void {
+  public searchByNotFriends(): void {
+    this.unhiddenNotFriends.length = 0;
+    this.notFriendsAll.forEach((user: NotFriend): void => user.element.classList.remove('hidden'));
+    const value = this.notFriendsSearch.inputValue.trim().toLowerCase();
+    this.notFriendsAll.forEach((user: NotFriend): void => {
+      if (user && user.username && !user.username.toLowerCase().includes(value)) {
+        user.element.classList.add('hidden');
+        this.unhiddenNotFriends.splice(this.unhiddenNotFriends.indexOf(user), 1);
+      } else {
+        user.element.classList.remove('hidden');
+        this.unhiddenNotFriends.push(user);
+      }
+    });
+  }
+
+  public static searchByFriends(array: Friend[], input: Input): void {
     array.forEach((user: NotFriend | Friend): void => user.element.classList.remove('hidden'));
     const value = input.inputValue.trim().toLowerCase();
     array.forEach((user: NotFriend | Friend): void => {
@@ -224,4 +204,63 @@ export default class Friends extends BaseComponent<'section'> {
       }
     });
   }
+
+  /*  */
+  /*  */
+  /*  */
+  /*  */
+  /*  */
+  /*  */
+  /*  */
+  /*  */
+  /*  */
+  /*  */
+  /*  */
+  /*  */
+
+  /*   private getFriendsForRender(): void {
+    if (this.token) {
+      getFriends(this.token).then((usersData: FriendData[]) => {
+        usersData.forEach((user, index) => {
+          const friend = new Friend(this.friendsBlock.element, user, 'friends__element', {
+            id: `friends-${index}`,
+          });
+          this.friendsAll.push(friend);
+        });
+        this.friendsPagination = new Pagination(
+          this.friendsContainer,
+          'friends__pagination',
+          1,
+          4,
+          this.friendsAll.length,
+        );
+        this.addListenersForFriends();
+        // Friends.search(this.friendsAll, this.friendsSearch);
+        const visibleFriends = Friends.getFriendsPage(1, this.friendsAll);
+        Friends.hiddenUsers(this.friendsAll);
+        Friends.doVisibleUsers(visibleFriends);
+      });
+    }
+  }
+
+  private addListenersForFriends(): void {
+    this.friendsSearch.element.addEventListener('input', (): void => {
+      Friends.search(this.friendsAll, this.friendsSearch);
+    });
+    this.friendsPagination.rightArrowBtn?.element.addEventListener('click', () => {
+      this.visibleFriends.length = 0;
+      this.rightArrowBtnCallback(this.friendsPagination);
+    });
+    this.friendsPagination.leftArrowBtn?.element.addEventListener('click', () => {
+      this.visibleFriends.length = 0;
+      this.leftArrowBtnCallback(this.friendsPagination);
+    });
+  }
+
+  private static getFriendsPage(page: number, array: Friend[]): Friend[] {
+    const startIndex = (page - 1) * 4;
+    const endIndex = startIndex + 4;
+    return array.filter((friend) =>
+     !friend.element.classList.contains('hidden')).slice(startIndex, endIndex);
+  } */
 }
