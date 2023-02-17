@@ -155,7 +155,7 @@ i18next.init({
     },
     rus: {
       translation: {
-        avatar: 'Выберите Ваш аватар',
+        avatar: 'Ваш аватар',
         select: '--Выберите Вашу страну--',
         header: {
           avatar: 'Ваш аватар',

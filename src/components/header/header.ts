@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import './header.css';
 import i18next from 'i18next';
 import BaseComponent from '../base-component/base-component';
@@ -111,6 +112,7 @@ export default class Header extends BaseComponent<'header'> {
   constructor(parent: HTMLElement, private replaceMainCallback: () => void) {
     super('header', parent, 'header');
     this.openMenu();
+    this.changeLanguageOnThisPage();
     this.changeLanguage();
     this.changeTheme();
     this.subscribeToEvents();
@@ -125,6 +127,7 @@ export default class Header extends BaseComponent<'header'> {
   public changeLanguage(): void {
     this.languageIcon.element.addEventListener('click', () => {
       i18next.changeLanguage('rus');
+      eventEmitter.emit('changeLanguage', {});
     });
   }
 
@@ -149,6 +152,19 @@ export default class Header extends BaseComponent<'header'> {
   private subscribeToEvents(): void {
     eventEmitter.on('updateAvatar', (source: EventData) => {
       this.updateProfilePicture(source);
+    });
+  }
+
+  private changeLanguageOnThisPage(): void {
+    eventEmitter.on('changeLanguage', () => {
+      this.personalPageLink.element.textContent = i18next.t('header.personalPage');
+      this.myRoutesPageLink.element.textContent = i18next.t('header.myRoutes');
+      this.settingsPageLink.element.textContent = i18next.t('header.settings');
+      this.exit.element.textContent = i18next.t('header.exit');
+      this.addActivityLink.element.textContent = i18next.t('header.addActivity');
+      this.addNewRouteLink.element.textContent = i18next.t('header.addRoute');
+      this.findFriendsLink.element.textContent = i18next.t('header.findFriends');
+      this.challenges.element.textContent = i18next.t('header.challenges');
     });
   }
 }
