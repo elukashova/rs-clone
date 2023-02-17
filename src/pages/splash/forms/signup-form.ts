@@ -78,6 +78,8 @@ export default class SignupForm extends BaseComponent<'form'> {
 
   private isNewUser: boolean = true;
 
+  private isRegisteredEmail: boolean = false;
+
   constructor(parent: HTMLElement, private replaceMainCallback: () => void) {
     super('form', parent, 'signup-form signup', '', {
       autocomplete: 'off',
@@ -137,8 +139,9 @@ export default class SignupForm extends BaseComponent<'form'> {
         }
       })
       .catch((err: Error) => {
-        if (err.message === Errors.UserAlreadyExists) {
+        if (err.message === Errors.UserAlreadyExists && this.isRegisteredEmail === false) {
           this.showUserAlreadyRegisteredMessage();
+          this.isRegisteredEmail = true;
         }
       });
   };
@@ -156,15 +159,20 @@ export default class SignupForm extends BaseComponent<'form'> {
   }
 
   private showUserAlreadyRegisteredMessage(): void {
-    const message: HTMLSpanElement = document.createElement('span');
-    message.textContent = InputConflictMessages.UserAlreadyExists;
+    const message: BaseComponent<'span'> = new BaseComponent(
+      'span',
+      undefined,
+      'signup__error-message',
+      InputConflictMessages.UserAlreadyExists,
+    );
+
     const logInLink: NavigationLink = new NavigationLink(this.replaceMainCallback, {
       text: 'log in',
-      parent: message,
+      parent: message.element,
       additionalClasses: 'signup__link-login',
     });
     logInLink.element.setAttribute('href', Routes.LogIn);
-    this.element.insertBefore(message, this.signupButton.element);
+    this.element.insertBefore(message.element, this.signupButton.element);
   }
 
   private createCountriesList(): void {

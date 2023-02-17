@@ -27,10 +27,11 @@
   opacity: 1;
   transform: scaleY(1);
   visibility: visible;
+  transition: transform 0.3s ease;
 }
 
 .visible .dropdown_list {
-  max-height: 4em;
+  max-height: 4.5em;
 }
 
 .dropdown_list {
@@ -39,6 +40,7 @@
   flex-direction: column;
   max-height: 0;
   width: 100%;
+  padding: 0 0.6em;
   overflow-x: hidden;
   overflow-y: scroll;
   transition: all 0.3s ease;
@@ -51,6 +53,7 @@
   cursor: pointer;
   padding: 0.5em 0;
   transition: background 0.5s ease;
+  font-size: calc(0.5em + 0.4vw);
 }
 
 .dropdown_list-option:hover {

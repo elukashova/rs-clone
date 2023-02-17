@@ -71,3 +71,8 @@
   flex-direction: row;
   justify-content: space-between;
 }
+
+.signup__error-message,
+.login__error-message {
+  font-size: calc(0.5em + 0.5vw);
+}

@@ -52,13 +52,17 @@ export default class DropdownInput extends Input {
   }
 
   public filterOptionsCallback = (): void => {
-    this.showOptionsList();
     this.clearOptions();
     const value: string = this.input.element.value.toLowerCase();
     if (value.length > 0) {
       // eslint-disable-next-line max-len, prettier/prettier
       const filteredOptions = this.optionsStrings.filter((option) => option.toLowerCase().includes(value));
-      this.appendOptions(filteredOptions);
+      if (filteredOptions.length > 0) {
+        this.showOptionsList();
+        this.appendOptions(filteredOptions);
+      } else {
+        this.hideOptionsList();
+      }
     } else {
       this.appendOptions(this.optionsStrings);
       this.hideOptionsList();

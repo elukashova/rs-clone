@@ -1,6 +1,7 @@
 enum Routes {
   SignUp = '/',
   LogIn = '/login',
+  LogOut = '/logout',
   Dashboard = '/dashboard',
   Challenges = '/challenges',
   MyRoutes = '/routes',
