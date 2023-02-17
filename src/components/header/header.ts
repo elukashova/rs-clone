@@ -1,4 +1,5 @@
 import './header.css';
+import i18next from 'i18next';
 import BaseComponent from '../base-component/base-component';
 import Avatar from '../base-component/avatar-image/avatar';
 import Picture from '../base-component/picture/picture';
@@ -44,7 +45,7 @@ export default class Header extends BaseComponent<'header'> {
   });
 
   private myRoutesPageLink = new NavigationLink(this.replaceMainCallback, {
-    text: 'My Routes',
+    text: 'My routes',
     parent: this.avatarDropDownContent.element,
     additionalClasses: 'header-link-avatar link',
     attributes: { href: Routes.MyRoutes },
@@ -123,7 +124,7 @@ export default class Header extends BaseComponent<'header'> {
 
   public changeLanguage(): void {
     this.languageIcon.element.addEventListener('click', () => {
-      console.log('change language');
+      i18next.changeLanguage('rus');
     });
   }
 

@@ -13,7 +13,7 @@ export default class OurTeam extends BaseComponent<'section'> {
     'h2',
     this.formContainer.element,
     'our-team__title',
-    'Meet the Big Bag Theory team',
+    'Meet the Big Bug Theory team',
   );
 
   private infoAboutTeam = new BaseComponent(

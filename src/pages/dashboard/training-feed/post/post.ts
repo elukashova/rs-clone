@@ -49,7 +49,7 @@ export default class Post extends BaseComponent<'div'> {
 
   public time = new PostInfo(this.info.element, 'Time');
 
-  public elevation = new PostInfo(this.info.element, 'Altitude');
+  public elevation = new PostInfo(this.info.element, 'Elevation');
 
   public map = new BaseComponent('div', this.element, 'map');
 
@@ -132,9 +132,9 @@ export default class Post extends BaseComponent<'div'> {
       const endLat = +activity.route.endPoint.split(',')[0];
       const endLng = +activity.route.endPoint.split(',')[1];
       const url = await GoogleMaps.drawStaticMap(
-        { lat: startLat, lng: startLng }, // надо будет заменить с сервера стартовую точку
-        { lat: endLat, lng: endLng }, // надо будет заменить с сервера конечную точку
-        activity.route.travelMode || 'walking', // надо будет заменить с сервера travelMode
+        { lat: startLat, lng: startLng },
+        { lat: endLat, lng: endLng },
+        activity.route.travelMode || 'walking',
       );
       this.googleMap = new BaseComponent('img', this.map.element, '', '', {
         src: `${url}`,

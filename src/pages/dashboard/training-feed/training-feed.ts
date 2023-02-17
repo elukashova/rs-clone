@@ -1,4 +1,5 @@
 import './training-feed.css';
+import i18next from 'i18next';
 import BaseComponent from '../../../components/base-component/base-component';
 import Button from '../../../components/base-component/button/button';
 import Routes from '../../../app/router/router.types';
@@ -19,6 +20,7 @@ export default class TrainingFeed extends BaseComponent<'article'> {
 
   constructor(parent: HTMLElement, private replaceMainCallback: () => void) {
     super('article', parent, 'training-feed');
+    console.log(i18next.t('key'));
   }
 
   public static addPosts(data: User): HTMLDivElement[] {

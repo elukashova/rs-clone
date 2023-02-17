@@ -4,11 +4,11 @@ import Task from './task/task';
 import Button from '../../../../components/base-component/button/button';
 
 export default class YourTasks extends BaseComponent<'div'> {
-  private heading = new BaseComponent('h5', this.element, 'your-tasks__heading', 'Ваши Задачи');
+  private heading = new BaseComponent('h5', this.element, 'your-tasks__heading', 'Your Tasks');
 
   private myTasks = new BaseComponent('div', this.element, 'your-tasks__tasks');
 
-  private allTasksButton = new Button(this.element, 'Все Задачи');
+  private allTasksButton = new Button(this.element, 'All Tasks');
 
   private allTasks: HTMLElement[] = [];
 
