@@ -105,4 +105,12 @@ export default class Select extends BaseComponent<'select'> {
     });
     return this.options[selectedIndex];
   }
+
+  public setOptionNames(options: string[]): void {
+    this.optionsAll.forEach((option, index) => {
+      console.log(option, options, options[index]);
+      // eslint-disable-next-line no-param-reassign
+      option.textContent = options[index];
+    });
+  }
 }

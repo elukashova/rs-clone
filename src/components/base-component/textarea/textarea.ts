@@ -7,6 +7,8 @@ export default class TextArea extends BaseComponent<'div'> {
 
   private label?: BaseComponent<'label'>;
 
+  public title!: BaseComponent<'span'>;
+
   constructor(
     parent: HTMLElement,
     additionalClasses: string,
@@ -19,7 +21,8 @@ export default class TextArea extends BaseComponent<'div'> {
     super('div', parent, classes, undefined, attributes);
 
     if (labelText) {
-      this.label = new BaseComponent('label', this.element, `${labelText}-label`, labelText);
+      this.label = new BaseComponent('label', this.element, `${labelText}-label`);
+      this.title = new BaseComponent('span', this.label.element, '', labelText);
       this.textArea = new BaseComponent(
         'textarea',
         this.label.element,
@@ -48,5 +51,9 @@ export default class TextArea extends BaseComponent<'div'> {
 
   public verify(): boolean {
     return this.textArea.element.value !== '';
+  }
+
+  public set placeholder(value: string) {
+    this.textArea.element.placeholder = value;
   }
 }

@@ -9,6 +9,8 @@ export default class Input extends BaseComponent<'div'> {
 
   public label: BaseComponent<'label'>;
 
+  public title!: BaseComponent<'span'>;
+
   public svgIcon?: Svg;
 
   private inputName: string;
@@ -25,7 +27,8 @@ export default class Input extends BaseComponent<'div'> {
   ) {
     const classes = getClassNames('input', additionalClasses);
     super('div', parent, classes);
-    this.label = new BaseComponent('label', this.element, '', text);
+    this.label = new BaseComponent('label', this.element, '');
+    this.title = new BaseComponent('span', this.label.element, '', text);
     this.input = new BaseComponent('input', this.label.element, '', '', attributes);
     this.inputName = this.label.element.innerText.toLowerCase();
   }

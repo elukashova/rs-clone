@@ -39,28 +39,28 @@ export default class Header extends BaseComponent<'header'> {
   private avatarDropDownContent = new BaseComponent('div', this.avatarDropDown.element, 'header-avatar-content');
 
   private personalPageLink = new NavigationLink(this.replaceMainCallback, {
-    text: 'Personal page',
+    text: i18next.t('header.personalPage'),
     parent: this.avatarDropDownContent.element,
     additionalClasses: 'header-link-avatar link',
     attributes: { href: Routes.Dashboard },
   });
 
   private myRoutesPageLink = new NavigationLink(this.replaceMainCallback, {
-    text: 'My routes',
+    text: i18next.t('header.myRoutes'),
     parent: this.avatarDropDownContent.element,
     additionalClasses: 'header-link-avatar link',
     attributes: { href: Routes.MyRoutes },
   });
 
   private settingsPageLink = new NavigationLink(this.replaceMainCallback, {
-    text: 'Settings',
+    text: i18next.t('header.settings'),
     parent: this.avatarDropDownContent.element,
     additionalClasses: 'header-link-avatar link',
     attributes: { href: Routes.Settings },
   });
 
   private exit = new NavigationLink(this.replaceMainCallback, {
-    text: 'Exit',
+    text: i18next.t('header.exit'),
     parent: this.avatarDropDownContent.element,
     additionalClasses: 'header-link-avatar link',
   });
@@ -72,28 +72,28 @@ export default class Header extends BaseComponent<'header'> {
   private addDropDownContent = new BaseComponent('div', this.addDropDown.element, 'header-add-content');
 
   private addActivityLink = new NavigationLink(this.replaceMainCallback, {
-    text: 'Add new activity',
+    text: i18next.t('header.addActivity'),
     parent: this.addDropDownContent.element,
     additionalClasses: 'header-link-add link',
     attributes: { href: Routes.AddActivity },
   });
 
   private addNewRouteLink = new NavigationLink(this.replaceMainCallback, {
-    text: 'Add new route',
+    text: i18next.t('header.addRoute'),
     parent: this.addDropDownContent.element,
     additionalClasses: 'header-link-add link',
     attributes: { href: Routes.AddRoute },
   });
 
   private findFriendsLink = new NavigationLink(this.replaceMainCallback, {
-    text: 'Find friends',
+    text: i18next.t('header.findFriends'),
     parent: this.addDropDownContent.element,
     additionalClasses: 'header-link-add link',
     attributes: { href: Routes.FindFriends },
   });
 
   private challenges = new NavigationLink(this.replaceMainCallback, {
-    text: 'Challenges',
+    text: i18next.t('header.challenges'),
     parent: this.addDropDownContent.element,
     additionalClasses: 'header-link-add link',
     attributes: { href: Routes.Challenges },
