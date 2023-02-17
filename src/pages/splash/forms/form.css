@@ -26,28 +26,33 @@
   font-weight: 300;
 }
 
-.form-input .input,
-.form-select-wrapper .select {
+.form-input .input-text,
+.signup__dropdown_input {
   height: 2.6em;
   padding: 0 0.6em;
   border-radius: 6px;
-  border: 1px solid #219486;
-  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+  border: 1px solid #1cbaa7;
   font-size: 1.1em;
   font-family: 'Work Sans', sans-serif;
   color: #949494;
+  transition: all 0.3s;
+}
+
+.form-input .input-text:focus,
+.signup__dropdown_input:focus {
+  border: 1px solid #219486;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
 }
 
 .form-input .label,
-.form-select-wrapper .label {
+.signup__dropdown .label {
   text-transform: uppercase;
   font-size: calc(0.5em + 0.4vw);
 }
 
-.form-select-wrapper {
+.signup__buttons-wrapper {
   display: flex;
-  flex-direction: column;
-  gap: 0.5em;
+  justify-content: space-between;
 }
 
 .signup__message-login,
@@ -56,7 +61,13 @@
   font-size: calc(0.5em + 0.5vw);
 }
 
-.invalid .input {
+.invalid .input-text {
   border: 1px solid red;
   outline: 0;
+}
+
+.signup__login-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }

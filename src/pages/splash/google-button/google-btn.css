@@ -1,0 +1,6 @@
+.sign_in_btn_wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 2em;
+}
