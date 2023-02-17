@@ -60,12 +60,6 @@ export default class Pagination extends BaseComponent<'div'> {
     this.updatePages();
   }
 
-  /*   private addListeners(): void {
-    this.leftSvgContainer.element.addEventListener('click', this.rightArrowBtnCallback);
-    this.rightSvgContainer.element.addEventListener
-    ('click', () => this.updateCurrentPage(this.currentPage));
-  } */
-
   public updateTotalPages(page: number): void {
     this.totalPages = page;
     if (this.totalPages !== this.currentPage) {
