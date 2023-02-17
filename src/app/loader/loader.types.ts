@@ -107,6 +107,13 @@ export type Activity = {
   mapId?: string;
   kudos?: string[];
   comments?: Comment[];
+  route?: {
+    startPoint?: string;
+    endPoint?: string;
+    id?: number;
+    mapId?: string;
+    travelMode?: string;
+  };
 };
 
 export type UpdateUserData = {
