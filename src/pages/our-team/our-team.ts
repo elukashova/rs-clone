@@ -7,29 +7,43 @@ import Picture from '../../components/base-component/picture/picture';
 /* import Svg from '../../components/base-component/svg/svg';
  */
 export default class OurTeam extends BaseComponent<'section'> {
+  private dictionary: Record<string, string> = {
+    title: 'ourTeam.title',
+    info: 'ourTeam.info',
+    matthewInfo: 'ourTeam.matthewInfo',
+    lenaInfo: 'ourTeam.lenaInfo',
+    nastyaInfo: 'ourTeam.nastyaInfo',
+    useTitle: 'ourTeam.useTitle',
+  };
+
   private formContainer = new BaseComponent('div', this.element, 'our-team__container');
 
-  private title = new BaseComponent(
-    'h2',
-    this.formContainer.element,
-    'our-team__title',
-    'Meet the Big Bug Theory team',
-  );
+  private title = new BaseComponent('h2', this.formContainer.element, 'our-team__title', this.dictionary.title);
 
   private infoAboutTeam = new BaseComponent(
     'p',
     this.formContainer.element,
     'our-team__full-info',
-    'We are a team of like-minded people with a positive attitude towards work.',
+    this.dictionary.info,
   );
 
   private photoContainer = new BaseComponent('div', this.formContainer.element, 'our-team__member-container');
 
-  private matthew = new Member(this.photoContainer.element, 'matthewthewizzard', 'good person', 'Mikhail Matveev');
+  private matthew = new Member(
+    this.photoContainer.element,
+    'matthewthewizzard',
+    this.dictionary.matthewInfo,
+    'Mikhail Matveev',
+  );
 
-  private lena = new Member(this.photoContainer.element, 'elukashova', 'good person', 'Elena Lukashova');
+  private lena = new Member(this.photoContainer.element, 'elukashova', this.dictionary.lenaInfo, 'Elena Lukashova');
 
-  private nastya = new Member(this.photoContainer.element, 'trickypie', 'good person', 'Anastasia Klimova');
+  private nastya = new Member(
+    this.photoContainer.element,
+    'trickypie',
+    this.dictionary.nastyaInfo,
+    'Anastasia Klimova',
+  );
 
   private useInProject = new BaseComponent('div', this.formContainer.element, 'our-team__project-info');
 
@@ -37,7 +51,7 @@ export default class OurTeam extends BaseComponent<'section'> {
     'h3',
     this.useInProject.element,
     'our-team__project-title',
-    'Was used in this project',
+    this.dictionary.useTitle,
   );
 
   private svgContainer = new BaseComponent('div', this.useInProject.element, 'our-team__project-svg-block');

@@ -6,13 +6,25 @@ import Button from '../../components/base-component/button/button';
 import MapParameter from './map-parameter/map-parameter';
 
 export default class NewRoutePage extends BaseComponent<'section'> {
-  private heading = new BaseComponent('h3', this.element, 'new-route-page__heading', 'Add route');
+  private dictionary: Record<string, string> = {
+    heading: 'newRoute.heading',
+    addRoute: 'newRoute.addRoute',
+    searchPlaceholder: 'newRoute.searchPlaceholder',
+    saveBtn: 'newRoute.saveBtn',
+    distance: 'newRoute.distance',
+    ascent: 'newRoute.ascent',
+    descent: 'newRoute.descent',
+    duration: 'newRoute.duration',
+    roadType: 'newRoute.roadType',
+  };
+
+  private heading = new BaseComponent('h3', this.element, 'new-route-page__heading', this.dictionary.heading);
 
   private optionsContainer = new BaseComponent('div', this.element, 'new-route-page__options');
 
   public search = new Input(this.optionsContainer.element, 'new-route-page__search', '', {
     type: 'text',
-    placeholder: 'Enter the name of the place or click on the map',
+    placeholder: 'Enter the name of the place or click on the map', // не будет работать
   });
 
   public routeType = new Select(
@@ -27,7 +39,7 @@ export default class NewRoutePage extends BaseComponent<'section'> {
 
   public deleteButton = new Button(this.buttonContainer.element, '', 'btn_delete');
 
-  public saveButton = new Button(this.buttonContainer.element, 'Save', 'btn');
+  public saveButton = new Button(this.buttonContainer.element, this.dictionary.saveBtn, 'btn');
 
   public map = new BaseComponent('div', this.element, 'new-route-page__map', '', { id: 'map' });
 
@@ -35,22 +47,22 @@ export default class NewRoutePage extends BaseComponent<'section'> {
 
   public vehicleType = new MapParameter(this.mapParameters.element);
 
-  public distance = new MapParameter(this.mapParameters.element, 'Distance');
+  public distance = new MapParameter(this.mapParameters.element, this.dictionary.distance);
 
-  public ascent = new MapParameter(this.mapParameters.element, 'Ascent');
+  public ascent = new MapParameter(this.mapParameters.element, this.dictionary.ascent);
 
-  public descent = new MapParameter(this.mapParameters.element, 'Descent');
+  public descent = new MapParameter(this.mapParameters.element, this.dictionary.descent);
 
-  public time = new MapParameter(this.mapParameters.element, 'Duration');
+  public time = new MapParameter(this.mapParameters.element, this.dictionary.duration);
 
-  public roadType = new MapParameter(this.mapParameters.element, 'Road type');
+  public roadType = new MapParameter(this.mapParameters.element, this.dictionary.roadType);
 
   public routeName = new Input(this.element, 'new-route-page__input', 'Route name', {
     type: 'text',
     required: 'required',
-  });
+  }); // не будет работать
 
-  public routeDescription = new Input(this.element, 'new-route-page__input', 'Description', { type: 'text' });
+  public routeDescription = new Input(this.element, 'new-route-page__input', 'Description', { type: 'text' }); // не будет работать
 
   constructor(parent: HTMLElement) {
     super('section', parent, 'new-route-page');
@@ -63,10 +75,10 @@ export default class NewRoutePage extends BaseComponent<'section'> {
   }
 
   private setParameters(): void {
-    this.distance.value = '0,00 км';
-    this.ascent.value = '0 м';
-    this.descent.value = '0 м';
-    this.time.value = '0 с';
+    this.distance.value = '0,00 km';
+    this.ascent.value = '0 m';
+    this.descent.value = '0 m';
+    this.time.value = '0 s';
     this.roadType.value = 'paved road';
-  }
+  } // не будет работать
 }

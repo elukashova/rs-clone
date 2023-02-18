@@ -7,7 +7,8 @@ export default class MapParameter extends BaseComponent<'div'> {
   private _value = new BaseComponent('span', this.element);
 
   constructor(parent: HTMLElement, name?: string) {
-    super('div', parent, 'map-parameter');
+    const text: string = name || '';
+    super('div', parent, 'map-parameter', text);
     if (name) this._name.element.textContent = name;
   }
 
