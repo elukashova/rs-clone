@@ -26,6 +26,8 @@ enum SvgNames {
   DropdownUp = 'dropdown-up',
   Comment = 'comment',
   Heart = 'heart',
+  Like = 'like',
+  HeartFull = 'heart-full',
 
   Hiking = 'hiking',
   Running = 'running',

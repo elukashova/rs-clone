@@ -1,8 +1,15 @@
+/* eslint-disable object-curly-newline */
 /* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import './post.css';
 import BaseComponent from '../../../../components/base-component/base-component';
-import { Activity, Token, UpdateActivity } from '../../../../app/loader/loader.types';
+import {
+  Activity,
+  CommentResponse,
+  CreateCommentRequest,
+  Token,
+  UpdateActivity,
+} from '../../../../app/loader/loader.types';
 import PostInfo from './post-info/post-info';
 import PostIcon from './post-icon/post-icon';
 import SvgNames from '../../../../components/base-component/svg/svg.types';
@@ -12,11 +19,10 @@ import Button from '../../../../components/base-component/button/button';
 import Picture from '../../../../components/base-component/picture/picture';
 import GoogleMaps from '../../../../map/google-maps';
 import Comment from './comment/comment';
-import COMMENT_DATA from '../../../../mock/comment.data';
 import { ProjectColors } from '../../../../utils/consts';
-import USER_DATA from '../../../../mock/user.data';
 import { updateActivity } from '../../../../app/loader/services/activity-services';
 import { checkDataInLocalStorage } from '../../../../utils/local-storage';
+import { createComment } from '../../../../app/loader/services/comment-services';
 
 export default class Post extends BaseComponent<'div'> {
   private userInfo = new BaseComponent('div', this.element, 'post__user-info');
@@ -53,7 +59,7 @@ export default class Post extends BaseComponent<'div'> {
 
   public time = new PostInfo(this.dataContainer.element, 'Time');
 
-  public elevation = new PostInfo(this.dataContainer.element, 'Altitude');
+  public elevation = new PostInfo(this.dataContainer.element, 'Elevation');
 
   public map: BaseComponent<'div'> | undefined;
 
@@ -61,16 +67,21 @@ export default class Post extends BaseComponent<'div'> {
 
   private icons = new BaseComponent('div', this.element, 'post__icons');
 
-  private likeIcon = new PostIcon(this.icons.element, SvgNames.Heart, ProjectColors.Turquoise, 'post__like');
+  private likeIcon = new PostIcon(this.icons.element, SvgNames.Like, ProjectColors.Turquoise, 'post__like');
 
   private commentIcon = new PostIcon(this.icons.element, SvgNames.Comment, ProjectColors.Turquoise, 'post__comment');
 
-  private commentArea = new TextArea(this.element, 'post__add-comment', '', {
+  private textAreaWrapper: BaseComponent<'div'> = new BaseComponent('div', undefined, 'post__add-comment-wrapper');
+
+  public userImage: BaseComponent<'img'> = new Picture(this.textAreaWrapper.element, 'post__add-comment-user');
+
+  private commentArea = new TextArea(this.textAreaWrapper.element, 'post__add-comment', '', {
     maxlength: '200',
     placeholder: 'type something up to 200 characters',
+    autofocus: '',
   });
 
-  private addCommentButton = new Button(this.commentArea.element, 'Comment', 'post__button');
+  private addCommentButton = new Button(this.textAreaWrapper.element, 'Comment', 'post__add-comment-button');
 
   private token: Token | null = checkDataInLocalStorage('userSessionToken');
 
@@ -78,34 +89,54 @@ export default class Post extends BaseComponent<'div'> {
 
   public isLiked: boolean = false;
 
+  private isReadyToComment: boolean = false;
+
   public postId: number = 0;
 
   public likesCounter: number = 0;
 
+  private commentsAll: HTMLElement[] = [];
+
   constructor() {
     super('div', undefined, 'post');
     this.deletePost();
-    this.openComments();
+    // this.openComments();
+    this.addEventListeners();
     this.postComment();
-    this.toggleAddCommentButtonState();
+  }
+
+  private addEventListeners(): void {
     this.likeIcon.icon.svg.addEventListener('click', this.addLike);
+    this.commentIcon.element.addEventListener('click', this.handleCommentArea);
+    this.commentArea.element.addEventListener('input', this.handleCommentButton);
+    this.addCommentButton.element.addEventListener('click', this.postComment);
   }
 
-  private openComments(): void {
-    this.commentIcon.element.addEventListener('click', () => {
-      this.addCommentButton.element.disabled = true;
-      this.commentArea.element.classList.toggle('active');
-    });
-  }
-
-  private postComment(): void {
-    this.addCommentButton.element.addEventListener('click', () => {
-      this.commentArea.element.classList.remove('active');
-      COMMENT_DATA.body = this.commentArea.textValue;
-      this.element.append(new Comment().element);
-      this.commentArea.textValue = '';
-    });
-  }
+  private postComment = (): void => {
+    this.commentArea.element.classList.remove('active');
+    // this.handleCommentArea();
+    const data = {
+      id: 9,
+      body: 'my first fake comment',
+      createdAt: new Date('2023-02-18T19:45:39.052Z'),
+      userId: 'd6b7f86d-17ff-418d-a3f9-cc1e3e5c8574',
+      avatarUrl: '../../assets/images/avatars/default.png',
+      username: 'Elena Lukashova',
+    };
+    this.element.append(new Comment(data).element);
+    // const commentData: CreateCommentRequest = {
+    //   activityId: this.postId,
+    //   body: this.commentArea.textValue,
+    // };
+    // if (this.token) {
+    //   createComment(this.token, commentData)
+    //     .then((response: CommentResponse) => {
+    //       const comment: Comment = new Comment(response);
+    //       this.element.append(comment.element);
+    //     })
+    //     .catch(() => null);
+    // }
+  };
 
   private addLike = (): void => {
     if (!this.isLiked) {
@@ -118,7 +149,7 @@ export default class Post extends BaseComponent<'div'> {
     this.updateLikesCounter();
     this.updateLikeColor();
     if (this.token) {
-      Post.updatePost(this.postId, this.token, { kudos: this.isLiked }).catch(() => null);
+      Post.createLike(this.postId, this.token, { kudos: this.isLiked }).catch(() => null);
     }
   };
 
@@ -128,15 +159,13 @@ export default class Post extends BaseComponent<'div'> {
     });
   }
 
-  private toggleAddCommentButtonState(): void {
-    this.commentArea.element.addEventListener('input', () => {
-      if (this.commentArea.textValue) {
-        this.addCommentButton.element.disabled = false;
-      } else {
-        this.addCommentButton.element.disabled = true;
-      }
-    });
-  }
+  private handleCommentButton = (): void => {
+    if (this.commentArea.textValue) {
+      this.addCommentButton.element.disabled = false;
+    } else {
+      this.addCommentButton.element.disabled = true;
+    }
+  };
 
   // Метод вывода статичной карты
   public async initStaticMap(activity: Activity): Promise<void> {
@@ -181,7 +210,22 @@ export default class Post extends BaseComponent<'div'> {
     this.likeIcon.value = `${this.likesCounter}`;
   }
 
-  private static updatePost(id: number, token: Token, data: UpdateActivity): Promise<void> {
+  private handleCommentArea = (): void => {
+    if (!this.isReadyToComment) {
+      this.element.append(this.textAreaWrapper.element);
+      this.addCommentButton.element.disabled = true;
+      this.isReadyToComment = true;
+    } else {
+      this.element.removeChild(this.textAreaWrapper.element);
+      this.isReadyToComment = false;
+    }
+  };
+
+  private static createLike(id: number, token: Token, data: UpdateActivity): Promise<void> {
     return updateActivity(id, data, token);
+  }
+
+  private static createComment(token: Token, data: CreateCommentRequest): Promise<CommentResponse> {
+    return createComment(token, data);
   }
 }

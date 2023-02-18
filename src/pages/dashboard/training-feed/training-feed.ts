@@ -31,6 +31,7 @@ export default class TrainingFeed extends BaseComponent<'article'> {
       }
       post.postId = activity.id;
       post.photo.element.src = data.avatarUrl;
+      post.userImage.element.src = data.avatarUrl;
       post.name.element.textContent = data.username;
       post.activityTitle.element.textContent = activity.title;
       post.date.element.textContent = `${new Date(activity.date).toLocaleString('en-US', {

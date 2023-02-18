@@ -161,6 +161,7 @@ export default class AddActivity extends BaseComponent<'section'> {
   public saveButton = new Button(this.formElement.element, 'Save', 'btn-activity');
 
   private data: Activity = {
+    id: 0,
     time: '',
     date: '',
     title: '',

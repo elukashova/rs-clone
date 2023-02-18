@@ -18,7 +18,8 @@ export type FriendId = {
   friendId: string;
 };
 
-export type RequestData = SignUp | LogIn | FriendId | Activity | UpdateRequestData;
+// eslint-disable-next-line max-len
+export type RequestData = SignUp | LogIn | FriendId | Activity | UpdateRequestData | CreateCommentRequest;
 
 export enum Endpoints {
   Login = 'auth/signin',
@@ -31,8 +32,11 @@ export enum Endpoints {
   DeleteFriend = 'friends',
   AddActivity = 'activity',
   GetAllActivities = 'activity',
-  GetOneActivity = 'activity/', // необходимо приписывать айди активности
-  UpdateActivity = 'activity/', // необходимо приписывать айди активности
+  GetOneActivity = 'activity/',
+  UpdateActivity = 'activity/',
+  CreateComment = 'comment',
+  UpdateComment = 'comment/',
+  DeleteComment = 'comment/',
 }
 
 export type LoadRequest = {
@@ -127,8 +131,21 @@ export type UpdateUserData = {
 };
 
 export type UpdateActivity = {
-  body?: string;
   kudos?: boolean;
+};
+
+export type CreateCommentRequest = {
+  activityId: number;
+  body: string;
+};
+
+export type CommentResponse = {
+  id: number;
+  body: string;
+  createdAt: Date;
+  userId: string;
+  avatarUrl: string;
+  username: string;
 };
 
 export type UpdateRequestData = UpdateUserData | UpdateActivity;
