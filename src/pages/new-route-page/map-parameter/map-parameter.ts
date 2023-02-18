@@ -9,7 +9,7 @@ export default class MapParameter extends BaseComponent<'div'> {
   constructor(parent: HTMLElement, name?: string) {
     const text: string = name || '';
     super('div', parent, 'map-parameter', text);
-    if (name) this._name.element.textContent = name;
+    // if (name) this._name.element.textContent = name;
   }
 
   public set value(value: string) {

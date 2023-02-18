@@ -15,11 +15,20 @@ import { InputConflictMessages, ValidityMessages } from './form.types';
 import { convertRegexToPattern } from '../../../utils/utils';
 
 export default class LoginForm extends BaseComponent<'form'> {
+  private dictionary: Record<string, string> = {
+    accountLoginHeading: 'splash.forms.accountLoginHeading',
+    loginMessage: 'splash.forms.loginMessage',
+    logIn: 'splash.forms.logIn',
+    notMember: 'splash.forms.notMember',
+    signUpHere: 'splash.forms.signUpHere',
+    signUp: 'splash.forms.signUp',
+  };
+
   private formHeader: BaseComponent<'h4'> = new BaseComponent(
     'h4',
     this.element,
     'login__form_header',
-    'Account Login',
+    this.dictionary.accountLoginHeading,
   );
 
   private googleBtn: GoogleButton;
@@ -28,32 +37,32 @@ export default class LoginForm extends BaseComponent<'form'> {
     'span',
     this.element,
     'login-form-message',
-    'If you have an account, you can login with e-mail',
+    this.dictionary.loginMessage,
   );
 
   public emailInput: Input = new Input(this.element, 'login__form-input form-input', 'Email address', {
     type: 'email',
     required: '',
     pattern: convertRegexToPattern(VALID_EMAIL),
-  });
+  }); // не будет работать
 
   public passwordInput: Input = new Input(this.element, 'login__form-input form-input', 'Password', {
     type: 'password',
     required: '',
     pattern: convertRegexToPattern(VALID_PASSWORD),
-  });
+  }); // не будет работать
 
-  public loginButton: Button = new Button(this.element, 'Log in', 'login__btn-main btn_main');
+  public loginButton: Button = new Button(this.element, this.dictionary.logIn, 'login__btn-main btn_main');
 
   private signUpMessage: BaseComponent<'span'> = new BaseComponent(
     'span',
     this.element,
     'login_message-sigup',
-    'Not a member? ',
-  );
+    'not a member? ',
+  ); // не будет реботать
 
   private signupLink: NavigationLink = new NavigationLink(this.replaceMainCallback, {
-    text: 'Sign up here',
+    text: 'sign up here',
     parent: this.signUpMessage.element,
     additionalClasses: 'login__link-signup',
   });
@@ -140,7 +149,7 @@ export default class LoginForm extends BaseComponent<'form'> {
     const message: HTMLSpanElement = document.createElement('span');
     message.textContent = InputConflictMessages.InvalidCredentials;
     const signUpLink: NavigationLink = new NavigationLink(this.replaceMainCallback, {
-      text: 'sign up',
+      text: this.dictionary.signUp,
       parent: message,
       additionalClasses: 'login__link-signup',
     });

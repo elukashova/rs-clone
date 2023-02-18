@@ -1,6 +1,7 @@
 import i18next from 'i18next';
+import LanguageDetector from 'i18next-browser-languagedetector';
 
-i18next.init({
+i18next.use(LanguageDetector).init({
   lng: 'en', // if you're using a language detector, do not define the lng option
   // fallbackLng: ['en', 'rus'],
   debug: true,
@@ -130,7 +131,7 @@ i18next.init({
           info: 'We are a team of like-minded people with a positive attitude towards work.',
           matthewInfo: 'good person',
           lenaInfo: 'good person',
-          nastyawInfo: 'good person',
+          nastyaInfo: 'good person',
           useTitle: 'Was used in this project',
         },
         splash: {
@@ -277,7 +278,7 @@ i18next.init({
           info: 'Команда единомышленников, которые любят свою работу',
           matthewInfo: 'хороший человек',
           lenaInfo: 'хороший человек',
-          nastyawInfo: 'хороший человек',
+          nastyaInfo: 'хороший человек',
           useTitle: 'В этом проекте было использовано',
         },
         splash: {

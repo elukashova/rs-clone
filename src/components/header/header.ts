@@ -13,6 +13,8 @@ import eventEmitter from '../../utils/event-emitter';
 import { EventData } from '../../utils/event-emitter.types';
 
 export default class Header extends BaseComponent<'header'> {
+  private languages: { en: string; rus: string } = { en: 'en', rus: 'rus' };
+
   private contentWrapper = new BaseComponent('div', this.element, 'header-content-wrapper');
 
   private logoLink = new NavigationLink(this.replaceMainCallback, {
@@ -126,8 +128,19 @@ export default class Header extends BaseComponent<'header'> {
 
   public changeLanguage(): void {
     this.languageIcon.element.addEventListener('click', () => {
-      i18next.changeLanguage('rus');
-      eventEmitter.emit('changeLanguage', {});
+      const language: string | null = localStorage.getItem('i18nextLng');
+      console.log(language);
+      switch (language) {
+        case this.languages.en:
+          console.log(this.languages.en);
+          i18next.changeLanguage(this.languages.rus);
+          break;
+        case this.languages.rus:
+          i18next.changeLanguage(this.languages.en);
+          break;
+        default:
+          break;
+      }
     });
   }
 
