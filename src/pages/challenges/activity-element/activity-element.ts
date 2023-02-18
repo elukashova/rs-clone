@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import BaseComponent from '../../../components/base-component/base-component';
 import Svg from '../../../components/base-component/svg/svg';
 import { ProjectColors } from '../../../utils/consts';
@@ -15,6 +16,8 @@ export default class ActivityBlock extends BaseComponent<'div'> {
 
   private additionalClasses: string | undefined;
 
+  public challengeName: string;
+
   constructor(
     parent: HTMLElement,
     svg: string,
@@ -26,6 +29,7 @@ export default class ActivityBlock extends BaseComponent<'div'> {
   ) {
     super('div', parent, additionalClasses, '', attributes);
     this.svg = svg;
+    this.challengeName = text.toLowerCase();
     this.activityText = text;
     this.additionalClasses = additionalClasses;
     this.renderActivity();
@@ -37,7 +41,7 @@ export default class ActivityBlock extends BaseComponent<'div'> {
     this.activityIcon = new Svg(
       this.activityIconWrapper.element,
       this.svg,
-      ProjectColors.Turquoise,
+      ProjectColors.Grey,
       `${this.svg}-icon challenges-activity__svg`,
     );
     this.activityParagraph = new BaseComponent(
@@ -50,10 +54,15 @@ export default class ActivityBlock extends BaseComponent<'div'> {
 
   private addListeners(): void {
     this.element.addEventListener('click', () => {
-      const orange = ProjectColors.Orange;
-      const turquoise = ProjectColors.Turquoise;
-      // eslint-disable-next-line max-len
-      this.activityIcon.updateFillColor(this.activityIcon.svgColor === turquoise ? orange : turquoise);
+      if (this.activityIcon.svgColor === ProjectColors.Grey) {
+        this.activityIcon.updateFillColor(ProjectColors.Orange);
+        this.activityParagraph.element.style.color = ProjectColors.Orange;
+        this.element.style.border = `1px solid ${ProjectColors.Orange}`;
+      } else {
+        this.activityIcon.updateFillColor(ProjectColors.Grey);
+        this.activityParagraph.element.style.color = ProjectColors.Grey;
+        this.element.style.border = `1px solid ${ProjectColors.Grey}`;
+      }
     });
   }
 }

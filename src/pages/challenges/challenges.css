@@ -1,0 +1,40 @@
+.challenges-section {
+  width: 80%;
+  display: flex;
+  justify-content: center;
+}
+
+.challenges__container {
+}
+
+.challenges__title {
+}
+
+.challenges__types-block {
+  display: flex;
+  justify-content: flex-start;
+  gap: 3rem;
+}
+
+.challenges__activity {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0.1rem;
+  border-radius: 5px;
+  width: 7rem;
+  border: 1px solid #949494;
+  padding: 0.5% 0.5rem;
+  cursor: pointer;
+}
+
+.challenges-activity__svg-wrapper,
+.challenges-activity__svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.challenges-activity__text-type {
+  font-size: 1rem;
+  color: #949494;
+}
