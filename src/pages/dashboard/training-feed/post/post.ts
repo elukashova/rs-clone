@@ -17,6 +17,15 @@ import { ProjectColors } from '../../../../utils/consts';
 import USER_DATA from '../../../../mock/user.data';
 
 export default class Post extends BaseComponent<'div'> {
+  private dictionary: Record<string, string> = {
+    distance: 'dashboard.trainingFeed.post.distance',
+    speed: 'dashboard.trainingFeed.post.speed',
+    time: 'dashboard.trainingFeed.post.time',
+    elevation: 'dashboard.trainingFeed.post.elevation',
+    commentPlaceholder: 'dashboard.trainingFeed.post.commentPlaceholder',
+    commentBtn: 'dashboard.trainingFeed.post.commentBtn',
+  };
+
   private userInfo = new BaseComponent('div', this.element, 'post__user-info');
 
   public photo: BaseComponent<'img'> = new Picture(this.userInfo.element, 'post__photo');
@@ -43,13 +52,13 @@ export default class Post extends BaseComponent<'div'> {
 
   private info = new BaseComponent('div', this.element, 'post__info');
 
-  public distance = new PostInfo(this.info.element, 'Distance');
+  public distance = new PostInfo(this.info.element, this.dictionary.distance);
 
-  public speed = new PostInfo(this.info.element, 'Speed');
+  public speed = new PostInfo(this.info.element, this.dictionary.speed);
 
-  public time = new PostInfo(this.info.element, 'Time');
+  public time = new PostInfo(this.info.element, this.dictionary.time);
 
-  public elevation = new PostInfo(this.info.element, 'Elevation');
+  public elevation = new PostInfo(this.info.element, this.dictionary.elevation);
 
   public map = new BaseComponent('div', this.element, 'map');
 
@@ -63,10 +72,10 @@ export default class Post extends BaseComponent<'div'> {
 
   private commentArea = new TextArea(this.element, 'post__add-comment', '', {
     maxlength: '200',
-    placeholder: 'type something up to 200 characters',
+    placeholder: 'type something up to 200 characters', // не будет работать
   });
 
-  private addCommentButton = new Button(this.commentArea.element, 'Comment', 'post__button');
+  private addCommentButton = new Button(this.commentArea.element, this.dictionary.commentBtn, 'post__button');
 
   constructor() {
     super('div', undefined, 'post');
