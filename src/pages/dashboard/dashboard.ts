@@ -5,7 +5,7 @@ import TrainingFeed from './training-feed/training-feed';
 import RightMenu from './right-menu/right-menu';
 import { getUser, updateUser } from '../../app/loader/services/user-services';
 import { Token, UpdateUserData, User } from '../../app/loader/loader.types';
-import { checkDataInLocalStorage } from '../../utils/local-storage';
+import { checkDataInLocalStorage, setDataToLocalStorage } from '../../utils/local-storage';
 import eventEmitter from '../../utils/event-emitter';
 import { transformNameFormat } from '../../utils/utils';
 import AvatarSources from '../../components/avatar-modal/avatar-modal.types';
@@ -61,8 +61,9 @@ export default class Dashboard extends BaseComponent<'section'> {
     this.currentUser.username = transformNameFormat(user.username);
     this.currentUser.avatarUrl = user.avatarUrl || AvatarSources.Default;
     this.currentUser.bio = user.bio || DefaultUserInfo.DefaultBio;
+    setDataToLocalStorage(user.id, 'MyStriversId');
+
     if (this.token) {
-      console.log(this.token);
       Dashboard.updateUser(this.token, { avatarUrl: this.currentUser.avatarUrl });
     }
   }

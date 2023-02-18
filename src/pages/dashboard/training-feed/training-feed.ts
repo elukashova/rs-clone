@@ -25,6 +25,11 @@ export default class TrainingFeed extends BaseComponent<'article'> {
     const posts: HTMLDivElement[] = [];
     data.activities.forEach((activity) => {
       const post: Post = new Post();
+      if (activity.kudos) {
+        post.checkIfLikedPost(activity.kudos);
+        post.updateLikesCounter(activity.kudos.length);
+      }
+      post.postId = activity.id;
       post.photo.element.src = data.avatarUrl;
       post.name.element.textContent = data.username;
       post.activityTitle.element.textContent = activity.title;
@@ -37,15 +42,16 @@ export default class TrainingFeed extends BaseComponent<'article'> {
       post.speed.value = `${TrainingFeed.countSpeed(activity.duration, Number(activity.distance))} km/h`;
       post.time.value = `${TrainingFeed.changeTimeFormat(activity.duration)}`;
       post.elevation.value = `${activity.elevation} m`;
-      if (activity.route !== null) {
-        post.initStaticMap(activity);
-      }
       post.activityIconSvg = new Svg(
         post.activityIcon.element,
         activity.sport,
         ProjectColors.Grey,
         'activity__icon-svg',
       );
+      if (activity.route !== null) {
+        post.initStaticMap(activity);
+      }
+
       posts.unshift(post.element);
     });
     return posts;

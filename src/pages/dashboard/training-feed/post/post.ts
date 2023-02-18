@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import './post.css';
 import BaseComponent from '../../../../components/base-component/base-component';
-import { Activity } from '../../../../app/loader/loader.types';
+import { Activity, Token, UpdateActivity } from '../../../../app/loader/loader.types';
 import PostInfo from './post-info/post-info';
 import PostIcon from './post-icon/post-icon';
 import SvgNames from '../../../../components/base-component/svg/svg.types';
@@ -15,6 +15,8 @@ import Comment from './comment/comment';
 import COMMENT_DATA from '../../../../mock/comment.data';
 import { ProjectColors } from '../../../../utils/consts';
 import USER_DATA from '../../../../mock/user.data';
+import { updateActivity } from '../../../../app/loader/services/activity-services';
+import { checkDataInLocalStorage } from '../../../../utils/local-storage';
 
 export default class Post extends BaseComponent<'div'> {
   private userInfo = new BaseComponent('div', this.element, 'post__user-info');
@@ -70,9 +72,15 @@ export default class Post extends BaseComponent<'div'> {
 
   private addCommentButton = new Button(this.commentArea.element, 'Comment', 'post__button');
 
-  private isLiked: boolean = false;
+  private token: Token | null = checkDataInLocalStorage('userSessionToken');
+
+  private userId: string | null = checkDataInLocalStorage('MyStriversId');
+
+  public isLiked: boolean = false;
 
   public postId: number = 0;
+
+  public likesCounter: number = 0;
 
   constructor() {
     super('div', undefined, 'post');
@@ -101,13 +109,16 @@ export default class Post extends BaseComponent<'div'> {
 
   private addLike = (): void => {
     if (!this.isLiked) {
-      this.likeIcon.value = (+this.likeIcon.value + 1).toString();
-      this.likeIcon.icon.updateFillColor(ProjectColors.Orange);
       this.isLiked = true;
+      this.likesCounter += 1;
     } else {
-      this.likeIcon.value = (+this.likeIcon.value - 1).toString();
-      this.likeIcon.icon.updateFillColor(ProjectColors.Turquoise);
       this.isLiked = false;
+      this.likesCounter -= 1;
+    }
+    this.updateLikesCounter();
+    this.updateLikeColor();
+    if (this.token) {
+      Post.updatePost(this.postId, this.token, { kudos: this.isLiked }).catch(() => null);
     }
   };
 
@@ -145,5 +156,32 @@ export default class Post extends BaseComponent<'div'> {
       });
       this.element.insertBefore(this.map.element, this.icons.element);
     }
+  }
+
+  private updateLikeColor(): void {
+    if (this.isLiked === true) {
+      this.likeIcon.icon.updateFillColor(ProjectColors.Orange);
+    } else {
+      this.likeIcon.icon.updateFillColor(ProjectColors.Turquoise);
+    }
+  }
+
+  public checkIfLikedPost(likes: string[]): void {
+    if (this.userId) {
+      this.isLiked = likes.includes(this.userId);
+      console.log(likes);
+      this.updateLikeColor();
+    }
+  }
+
+  public updateLikesCounter(number?: number): void {
+    if (number) {
+      this.likesCounter = number;
+    }
+    this.likeIcon.value = `${this.likesCounter}`;
+  }
+
+  private static updatePost(id: number, token: Token, data: UpdateActivity): Promise<void> {
+    return updateActivity(id, data, token);
   }
 }

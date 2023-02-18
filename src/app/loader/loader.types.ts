@@ -92,6 +92,7 @@ export type Comment = {
 };
 
 export type Activity = {
+  id: number;
   time: string;
   date: string;
   title: string;
