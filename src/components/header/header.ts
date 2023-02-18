@@ -37,7 +37,7 @@ export default class Header extends BaseComponent<'header'> {
   private avatarDropDownContent = new BaseComponent('div', this.avatarDropDown.element, 'header-avatar-content');
 
   private personalPageLink = new NavigationLink(this.replaceMainCallback, {
-    text: 'Personal page',
+    text: 'My Dashboard',
     parent: this.avatarDropDownContent.element,
     additionalClasses: 'header-link-avatar link',
     attributes: { href: Routes.Dashboard },

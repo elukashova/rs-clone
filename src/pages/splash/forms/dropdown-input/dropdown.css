@@ -2,17 +2,6 @@
   position: relative;
 }
 
-.dropdown_arrow {
-  position: absolute;
-  right: 0.7em;
-  top: 55%;
-  transition: transform 0.3s ease;
-}
-
-.dropdown-input:focus .dropdown_arrow {
-  transform: rotate(180deg);
-}
-
 .dropdown_list-wrapper {
   box-shadow: 0 8px 15px 0 rgba(33, 33, 33, 0.2);
   opacity: 0;
@@ -31,7 +20,7 @@
 }
 
 .visible .dropdown_list {
-  max-height: 4.5em;
+  max-height: 4em;
 }
 
 .dropdown_list {
@@ -52,10 +41,10 @@
 .dropdown_list-option {
   cursor: pointer;
   padding: 0.5em 0;
-  transition: background 0.5s ease;
+  transition: color 0.5s ease;
   font-size: calc(0.5em + 0.4vw);
 }
 
 .dropdown_list-option:hover {
-  background: #ccc;
+  color: #1cbaa7;
 }

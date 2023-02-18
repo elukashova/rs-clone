@@ -26,3 +26,7 @@ export const VALID_NAME: RegExp = /^([\w]{3,})+\s+([\w\s]{3,})+$/;
 export const VALID_EMAIL: RegExp =
   /^(?!\\.)(?!.*\\.$)(?!.*\\.\\.)([A-Za-z0-9!#$%&'*\\.\\.+-\\/=?^_`{|}~]{2,})@([\w-]+\.)+[a-z]{2,4}$/;
 export const VALID_PASSWORD: RegExp = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,}$/;
+
+export const VALID_NUMBER: RegExp = /^\d*(\.\d{0,2})?$/;
+
+export const VALID_TIME: RegExp = /^[0-5]?\d/;

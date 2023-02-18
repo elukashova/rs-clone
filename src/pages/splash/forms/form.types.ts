@@ -11,6 +11,8 @@ export enum ValidityMessages {
   Password = 'The password must contain a minimum of 5 characters, including 1 digit and 1 uppercase letter',
   EmptyValue = 'Please enter your ',
   Country = 'Please provide a valid country name',
+  Number = 'This input should be a number',
+  Time = 'Please provide any number below 59',
 }
 
 export type CountryResponse = {

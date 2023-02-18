@@ -76,7 +76,7 @@ export default class Router {
         this.main.setContent(this.personalPage);
         break;
       case Routes.AddActivity:
-        this.addActivity = new AddActivity(this.main.element);
+        this.addActivity = new AddActivity(this.main.element, this.locationHandler);
         this.main.setContent(this.addActivity);
         break;
       case Routes.FindFriends:

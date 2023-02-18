@@ -91,10 +91,6 @@ export default class DropdownInput extends Input {
     }
   };
 
-  public get inputValue(): string {
-    return this.input.element.value;
-  }
-
   private setValidState(): void {
     if (this.element.classList.contains('invalid')) {
       this.element.classList.remove('invalid');

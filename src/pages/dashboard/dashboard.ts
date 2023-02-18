@@ -62,6 +62,7 @@ export default class Dashboard extends BaseComponent<'section'> {
     this.currentUser.avatarUrl = user.avatarUrl || AvatarSources.Default;
     this.currentUser.bio = user.bio || DefaultUserInfo.DefaultBio;
     if (this.token) {
+      console.log(this.token);
       Dashboard.updateUser(this.token, { avatarUrl: this.currentUser.avatarUrl });
     }
   }
