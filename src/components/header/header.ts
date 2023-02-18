@@ -39,28 +39,28 @@ export default class Header extends BaseComponent<'header'> {
   private avatarDropDownContent = new BaseComponent('div', this.avatarDropDown.element, 'header-avatar-content');
 
   private personalPageLink = new NavigationLink(this.replaceMainCallback, {
-    text: i18next.t('header.personalPage'),
+    text: 'header.personalPage',
     parent: this.avatarDropDownContent.element,
     additionalClasses: 'header-link-avatar link',
     attributes: { href: Routes.Dashboard },
   });
 
   private myRoutesPageLink = new NavigationLink(this.replaceMainCallback, {
-    text: i18next.t('header.myRoutes'),
+    text: 'header.myRoutes',
     parent: this.avatarDropDownContent.element,
     additionalClasses: 'header-link-avatar link',
     attributes: { href: Routes.MyRoutes },
   });
 
   private settingsPageLink = new NavigationLink(this.replaceMainCallback, {
-    text: i18next.t('header.settings'),
+    text: 'header.settings',
     parent: this.avatarDropDownContent.element,
     additionalClasses: 'header-link-avatar link',
     attributes: { href: Routes.Settings },
   });
 
   private exit = new NavigationLink(this.replaceMainCallback, {
-    text: i18next.t('header.exit'),
+    text: 'header.exit',
     parent: this.avatarDropDownContent.element,
     additionalClasses: 'header-link-avatar link',
   });
@@ -72,28 +72,28 @@ export default class Header extends BaseComponent<'header'> {
   private addDropDownContent = new BaseComponent('div', this.addDropDown.element, 'header-add-content');
 
   private addActivityLink = new NavigationLink(this.replaceMainCallback, {
-    text: i18next.t('header.addActivity'),
+    text: 'header.addActivity',
     parent: this.addDropDownContent.element,
     additionalClasses: 'header-link-add link',
     attributes: { href: Routes.AddActivity },
   });
 
   private addNewRouteLink = new NavigationLink(this.replaceMainCallback, {
-    text: i18next.t('header.addRoute'),
+    text: 'header.addRoute',
     parent: this.addDropDownContent.element,
     additionalClasses: 'header-link-add link',
     attributes: { href: Routes.AddRoute },
   });
 
   private findFriendsLink = new NavigationLink(this.replaceMainCallback, {
-    text: i18next.t('header.findFriends'),
+    text: 'header.findFriends',
     parent: this.addDropDownContent.element,
     additionalClasses: 'header-link-add link',
     attributes: { href: Routes.FindFriends },
   });
 
   private challenges = new NavigationLink(this.replaceMainCallback, {
-    text: i18next.t('header.challenges'),
+    text: 'header.challenges',
     parent: this.addDropDownContent.element,
     additionalClasses: 'header-link-add link',
     attributes: { href: Routes.Challenges },
@@ -112,7 +112,7 @@ export default class Header extends BaseComponent<'header'> {
   constructor(parent: HTMLElement, private replaceMainCallback: () => void) {
     super('header', parent, 'header');
     this.openMenu();
-    this.changeLanguageOnThisPage();
+    // this.changeLanguageOnThisPage();
     this.changeLanguage();
     this.changeTheme();
     this.subscribeToEvents();
@@ -155,16 +155,16 @@ export default class Header extends BaseComponent<'header'> {
     });
   }
 
-  private changeLanguageOnThisPage(): void {
-    eventEmitter.on('changeLanguage', () => {
-      this.personalPageLink.element.textContent = i18next.t('header.personalPage');
-      this.myRoutesPageLink.element.textContent = i18next.t('header.myRoutes');
-      this.settingsPageLink.element.textContent = i18next.t('header.settings');
-      this.exit.element.textContent = i18next.t('header.exit');
-      this.addActivityLink.element.textContent = i18next.t('header.addActivity');
-      this.addNewRouteLink.element.textContent = i18next.t('header.addRoute');
-      this.findFriendsLink.element.textContent = i18next.t('header.findFriends');
-      this.challenges.element.textContent = i18next.t('header.challenges');
-    });
-  }
+  // private changeLanguageOnThisPage(): void {
+  //   eventEmitter.on('changeLanguage', () => {
+  //     this.personalPageLink.element.textContent = i18next.t('header.personalPage');
+  //     this.myRoutesPageLink.element.textContent = i18next.t('header.myRoutes');
+  //     this.settingsPageLink.element.textContent = i18next.t('header.settings');
+  //     this.exit.element.textContent = i18next.t('header.exit');
+  //     this.addActivityLink.element.textContent = i18next.t('header.addActivity');
+  //     this.addNewRouteLink.element.textContent = i18next.t('header.addRoute');
+  //     this.findFriendsLink.element.textContent = i18next.t('header.findFriends');
+  //     this.challenges.element.textContent = i18next.t('header.challenges');
+  //   });
+  // }
 }

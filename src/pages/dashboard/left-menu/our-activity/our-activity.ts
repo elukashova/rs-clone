@@ -35,7 +35,7 @@ export default class OurActivity extends BaseComponent<'div'> {
     'h4',
     this.weekHeaderWrapper.element,
     'our-activity__week-header',
-    'This week',
+    'dashboard.leftMenu.ourActivity.weekHeader',
   );
 
   private totalWeeklyKm: BaseComponent<'span'> = new BaseComponent(
@@ -48,7 +48,7 @@ export default class OurActivity extends BaseComponent<'div'> {
     'h6',
     undefined,
     'our-activity__icons_header',
-    'Choose your sports',
+    'dashboard.leftMenu.ourActivity.chooseSportHeadingMain',
   );
 
   private statistics = new BaseComponent('div', this.element, 'our-activity__statistics');
@@ -71,7 +71,7 @@ export default class OurActivity extends BaseComponent<'div'> {
     'h4',
     this.yearHeaderWrapper.element,
     'our-activity__year-header',
-    'This year',
+    'dashboard.leftMenu.ourActivity.yearHeader',
   );
 
   private totalYearlyKm: BaseComponent<'span'> = new BaseComponent(
@@ -270,9 +270,9 @@ export default class OurActivity extends BaseComponent<'div'> {
 
   private checkCurrentChosenSportsNumber(): void {
     if (this.choosenSportsCounter === this.svgNumberOnPage) {
-      this.chooseSportsHeading.element.textContent = 'Please, choose max 3 sports';
+      this.chooseSportsHeading.element.textContent = 'Please, choose max 3 sports'; // не будет работать перевод
       setTimeout((): void => {
-        this.chooseSportsHeading.element.textContent = 'Choose your sports';
+        this.chooseSportsHeading.element.textContent = 'Choose your sports'; // не будет работать перевод
       }, 1000);
 
       this.allSvgElements.forEach((icon) => {
@@ -362,15 +362,15 @@ export default class OurActivity extends BaseComponent<'div'> {
       'h6',
       this.sportsIcons.element,
       'our-activity__icons_header',
-      'No sport chosen yet',
+      'dashboard.leftMenu.ourActivity.noSports',
     );
   }
 
   private updateStats(): void {
-    this.totalWeeklyKm.element.textContent = `${this.kmCounter} km`;
-    this.time.element.textContent = `${this.hoursCounter} hr`;
-    this.elevation.element.innerHTML = `&uarr; ${this.elevationCounter} m`;
-    this.totalYearlyKm.element.textContent = `${this.yearKmCounter} km`;
+    this.totalWeeklyKm.element.textContent = `${this.kmCounter} km`; // не будет работать перевод
+    this.time.element.textContent = `${this.hoursCounter} hr`; // не будет работать перевод
+    this.elevation.element.innerHTML = `&uarr; ${this.elevationCounter} m`; // не будет работать перевод
+    this.totalYearlyKm.element.textContent = `${this.yearKmCounter} km`; // не будет работать перевод
   }
 
   private updateSportActivityData(): void {

@@ -68,6 +68,7 @@ i18next.init({
               activities: 'activities',
             },
             trainingJournal: {
+              heading: 'Last activity',
               defaultMessage: 'No activities to show yet',
             },
           },
@@ -205,7 +206,7 @@ i18next.init({
               weekHeader: 'На этой неделе',
               chooseSportHeadingMain: 'Выберете спорт',
               yearHeader: 'В этом году',
-              chooseSportHeadingError: 'Максимум 3 спорты',
+              chooseSportHeadingError: 'Максимум 3 спорта',
               noSports: 'Спорт не был выбран',
             },
             profileCard: {
@@ -214,6 +215,7 @@ i18next.init({
               activities: 'Тренировки',
             },
             trainingJournal: {
+              heading: 'Последняя тренировка',
               defaultMessage: 'Пока нет тренировок',
             },
           },
