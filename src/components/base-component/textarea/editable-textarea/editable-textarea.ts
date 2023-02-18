@@ -1,4 +1,5 @@
-import { Token, UpdateUserData, User } from '../../../../app/loader/loader.types';
+import { Token, UpdateUserData } from '../../../../app/loader/loader-requests.types';
+import { User } from '../../../../app/loader/loader-responses.types';
 import { updateUser } from '../../../../app/loader/services/user-services';
 import { checkDataInLocalStorage } from '../../../../utils/local-storage';
 import BaseComponent from '../../base-component';

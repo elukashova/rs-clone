@@ -5,7 +5,7 @@
 /* eslint-disable import/prefer-default-export */
 
 import Loader from '../loader';
-import { CommentResponse, CreateCommentRequest, Endpoints, Methods, Token } from '../loader.types';
+import { CommentResponse, CreateCommentRequest, Endpoints, Methods, Token } from '../loader-requests.types';
 
 
 export const createComment = (token: Token, params: CreateCommentRequest): Promise<CommentResponse> =>

@@ -3,7 +3,7 @@ import ProfileCard from './profile-card/profile-card';
 import TrainingJournal from './training-journal/training-journal';
 import './left-menu.css';
 import OurActivity from './our-activity/our-activity';
-import { User } from '../../../app/loader/loader.types';
+import { User } from '../../../app/loader/loader-responses.types';
 
 export default class LeftMenu extends BaseComponent<'aside'> {
   public profileCard: ProfileCard;

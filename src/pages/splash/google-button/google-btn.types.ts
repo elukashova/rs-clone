@@ -1,4 +1,4 @@
-import { LogIn, SignUp } from '../../../app/loader/loader.types';
+import { LogIn, SignUp } from '../../../app/loader/loader-requests.types';
 
 export enum GoogleBtnClasses {
   Signup = 'g_id_signup',

@@ -1,7 +1,8 @@
 import Avatar from '../../../components/base-component/avatar-image/avatar';
 import BaseComponent from '../../../components/base-component/base-component';
 import Button from '../../../components/base-component/button/button';
-import { FriendData, Token } from '../../../app/loader/loader.types';
+import { Token } from '../../../app/loader/loader-requests.types';
+import { FriendData } from '../../../app/loader/loader-responses.types';
 import { ProjectColors } from '../../../utils/consts';
 import BaseFriend from '../base-friend';
 import { checkDataInLocalStorage } from '../../../utils/local-storage';

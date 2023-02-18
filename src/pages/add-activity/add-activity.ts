@@ -8,7 +8,7 @@ import TextArea from '../../components/base-component/textarea/textarea';
 import SvgNames from '../../components/base-component/svg/svg.types';
 import { ProjectColors, VALID_NUMBER, VALID_TIME } from '../../utils/consts';
 import GoogleMaps from '../../map/google-maps';
-import { Activity, Token } from '../../app/loader/loader.types';
+import { ActivityRequest, Token } from '../../app/loader/loader-requests.types';
 import { createActivity } from '../../app/loader/services/activity-services';
 import { checkDataInLocalStorage } from '../../utils/local-storage';
 import Picture from '../../components/base-component/picture/picture';
@@ -160,8 +160,7 @@ export default class AddActivity extends BaseComponent<'section'> {
 
   public saveButton = new Button(this.formElement.element, 'Save', 'btn-activity');
 
-  private data: Activity = {
-    id: 0,
+  private data: ActivityRequest = {
     time: '',
     date: '',
     title: '',

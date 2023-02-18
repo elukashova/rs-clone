@@ -1,7 +1,8 @@
 /* eslint-disable max-len */
 /* eslint-disable prettier/prettier */
 import Loader from '../loader';
-import { Endpoints, FriendData, FriendId, Methods, Token } from '../loader.types';
+import { Endpoints, FriendId, Methods, Token } from '../loader-requests.types';
+import { FriendData } from '../loader-responses.types';
 
 export const getFriends = (token: Token): Promise<FriendData[]> => Loader.getData(Methods.Get, Endpoints.GetFriends, token);
 

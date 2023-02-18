@@ -3,7 +3,8 @@ import BaseComponent from '../../../components/base-component/base-component';
 import Button from '../../../components/base-component/button/button';
 import { ProjectColors } from '../../../utils/consts';
 import BaseFriend from '../base-friend';
-import { FriendData, Token } from '../../../app/loader/loader.types';
+import { Token } from '../../../app/loader/loader-requests.types';
+import { FriendData } from '../../../app/loader/loader-responses.types';
 import { checkDataInLocalStorage } from '../../../utils/local-storage';
 
 export default class Friend extends BaseFriend {

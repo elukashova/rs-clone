@@ -1,15 +1,9 @@
-/* eslint-disable object-curly-newline */
 /* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import './post.css';
 import BaseComponent from '../../../../components/base-component/base-component';
-import {
-  Activity,
-  CommentResponse,
-  CreateCommentRequest,
-  Token,
-  UpdateActivity,
-} from '../../../../app/loader/loader.types';
+import { CreateCommentRequest, Token, UpdateActivity } from '../../../../app/loader/loader-requests.types';
+import { ActivityResponse, CommentResponse } from '../../../../app/loader/loader-responses.types';
 import PostInfo from './post-info/post-info';
 import PostIcon from './post-icon/post-icon';
 import SvgNames from '../../../../components/base-component/svg/svg.types';
@@ -168,7 +162,7 @@ export default class Post extends BaseComponent<'div'> {
   };
 
   // Метод вывода статичной карты
-  public async initStaticMap(activity: Activity): Promise<void> {
+  public async initStaticMap(activity: ActivityResponse): Promise<void> {
     if (activity.route && activity.route.startPoint && activity.route.endPoint) {
       this.map = new BaseComponent('div', undefined, 'map');
       const startLat = +activity.route.startPoint.split(',')[0];

@@ -9,7 +9,7 @@ import NewRoutePage from '../../pages/new-route-page/new-route-page';
 import Challenges from '../../pages/challenges/challenges';
 import OurTeam from '../../pages/our-team/our-team';
 import { checkDataInLocalStorage } from '../../utils/local-storage';
-import { Token } from '../loader/loader.types';
+import { Token } from '../loader/loader-requests.types';
 
 export default class Router {
   private main: Main;

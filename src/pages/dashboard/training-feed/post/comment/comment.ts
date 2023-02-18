@@ -4,7 +4,7 @@ import Svg from '../../../../../components/base-component/svg/svg';
 import SvgNames from '../../../../../components/base-component/svg/svg.types';
 import Picture from '../../../../../components/base-component/picture/picture';
 import { ProjectColors } from '../../../../../utils/consts';
-import { CommentResponse } from '../../../../../app/loader/loader.types';
+import { CommentResponse } from '../../../../../app/loader/loader-responses.types';
 
 export default class Comment extends BaseComponent<'div'> {
   private photo = new Picture(this.element, 'comment__photo');

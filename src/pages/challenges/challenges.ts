@@ -2,9 +2,10 @@ import './challenges.css';
 import BaseComponent from '../../components/base-component/base-component';
 import ActivityBlock from './activity-element/activity-element';
 import SvgNames from '../../components/base-component/svg/svg.types';
+import { FriendData } from '../../app/loader/loader-responses.types';
 // import Challenge from './challenge/challenge';
 import { checkDataInLocalStorage } from '../../utils/local-storage';
-import { FriendData, Token } from '../../app/loader/loader.types';
+import { Token } from '../../app/loader/loader-requests.types';
 // import { getFriends } from '../../app/loader/services/friends-services';
 
 export default class Challenges extends BaseComponent<'section'> {

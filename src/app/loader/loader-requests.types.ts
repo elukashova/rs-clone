@@ -19,7 +19,7 @@ export type FriendId = {
 };
 
 // eslint-disable-next-line max-len
-export type RequestData = SignUp | LogIn | FriendId | Activity | UpdateRequestData | CreateCommentRequest;
+export type RequestData = SignUp | LogIn | FriendId | ActivityRequest | UpdateRequestData | CreateCommentRequest;
 
 export enum Endpoints {
   Login = 'auth/signin',
@@ -54,49 +54,14 @@ export enum Methods {
   Delete = 'DELETE',
 }
 
-export enum Errors {
-  UserAlreadyExists = '409',
-  Unauthorized = '401',
-  NotFound = '404',
-}
-
-export type User = {
-  avatarUrl: string;
-  bio: string;
-  country: string;
-  email: string;
-  id: string;
-  username: string;
-  following: FriendData[];
-  followedBy: FriendData[];
-  activities: Activity[];
-};
-
-export type FriendData = {
-  id: string;
-  username: string;
-  country?: string;
-  avatarUrl: string;
-  activities: Activity[];
-};
-
-export enum SportType {
+export enum SportType { // используется только в мок - удалить потом
   RUNNING = 'running',
   HIKING = 'hiking',
   WALKING = 'walking',
   CYCLING = 'cycling',
 }
 
-export type Comment = {
-  body: string;
-  username: string;
-  avatarUrl: string;
-  createdAt: Date;
-  updatedAt: Date;
-};
-
-export type Activity = {
-  id: number;
+export type ActivityRequest = {
   time: string;
   date: string;
   title: string;
@@ -106,19 +71,10 @@ export type Activity = {
   description?: string;
   distance?: string;
   companionId?: string;
-  travelMode?: string;
   startPoint?: string;
   endPoint?: string;
+  travelMode?: string;
   mapId?: string;
-  kudos?: string[];
-  comments?: Comment[];
-  route?: {
-    startPoint?: string;
-    endPoint?: string;
-    id?: number;
-    mapId?: string;
-    travelMode?: string;
-  };
 };
 
 export type UpdateUserData = {
@@ -137,15 +93,6 @@ export type UpdateActivity = {
 export type CreateCommentRequest = {
   activityId: number;
   body: string;
-};
-
-export type CommentResponse = {
-  id: number;
-  body: string;
-  createdAt: Date;
-  userId: string;
-  avatarUrl: string;
-  username: string;
 };
 
 export type UpdateRequestData = UpdateUserData | UpdateActivity;

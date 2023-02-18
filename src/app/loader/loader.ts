@@ -1,5 +1,5 @@
 import { DEVELOPMENT_ENV } from '../../utils/consts';
-import { RequestData, Token, LoadRequest, Methods, FriendId, UpdateRequestData } from './loader.types';
+import { RequestData, Token, LoadRequest, Methods, FriendId, UpdateRequestData } from './loader-requests.types';
 // import { PRODUCTION_ENV } from '../../utils/consts';
 
 export default class Loader {

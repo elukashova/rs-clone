@@ -3,7 +3,8 @@
 /* eslint-disable max-lines-per-function */
 import './find-friends.css';
 import BaseComponent from '../../components/base-component/base-component';
-import { FriendData, Token } from '../../app/loader/loader.types';
+import { Token } from '../../app/loader/loader-requests.types';
+import { FriendData } from '../../app/loader/loader-responses.types';
 import { checkDataInLocalStorage } from '../../utils/local-storage';
 import NotFriend from './not-friend/not-friend';
 import Input from '../../components/base-component/text-input-and-label/text-input';

@@ -5,8 +5,7 @@ import Svg from '../../../../components/base-component/svg/svg';
 import SvgNames from '../../../../components/base-component/svg/svg.types';
 import { ProjectColors } from '../../../../utils/consts';
 import EditBlock from '../../../../components/base-component/edit-block/edit-block';
-import { Activity, User } from '../../../../app/loader/loader.types';
-// import { StatsKeys } from './our-activity.types';
+import { ActivityResponse, User } from '../../../../app/loader/loader-responses.types';
 
 export default class OurActivity extends BaseComponent<'div'> {
   private activityIcons: BaseComponent<'div'> = new BaseComponent('div', this.element, 'our-activity__icons');
@@ -117,7 +116,7 @@ export default class OurActivity extends BaseComponent<'div'> {
     this.checkPageLimit();
     this.highlightCurrentIcon();
     this.setSvgEventListeners();
-    this.updateSportActivityData();
+    this.updateSportActivityResponseData();
     this.editBlock.editBtn.element.addEventListener('click', this.activateSportChanging);
   }
 
@@ -127,7 +126,7 @@ export default class OurActivity extends BaseComponent<'div'> {
         this.sportsIcons.element,
         this.svgAllNames[i],
         ProjectColors.Grey,
-        `our-activity__svg activity__svg-${i}`,
+        `our-activity__svg activityresponse__svg-${i}`,
       );
       svg.svg.setAttribute('id', this.svgAllNames[i].toLowerCase());
       this.allSvgElements.push(svg);
@@ -168,7 +167,7 @@ export default class OurActivity extends BaseComponent<'div'> {
         this.currentIcon = icon;
         this.currentIconIndex = this.currentSvgElements.indexOf(icon);
         this.highlightCurrentIcon();
-        this.updateSportActivityData();
+        this.updateSportActivityResponseData();
       }
     });
   };
@@ -373,9 +372,9 @@ export default class OurActivity extends BaseComponent<'div'> {
     this.totalYearlyKm.element.textContent = `${this.yearKmCounter} km`;
   }
 
-  private updateSportActivityData(): void {
+  private updateSportActivityResponseData(): void {
     this.setValuesToNull();
-    const activities: Activity[] = this.user.activities.filter(
+    const activities: ActivityResponse[] = this.user.activities.filter(
       (record) => record.sport === `${this.currentIcon?.svg.id}`,
     );
     this.calculateStats(activities);
@@ -383,7 +382,7 @@ export default class OurActivity extends BaseComponent<'div'> {
     this.updateStats();
   }
 
-  private calculateStats(activities: Activity[]): void {
+  private calculateStats(activities: ActivityResponse[]): void {
     const currentDay: Date = new Date();
     const sundayIndex: number = 6;
     // eslint-disable-next-line max-len
@@ -395,14 +394,14 @@ export default class OurActivity extends BaseComponent<'div'> {
 
     const timeData: string[] = [];
 
-    activities.forEach((activity) => {
-      const date: Date = new Date(activity.date);
+    activities.forEach((activityresponse) => {
+      const date: Date = new Date(activityresponse.date);
       const dateMs = date.getTime();
 
       if (dateMs <= currentWeekSunday.getTime() && dateMs >= currentWeekMonday.getTime()) {
-        this.kmCounter += Number(activity.distance);
-        timeData.push(activity.duration);
-        this.elevationCounter += Number(activity.elevation);
+        this.kmCounter += Number(activityresponse.distance);
+        timeData.push(activityresponse.duration);
+        this.elevationCounter += Number(activityresponse.elevation);
       }
     });
 
@@ -410,19 +409,19 @@ export default class OurActivity extends BaseComponent<'div'> {
     this.yearKmCounter = OurActivity.calculateYearDistance(activities);
   }
 
-  private static calculateYearDistance(activities: Activity[]): number {
+  private static calculateYearDistance(activities: ActivityResponse[]): number {
     const year: number = new Date().getFullYear();
     const yearStart: Date = new Date(year, 0, 1);
     const yearEnd: Date = new Date(year, 11, 31);
 
     let distance: number = 0;
 
-    activities.forEach((activity) => {
-      const date = new Date(activity.date);
+    activities.forEach((activityresponse) => {
+      const date = new Date(activityresponse.date);
       const dateMs = date.getTime();
 
       if (dateMs <= yearEnd.getTime() && dateMs >= yearStart.getTime()) {
-        distance += Number(activity.distance);
+        distance += Number(activityresponse.distance);
       }
     });
 
