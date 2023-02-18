@@ -2,8 +2,7 @@ import i18next from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 
 i18next.use(LanguageDetector).init({
-  lng: 'en', // if you're using a language detector, do not define the lng option
-  // fallbackLng: ['en', 'rus'],
+  lng: localStorage.getItem('i18nextLng')?.toString() || 'en',
   debug: true,
   resources: {
     en: {
@@ -136,7 +135,7 @@ i18next.use(LanguageDetector).init({
         },
         splash: {
           forms: {
-            signUp: 'sign up',
+            signUp: 'Sign up',
             logIn: 'Log in',
             accountLoginHeading: 'Account Login',
             accountSignupHeading: 'Account Signup',

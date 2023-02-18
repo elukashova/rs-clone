@@ -167,17 +167,4 @@ export default class Header extends BaseComponent<'header'> {
       this.updateProfilePicture(source);
     });
   }
-
-  // private changeLanguageOnThisPage(): void {
-  //   eventEmitter.on('changeLanguage', () => {
-  //     this.personalPageLink.element.textContent = i18next.t('header.personalPage');
-  //     this.myRoutesPageLink.element.textContent = i18next.t('header.myRoutes');
-  //     this.settingsPageLink.element.textContent = i18next.t('header.settings');
-  //     this.exit.element.textContent = i18next.t('header.exit');
-  //     this.addActivityLink.element.textContent = i18next.t('header.addActivity');
-  //     this.addNewRouteLink.element.textContent = i18next.t('header.addRoute');
-  //     this.findFriendsLink.element.textContent = i18next.t('header.findFriends');
-  //     this.challenges.element.textContent = i18next.t('header.challenges');
-  //   });
-  // }
 }

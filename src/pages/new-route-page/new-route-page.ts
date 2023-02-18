@@ -16,6 +16,8 @@ export default class NewRoutePage extends BaseComponent<'section'> {
     descent: 'newRoute.descent',
     duration: 'newRoute.duration',
     roadType: 'newRoute.roadType',
+    routeName: 'newRoute.routeName',
+    description: 'newRoute.description',
   };
 
   private heading = new BaseComponent('h3', this.element, 'new-route-page__heading', this.dictionary.heading);
@@ -57,12 +59,14 @@ export default class NewRoutePage extends BaseComponent<'section'> {
 
   public roadType = new MapParameter(this.mapParameters.element, this.dictionary.roadType);
 
-  public routeName = new Input(this.element, 'new-route-page__input', 'Route name', {
+  public routeName = new Input(this.element, 'new-route-page__input', this.dictionary.routeName, {
     type: 'text',
     required: 'required',
-  }); // не будет работать
+  });
 
-  public routeDescription = new Input(this.element, 'new-route-page__input', 'Description', { type: 'text' }); // не будет работать
+  public routeDescription = new Input(this.element, 'new-route-page__input', this.dictionary.description, {
+    type: 'text',
+  });
 
   constructor(parent: HTMLElement) {
     super('section', parent, 'new-route-page');

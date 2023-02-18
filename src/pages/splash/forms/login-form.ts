@@ -22,6 +22,8 @@ export default class LoginForm extends BaseComponent<'form'> {
     notMember: 'splash.forms.notMember',
     signUpHere: 'splash.forms.signUpHere',
     signUp: 'splash.forms.signUp',
+    password: 'splash.forms.password',
+    email: 'splash.forms.email',
   };
 
   private formHeader: BaseComponent<'h4'> = new BaseComponent(
@@ -40,17 +42,17 @@ export default class LoginForm extends BaseComponent<'form'> {
     this.dictionary.loginMessage,
   );
 
-  public emailInput: Input = new Input(this.element, 'login__form-input form-input', 'Email address', {
+  public emailInput: Input = new Input(this.element, 'login__form-input form-input', this.dictionary.email, {
     type: 'email',
     required: '',
     pattern: convertRegexToPattern(VALID_EMAIL),
-  }); // не будет работать
+  });
 
-  public passwordInput: Input = new Input(this.element, 'login__form-input form-input', 'Password', {
+  public passwordInput: Input = new Input(this.element, 'login__form-input form-input', this.dictionary.password, {
     type: 'password',
     required: '',
     pattern: convertRegexToPattern(VALID_PASSWORD),
-  }); // не будет работать
+  });
 
   public loginButton: Button = new Button(this.element, this.dictionary.logIn, 'login__btn-main btn_main');
 
@@ -58,11 +60,17 @@ export default class LoginForm extends BaseComponent<'form'> {
     'span',
     this.element,
     'login_message-sigup',
-    'not a member? ',
   ); // не будет реботать
 
+  private notMember: BaseComponent<'span'> = new BaseComponent(
+    'span',
+    this.signUpMessage.element,
+    '',
+    this.dictionary.notMember,
+  );
+
   private signupLink: NavigationLink = new NavigationLink(this.replaceMainCallback, {
-    text: 'sign up here',
+    text: this.dictionary.signUpHere,
     parent: this.signUpMessage.element,
     additionalClasses: 'login__link-signup',
   });

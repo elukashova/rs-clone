@@ -15,6 +15,7 @@ export default class Friends extends BaseComponent<'section'> {
   private dictionary: Record<string, string> = {
     notFriendsTitle: 'findFriends.notFriendsTitle',
     friendsTitle: 'findFriends.friendsTitle',
+    notFriendsSearch: 'findFriends.notFriendsSearch',
   };
 
   public notFriendsAll: NotFriend[] = [];
@@ -35,7 +36,7 @@ export default class Friends extends BaseComponent<'section'> {
   private notFriendsSearch = new Input(
     this.notFriendsBlock.element,
     'not-friends__input-search input-search',
-    'Sportsman name', // не будет работать
+    this.dictionary.notFriendsSearch,
     {
       type: 'search',
     },
@@ -50,9 +51,14 @@ export default class Friends extends BaseComponent<'section'> {
     this.dictionary.friendsTitle,
   );
 
-  private friendsSearch = new Input(this.friendsBlock.element, 'friends__input-search input-search', 'Sportsman name', {
-    type: 'search',
-  }); // не будет работать
+  private friendsSearch = new Input(
+    this.friendsBlock.element,
+    'friends__input-search input-search',
+    this.dictionary.notFriendsSearch,
+    {
+      type: 'search',
+    },
+  );
 
   private token: Token | null = checkDataInLocalStorage('userSessionToken');
 
