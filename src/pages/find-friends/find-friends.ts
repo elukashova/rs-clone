@@ -12,6 +12,11 @@ import { UserData } from './type-friends';
 import Pagination from '../../components/base-component/pagination-block/pagination';
 
 export default class Friends extends BaseComponent<'section'> {
+  private dictionary: Record<string, string> = {
+    notFriendsTitle: 'findFriends.notFriendsTitle',
+    friendsTitle: 'findFriends.friendsTitle',
+  };
+
   public notFriendsAll: NotFriend[] = [];
 
   public friendsAll: Friend[] = [];
@@ -20,12 +25,17 @@ export default class Friends extends BaseComponent<'section'> {
 
   private notFriendsBlock = new BaseComponent('div', this.findingContainer.element, 'not-friends__block');
 
-  private notFriendsTitle = new BaseComponent('h3', this.notFriendsBlock.element, 'not-friends__title', 'Find friends');
+  private notFriendsTitle = new BaseComponent(
+    'h3',
+    this.notFriendsBlock.element,
+    'not-friends__title',
+    this.dictionary.notFriendsTitle,
+  );
 
   private notFriendsSearch = new Input(
     this.notFriendsBlock.element,
     'not-friends__input-search input-search',
-    'Sportsman name',
+    'Sportsman name', // не будет работать
     {
       type: 'search',
     },
@@ -33,11 +43,16 @@ export default class Friends extends BaseComponent<'section'> {
 
   private friendsBlock = new BaseComponent('div', this.findingContainer.element, 'friends__block');
 
-  private friendsTitle = new BaseComponent('h3', this.friendsBlock.element, 'friends__title', 'My Subscriptions');
+  private friendsTitle = new BaseComponent(
+    'h3',
+    this.friendsBlock.element,
+    'friends__title',
+    this.dictionary.friendsTitle,
+  );
 
   private friendsSearch = new Input(this.friendsBlock.element, 'friends__input-search input-search', 'Sportsman name', {
     type: 'search',
-  });
+  }); // не будет работать
 
   private token: Token | null = checkDataInLocalStorage('userSessionToken');
 

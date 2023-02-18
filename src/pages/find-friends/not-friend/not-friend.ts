@@ -6,6 +6,11 @@ import { getClassNames } from '../../../utils/utils';
 import { UserData } from '../type-friends';
 
 export default class NotFriend extends BaseComponent<'div'> {
+  private dictionary: Record<string, string> = {
+    activities: 'findFriends.activities',
+    subscribeBtn: 'findFriends.subscribeBtn',
+  };
+
   public avatarUrl: string | undefined;
 
   public country: string | undefined;
@@ -62,9 +67,14 @@ export default class NotFriend extends BaseComponent<'div'> {
       'not-friend__user-country',
       `${this.country}` || '',
     );
-    this.subscribeButton = new Button(this.userData.element, 'Subscribe', 'not-friend__button');
+    this.subscribeButton = new Button(this.userData.element, this.dictionary.subscribeBtn, 'not-friend__button');
 
-    const activityInfo = new BaseComponent('p', this.activityData.element, 'not-friend__activity-text', 'Activities');
+    const activityInfo = new BaseComponent(
+      'p',
+      this.activityData.element,
+      'not-friend__activity-text',
+      'Activities', // не будет работать
+    );
     this.activityCount = new BaseComponent(
       'p',
       activityInfo.element,

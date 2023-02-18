@@ -6,6 +6,10 @@ import { getClassNames } from '../../../utils/utils';
 import { UserData } from '../type-friends';
 
 export default class Friend extends BaseComponent<'div'> {
+  private dictionary: Record<string, string> = {
+    unsubscribeBtn: 'findFriends.unsubscribeBtn',
+  };
+
   public avatarUrl: string | undefined;
 
   public country: string | undefined;
@@ -50,6 +54,6 @@ export default class Friend extends BaseComponent<'div'> {
     this.userName = new BaseComponent('h4', this.userData.element, 'friend__username', `${this.username}`);
 
     this.userCountry = new BaseComponent('p', this.userData.element, 'friend__user-country', `${this.country}` || '');
-    this.unsubscribeButton = new Button(this.element, 'Unsubscribe', 'friend__button');
+    this.unsubscribeButton = new Button(this.element, this.dictionary.unsubscribeBtn, 'friend__button');
   }
 }
