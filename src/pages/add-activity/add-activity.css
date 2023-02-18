@@ -1,60 +1,102 @@
 .add-activity-section {
-  width: 80vw;
   height: max-content;
-  margin: 0 auto;
+  margin-top: 4.5em;
   background-color: #ffffff;
+  border-radius: 5px;
 }
 
 .add-activity__container {
-  margin: 6%;
+  padding: 3% 15%;
 }
 
 .add-activity__heading {
-  padding: 4% 0 2% 0;
+  padding: 0;
+  font-size: calc(0.8em + 1vw);
 }
 
 .add-activity__fieldset {
   display: flex;
   flex-direction: column;
+  gap: 2em;
+  width: 100%;
 }
 
 .add-activity__form {
-  padding: 2% 0 5% 0;
+  padding: 2% 0 2% 0;
+  width: 100%;
 }
 
-.add-activity__fieldset {
-  gap: 2em;
+.block-path {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  gap: 6%;
 }
 
-.add-activity__block {
-  display: flex;
-  justify-content: flex-start;
-  gap: 4.2em;
+.block-type {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6%;
 }
 
-.add-activity__block-container {
+.block-duration,
+.block-time {
   display: flex;
   align-items: flex-end;
-  justify-content: flex-start;
-  gap: 4px;
+  gap: 0.5em;
 }
 
-.block-training {
-  flex-direction: column;
-  align-items: flex-start;
+.add-activity__input,
+.add-activity__select {
+  width: 100%;
 }
 
-.add-activity__input {
-  width: 10vw;
+.add-activity__input .label,
+.add-activity__label,
+.description-label {
+  text-transform: uppercase;
+  font-size: calc(0.5em + 0.4vw);
 }
 
-.add-activity__input label {
-  white-space: nowrap;
+.add-activity__input .input-text,
+.add-activity__select {
+  height: 2em;
+  padding: 0 0.3em;
+  border-radius: 6px;
+  border: 1px solid #1cbaa7;
+  font-size: 1.1em;
+  font-family: 'Work Sans', sans-serif;
+  color: #949494;
+  transition: all 0.3s;
+  width: 100%;
+}
+
+.add-activity__input .input-text:focus,
+.add-activity__select:focus {
+  border: 1px solid #219486;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+}
+
+.invalid .input-text {
+  border: 1px solid red;
+  outline: 0;
+}
+
+.invalid .input-text:focus {
+  border: 1px solid red;
+  outline: 0;
 }
 
 .description-block {
-  display: grid;
-  grid-template-columns: 1.5fr 1fr;
+  width: 100%;
+}
+
+.description-textarea {
+  padding: 0.3em;
+  font-size: 1.1em;
+  font-weight: 300;
+  font-family: 'Work Sans', sans-serif;
+  border: 1px solid #1cbaa7;
+  border-radius: 5px;
 }
 
 .add-activity__input.input-description {
@@ -65,6 +107,20 @@
   height: 20px;
 }
 
+.input-time .input-text::-webkit-calendar-picker-indicator,
+.input-date .input-text::-webkit-calendar-picker-indicator {
+  filter: invert(55%);
+}
+
+.input-time .input-text::-webkit-inner-spin-button,
+.input-date .input-text::-webkit-inner-spin-button {
+  display: none;
+}
+
+.input-time .input-text::-webkit-datetime-edit-fields-wrapper {
+  display: flex;
+}
+
 .input-search {
   position: relative;
 }
@@ -73,6 +129,18 @@
   position: absolute;
 }
 
+.map_container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3em;
+}
+
+.map__title {
+  text-transform: uppercase;
+  font-size: calc(0.5em + 0.4vw);
+}
+
 .btn-activity {
-  margin: 3% 0 6% 0;
+  margin-top: 3%;
+  width: 100%;
 }
