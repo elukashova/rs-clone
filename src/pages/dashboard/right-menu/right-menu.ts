@@ -10,11 +10,16 @@ import { getNotFriends } from '../../../app/loader/services/friends-services';
 import { provideRandomUsers } from '../../../utils/utils';
 
 export default class RightMenu extends BaseComponent<'aside'> {
+  private dictionary: Record<string, string> = {
+    addNewRoute: 'dashboard.rightMenu.addNewRoute',
+    heading: 'dashboard.rightMenu.friendsHeading',
+  };
+
   private token: Token | null = checkDataInLocalStorage('userSessionToken');
 
   private linkWrapper: BaseComponent<'div'> = new BaseComponent('div', this.element, 'add-route-link__wrapper');
 
-  private linkText: string = 'Add new route';
+  private linkText: string = this.dictionary.addNewRoute;
 
   private data: Link = {
     text: this.linkText,
@@ -35,7 +40,7 @@ export default class RightMenu extends BaseComponent<'aside'> {
     'h4',
     this.friendsWrapper.element,
     'suggested-friends__heading',
-    'Suggested friends',
+    this.dictionary.heading,
   );
 
   private friendCard: RandomFriendCard | undefined;

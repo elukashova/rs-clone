@@ -57,6 +57,6 @@ export default class TrainingJournal extends BaseComponent<'div'> {
 
   private static formatDate(date: string): string {
     const activityDate: Date = new Date(date);
-    return activityDate.toLocaleString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    return activityDate.toLocaleString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }); // не будет работать перевод
   }
 }

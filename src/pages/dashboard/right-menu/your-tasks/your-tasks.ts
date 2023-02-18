@@ -4,11 +4,16 @@ import Task from './task/task';
 import Button from '../../../../components/base-component/button/button';
 
 export default class YourTasks extends BaseComponent<'div'> {
-  private heading = new BaseComponent('h5', this.element, 'your-tasks__heading', 'Your Tasks');
+  private dictionary: Record<string, string> = {
+    allTasks: 'dashboard.rightMenu.tasks.allTasksButton',
+    heading: 'dashboard.rightMenu.tasks.allTasksButton',
+  };
+
+  private heading = new BaseComponent('h5', this.element, 'your-tasks__heading', this.dictionary.heading);
 
   private myTasks = new BaseComponent('div', this.element, 'your-tasks__tasks');
 
-  private allTasksButton = new Button(this.element, 'All Tasks');
+  private allTasksButton = new Button(this.element, this.dictionary.allTasks);
 
   private allTasks: HTMLElement[] = [];
 

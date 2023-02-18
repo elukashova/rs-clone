@@ -10,6 +10,10 @@ import { addFriend, deleteFriend } from '../../../../app/loader/services/friends
 import eventEmitter from '../../../../utils/event-emitter';
 
 export default class RandomFriendCard extends BaseComponent<'div'> {
+  private dictionary: Record<string, string> = {
+    secret: 'dashboard.rightMenu.randomFriend.secret',
+  };
+
   private token: Token | null = checkDataInLocalStorage('userSessionToken');
 
   private plusButton: SvgButton = new SvgButton(this.element, '', 'suggested-friends__btn');
@@ -37,7 +41,7 @@ export default class RandomFriendCard extends BaseComponent<'div'> {
     'span',
     this.detailsWrapper.element,
     'suggested-friends__info_country',
-    this.user.country || 'Secret place',
+    this.user.country || this.dictionary.secret,
   );
 
   private isAdded: boolean = false;
