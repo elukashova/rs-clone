@@ -6,7 +6,7 @@ import Button from '../../components/base-component/button/button';
 import MapParameter from './map-parameter/map-parameter';
 
 export default class NewRoutePage extends BaseComponent<'section'> {
-  private heading = new BaseComponent('h3', this.element, 'new-route-page__heading', 'Add route');
+  private heading = new BaseComponent('h2', this.element, 'new-route-page__heading titles', 'Add route');
 
   private optionsContainer = new BaseComponent('div', this.element, 'new-route-page__options');
 

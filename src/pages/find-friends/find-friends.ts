@@ -36,7 +36,12 @@ export default class Friends extends BaseComponent<'section'> {
 
   private notFriendsBlock = new BaseComponent('div', this.notFriendsContainer.element, 'not-friends__block');
 
-  private notFriendsTitle = new BaseComponent('h2', this.notFriendsBlock.element, 'not-friends__title', 'Find friends');
+  private notFriendsTitle = new BaseComponent(
+    'h2',
+    this.notFriendsBlock.element,
+    'not-friends__title titles',
+    'Find friends',
+  );
 
   private notFriendsSearch = new Input(
     this.notFriendsBlock.element,
@@ -51,7 +56,12 @@ export default class Friends extends BaseComponent<'section'> {
 
   private friendsBlock = new BaseComponent('div', this.friendsContainer.element, 'friends__block');
 
-  private friendsTitle = new BaseComponent('h2', this.friendsBlock.element, 'friends__title', 'My Subscriptions');
+  private friendsTitle = new BaseComponent(
+    'h2',
+    this.friendsBlock.element,
+    'friends__title titles',
+    'My Subscriptions',
+  );
 
   private friendsSearch = new Input(this.friendsBlock.element, 'friends__input-search input-search', 'Sportsman name', {
     type: 'search',
