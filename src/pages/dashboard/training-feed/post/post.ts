@@ -39,27 +39,29 @@ export default class Post extends BaseComponent<'div'> {
 
   public activityIconSvg: Svg | undefined;
 
-  public activityTitle = new BaseComponent('h4', this.activityContainer.element, 'post__activity-title');
+  private info = new BaseComponent('div', this.activityContainer.element, 'post__info');
 
-  private info = new BaseComponent('div', this.element, 'post__info');
+  public activityTitle = new BaseComponent('h4', this.info.element, 'post__activity-title');
 
-  public distance = new PostInfo(this.info.element, 'Distance');
+  public dataContainer = new BaseComponent('div', this.info.element, 'post__data');
 
-  public speed = new PostInfo(this.info.element, 'Speed');
+  public distance = new PostInfo(this.dataContainer.element, 'Distance');
 
-  public time = new PostInfo(this.info.element, 'Time');
+  public speed = new PostInfo(this.dataContainer.element, 'Speed');
 
-  public elevation = new PostInfo(this.info.element, 'Altitude');
+  public time = new PostInfo(this.dataContainer.element, 'Time');
 
-  public map = new BaseComponent('div', this.element, 'map');
+  public elevation = new PostInfo(this.dataContainer.element, 'Altitude');
+
+  public map: BaseComponent<'div'> | undefined;
 
   public googleMap: BaseComponent<'img'> | undefined;
 
   private icons = new BaseComponent('div', this.element, 'post__icons');
 
-  private likeIcon = new PostIcon(this.icons.element, SvgNames.CloseThin, 'black', 'post__like');
+  private likeIcon = new PostIcon(this.icons.element, SvgNames.Heart, ProjectColors.Turquoise, 'post__like');
 
-  private commentIcon = new PostIcon(this.icons.element, SvgNames.CloseThin, 'black', 'post__comment');
+  private commentIcon = new PostIcon(this.icons.element, SvgNames.Comment, ProjectColors.Turquoise, 'post__comment');
 
   private commentArea = new TextArea(this.element, 'post__add-comment', '', {
     maxlength: '200',
@@ -68,13 +70,17 @@ export default class Post extends BaseComponent<'div'> {
 
   private addCommentButton = new Button(this.commentArea.element, 'Comment', 'post__button');
 
+  private isLiked: boolean = false;
+
+  public postId: number = 0;
+
   constructor() {
     super('div', undefined, 'post');
     this.deletePost();
     this.openComments();
     this.postComment();
-    this.addLike();
     this.toggleAddCommentButtonState();
+    this.likeIcon.icon.svg.addEventListener('click', this.addLike);
   }
 
   private openComments(): void {
@@ -93,20 +99,17 @@ export default class Post extends BaseComponent<'div'> {
     });
   }
 
-  private addLike(): void {
-    let flag: boolean = false;
-    this.likeIcon.element.addEventListener('click', () => {
-      if (!flag) {
-        this.likeIcon.value = (+this.likeIcon.value + 1).toString();
-        this.likeIcon.icon?.updateFillColor(ProjectColors.Orange);
-        flag = true;
-      } else {
-        this.likeIcon.value = (+this.likeIcon.value - 1).toString();
-        this.likeIcon.icon?.updateFillColor(ProjectColors.Grey);
-        flag = false;
-      }
-    });
-  }
+  private addLike = (): void => {
+    if (!this.isLiked) {
+      this.likeIcon.value = (+this.likeIcon.value + 1).toString();
+      this.likeIcon.icon.updateFillColor(ProjectColors.Orange);
+      this.isLiked = true;
+    } else {
+      this.likeIcon.value = (+this.likeIcon.value - 1).toString();
+      this.likeIcon.icon.updateFillColor(ProjectColors.Turquoise);
+      this.isLiked = false;
+    }
+  };
 
   private deletePost(): void {
     this.edit.element.addEventListener('click', () => {
@@ -127,6 +130,7 @@ export default class Post extends BaseComponent<'div'> {
   // Метод вывода статичной карты
   public async initStaticMap(activity: Activity): Promise<void> {
     if (activity.route && activity.route.startPoint && activity.route.endPoint) {
+      this.map = new BaseComponent('div', undefined, 'map');
       const startLat = +activity.route.startPoint.split(',')[0];
       const startLng = +activity.route.startPoint.split(',')[1];
       const endLat = +activity.route.endPoint.split(',')[0];
@@ -139,6 +143,7 @@ export default class Post extends BaseComponent<'div'> {
       this.googleMap = new BaseComponent('img', this.map.element, '', '', {
         src: `${url}`,
       });
+      this.element.insertBefore(this.map.element, this.icons.element);
     }
   }
 }

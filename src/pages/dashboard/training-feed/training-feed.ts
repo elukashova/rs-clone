@@ -28,12 +28,18 @@ export default class TrainingFeed extends BaseComponent<'article'> {
       post.photo.element.src = data.avatarUrl;
       post.name.element.textContent = data.username;
       post.activityTitle.element.textContent = activity.title;
-      post.date.element.textContent = `${new Date(activity.date).toDateString()} at ${activity.time}`;
+      post.date.element.textContent = `${new Date(activity.date).toLocaleString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      })} at ${activity.time}`;
       post.distance.value = `${activity.distance} km`;
-      post.speed.value = '0';
-      post.time.value = `${activity.duration}`;
+      post.speed.value = `${TrainingFeed.countSpeed(activity.duration, Number(activity.distance))} km/h`;
+      post.time.value = `${TrainingFeed.changeTimeFormat(activity.duration)}`;
       post.elevation.value = `${activity.elevation} m`;
-      post.initStaticMap(activity);
+      if (activity.route !== null) {
+        post.initStaticMap(activity);
+      }
       post.activityIconSvg = new Svg(
         post.activityIcon.element,
         activity.sport,
@@ -61,5 +67,18 @@ export default class TrainingFeed extends BaseComponent<'article'> {
     this.message.element.remove();
     this.addTrainingButton?.element.remove();
     this.findFriendsButton?.element.remove();
+  }
+
+  private static countSpeed(time: string, distance: number): string {
+    const splittedTime: string[] = time.split(':');
+    const [hours, minutes, seconds] = splittedTime;
+    const totalTime: number = (+hours * 3600 + +minutes * 60 + +seconds) / 3600;
+    return (distance / totalTime).toFixed(1);
+  }
+
+  private static changeTimeFormat(time: string): string {
+    const splittedTime: string[] = time.split(':');
+    const [hours, minutes] = splittedTime;
+    return `${hours}h ${minutes}m`;
   }
 }

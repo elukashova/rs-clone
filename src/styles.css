@@ -48,7 +48,6 @@ body {
   flex-direction: column;
   height: 100%;
   font-family: 'Work Sans', sans-serif;
-  background: url('./assets/backgrounds/signup-background.jpg');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center center;
