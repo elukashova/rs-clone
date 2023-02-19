@@ -18,7 +18,8 @@ export type FriendId = {
   friendId: string;
 };
 
-export type RequestData = SignUp | LogIn | FriendId | Activity | UpdateRequestData;
+// eslint-disable-next-line max-len
+export type RequestData = SignUp | LogIn | FriendId | ActivityRequest | UpdateRequestData | CreateCommentRequest;
 
 export enum Endpoints {
   Login = 'auth/signin',
@@ -31,8 +32,11 @@ export enum Endpoints {
   DeleteFriend = 'friends',
   AddActivity = 'activity',
   GetAllActivities = 'activity',
-  GetOneActivity = 'activity/', // необходимо приписывать айди активности
-  UpdateActivity = 'activity/', // необходимо приписывать айди активности
+  GetOneActivity = 'activity/',
+  UpdateActivity = 'activity/',
+  CreateComment = 'comment',
+  UpdateComment = 'comment/',
+  DeleteComment = 'comment/',
 }
 
 export type LoadRequest = {
@@ -50,49 +54,14 @@ export enum Methods {
   Delete = 'DELETE',
 }
 
-export enum Errors {
-  UserAlreadyExists = '409',
-  Unauthorized = '401',
-  NotFound = '404',
-}
-
-export type User = {
-  avatarUrl: string;
-  bio: string;
-  country: string;
-  email: string;
-  id: string;
-  username: string;
-  following: FriendData[];
-  followedBy: FriendData[];
-  activities: Activity[];
-};
-
-export type FriendData = {
-  id: string;
-  username: string;
-  country?: string;
-  avatarUrl: string;
-  activities: Activity[];
-  challenges: string[];
-};
-
-export enum SportType {
+export enum SportType { // используется только в мок - удалить потом
   RUNNING = 'running',
   HIKING = 'hiking',
   WALKING = 'walking',
   CYCLING = 'cycling',
 }
 
-export type Comment = {
-  body: string;
-  username: string;
-  avatarUrl: string;
-  createdAt: Date;
-  updatedAt: Date;
-};
-
-export type Activity = {
+export type ActivityRequest = {
   time: string;
   date: string;
   title: string;
@@ -102,19 +71,10 @@ export type Activity = {
   description?: string;
   distance?: string;
   companionId?: string;
-  travelMode?: string;
   startPoint?: string;
   endPoint?: string;
+  travelMode?: string;
   mapId?: string;
-  kudos?: string[];
-  comments?: Comment[];
-  route?: {
-    startPoint?: string;
-    endPoint?: string;
-    id?: number;
-    mapId?: string;
-    travelMode?: string;
-  };
 };
 
 export type UpdateUserData = {
@@ -127,8 +87,18 @@ export type UpdateUserData = {
 };
 
 export type UpdateActivity = {
-  body?: string;
   kudos?: boolean;
 };
 
-export type UpdateRequestData = UpdateUserData | UpdateActivity;
+export type CreateCommentRequest = {
+  activityId: number;
+  body: string;
+};
+
+export type UpdateComment = {
+  body?: string;
+  userId?: string;
+  like?: boolean;
+};
+
+export type UpdateRequestData = UpdateUserData | UpdateActivity | UpdateComment;

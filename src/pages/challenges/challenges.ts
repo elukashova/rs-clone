@@ -5,10 +5,10 @@ import BaseComponent from '../../components/base-component/base-component';
 import ActivityBlock from './activity-element/activity-element';
 import SvgNames from '../../components/base-component/svg/svg.types';
 import { checkDataInLocalStorage } from '../../utils/local-storage';
-import { FriendData, Token } from '../../app/loader/loader.types';
 import users from '../../mock/find-friends.data';
 import { ChallengesTypes, Activities } from './types-challenges';
 import Challenge from './challenge/challenge';
+import { FriendData, Token } from '../../app/loader/loader-requests.types';
 
 export default class Challenges extends BaseComponent<'section'> {
   private token: Token | null = checkDataInLocalStorage('userSessionToken');

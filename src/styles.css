@@ -49,7 +49,6 @@ body {
   flex-direction: column;
   height: 100%;
   font-family: 'Work Sans', sans-serif;
-  background: url('./assets/backgrounds/signup-background.jpg');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center center;
@@ -83,8 +82,4 @@ h4,
 h5,
 .h3 {
   font-family: 'Montserrat', sans-serif;
-}
-
-.titles {
-  font-size: calc(16px + (22 - 18 * 0.7) * ((100vw - 320px) / 1920));
 }

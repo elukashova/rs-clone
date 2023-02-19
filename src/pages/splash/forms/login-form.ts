@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import Routes from '../../../app/router/router.types';
-import { Errors, LogIn, Token } from '../../../app/loader/loader.types';
+import { LogIn, Token } from '../../../app/loader/loader-requests.types';
+import { Errors } from '../../../app/loader/loader-responses.types';
 import { loginUser } from '../../../app/loader/services/user-services';
 import BaseComponent from '../../../components/base-component/base-component';
 import Button from '../../../components/base-component/button/button';

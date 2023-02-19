@@ -1,7 +1,8 @@
-import { Activity } from '../../../../../app/loader/loader.types';
+import { ActivityResponse } from '../../../../../app/loader/loader-responses.types';
 import BaseComponent from '../../../../../components/base-component/base-component';
 import Svg from '../../../../../components/base-component/svg/svg';
 import { ProjectColors } from '../../../../../utils/consts';
+import { getFirstAndLastDaysOfWeek } from '../../../../../utils/utils';
 import { DailyData } from '../our-activity.types';
 import './activity-graph.css';
 // import moment from 'moment';
@@ -24,8 +25,6 @@ export default class ActivityGraph extends BaseComponent<'div'> {
   private allGraphicSpans: HTMLSpanElement[] = [];
 
   private allDaysSpans: HTMLSpanElement[] = [];
-
-  private IdxCorrector: number = 1;
 
   constructor(parent: HTMLElement) {
     super('div', parent, 'our-activity__graph');
@@ -121,13 +120,10 @@ export default class ActivityGraph extends BaseComponent<'div'> {
     return Number(height.toFixed(1));
   }
 
-  public calculateDailyActivity(activities: Activity[]): void {
+  // eslint-disable-next-line max-lines-per-function
+  public calculateDailyActivity(activities: ActivityResponse[]): void {
     this.setHeightToDefault();
-
-    const today = new Date();
-    const sunday: number = 6;
-    const currentMonday: Date = new Date(today.setDate(today.getDate() - today.getDay()));
-    const currentSunday: Date = new Date(today.setDate(today.getDate() - today.getDay() + sunday));
+    const [currentMonday, currentSunday] = getFirstAndLastDaysOfWeek();
 
     const accumulatedData: DailyData[] = [];
     activities.forEach((ac) => {
@@ -152,6 +148,7 @@ export default class ActivityGraph extends BaseComponent<'div'> {
 
     accumulatedData.forEach((activity) => {
       const date = new Date(activity.date);
+      // eslint-disable-next-line max-len
       if (date.getTime() <= currentSunday.getTime() && date.getTime() >= currentMonday.getTime()) {
         this.updateStats(date, Number(activity.distance));
       }

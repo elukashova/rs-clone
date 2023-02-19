@@ -2,9 +2,8 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 1em;
   width: 100%;
-  padding: 20px;
 }
 
 .training-feed__buttons {

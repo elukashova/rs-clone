@@ -5,8 +5,8 @@ import Svg from '../../../../components/base-component/svg/svg';
 import SvgNames from '../../../../components/base-component/svg/svg.types';
 import { ProjectColors } from '../../../../utils/consts';
 import EditBlock from '../../../../components/base-component/edit-block/edit-block';
-import { Activity, User } from '../../../../app/loader/loader.types';
-// import { StatsKeys } from './our-activity.types';
+import { ActivityResponse, User } from '../../../../app/loader/loader-responses.types';
+import { getFirstAndLastDaysOfWeek } from '../../../../utils/utils';
 
 export default class OurActivity extends BaseComponent<'div'> {
   private activityIcons: BaseComponent<'div'> = new BaseComponent('div', this.element, 'our-activity__icons');
@@ -375,7 +375,7 @@ export default class OurActivity extends BaseComponent<'div'> {
 
   private updateSportActivityData(): void {
     this.setValuesToNull();
-    const activities: Activity[] = this.user.activities.filter(
+    const activities: ActivityResponse[] = this.user.activities.filter(
       (record) => record.sport === `${this.currentIcon?.svg.id}`,
     );
     this.calculateStats(activities);
@@ -383,15 +383,8 @@ export default class OurActivity extends BaseComponent<'div'> {
     this.updateStats();
   }
 
-  private calculateStats(activities: Activity[]): void {
-    const currentDay: Date = new Date();
-    const sundayIndex: number = 6;
-    // eslint-disable-next-line max-len
-    const currentWeekMonday: Date = new Date(currentDay.setDate(currentDay.getDate() - currentDay.getDay()));
-    // eslint-disable-next-line max-len
-    const currentWeekSunday: Date = new Date(
-      currentDay.setDate(currentDay.getDate() - currentDay.getDay() + sundayIndex),
-    );
+  private calculateStats(activities: ActivityResponse[]): void {
+    const [currentMonday, currentSunday] = getFirstAndLastDaysOfWeek();
 
     const timeData: string[] = [];
 
@@ -399,7 +392,7 @@ export default class OurActivity extends BaseComponent<'div'> {
       const date: Date = new Date(activity.date);
       const dateMs = date.getTime();
 
-      if (dateMs <= currentWeekSunday.getTime() && dateMs >= currentWeekMonday.getTime()) {
+      if (dateMs <= currentSunday.getTime() && dateMs >= currentMonday.getTime()) {
         this.kmCounter += Number(activity.distance);
         timeData.push(activity.duration);
         this.elevationCounter += Number(activity.elevation);
@@ -410,7 +403,7 @@ export default class OurActivity extends BaseComponent<'div'> {
     this.yearKmCounter = OurActivity.calculateYearDistance(activities);
   }
 
-  private static calculateYearDistance(activities: Activity[]): number {
+  private static calculateYearDistance(activities: ActivityResponse[]): number {
     const year: number = new Date().getFullYear();
     const yearStart: Date = new Date(year, 0, 1);
     const yearEnd: Date = new Date(year, 11, 31);

@@ -3,7 +3,8 @@ import BaseComponent from '../../../components/base-component/base-component';
 import Button from '../../../components/base-component/button/button';
 import { ProjectColors } from '../../../utils/consts';
 import BaseFriend from '../base-friend';
-import { FriendData, Token } from '../../../app/loader/loader.types';
+import { Token } from '../../../app/loader/loader-requests.types';
+import { FriendData } from '../../../app/loader/loader-responses.types';
 import { checkDataInLocalStorage } from '../../../utils/local-storage';
 
 export default class Friend extends BaseFriend {
@@ -63,15 +64,14 @@ export default class Friend extends BaseFriend {
   };
 
   private setButtonFunction(): void {
-    console.log(this.unsubscribeButton);
     if (this.friendsIsAdded === false) {
       this.unsubscribeButton.element.style.backgroundColor = ProjectColors.Orange;
-      this.unsubscribeButton.element.textContent = 'Subscribe';
+      this.unsubscribeButton.element.textContent = 'Follow';
       this.unsubscribeButton.element.removeEventListener('click', this.deleteFriendCallback);
       this.unsubscribeButton.element.addEventListener('click', this.addFriendCallback);
     } else {
       this.unsubscribeButton.element.style.backgroundColor = ProjectColors.Grey;
-      this.unsubscribeButton.element.textContent = 'Unsubscribe';
+      this.unsubscribeButton.element.textContent = 'Unfollow';
       this.unsubscribeButton.element.removeEventListener('click', this.addFriendCallback);
       this.unsubscribeButton.element.addEventListener('click', this.deleteFriendCallback);
     }

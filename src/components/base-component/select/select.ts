@@ -17,6 +17,8 @@ export default class Select extends BaseComponent<'div'> {
     'select',
     this.label.element,
     `${this.prefix}__select select`,
+    '',
+    { readonly: '' },
   );
 
   private options: string[];
@@ -44,7 +46,7 @@ export default class Select extends BaseComponent<'div'> {
   private currentOption: BaseComponent<'option'>;
 
   constructor(
-    parent: HTMLElement,
+    private parent: HTMLElement,
     options: string[],
     private prefix: string,
     additionalClasses?: string,
@@ -64,10 +66,10 @@ export default class Select extends BaseComponent<'div'> {
   }
 
   private addEventListeners(): void {
-    this.select.element.addEventListener('mousedown', this.selectCallback);
+    this.element.addEventListener('mouseover', this.selectCallback);
     // this.select.element.addEventListener('blur', this.blurCallback);
-    this.list.element.addEventListener('blur', this.hideOptionsList);
-    this.dropdownButton.element.addEventListener('click', this.selectCallback);
+    this.element.addEventListener('mouseout', this.hideOptionsList);
+    this.dropdownButton.element.setAttribute('disabled', '');
   }
 
   public addOptions(options: string[]): void {
@@ -112,7 +114,6 @@ export default class Select extends BaseComponent<'div'> {
       this.showOptionsList();
       this.highlightCurrentOption();
     } else {
-      console.log('wh');
       this.hideOptionsList();
     }
   };

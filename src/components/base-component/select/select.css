@@ -18,6 +18,7 @@
   padding: 0;
   outline: none;
   background: none;
+  pointer-events: none;
   transition: transform 0.3s ease;
 }
 
@@ -47,11 +48,14 @@
   width: 100%;
 }
 
+.select__option-default {
+  display: none;
+}
+
 .visible {
   opacity: 1;
   transform: scaleY(1);
   visibility: visible;
-  transition: transform 0.3s ease;
 }
 
 .visible .select__dropdown_list {

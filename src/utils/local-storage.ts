@@ -1,4 +1,4 @@
-import { Token } from '../app/loader/loader.types';
+import { Token } from '../app/loader/loader-requests.types';
 
 export const checkDataInLocalStorage = <T>(key: string): T | null => {
   const response: string | null = localStorage.getItem(key);

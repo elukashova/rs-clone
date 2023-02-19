@@ -1,6 +1,6 @@
 import './google-btn.css';
 import jwtdecode from 'jwt-decode';
-import { LogIn, SignUp } from '../../../app/loader/loader.types';
+import { LogIn, SignUp } from '../../../app/loader/loader-requests.types';
 import { GOOGLE_CLIENT_ID } from '../../../utils/consts';
 import BaseComponent from '../../../components/base-component/base-component';
 import { GoogleAccount, GoogleBtnData, GoogleBtnTypes, LogInCallback, SignUpCallback } from './google-btn.types';

@@ -5,7 +5,8 @@ import NavigationLink from '../../../components/base-component/link/link';
 import { Link } from '../../../components/base-component/link/link.types';
 import RandomFriendCard from './random-friend-card/random-friend-card';
 import { checkDataInLocalStorage } from '../../../utils/local-storage';
-import { FriendData, Token } from '../../../app/loader/loader.types';
+import { Token } from '../../../app/loader/loader-requests.types';
+import { FriendData } from '../../../app/loader/loader-responses.types';
 import { getNotFriends } from '../../../app/loader/services/friends-services';
 import { provideRandomUsers } from '../../../utils/utils';
 
