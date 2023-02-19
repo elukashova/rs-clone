@@ -64,15 +64,14 @@ export default class Friend extends BaseFriend {
   };
 
   private setButtonFunction(): void {
-    console.log(this.unsubscribeButton);
     if (this.friendsIsAdded === false) {
       this.unsubscribeButton.element.style.backgroundColor = ProjectColors.Orange;
-      this.unsubscribeButton.element.textContent = 'Subscribe';
+      this.unsubscribeButton.element.textContent = 'Follow';
       this.unsubscribeButton.element.removeEventListener('click', this.deleteFriendCallback);
       this.unsubscribeButton.element.addEventListener('click', this.addFriendCallback);
     } else {
       this.unsubscribeButton.element.style.backgroundColor = ProjectColors.Grey;
-      this.unsubscribeButton.element.textContent = 'Unsubscribe';
+      this.unsubscribeButton.element.textContent = 'Unfollow';
       this.unsubscribeButton.element.removeEventListener('click', this.addFriendCallback);
       this.unsubscribeButton.element.addEventListener('click', this.deleteFriendCallback);
     }

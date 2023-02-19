@@ -21,8 +21,8 @@
 }
 
 .post__photo {
-  width: 3.5em;
-  height: 3.5em;
+  width: 3.5rem;
+  height: 3.5rem;
   border-radius: 50%;
 }
 
@@ -83,6 +83,7 @@
   display: flex;
   justify-content: flex-start;
   margin-bottom: 1em;
+  width: 100%;
 }
 
 .post__data .post__data-single:not(:last-child) {
@@ -101,7 +102,7 @@
 }
 
 .post__data-title {
-  font-size: calc(0.7em + 0.3vw);
+  font-size: calc(0.5em + 0.5vw);
   text-transform: uppercase;
   font-weight: 400;
   color: #ff8d24;
@@ -189,4 +190,21 @@
 
 .map img {
   width: 100%;
+}
+
+.post__add-comment_show-more {
+  font-weight: 300;
+  color: #949494;
+  font-size: calc(0.5em + 0.4vw);
+  transition: color 0.3s;
+  cursor: pointer;
+}
+
+.post__add-comment_show-more:hover {
+  color: #1cbaa7;
+}
+
+.comments-added {
+  padding-bottom: 1em;
+  border-bottom: 1px solid #90dad1;
 }

@@ -198,7 +198,6 @@ export default class AddActivity extends BaseComponent<'section'> {
     this.data.time = this.time.inputValue || AddActivity.getTime();
     this.data.title = this.title.inputValue ? this.title.inputValue : this.setTitle();
     this.data.description = this.description.textValue ? this.description.textValue : undefined;
-    console.log(this.data);
     this.setMap();
   }
 

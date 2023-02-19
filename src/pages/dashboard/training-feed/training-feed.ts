@@ -29,6 +29,10 @@ export default class TrainingFeed extends BaseComponent<'article'> {
         post.checkIfLikedPost(activity.kudos);
         post.updateLikesCounter(activity.kudos.length);
       }
+
+      if (activity.comments && activity.comments.length > 0) {
+        post.appendExistingComments(activity.comments);
+      }
       post.postId = activity.id;
       post.photo.element.src = data.avatarUrl;
       post.userImage.element.src = data.avatarUrl;

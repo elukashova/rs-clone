@@ -6,7 +6,7 @@ import Picture from '../../../../../components/base-component/picture/picture';
 import { ProjectColors } from '../../../../../utils/consts';
 import { CommentResponse } from '../../../../../app/loader/loader-responses.types';
 
-export default class Comment extends BaseComponent<'div'> {
+export default class PostComment extends BaseComponent<'div'> {
   private photo = new Picture(this.element, 'comment__photo');
 
   private commentWrapper: BaseComponent<'div'> = new BaseComponent('div', this.element, 'comment__wrapper');
@@ -23,14 +23,14 @@ export default class Comment extends BaseComponent<'div'> {
 
   private like = new BaseComponent('span', this.iconsWrapper.element);
 
-  private likeSvg = new Svg(this.like.element, SvgNames.Heart, ProjectColors.Grey, 'comment__like');
+  private likeSvg = new Svg(this.like.element, SvgNames.Heart, ProjectColors.Turquoise, 'comment__like');
 
   private userId: string;
 
   constructor(data: CommentResponse) {
     super('div', undefined, 'comment');
     this.photo.element.src = data.avatarUrl;
-    this.date.element.textContent = Comment.createTimeSinceComment(data.createdAt);
+    this.date.element.textContent = PostComment.createTimeSinceComment(data.createdAt);
     this.userId = data.userId;
     this.name.element.textContent = data.username;
     this.message.element.textContent = data.body;

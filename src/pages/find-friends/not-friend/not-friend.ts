@@ -51,7 +51,7 @@ export default class NotFriend extends BaseFriend {
       'not-friend__user-country',
       `${this.country}` || '',
     );
-    this.subscribeButton = new Button(this.userDataBlock.element, 'Subscribe', 'not-friend__button');
+    this.subscribeButton = new Button(this.userDataBlock.element, 'Follow', 'not-friend__button');
     const activityInfo = new BaseComponent('p', this.activityData.element, 'not-friend__activity-text', 'Activities');
     this.activityCount = new BaseComponent(
       'p',
@@ -82,17 +82,14 @@ export default class NotFriend extends BaseFriend {
   };
 
   private setButtonFunction(): void {
-    console.log(this.subscribeButton);
     if (this.notFriendsIsAdded === false) {
-      console.log(this.notFriendsIsAdded);
       this.subscribeButton.element.style.backgroundColor = ProjectColors.Turquoise;
-      this.subscribeButton.element.textContent = 'Subscribe';
+      this.subscribeButton.element.textContent = 'Follow';
       this.subscribeButton.element.removeEventListener('click', this.deleteFriendCallback);
       this.subscribeButton.element.addEventListener('click', this.addFriendCallback);
     } else {
-      console.log(this.notFriendsIsAdded);
       this.subscribeButton.element.style.backgroundColor = ProjectColors.Orange;
-      this.subscribeButton.element.textContent = 'Unsubscribe';
+      this.subscribeButton.element.textContent = 'Unfollow';
       this.subscribeButton.element.removeEventListener('click', this.addFriendCallback);
       this.subscribeButton.element.addEventListener('click', this.deleteFriendCallback);
     }

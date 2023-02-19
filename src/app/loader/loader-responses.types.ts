@@ -41,7 +41,7 @@ export type ActivityResponse = {
   endPoint?: string;
   mapId?: string;
   kudos?: string[];
-  comments?: Comment[];
+  comments?: CommentResponse[];
   route?: {
     startPoint?: string;
     endPoint?: string;

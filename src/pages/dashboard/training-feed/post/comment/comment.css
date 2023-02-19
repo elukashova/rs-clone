@@ -2,8 +2,6 @@
   display: grid;
   grid-template-columns: 3.5em 1fr;
   gap: 1.5em;
-  border-top: 1px solid #90dad1;
-  padding-top: 1em;
 }
 
 .comment__photo {
@@ -32,6 +30,7 @@
 .comment__message {
   margin-bottom: 0.5em;
   font-weight: 300;
+  font-size: calc(0.5em + 0.4vw);
 }
 
 .comment__icons {
