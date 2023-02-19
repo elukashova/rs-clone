@@ -28,3 +28,17 @@ export function transformNameFormat(name: string): string {
   }
   return username.join(' ');
 }
+
+export function getFirstAndLastDaysOfWeek(): Date[] {
+  const currentDate: Date = new Date();
+  const sundayIndex: number = 6;
+  const currentDateClone: number = currentDate.getDay();
+  // eslint-disable-next-line max-len
+  const difference: number = currentDate.getDate() - currentDateClone + (currentDateClone === 0 ? -6 : 1);
+  const currentMonday: Date = new Date(currentDate.setDate(difference));
+  const currentSunday: Date = new Date(currentMonday);
+  currentSunday.setDate(currentSunday.getDate() + sundayIndex);
+  currentMonday.setHours(0, 0, 0, 0);
+  currentSunday.setHours(23, 59, 59, 0);
+  return [currentMonday, currentSunday];
+}
