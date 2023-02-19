@@ -3,7 +3,7 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 
 i18next.use(LanguageDetector).init({
   lng: localStorage.getItem('i18nextLng')?.toString() || 'en',
-  debug: true,
+  debug: false,
   resources: {
     en: {
       translation: {
@@ -33,7 +33,10 @@ i18next.use(LanguageDetector).init({
           duration: 'Duration',
           elevation: 'Elevation (m)',
           training: 'Type of activity',
-          trainingTypes: 'Walking, Running, Hiking, Cycling',
+          walking: 'Walking',
+          running: 'Running',
+          hiking: 'Hiking',
+          cycling: 'Cycling',
           dateAndTime: 'Date and time',
           trainTogether: 'Train together',
           title: 'Name of activity',
@@ -180,7 +183,10 @@ i18next.use(LanguageDetector).init({
           duration: 'Длительность',
           elevation: 'Подъем (м)',
           training: 'Тип тренировки',
-          trainingTypes: 'Ходьба, Бег, Пеший туризм, Езда на велосипеде',
+          walking: 'Ходьба',
+          running: 'Бег',
+          hiking: 'Пеший туризм',
+          cycling: 'Езда на велосипеде',
           dateAndTime: 'Дата и время',
           trainTogether: 'Добавь друга',
           title: 'Навание тренировки',

@@ -17,7 +17,6 @@ import {
   APIKey,
   StaticMapRequest,
 } from './interface-map';
-import eventEmitter from '../utils/event-emitter';
 
 export default class GoogleMaps {
   public parentElement: HTMLElement;
@@ -116,7 +115,7 @@ export default class GoogleMaps {
     this.locationButton.element.style.marginLeft = '20%';
     this.map.controls[google.maps.ControlPosition.TOP_CENTER].push(this.locationButton.element);
 
-    this.clearButton = new Button(document.body, i18next.t('header.clearBtn'));
+    this.clearButton = new Button(document.body, i18next.t('map.clearBtn'));
     this.clearButton.element.style.marginTop = '10px';
     this.clearButton.element.style.marginLeft = '20px';
     this.map.controls[google.maps.ControlPosition.TOP_CENTER].push(this.clearButton.element);
@@ -454,7 +453,7 @@ export default class GoogleMaps {
   }
 
   private changeLanguageOnThisPage(): void {
-    eventEmitter.on('changeLanguage', () => {
+    i18next.on('languageChanged', () => {
       this.locationButton.element.textContent = i18next.t('map.locationBtn');
       this.clearButton.element.textContent = i18next.t('map.clearBtn');
     });

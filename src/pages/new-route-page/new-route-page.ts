@@ -18,7 +18,13 @@ export default class NewRoutePage extends BaseComponent<'section'> {
     roadType: 'newRoute.roadType',
     routeName: 'newRoute.routeName',
     description: 'newRoute.description',
+    routeType: 'newRoute.routeType',
+    walking: 'newRoute.walking',
+    cycling: 'newRoute.cycling',
   };
+
+  // eslint-disable-next-line max-len
+  private routeTypes: string[] = [this.dictionary.routeType, this.dictionary.walking, this.dictionary.cycling];
 
   private heading = new BaseComponent('h3', this.element, 'new-route-page__heading', this.dictionary.heading);
 
@@ -26,14 +32,10 @@ export default class NewRoutePage extends BaseComponent<'section'> {
 
   public search = new Input(this.optionsContainer.element, 'new-route-page__search', '', {
     type: 'text',
-    placeholder: 'Enter the name of the place or click on the map', // не будет работать
+    placeholder: this.dictionary.searchPlaceholder,
   });
 
-  public routeType = new Select(
-    this.optionsContainer.element,
-    ['Route type', 'walking', 'cycling'],
-    'new-route-page__select',
-  );
+  public routeType = new Select(this.optionsContainer.element, this.routeTypes, 'new-route-page__select');
 
   private buttonContainer = new BaseComponent('div', this.optionsContainer.element, 'new-route-page__buttons');
 

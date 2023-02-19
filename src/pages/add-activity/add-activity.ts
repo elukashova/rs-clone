@@ -13,14 +13,42 @@ import { Activity, Token } from '../../app/loader/loader.types';
 import { createActivity } from '../../app/loader/services/activity-services';
 import { checkDataInLocalStorage } from '../../utils/local-storage';
 import Picture from '../../components/base-component/picture/picture';
-import eventEmitter from '../../utils/event-emitter';
 
 export default class AddActivity extends BaseComponent<'section'> {
-  private trainingTypes: string[] = i18next.t('addActivityPage.trainingTypes').split(',');
+  private dictionary: Record<string, string> = {
+    heading: 'addActivityPage.heading',
+    morningActivity: 'addActivityPage.morningActivity',
+    distance: 'addActivityPage.distance',
+    duration: 'addActivityPage.duration',
+    elevation: 'addActivityPage.elevation',
+    training: 'addActivityPage.training',
+    date: 'addActivityPage.dateAndTime',
+    trainTogether: 'addActivityPage.trainTogether',
+    title: 'addActivityPage.title',
+    description: 'addActivityPage.description',
+    descriptionPlaceholder: 'addActivityPage.descriptionPlaceholder',
+    save: 'addActivityPage.save',
+    walking: 'addActivityPage.walking',
+    hiking: 'addActivityPage.hiking',
+    cycling: 'addActivityPage.cycling',
+    running: 'addActivityPage.running',
+  };
+
+  private trainingTypes: string[] = [
+    this.dictionary.walking,
+    this.dictionary.hiking,
+    this.dictionary.cycling,
+    this.dictionary.running,
+  ];
 
   private formContainer = new BaseComponent('div', this.element, 'add-activity__container');
 
-  private heading = new BaseComponent('h3', this.formContainer.element, 'add-activity__heading', 'Add activity');
+  private heading = new BaseComponent(
+    'h3',
+    this.formContainer.element,
+    'add-activity__heading',
+    this.dictionary.heading,
+  );
 
   private formElement = new BaseComponent('form', this.formContainer.element, 'add-activity__form');
 
@@ -33,7 +61,7 @@ export default class AddActivity extends BaseComponent<'section'> {
   private distance = new Input(
     this.distanceContainer.element,
     'add-activity__input input-distance',
-    i18next.t('addActivityPage.distance'),
+    this.dictionary.distance,
     {
       type: 'number',
     },
@@ -44,7 +72,7 @@ export default class AddActivity extends BaseComponent<'section'> {
   private durationHours = new Input(
     this.durationContainer.element,
     'add-activity__input input-hours',
-    i18next.t('addActivityPage.duration'),
+    this.dictionary.duration,
     {
       type: 'number',
       placeholder: '01',
@@ -69,7 +97,7 @@ export default class AddActivity extends BaseComponent<'section'> {
   private elevation = new Input(
     this.elevationContainer.element,
     'add-activity__input input-elevation',
-    i18next.t('addActivityPage.elevation'),
+    this.dictionary.elevation,
     {
       type: 'number',
       value: '0',
@@ -88,7 +116,7 @@ export default class AddActivity extends BaseComponent<'section'> {
     'label',
     this.trainingContainer.element,
     'add-activity__label',
-    i18next.t('addActivityPage.training'),
+    this.dictionary.training,
     { for: 'training' },
   );
 
@@ -102,14 +130,9 @@ export default class AddActivity extends BaseComponent<'section'> {
 
   private dateContainer = new BaseComponent('div', this.trainingBlock.element, 'add-activity__block-container');
 
-  private date = new Input(
-    this.dateContainer.element,
-    'add-activity__input input-date',
-    i18next.t('addActivityPage.dateAndTime'),
-    {
-      type: 'date',
-    },
-  );
+  private date = new Input(this.dateContainer.element, 'add-activity__input input-date', this.dictionary.date, {
+    type: 'date',
+  });
 
   private time = new Input(this.dateContainer.element, 'add-activity__input input-time', '', {
     type: 'time',
@@ -120,7 +143,7 @@ export default class AddActivity extends BaseComponent<'section'> {
   private search = new Input(
     this.searchContainer.element,
     'add-activity__input input-search',
-    i18next.t('addActivityPage.trainTogether'),
+    this.dictionary.trainTogether,
     {
       type: 'search',
     },
@@ -130,15 +153,10 @@ export default class AddActivity extends BaseComponent<'section'> {
 
   private titleContainer = new BaseComponent('div', this.titleBlock.element, 'add-activity__block-container');
 
-  private title = new Input(
-    this.titleContainer.element,
-    'add-activity__input input-title',
-    i18next.t('addActivityPage.title'),
-    {
-      type: 'text',
-      placeholder: i18next.t('addActivityPage.morningActivity'),
-    },
-  );
+  private title = new Input(this.titleContainer.element, 'add-activity__input input-title', this.dictionary.title, {
+    type: 'text',
+    placeholder: this.dictionary.morningActivity,
+  });
 
   private descriptionBlock = new BaseComponent(
     'div',
@@ -156,12 +174,12 @@ export default class AddActivity extends BaseComponent<'section'> {
   private description = new TextArea(
     this.descriptionContainer.element,
     'add-activity__input input-description',
-    i18next.t('addActivityPage.description'),
+    this.dictionary.description,
     {
       type: 'textarea',
       maxlength: '1000',
       rows: '4',
-      placeholder: i18next.t('addActivityPage.descriptionPlaceholder'),
+      placeholder: this.dictionary.descriptionPlaceholder,
     },
   );
 
@@ -171,7 +189,7 @@ export default class AddActivity extends BaseComponent<'section'> {
 
   private map = new GoogleMaps(this.mapDiv.element, { lat: 38.771, lng: -9.058 }, google.maps.TravelMode.WALKING, true);
 
-  public saveButton = new Button(this.formElement.element, i18next.t('addActivityPage.save'), 'btn-activity');
+  public saveButton = new Button(this.formElement.element, this.dictionary.save, 'btn-activity');
 
   private data: Activity = {
     time: '',
@@ -191,7 +209,6 @@ export default class AddActivity extends BaseComponent<'section'> {
     this.search.addSvgIcon(SvgNames.Search, ProjectColors.Grey, 'search');
     this.addListeners();
     this.sendData();
-    this.changeLanguageOnThisPage();
     /* this.map.doDirectionRequest(
       { lat: -33.397, lng: 150.644 },
       { lat: -33.393, lng: 150.641 },
@@ -341,24 +358,5 @@ export default class AddActivity extends BaseComponent<'section'> {
 
   private static joinMapDataIntoString(lat: string, lng: string): string {
     return `${lat},${lng}`;
-  }
-
-  private changeLanguageOnThisPage(): void {
-    eventEmitter.on('changeLanguage', () => {
-      this.heading.element.textContent = i18next.t('addActivityPage.heading');
-      this.distance.title.element.textContent = i18next.t('addActivityPage.distance');
-      this.durationHours.title.element.textContent = i18next.t('addActivityPage.duration');
-      this.elevation.title.element.textContent = i18next.t('addActivityPage.elevation');
-      this.trainingLabel.element.textContent = i18next.t('addActivityPage.training');
-      this.date.title.element.textContent = i18next.t('addActivityPage.dateAndTime');
-      this.search.title.element.textContent = i18next.t('addActivityPage.trainTogether');
-      this.title.title.element.textContent = i18next.t('addActivityPage.title');
-      this.title.input.element.placeholder = i18next.t('addActivityPage.morningActivity');
-      this.description.title.element.textContent = i18next.t('addActivityPage.description');
-      this.description.placeholder = i18next.t('addActivityPage.descriptionPlaceholder');
-      this.saveButton.element.textContent = i18next.t('addActivityPage.save');
-      this.trainingTypes = i18next.t('addActivityPage.trainingTypes').split(',');
-      this.training.setOptionNames(this.trainingTypes);
-    });
   }
 }

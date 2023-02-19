@@ -1,3 +1,4 @@
+import i18next from 'i18next';
 import { REST_COUNTRIES } from '../../../utils/consts';
 import { getClassNames } from '../../../utils/utils';
 import BaseComponent from '../base-component';
@@ -12,7 +13,6 @@ export default class Select extends BaseComponent<'select'> {
 
   private callToAction: string = '--Please choose your country--';
 
-  // eslint-disable-next-line max-len
   constructor(
     parent: HTMLElement,
     options: string[],
@@ -39,11 +39,12 @@ export default class Select extends BaseComponent<'select'> {
         this.getSelectedValue();
       }
     });
+    this.setOptionNames();
   }
 
   public addOptions(options: string[]): void {
     options.forEach((option) => {
-      const optionElement = this.createOption(option).element;
+      const optionElement = this.createOption(i18next.t(option)).element;
       this.element.append(optionElement);
       this.optionsAll.push(optionElement);
     });
@@ -106,11 +107,13 @@ export default class Select extends BaseComponent<'select'> {
     return this.options[selectedIndex];
   }
 
-  public setOptionNames(options: string[]): void {
-    this.optionsAll.forEach((option, index) => {
-      console.log(option, options, options[index]);
-      // eslint-disable-next-line no-param-reassign
-      option.textContent = options[index];
+  public setOptionNames(): void {
+    i18next.on('languageChanged', () => {
+      this.optionsAll.forEach((option, index) => {
+        // console.log(option, options, options[index]);
+        // eslint-disable-next-line no-param-reassign
+        option.textContent = i18next.t(this.options[index]);
+      });
     });
   }
 }

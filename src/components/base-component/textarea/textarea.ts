@@ -1,3 +1,4 @@
+import i18next from 'i18next';
 import { getClassNames } from '../../../utils/utils';
 import BaseComponent from '../base-component';
 import './textarea.css';
@@ -39,6 +40,10 @@ export default class TextArea extends BaseComponent<'div'> {
         attributes,
       );
     }
+    if (attributes && attributes.placeholder) {
+      this.textArea.element.placeholder = i18next.t(attributes.placeholder);
+      this.setInputPlaceholder(attributes.placeholder);
+    }
   }
 
   public get textValue(): string {
@@ -55,5 +60,11 @@ export default class TextArea extends BaseComponent<'div'> {
 
   public set placeholder(value: string) {
     this.textArea.element.placeholder = value;
+  }
+
+  private setInputPlaceholder(placeholder: string): void {
+    i18next.on('languageChanged', () => {
+      this.textArea.element.placeholder = i18next.t(placeholder);
+    });
   }
 }

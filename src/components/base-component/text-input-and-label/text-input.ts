@@ -35,6 +35,10 @@ export default class Input extends BaseComponent<'div'> {
     }
     this.input = new BaseComponent('input', this.label.element, '', '', attributes);
     this.inputName = this.label.element.innerText.toLowerCase();
+    if (attributes && attributes.placeholder) {
+      this.input.element.placeholder = i18next.t(attributes.placeholder);
+      this.setInputPlaceholder(attributes.placeholder);
+    }
   }
 
   public verify(): boolean {
@@ -94,6 +98,12 @@ export default class Input extends BaseComponent<'div'> {
   private setInputContent(content: string): void {
     i18next.on('languageChanged', () => {
       this.title.element.textContent = i18next.t(content);
+    });
+  }
+
+  private setInputPlaceholder(placeholder: string): void {
+    i18next.on('languageChanged', () => {
+      this.input.element.placeholder = i18next.t(placeholder);
     });
   }
 }
