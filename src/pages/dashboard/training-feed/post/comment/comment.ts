@@ -25,11 +25,11 @@ export default class PostComment extends BaseComponent<'div'> {
 
   private like = new BaseComponent('span', this.iconsWrapper.element);
 
-  private likeSvg = new Svg(this.like.element, SvgNames.Heart, ProjectColors.Turquoise, 'comment__like');
+  private likeSvg = new Svg(this.like.element, SvgNames.Heart, ProjectColors.Grey, 'comment__like');
 
-  private userId: string;
+  private userId: string = '';
 
-  private commentId: number;
+  private commentId: number = 0;
 
   private likesAll: string[] = [];
 
@@ -37,6 +37,11 @@ export default class PostComment extends BaseComponent<'div'> {
 
   constructor(data: CommentResponse) {
     super('div', undefined, 'comment');
+    this.retrieveDataForComment(data);
+    this.like.element.addEventListener('click', this.toggleLike);
+  }
+
+  private retrieveDataForComment(data: CommentResponse): void {
     this.photo.element.src = data.avatarUrl;
     this.date.element.textContent = PostComment.createTimeSinceComment(data.createdAt);
     this.userId = data.userId;
@@ -47,21 +52,19 @@ export default class PostComment extends BaseComponent<'div'> {
       this.likesAll = data.likes;
       this.checkIfLikedPost(this.likesAll);
     }
-    this.like.element.addEventListener('click', this.toggleLike);
   }
 
   private toggleLike = (): void => {
-    this.updateLikeColor();
+    this.isLiked = !this.isLiked;
     this.updateLikeInfoOnServer(this.isLiked);
+    this.updateLikeColor();
   };
 
   private updateLikeColor(): void {
     if (!this.isLiked) {
       this.likeSvg.updateFillColor(ProjectColors.Grey);
-      this.isLiked = true;
     } else {
       this.likeSvg.updateFillColor(ProjectColors.Orange);
-      this.isLiked = false;
     }
   }
 

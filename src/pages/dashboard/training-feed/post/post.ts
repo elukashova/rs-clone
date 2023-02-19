@@ -130,6 +130,7 @@ export default class Post extends BaseComponent<'div'> {
           const comment: PostComment = new PostComment(response);
           this.checkIfNotFirstComment(comment);
           this.icons.element.classList.add('comments-added');
+          this.commentArea.textValue = '';
         })
         .catch(() => null);
     }
@@ -142,6 +143,9 @@ export default class Post extends BaseComponent<'div'> {
       const [existingComment] = this.commentsOnPage;
       this.element.insertBefore(comment.element, existingComment);
     } else {
+      if (this.commentsOnPage.length === this.commentsLimitPerPost) {
+        this.handleShowAllElement();
+      }
       const [commentToLeave, commentToRemove] = this.commentsOnPage;
       this.element.removeChild(commentToRemove);
       this.commentsOnPage.pop();
@@ -245,6 +249,7 @@ export default class Post extends BaseComponent<'div'> {
     if (sortedComments.length < this.commentsLimitPerPost) {
       const [comment] = this.commentsAll;
       this.element.append(comment);
+      this.commentsOnPage.push(comment);
     } else {
       for (let i: number = 0; i < this.commentsLimitPerPost; i += 1) {
         this.element.append(this.commentsAll[i]);
