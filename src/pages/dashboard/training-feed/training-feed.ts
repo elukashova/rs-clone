@@ -39,6 +39,8 @@ export default class TrainingFeed extends BaseComponent<'article'> {
       post.photo.element.src = activity.avatarUrl;
       post.userImage.element.src = activity.avatarUrl;
       post.name.element.textContent = activity.username;
+      post.postAuthorId = activity.userId;
+      post.defineButtonBasenOnAuthor();
       post.activityTitle.element.textContent = activity.title;
       post.date.element.textContent = TrainingFeed.changeDateFormat(activity.date, activity.time);
       post.distance.value = `${activity.distance} km`;

@@ -13,7 +13,7 @@ import Button from '../../../../components/base-component/button/button';
 import Picture from '../../../../components/base-component/picture/picture';
 import GoogleMaps from '../../../../map/google-maps';
 import { ProjectColors } from '../../../../utils/consts';
-import { updateActivity } from '../../../../app/loader/services/activity-services';
+import { deleteActivity, updateActivity } from '../../../../app/loader/services/activity-services';
 import { checkDataInLocalStorage } from '../../../../utils/local-storage';
 import { createComment } from '../../../../app/loader/services/comment-services';
 import PostComment from './comment/comment';
@@ -105,9 +105,10 @@ export default class Post extends BaseComponent<'div'> {
 
   private isFirstAppend: boolean = true;
 
+  public postAuthorId: string = '';
+
   constructor() {
     super('div', undefined, 'post');
-    this.deletePost();
     this.addEventListeners();
   }
 
@@ -171,12 +172,6 @@ export default class Post extends BaseComponent<'div'> {
       updateActivity(this.postId, { kudos: this.isLiked }, this.token).catch(() => null);
     }
   };
-
-  private deletePost(): void {
-    this.edit.element.addEventListener('click', () => {
-      this.element.remove();
-    });
-  }
 
   private handleCommentButton = (): void => {
     if (this.commentArea.textValue) {
@@ -300,6 +295,34 @@ export default class Post extends BaseComponent<'div'> {
     const commentsToHide: HTMLElement[] = this.commentsAll.filter((comment) => !this.commentsOnPage.includes(comment));
     commentsToHide.forEach((comment) => this.element.removeChild(comment));
     this.handleShowAllElement();
+  };
+
+  public defineButtonBasenOnAuthor(): void {
+    if (this.userId) {
+      if (this.postAuthorId === this.userId) {
+        const deleteActivitySvg: Svg = new Svg(
+          this.edit.element,
+          SvgNames.DeletePost,
+          ProjectColors.Grey,
+          'post__edit-svg',
+        );
+        deleteActivitySvg.svg.addEventListener('click', this.deletePostAndActivity);
+      } else {
+        const unfollowFriendSvg: Svg = new Svg(
+          this.edit.element,
+          SvgNames.Unfollow,
+          ProjectColors.Grey,
+          'post__edit-svg',
+        );
+        unfollowFriendSvg.svg.addEventListener('click', () => console.log('friend deleted'));
+      }
+    }
+  }
+
+  private deletePostAndActivity = (): void => {
+    deleteActivity(this.postId)
+      .then(() => this.element.remove())
+      .catch(() => null);
   };
 
   private static sortCommentsByDate(comments: CommentResponse[]): CommentResponse[] {

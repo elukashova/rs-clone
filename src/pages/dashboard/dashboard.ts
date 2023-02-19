@@ -81,6 +81,7 @@ export default class Dashboard extends BaseComponent<'section'> {
         const userInfo = {
           username: user.username,
           avatarUrl: user.avatarUrl,
+          userId: user.id,
           ...activity,
         };
         allActivitiesData.push(userInfo);
@@ -94,6 +95,7 @@ export default class Dashboard extends BaseComponent<'section'> {
             const followeeInfo: ActivityDataForPosts = {
               username: followee.username,
               avatarUrl: followee.avatarUrl,
+              userId: followee.id,
               ...activity,
             };
             allActivitiesData.push(followeeInfo);
