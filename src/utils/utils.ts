@@ -1,4 +1,4 @@
-import { FriendData } from '../app/loader/loader-responses.types';
+import { ActivityResponse, FriendData } from '../app/loader/loader-responses.types';
 
 export function getClassNames(baseName: string, addName: string | undefined): string {
   return addName ? `${baseName} ${addName}` : baseName;
@@ -41,4 +41,20 @@ export function getFirstAndLastDaysOfWeek(): Date[] {
   currentMonday.setHours(0, 0, 0, 0);
   currentSunday.setHours(23, 59, 59, 0);
   return [currentMonday, currentSunday];
+}
+
+export function sortActivitiesByDate(activities: ActivityResponse[]): ActivityResponse[] {
+  const activitiesToSort: ActivityResponse[] = [...activities];
+  activitiesToSort.map((activity) => {
+    const index = activity.time.indexOf(':');
+    const hours = activity.time.substring(0, index);
+    const minutes = activity.time.substring(index + 1);
+    const date = new Date(activity.date);
+    date.setHours(+hours);
+    date.setMinutes(+minutes);
+    // eslint-disable-next-line no-param-reassign
+    activity.date = date.toISOString();
+    return activity.date;
+  });
+  return activitiesToSort.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 }
