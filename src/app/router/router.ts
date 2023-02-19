@@ -6,9 +6,10 @@ import Routes from './router.types';
 import AddActivity from '../../pages/add-activity/add-activity';
 import Friends from '../../pages/find-friends/find-friends';
 import NewRoutePage from '../../pages/new-route-page/new-route-page';
+import Challenges from '../../pages/challenges/challenges';
 import OurTeam from '../../pages/our-team/our-team';
 import { checkDataInLocalStorage } from '../../utils/local-storage';
-import { Token } from '../loader/loader.types';
+import { Token } from '../loader/loader-requests.types';
 
 export default class Router {
   private main: Main;
@@ -24,6 +25,8 @@ export default class Router {
   private findFriends: Friends | null = null;
 
   private addRoute: NewRoutePage | null = null;
+
+  private challenges: Challenges | null = null;
 
   private aboutTeam: OurTeam | null = null;
 
@@ -90,6 +93,10 @@ export default class Router {
       case Routes.AboutTeam:
         this.aboutTeam = new OurTeam(this.main.element);
         this.main.setContent(this.aboutTeam);
+        break;
+      case Routes.Challenges:
+        this.challenges = new Challenges(this.main.element);
+        this.main.setContent(this.challenges);
         break;
       default:
         console.log('will be 404 page'); // temporary placeholder

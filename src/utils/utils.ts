@@ -1,4 +1,4 @@
-import { FriendData } from '../app/loader/loader.types';
+import { FriendData } from '../app/loader/loader-responses.types';
 
 export function getClassNames(baseName: string, addName: string | undefined): string {
   return addName ? `${baseName} ${addName}` : baseName;

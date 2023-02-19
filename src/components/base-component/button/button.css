@@ -5,10 +5,10 @@
 
 .btn {
   min-width: min-content;
-  padding: 10px 15px;
+  padding: 0.5em 0.5em;
   border: none;
   border-radius: 5px;
-  font-size: 1em;
+  font-size: calc(0.7em + 0.3vw);
   font-family: 'Montserrat', sans-serif;
   text-transform: uppercase;
   cursor: pointer;

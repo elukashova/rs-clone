@@ -1,15 +1,14 @@
 /* eslint-disable no-underscore-dangle */
-import './post-icon.css';
 import BaseComponent from '../../../../../components/base-component/base-component';
 import Svg from '../../../../../components/base-component/svg/svg';
 
-export default class PostIcon extends BaseComponent<'span'> {
-  private _value = new BaseComponent('span', this.element);
+export default class PostIcon extends BaseComponent<'div'> {
+  private _value = new BaseComponent('span', this.element, 'post__icon-counter');
 
-  public icon: Svg | undefined;
+  public icon: Svg;
 
   constructor(parent: HTMLElement, iconName: string, color: string, className: string) {
-    super('span', parent, 'post__icon');
+    super('div', parent, 'post__icon');
     this.icon = new Svg(this.element, iconName, color, className);
     this.value = '0';
   }

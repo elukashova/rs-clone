@@ -1,7 +1,8 @@
 /* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable max-len */
 import Loader from '../loader';
-import { User, Endpoints, LogIn, Methods, SignUp, Token, UpdateUserData } from '../loader.types';
+import { Endpoints, LogIn, Methods, SignUp, Token, UpdateUserData } from '../loader-requests.types';
+import { User } from '../loader-responses.types';
 
 export const createUser = (params: SignUp): Promise<Token> => Loader.postData(Methods.Post, Endpoints.Signup, params);
 

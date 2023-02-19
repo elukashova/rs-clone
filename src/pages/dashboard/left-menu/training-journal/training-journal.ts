@@ -1,4 +1,4 @@
-import { Activity } from '../../../../app/loader/loader.types';
+import { Activity } from '../../../../app/loader/loader-requests.types';
 import BaseComponent from '../../../../components/base-component/base-component';
 import './training-journal.css';
 

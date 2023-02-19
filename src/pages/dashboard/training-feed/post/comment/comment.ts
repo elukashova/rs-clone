@@ -2,45 +2,103 @@ import './comment.css';
 import BaseComponent from '../../../../../components/base-component/base-component';
 import Svg from '../../../../../components/base-component/svg/svg';
 import SvgNames from '../../../../../components/base-component/svg/svg.types';
-import COMMENT_DATA from '../../../../../mock/comment.data';
 import Picture from '../../../../../components/base-component/picture/picture';
 import { ProjectColors } from '../../../../../utils/consts';
+import { CommentResponse } from '../../../../../app/loader/loader-responses.types';
+import { updateComment } from '../../../../../app/loader/services/comment-services';
+import { UpdateComment } from '../../../../../app/loader/loader-requests.types';
 
-export default class Comment extends BaseComponent<'div'> {
-  private info = new BaseComponent('div', this.element, 'comment__info');
+export default class PostComment extends BaseComponent<'div'> {
+  private photo = new Picture(this.element, 'comment__photo');
 
-  private photo = new Picture(this.info.element, 'comment__photo');
+  private commentWrapper: BaseComponent<'div'> = new BaseComponent('div', this.element, 'comment__wrapper');
+
+  private info = new BaseComponent('div', this.commentWrapper.element, 'comment__info');
 
   private name = new BaseComponent('h4', this.info.element, 'comment__name');
 
   private date = new BaseComponent('span', this.info.element, 'comment__date');
 
-  private message = new BaseComponent('span', this.element, 'comment__message');
+  private message = new BaseComponent('span', this.commentWrapper.element, 'comment__message');
 
-  private like = new BaseComponent('span', this.element);
+  private iconsWrapper: BaseComponent<'div'> = new BaseComponent('div', this.commentWrapper.element, 'comment__icons');
 
-  private likeSvg = new Svg(this.like.element, SvgNames.Star, ProjectColors.Grey, 'comment__like');
+  private like = new BaseComponent('span', this.iconsWrapper.element);
 
-  constructor() {
+  private likeSvg = new Svg(this.like.element, SvgNames.Heart, ProjectColors.Grey, 'comment__like');
+
+  private userId: string = '';
+
+  private commentId: number = 0;
+
+  private likesAll: string[] = [];
+
+  private isLiked: boolean = false;
+
+  constructor(data: CommentResponse) {
     super('div', undefined, 'comment');
-    const date: Date = new Date();
-    this.date.element.textContent = `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;
-    this.photo.element.src = COMMENT_DATA.user.avatarUrl;
-    this.name.element.textContent = COMMENT_DATA.user.username;
-    this.message.element.textContent = COMMENT_DATA.body;
-    this.toggleLike();
+    this.retrieveDataForComment(data);
+    this.like.element.addEventListener('click', this.toggleLike);
   }
 
-  private toggleLike(): void {
-    let flag: boolean = false;
-    this.like.element.addEventListener('click', () => {
-      if (!flag) {
-        this.likeSvg.updateFillColor(ProjectColors.Orange);
-        flag = true;
-      } else {
-        this.likeSvg.updateFillColor(ProjectColors.Grey);
-        flag = false;
-      }
-    });
+  private retrieveDataForComment(data: CommentResponse): void {
+    this.photo.element.src = data.avatarUrl;
+    this.date.element.textContent = PostComment.createTimeSinceComment(data.createdAt);
+    this.userId = data.userId;
+    this.commentId = data.id;
+    this.name.element.textContent = data.username;
+    this.message.element.textContent = data.body;
+    if (data.likes && data.likes.length > 0) {
+      this.likesAll = data.likes;
+      this.checkIfLikedPost(this.likesAll);
+    }
+  }
+
+  private toggleLike = (): void => {
+    this.isLiked = !this.isLiked;
+    this.updateLikeInfoOnServer(this.isLiked);
+    this.updateLikeColor();
+  };
+
+  private updateLikeColor(): void {
+    if (!this.isLiked) {
+      this.likeSvg.updateFillColor(ProjectColors.Grey);
+    } else {
+      this.likeSvg.updateFillColor(ProjectColors.Orange);
+    }
+  }
+
+  private checkIfLikedPost(likes: string[]): void {
+    this.isLiked = likes.includes(this.userId);
+    this.updateLikeColor();
+  }
+
+  private static createTimeSinceComment(commentDate: Date): string {
+    const intervals = [
+      { text: 'year', seconds: 31536000 },
+      { text: 'month', seconds: 2592000 },
+      { text: 'day', seconds: 86400 },
+      { text: 'hour', seconds: 3600 },
+      { text: 'minute', seconds: 60 },
+      { text: 'second', seconds: 1 },
+    ];
+
+    const date: Date = new Date(commentDate);
+
+    const seconds = Math.floor((Date.now() - date.getTime()) / 1000);
+    const interval = intervals.find((int) => int.seconds < seconds);
+    if (interval) {
+      const count = Math.floor(seconds / interval.seconds);
+      return `${count} ${interval.text}${count !== 1 ? 's' : ''} ago`;
+    }
+    return 'Just now';
+  }
+
+  private updateLikeInfoOnServer(flag: boolean): void {
+    const likeData: UpdateComment = {
+      userId: this.userId,
+      like: flag,
+    };
+    updateComment(this.commentId, likeData);
   }
 }

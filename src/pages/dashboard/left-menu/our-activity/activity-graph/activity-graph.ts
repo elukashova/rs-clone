@@ -1,4 +1,4 @@
-import { Activity } from '../../../../../app/loader/loader.types';
+import { ActivityResponse } from '../../../../../app/loader/loader-responses.types';
 import BaseComponent from '../../../../../components/base-component/base-component';
 import Svg from '../../../../../components/base-component/svg/svg';
 import { ProjectColors } from '../../../../../utils/consts';
@@ -121,7 +121,7 @@ export default class ActivityGraph extends BaseComponent<'div'> {
     return Number(height.toFixed(1));
   }
 
-  public calculateDailyActivity(activities: Activity[]): void {
+  public calculateDailyActivity(activities: ActivityResponse[]): void {
     this.setHeightToDefault();
 
     const today = new Date();

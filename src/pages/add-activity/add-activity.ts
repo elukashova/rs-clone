@@ -8,7 +8,7 @@ import TextArea from '../../components/base-component/textarea/textarea';
 import SvgNames from '../../components/base-component/svg/svg.types';
 import { ProjectColors, VALID_NUMBER, VALID_TIME } from '../../utils/consts';
 import GoogleMaps from '../../map/google-maps';
-import { Activity, Token } from '../../app/loader/loader.types';
+import { ActivityRequest, Token } from '../../app/loader/loader-requests.types';
 import { createActivity } from '../../app/loader/services/activity-services';
 import { checkDataInLocalStorage } from '../../utils/local-storage';
 import Picture from '../../components/base-component/picture/picture';
@@ -69,7 +69,7 @@ export default class AddActivity extends BaseComponent<'section'> {
     'add-activity__input input-elevation',
     'Elevation (m)',
     {
-      type: 'number',
+      type: 'text',
       value: '0',
       placeholder: '0',
       pattern: convertRegexToPattern(VALID_NUMBER),
@@ -160,7 +160,7 @@ export default class AddActivity extends BaseComponent<'section'> {
 
   public saveButton = new Button(this.formElement.element, 'Save', 'btn-activity');
 
-  private data: Activity = {
+  private data: ActivityRequest = {
     time: '',
     date: '',
     title: '',
@@ -198,12 +198,11 @@ export default class AddActivity extends BaseComponent<'section'> {
     this.data.time = this.time.inputValue || AddActivity.getTime();
     this.data.title = this.title.inputValue ? this.title.inputValue : this.setTitle();
     this.data.description = this.description.textValue ? this.description.textValue : undefined;
-    console.log(this.data);
     this.setMap();
   }
 
-  private setTitle(): string {
-    const hours: number = new Date().getHours();
+  private setTitle(inputHours?: number): string {
+    const hours: number = inputHours || new Date().getHours();
     if (hours >= 6 && hours <= 11) return `Morning ${this.defineSportForTitle()}`;
     if (hours >= 12 && hours <= 18) return `Afternoon ${this.defineSportForTitle()}`;
     if (hours >= 19 && hours <= 23) return `Evening ${this.defineSportForTitle()}`;
@@ -269,6 +268,12 @@ export default class AddActivity extends BaseComponent<'section'> {
 
     this.map.clearButton.element.addEventListener('click', () => {
       this.resetResults();
+    });
+
+    this.time.input.element.addEventListener('input', () => {
+      const { value } = this.time.input.element;
+      const hours: string = value.startsWith('0') ? value.slice(0, 1) : value.slice(0, 2);
+      this.updateTitle(Number(hours));
     });
   }
 
@@ -372,8 +377,8 @@ export default class AddActivity extends BaseComponent<'section'> {
     return currentTime < 10 ? '0' : currentTime === 0 ? '00' : '';
   }
 
-  private updateTitle(): void {
-    this.title.input.element.value = this.setTitle();
+  private updateTitle(hours?: number): void {
+    this.title.input.element.value = hours ? this.setTitle(hours) : this.setTitle();
     this.title.input.element.placeholder = this.setTitle();
   }
 

@@ -10,7 +10,7 @@ import EditableTextarea from '../../../../components/base-component/textarea/edi
 import { TextareaTypes } from '../../../../components/base-component/textarea/editable-textarea/editable-textarea.types';
 import { ProjectColors } from '../../../../utils/consts';
 import Routes from '../../../../app/router/router.types';
-import { User } from '../../../../app/loader/loader.types';
+import { User } from '../../../../app/loader/loader-responses.types';
 import { EventData } from '../../../../utils/event-emitter.types';
 
 export default class ProfileCard extends BaseComponent<'div'> {

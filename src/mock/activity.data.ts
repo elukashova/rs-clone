@@ -1,4 +1,4 @@
-import { SportType } from '../app/loader/loader.types';
+import { SportType } from '../app/loader/loader-requests.types';
 import USER_DATA from './user.data';
 // import { MapPoints } from '../map/interface-map';
 

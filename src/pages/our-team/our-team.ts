@@ -12,7 +12,7 @@ export default class OurTeam extends BaseComponent<'section'> {
   private title = new BaseComponent(
     'h2',
     this.formContainer.element,
-    'our-team__title',
+    'our-team__title titles',
     'Meet the Big Bug Theory team',
   );
 
