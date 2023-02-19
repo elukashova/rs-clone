@@ -151,8 +151,8 @@ export default class Challenges extends BaseComponent<'section'> {
       ChallengesTypes.Yoga,
       [Activities.Hiking, Activities.Walking],
       yogaUsers,
-      'Yoga',
-      'Text',
+      'Yours hours',
+      'Did you know that the first season of Game of Thrones is 9 hours and 27 minutes long? There are people who watched it in a week. Could you allocate the same amount of time for walking per week? We challenge you.',
       ['02/19/2023', '03/19/2023'],
       true,
     );
