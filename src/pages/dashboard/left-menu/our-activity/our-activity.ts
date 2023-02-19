@@ -6,6 +6,7 @@ import SvgNames from '../../../../components/base-component/svg/svg.types';
 import { ProjectColors } from '../../../../utils/consts';
 import EditBlock from '../../../../components/base-component/edit-block/edit-block';
 import { ActivityResponse, User } from '../../../../app/loader/loader-responses.types';
+import { getFirstAndLastDaysOfWeek } from '../../../../utils/utils';
 
 export default class OurActivity extends BaseComponent<'div'> {
   private activityIcons: BaseComponent<'div'> = new BaseComponent('div', this.element, 'our-activity__icons');
@@ -116,7 +117,7 @@ export default class OurActivity extends BaseComponent<'div'> {
     this.checkPageLimit();
     this.highlightCurrentIcon();
     this.setSvgEventListeners();
-    this.updateSportActivityResponseData();
+    this.updateSportActivityData();
     this.editBlock.editBtn.element.addEventListener('click', this.activateSportChanging);
   }
 
@@ -126,7 +127,7 @@ export default class OurActivity extends BaseComponent<'div'> {
         this.sportsIcons.element,
         this.svgAllNames[i],
         ProjectColors.Grey,
-        `our-activity__svg activityresponse__svg-${i}`,
+        `our-activity__svg activity__svg-${i}`,
       );
       svg.svg.setAttribute('id', this.svgAllNames[i].toLowerCase());
       this.allSvgElements.push(svg);
@@ -167,7 +168,7 @@ export default class OurActivity extends BaseComponent<'div'> {
         this.currentIcon = icon;
         this.currentIconIndex = this.currentSvgElements.indexOf(icon);
         this.highlightCurrentIcon();
-        this.updateSportActivityResponseData();
+        this.updateSportActivityData();
       }
     });
   };
@@ -372,7 +373,7 @@ export default class OurActivity extends BaseComponent<'div'> {
     this.totalYearlyKm.element.textContent = `${this.yearKmCounter} km`;
   }
 
-  private updateSportActivityResponseData(): void {
+  private updateSportActivityData(): void {
     this.setValuesToNull();
     const activities: ActivityResponse[] = this.user.activities.filter(
       (record) => record.sport === `${this.currentIcon?.svg.id}`,
@@ -383,25 +384,18 @@ export default class OurActivity extends BaseComponent<'div'> {
   }
 
   private calculateStats(activities: ActivityResponse[]): void {
-    const currentDay: Date = new Date();
-    const sundayIndex: number = 6;
-    // eslint-disable-next-line max-len
-    const currentWeekMonday: Date = new Date(currentDay.setDate(currentDay.getDate() - currentDay.getDay()));
-    // eslint-disable-next-line max-len
-    const currentWeekSunday: Date = new Date(
-      currentDay.setDate(currentDay.getDate() - currentDay.getDay() + sundayIndex),
-    );
+    const [currentMonday, currentSunday] = getFirstAndLastDaysOfWeek();
 
     const timeData: string[] = [];
 
-    activities.forEach((activityresponse) => {
-      const date: Date = new Date(activityresponse.date);
+    activities.forEach((activity) => {
+      const date: Date = new Date(activity.date);
       const dateMs = date.getTime();
 
-      if (dateMs <= currentWeekSunday.getTime() && dateMs >= currentWeekMonday.getTime()) {
-        this.kmCounter += Number(activityresponse.distance);
-        timeData.push(activityresponse.duration);
-        this.elevationCounter += Number(activityresponse.elevation);
+      if (dateMs <= currentSunday.getTime() && dateMs >= currentMonday.getTime()) {
+        this.kmCounter += Number(activity.distance);
+        timeData.push(activity.duration);
+        this.elevationCounter += Number(activity.elevation);
       }
     });
 
@@ -416,12 +410,12 @@ export default class OurActivity extends BaseComponent<'div'> {
 
     let distance: number = 0;
 
-    activities.forEach((activityresponse) => {
-      const date = new Date(activityresponse.date);
+    activities.forEach((activity) => {
+      const date = new Date(activity.date);
       const dateMs = date.getTime();
 
       if (dateMs <= yearEnd.getTime() && dateMs >= yearStart.getTime()) {
-        distance += Number(activityresponse.distance);
+        distance += Number(activity.distance);
       }
     });
 

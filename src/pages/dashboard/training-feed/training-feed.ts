@@ -3,10 +3,11 @@ import BaseComponent from '../../../components/base-component/base-component';
 import Button from '../../../components/base-component/button/button';
 import Routes from '../../../app/router/router.types';
 import NavigationLink from '../../../components/base-component/link/link';
-import { ActivityResponse, User } from '../../../app/loader/loader-responses.types';
 import Post from './post/post';
 import { ProjectColors } from '../../../utils/consts';
 import Svg from '../../../components/base-component/svg/svg';
+import { sortActivitiesByDate } from '../../../utils/utils';
+import { User } from '../../../app/loader/loader-responses.types';
 
 export default class TrainingFeed extends BaseComponent<'article'> {
   public message = new BaseComponent('span', undefined, 'training-feed__message', 'Лента пока пуста, Вы можете');
@@ -23,7 +24,7 @@ export default class TrainingFeed extends BaseComponent<'article'> {
 
   public static addPosts(data: User): HTMLDivElement[] {
     const posts: HTMLDivElement[] = [];
-    const sortedActivities = TrainingFeed.sortActivitiesByDate(data.activities);
+    const sortedActivities = sortActivitiesByDate(data.activities);
     sortedActivities.forEach((activity) => {
       const post: Post = new Post();
       if (activity.kudos) {
@@ -95,10 +96,5 @@ export default class TrainingFeed extends BaseComponent<'article'> {
       month: 'long',
       day: 'numeric',
     })} at ${time}`;
-  }
-
-  private static sortActivitiesByDate(activities: ActivityResponse[]): ActivityResponse[] {
-    const activitiesToSort: ActivityResponse[] = [...activities];
-    return activitiesToSort.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
   }
 }
