@@ -31,7 +31,7 @@ export default class PostComment extends BaseComponent<'div'> {
 
   private commentId: number;
 
-  private likesAll: string[];
+  private likesAll: string[] = [];
 
   private isLiked: boolean = false;
 
@@ -43,9 +43,10 @@ export default class PostComment extends BaseComponent<'div'> {
     this.commentId = data.id;
     this.name.element.textContent = data.username;
     this.message.element.textContent = data.body;
-    this.likesAll = data.likes;
-
-    this.checkIfLikedPost(this.likesAll);
+    if (data.likes && data.likes.length > 0) {
+      this.likesAll = data.likes;
+      this.checkIfLikedPost(this.likesAll);
+    }
     this.like.element.addEventListener('click', this.toggleLike);
   }
 

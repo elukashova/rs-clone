@@ -119,7 +119,6 @@ export default class Post extends BaseComponent<'div'> {
   }
 
   private postComment = (): void => {
-    this.commentArea.element.classList.remove('active');
     this.handleCommentArea();
     const commentData: CreateCommentRequest = {
       activityId: this.postId,
@@ -129,11 +128,30 @@ export default class Post extends BaseComponent<'div'> {
       createComment(this.token, commentData)
         .then((response: CommentResponse) => {
           const comment: PostComment = new PostComment(response);
-          this.element.append(comment.element);
+          this.checkIfNotFirstComment(comment);
+          this.icons.element.classList.add('comments-added');
         })
         .catch(() => null);
     }
   };
+
+  private checkIfNotFirstComment(comment: PostComment): void {
+    if (this.commentsOnPage.length === 0) {
+      this.element.append(comment.element);
+    } else if (this.commentsOnPage.length === 1) {
+      const [existingComment] = this.commentsOnPage;
+      this.element.insertBefore(comment.element, existingComment);
+    } else {
+      const [commentToLeave, commentToRemove] = this.commentsOnPage;
+      this.element.removeChild(commentToRemove);
+      this.commentsOnPage.pop();
+      this.element.insertBefore(comment.element, commentToLeave);
+    }
+
+    this.commentsOnPage.unshift(comment.element);
+    this.commentsAll.unshift(comment.element);
+    this.updateCommentsNumber(this.commentsAll.length);
+  }
 
   private addLike = (): void => {
     if (!this.isLiked) {
@@ -218,19 +236,24 @@ export default class Post extends BaseComponent<'div'> {
   };
 
   public appendExistingComments(comments: CommentResponse[]): void {
-    const sortedComments = Post.pickRecentTwoComments(comments);
+    const sortedComments: CommentResponse[] = Post.sortCommentsByDate(comments);
     sortedComments.forEach((comment) => {
       const newComment: PostComment = new PostComment(comment);
       this.commentsAll.push(newComment.element);
     });
 
-    for (let i: number = 0; i < this.commentsLimitPerPost; i += 1) {
-      this.element.append(this.commentsAll[i]);
-      this.commentsOnPage.push(this.commentsAll[i]);
-    }
+    if (sortedComments.length < this.commentsLimitPerPost) {
+      const [comment] = this.commentsAll;
+      this.element.append(comment);
+    } else {
+      for (let i: number = 0; i < this.commentsLimitPerPost; i += 1) {
+        this.element.append(this.commentsAll[i]);
+        this.commentsOnPage.push(this.commentsAll[i]);
+      }
 
-    if (sortedComments.length > this.commentsLimitPerPost) {
-      this.handleShowAllElement();
+      if (sortedComments.length > this.commentsLimitPerPost) {
+        this.handleShowAllElement();
+      }
     }
 
     this.icons.element.classList.add('comments-added');
@@ -250,7 +273,7 @@ export default class Post extends BaseComponent<'div'> {
     }
 
     if (!this.isShown) {
-      this.showAllCommentsElement.element.textContent = `See all ${this.commentsAll.length} comments`;
+      this.updateCommentsNumber(this.commentsAll.length);
       this.showAllCommentsElement.element.addEventListener('click', this.showAllComments);
       this.showAllCommentsElement.element.removeEventListener('click', this.hideComments);
       this.isShown = true;
@@ -264,13 +287,17 @@ export default class Post extends BaseComponent<'div'> {
     this.element.append(this.showAllCommentsElement.element);
   }
 
+  private updateCommentsNumber(number: number): void {
+    this.showAllCommentsElement.element.textContent = `See all ${number} comments`;
+  }
+
   private hideComments = (): void => {
     const commentsToHide: HTMLElement[] = this.commentsAll.filter((comment) => !this.commentsOnPage.includes(comment));
     commentsToHide.forEach((comment) => this.element.removeChild(comment));
     this.handleShowAllElement();
   };
 
-  private static pickRecentTwoComments(comments: CommentResponse[]): CommentResponse[] {
+  private static sortCommentsByDate(comments: CommentResponse[]): CommentResponse[] {
     const commentsToSort: CommentResponse[] = [...comments];
     return commentsToSort.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
   }
