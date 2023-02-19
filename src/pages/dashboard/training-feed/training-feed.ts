@@ -3,7 +3,7 @@ import BaseComponent from '../../../components/base-component/base-component';
 import Button from '../../../components/base-component/button/button';
 import Routes from '../../../app/router/router.types';
 import NavigationLink from '../../../components/base-component/link/link';
-import { User } from '../../../app/loader/loader-responses.types';
+import { ActivityResponse, User } from '../../../app/loader/loader-responses.types';
 import Post from './post/post';
 import { ProjectColors } from '../../../utils/consts';
 import Svg from '../../../components/base-component/svg/svg';
@@ -23,7 +23,8 @@ export default class TrainingFeed extends BaseComponent<'article'> {
 
   public static addPosts(data: User): HTMLDivElement[] {
     const posts: HTMLDivElement[] = [];
-    data.activities.forEach((activity) => {
+    const sortedActivities = TrainingFeed.sortActivitiesByDate(data.activities);
+    sortedActivities.forEach((activity) => {
       const post: Post = new Post();
       if (activity.kudos) {
         post.checkIfLikedPost(activity.kudos);
@@ -38,11 +39,7 @@ export default class TrainingFeed extends BaseComponent<'article'> {
       post.userImage.element.src = data.avatarUrl;
       post.name.element.textContent = data.username;
       post.activityTitle.element.textContent = activity.title;
-      post.date.element.textContent = `${new Date(activity.date).toLocaleString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      })} at ${activity.time}`;
+      post.date.element.textContent = TrainingFeed.changeDateFormat(activity.date, activity.time);
       post.distance.value = `${activity.distance} km`;
       post.speed.value = `${TrainingFeed.countSpeed(activity.duration, Number(activity.distance))} km/h`;
       post.time.value = `${TrainingFeed.changeTimeFormat(activity.duration)}`;
@@ -56,7 +53,6 @@ export default class TrainingFeed extends BaseComponent<'article'> {
       if (activity.route !== null) {
         post.initStaticMap(activity);
       }
-
       posts.unshift(post.element);
     });
     return posts;
@@ -91,5 +87,18 @@ export default class TrainingFeed extends BaseComponent<'article'> {
     const splittedTime: string[] = time.split(':');
     const [hours, minutes] = splittedTime;
     return `${hours}h ${minutes}m`;
+  }
+
+  private static changeDateFormat(dateString: string, time: string): string {
+    return `${new Date(dateString).toLocaleString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    })} at ${time}`;
+  }
+
+  private static sortActivitiesByDate(activities: ActivityResponse[]): ActivityResponse[] {
+    const activitiesToSort: ActivityResponse[] = [...activities];
+    return activitiesToSort.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
   }
 }

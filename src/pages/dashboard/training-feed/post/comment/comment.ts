@@ -96,6 +96,6 @@ export default class PostComment extends BaseComponent<'div'> {
       userId: this.userId,
       like: flag,
     };
-    updateComment(this.commentId, likeData).then((res: CommentResponse) => console.log(res));
+    updateComment(this.commentId, likeData);
   }
 }
