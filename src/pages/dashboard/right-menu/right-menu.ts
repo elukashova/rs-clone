@@ -12,6 +12,19 @@ import { provideRandomUsers } from '../../../utils/utils';
 export default class RightMenu extends BaseComponent<'aside'> {
   private token: Token | null = checkDataInLocalStorage('userSessionToken');
 
+  private friendsCardsLimit: number = 0;
+
+  private friendsWrapper: BaseComponent<'div'> = new BaseComponent('div', this.element, 'suggested-friends__wrapper');
+
+  private friendsHeading = new BaseComponent(
+    'h4',
+    this.friendsWrapper.element,
+    'suggested-friends__heading',
+    'Suggested friends',
+  );
+
+  private friendCard: RandomFriendCard | undefined;
+
   private linkWrapper: BaseComponent<'div'> = new BaseComponent('div', this.element, 'add-route-link__wrapper');
 
   private linkText: string = 'Add new route';
@@ -25,20 +38,7 @@ export default class RightMenu extends BaseComponent<'aside'> {
     },
   };
 
-  private friendsCardsLimit: number = 0;
-
   private AddRouteLink = new NavigationLink(this.replaceMainCallback, this.data);
-
-  private friendsWrapper: BaseComponent<'div'> = new BaseComponent('div', this.element, 'suggested-friends__wrapper');
-
-  private friendsHeading = new BaseComponent(
-    'h4',
-    this.friendsWrapper.element,
-    'suggested-friends__heading',
-    'Suggested friends',
-  );
-
-  private friendCard: RandomFriendCard | undefined;
 
   constructor(parent: HTMLElement, private replaceMainCallback: () => void) {
     super('aside', parent, 'right-menu');
