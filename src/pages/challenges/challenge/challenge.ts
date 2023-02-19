@@ -51,6 +51,8 @@ export default class Challenge extends BaseComponent<'div'> {
 
   public avatarsBlock!: BaseComponent<'div'>;
 
+  public challengeIsAdded = false;
+
   constructor(
     parent: HTMLElement,
     type: string,
@@ -141,6 +143,7 @@ export default class Challenge extends BaseComponent<'div'> {
       );
     }
     this.button = new Button(this.element, 'Accept', 'challenge__button');
+    this.addListeners();
   }
 
   public checkFriendsAndRender(): void {
@@ -169,9 +172,28 @@ export default class Challenge extends BaseComponent<'div'> {
     const endDate = new Date(Date.parse(date2));
     const timeDifference = endDate.getTime() - startDate.getTime();
     const daysToEnd = Math.ceil(timeDifference / (1000 * 3600 * 24));
-    console.log(daysToEnd);
     return daysToEnd;
   }
 
-  /* private addListeners(): void {} */
+  private addListeners(): void {
+    this.button.element.addEventListener('click', () => this.setButtonFunction());
+  }
+
+  private setButtonFunction(): void {
+    console.log(this.button, this.button.element);
+    if (this.challengeIsAdded === false) {
+      this.button.element.style.backgroundColor = ProjectColors.Orange;
+      this.button.element.textContent = 'Accepted';
+      this.challengeIsAdded = true;
+      // Надо добавить отправку челленджей юзера на сервер
+      /* this.button.element.removeEventListener('click', this.deleteChallengeCallback);
+      this.button.element.addEventListener('click', this.addChallengeCallback); */
+    } else {
+      this.button.element.style.backgroundColor = ProjectColors.Turquoise;
+      this.button.element.textContent = 'Accept';
+      this.challengeIsAdded = false;
+      /* this.button.element.removeEventListener('click', this.addChallengeCallback);
+      this.button.element.addEventListener('click', this.deleteChallengeCallback); */
+    }
+  }
 }

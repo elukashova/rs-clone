@@ -1,3 +1,4 @@
+/* eslint-disable arrow-body-style */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable max-lines-per-function */
 import './challenges.css';
@@ -15,6 +16,8 @@ export default class Challenges extends BaseComponent<'section'> {
   private token: Token | null = checkDataInLocalStorage('userSessionToken');
 
   public usersData: FriendData[] = [];
+
+  public challengesAll: Challenge[] = [];
 
   private formContainer = new BaseComponent('div', this.element, 'challenges__container');
 
@@ -59,6 +62,10 @@ export default class Challenges extends BaseComponent<'section'> {
     'challenges__walking challenges__activity',
   );
 
+  private typesAll: ActivityBlock[] = [];
+
+  private resultTypesAll: ActivityBlock[] = [];
+
   private challengesBlock = new BaseComponent('div', this.formContainer.element, 'challenges__challenges-block');
 
   constructor(parent: HTMLElement) {
@@ -73,6 +80,7 @@ export default class Challenges extends BaseComponent<'section'> {
       }); */
       this.usersData = users;
       this.renderPage(this.usersData);
+      this.addListeners();
     }
   }
 
@@ -136,6 +144,21 @@ export default class Challenges extends BaseComponent<'section'> {
       ['02/19/2023', '03/19/2023'],
       false,
     );
+
+    const yogaUsers = Challenges.checkChallenges(data, ChallengesTypes.Yoga);
+    const yoga = new Challenge(
+      this.challengesBlock.element,
+      ChallengesTypes.Yoga,
+      [Activities.Hiking, Activities.Walking],
+      yogaUsers,
+      'Yoga',
+      'Text',
+      ['02/19/2023', '03/19/2023'],
+      true,
+    );
+
+    this.challengesAll = [hiking, sloth, cycling, running, photo, yoga];
+    this.typesAll = [this.allTypes, this.cycling, this.running, this.walking, this.hiking];
   }
 
   private static checkChallenges(data: FriendData[], challenge: string): string[] {
@@ -145,5 +168,58 @@ export default class Challenges extends BaseComponent<'section'> {
       avatars.push(user.avatarUrl);
     });
     return avatars;
+  }
+
+  private addListeners(): void {
+    this.typesAll.forEach((type) => {
+      type.element.addEventListener('click', () => {
+        if (this.resultTypesAll.includes(type)) {
+          this.resultTypesAll.splice(this.resultTypesAll.indexOf(type), 1);
+        } else {
+          this.resultTypesAll.push(type);
+        }
+        this.showVisibleChallenges();
+      });
+    });
+  }
+
+  private filterCards(): Challenge[] {
+    return this.challengesAll.filter((challenge: Challenge): boolean => {
+      return challenge.allTypes.some((typeInChallenge: string): boolean => {
+        return this.resultTypesAll.some((type: ActivityBlock): boolean => {
+          if (type.challengeName === 'all') {
+            return true;
+          }
+          return type.challengeName.includes(typeInChallenge);
+        });
+      });
+    });
+  }
+
+  private showVisibleChallenges(): void {
+    this.doVisibleChallenge();
+    this.hiddenChallenge();
+
+    const visibleChallenges = this.filterCards();
+    console.log(visibleChallenges);
+    if (visibleChallenges.length) {
+      this.challengesAll.forEach((challenge) => {
+        visibleChallenges.forEach((visible) => {
+          if (challenge === visible) {
+            challenge.element.classList.remove('hidden');
+          }
+        });
+      });
+    } else {
+      this.doVisibleChallenge();
+    }
+  }
+
+  private hiddenChallenge(): void {
+    this.challengesAll.forEach((challenge) => challenge.element.classList.add('hidden'));
+  }
+
+  private doVisibleChallenge(): void {
+    this.challengesAll.forEach((challenge) => challenge.element.classList.remove('hidden'));
   }
 }

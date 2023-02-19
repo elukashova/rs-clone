@@ -4,13 +4,16 @@
 }
 
 .challenges__container {
-  width: 80%;
+  width: 90%;
 }
 
 .challenges__title-wrapper {
   display: flex;
-  flex-wrap: nowrap;
-  gap: 12%;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 2rem;
+  min-width: 100%;
+  margin: 2rem 0;
 }
 
 .challenges__title {
@@ -19,12 +22,13 @@
 .challenges__types-block {
   display: flex;
   justify-content: flex-start;
-  gap: 3rem;
+  flex-wrap: wrap;
+  gap: calc(16px + (22 - 18 * 0.7) * ((100vw - 320px) / 1920));
 }
 
 .challenges__challenges-block {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
   gap: 4rem;
 }
 
@@ -32,12 +36,14 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  gap: 0.3rem;
   width: 100%;
   height: 100%;
 }
 
 .challenge__image {
   width: 100%;
+  max-width: 400px;
   height: auto;
 }
 
@@ -64,7 +70,7 @@
   align-items: center;
   gap: 0.1rem;
   border-radius: 5px;
-  width: 7rem;
+  width: calc(5.2rem + 3vw);
   border: 1px solid #949494;
   padding: 0.5% 0.5rem;
   cursor: pointer;
@@ -96,27 +102,33 @@
 
 .challenge__avatars-block {
   position: relative;
-  height: 3.55rem;
+  height: 3rem;
+}
+
+.challenge__friend-avatar {
+  width: 3rem;
+  height: 3rem;
 }
 
 .challenge__avatars-block :nth-child(1) {
   position: absolute;
-  top: 0.3rem;
   left: 0;
 }
 
 .challenge__avatars-block :nth-child(2) {
   position: absolute;
-  top: 0.3rem;
-  left: 2.5rem;
+  left: 2rem;
 }
 
 .challenge__avatars-block :nth-child(3) {
   position: absolute;
-  top: 0.3rem;
-  left: 5rem;
+  left: 4rem;
 }
 
 .challenge__button {
   width: 100%;
+}
+
+.hidden {
+  display: none;
 }
