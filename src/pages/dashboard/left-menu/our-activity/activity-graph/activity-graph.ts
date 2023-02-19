@@ -7,6 +7,16 @@ import './activity-graph.css';
 // import moment from 'moment';
 
 export default class ActivityGraph extends BaseComponent<'div'> {
+  private dictionary: Record<string, string> = {
+    monday: 'dashboard.leftMenu.ourActivity.monday',
+    tuesday: 'dashboard.leftMenu.ourActivity.tuesday',
+    wednesday: 'dashboard.leftMenu.ourActivity.wednesday',
+    thursday: 'dashboard.leftMenu.ourActivity.thursday',
+    friday: 'dashboard.leftMenu.ourActivity.friday',
+    saturday: 'dashboard.leftMenu.ourActivity.saturday',
+    sunday: 'dashboard.leftMenu.ourActivity.sunday',
+  };
+
   private allDaysWrapper: BaseComponent<'div'> = new BaseComponent(
     'div',
     this.element,
@@ -17,7 +27,15 @@ export default class ActivityGraph extends BaseComponent<'div'> {
 
   private daysNumber: number = 7;
 
-  private daysLetters: string[] = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+  private daysLetters: string[] = [
+    'dashboard.leftMenu.ourActivity.monday',
+    'dashboard.leftMenu.ourActivity.tuesday',
+    'dashboard.leftMenu.ourActivity.wednesday',
+    'dashboard.leftMenu.ourActivity.thursday',
+    'dashboard.leftMenu.ourActivity.friday',
+    'dashboard.leftMenu.ourActivity.saturday',
+    'dashboard.leftMenu.ourActivity.sunday',
+  ];
 
   private allDivWrappers: HTMLDivElement[] = [];
 

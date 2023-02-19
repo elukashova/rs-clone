@@ -6,6 +6,10 @@ import Routes from '../../app/router/router.types';
 import NavigationLink from '../base-component/link/link';
 
 export default class Footer extends BaseComponent<'footer'> {
+  private dictionary: Record<string, string> = {
+    ourTeam: 'footer.ourTeam',
+  };
+
   private contentWrapper = new BaseComponent('div', this.element, 'footer-content-wrapper');
 
   private aboutTeamContainer: BaseComponent<'div'> = new BaseComponent(
@@ -46,7 +50,7 @@ export default class Footer extends BaseComponent<'footer'> {
   });
 
   private addActivityLink = new NavigationLink(this.replaceMainCallback, {
-    text: 'About our team',
+    text: this.dictionary.ourTeam,
     parent: this.aboutTeamContainer.element,
     additionalClasses: 'footer-link-team link',
     attributes: { href: Routes.AboutTeam },

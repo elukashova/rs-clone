@@ -20,6 +20,9 @@ i18next.use(LanguageDetector).init({
           findFriends: 'Find friends',
           challenges: 'Challenges',
         },
+        footer: {
+          ourTeam: 'About our team',
+        },
         map: {
           locationBtn: 'Go to current location',
           clearBtn: 'Clear map',
@@ -88,6 +91,9 @@ i18next.use(LanguageDetector).init({
             friendsHeading: 'Suggested friends',
           },
           trainingFeed: {
+            message: "You don't have anything on your feed yet, you can",
+            addActivity: 'Add Activity',
+            findFriends: 'Find friends',
             post: {
               distance: 'Distance',
               speed: 'Speed',
@@ -170,6 +176,9 @@ i18next.use(LanguageDetector).init({
           findFriends: 'Найти друзей',
           challenges: 'Испытания',
         },
+        footer: {
+          ourTeam: 'О нашей команде',
+        },
         map: {
           locationBtn: 'Перейти в указанную локацию',
           clearBtn: 'Очистить карту',
@@ -238,6 +247,9 @@ i18next.use(LanguageDetector).init({
             friendsHeading: 'Рекомендованные друзья',
           },
           trainingFeed: {
+            message: 'У вас нет ничего в Вашей ленте, Вы можете',
+            addActivity: 'Добавить тренировку',
+            findFriends: 'Найти друзей',
             post: {
               distance: 'Дистанция',
               speed: 'Скорость',
