@@ -2,11 +2,14 @@
 /* eslint-disable no-multiple-empty-lines */
 /* eslint-disable prettier/prettier */
 /* eslint-disable implicit-arrow-linebreak */
-/* eslint-disable import/prefer-default-export */
 
 import Loader from '../loader';
-import { CommentResponse, CreateCommentRequest, Endpoints, Methods, Token } from '../loader-requests.types';
+import { CreateCommentRequest, Endpoints, Methods, Token, UpdateComment } from '../loader-requests.types';
+import { CommentResponse } from '../loader-responses.types';
 
 
 export const createComment = (token: Token, params: CreateCommentRequest): Promise<CommentResponse> =>
   Loader.postData(Methods.Post, Endpoints.CreateComment, params, token);
+
+export const updateComment = (id: number, params: UpdateComment): Promise<CommentResponse> =>
+  Loader.putData(Methods.Put, `${Endpoints.UpdateComment}${id}`, params);

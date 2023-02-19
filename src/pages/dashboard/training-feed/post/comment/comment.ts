@@ -5,6 +5,8 @@ import SvgNames from '../../../../../components/base-component/svg/svg.types';
 import Picture from '../../../../../components/base-component/picture/picture';
 import { ProjectColors } from '../../../../../utils/consts';
 import { CommentResponse } from '../../../../../app/loader/loader-responses.types';
+import { updateComment } from '../../../../../app/loader/services/comment-services';
+import { UpdateComment } from '../../../../../app/loader/loader-requests.types';
 
 export default class PostComment extends BaseComponent<'div'> {
   private photo = new Picture(this.element, 'comment__photo');
@@ -27,27 +29,44 @@ export default class PostComment extends BaseComponent<'div'> {
 
   private userId: string;
 
+  private commentId: number;
+
+  private likesAll: string[];
+
+  private isLiked: boolean = false;
+
   constructor(data: CommentResponse) {
     super('div', undefined, 'comment');
     this.photo.element.src = data.avatarUrl;
     this.date.element.textContent = PostComment.createTimeSinceComment(data.createdAt);
     this.userId = data.userId;
+    this.commentId = data.id;
     this.name.element.textContent = data.username;
     this.message.element.textContent = data.body;
-    this.toggleLike();
+    this.likesAll = data.likes;
+
+    this.checkIfLikedPost(this.likesAll);
+    this.like.element.addEventListener('click', this.toggleLike);
   }
 
-  private toggleLike(): void {
-    let flag: boolean = false;
-    this.like.element.addEventListener('click', () => {
-      if (!flag) {
-        this.likeSvg.updateFillColor(ProjectColors.Orange);
-        flag = true;
-      } else {
-        this.likeSvg.updateFillColor(ProjectColors.Grey);
-        flag = false;
-      }
-    });
+  private toggleLike = (): void => {
+    this.updateLikeColor();
+    this.updateLikeInfoOnServer(this.isLiked);
+  };
+
+  private updateLikeColor(): void {
+    if (!this.isLiked) {
+      this.likeSvg.updateFillColor(ProjectColors.Grey);
+      this.isLiked = true;
+    } else {
+      this.likeSvg.updateFillColor(ProjectColors.Orange);
+      this.isLiked = false;
+    }
+  }
+
+  private checkIfLikedPost(likes: string[]): void {
+    this.isLiked = likes.includes(this.userId);
+    this.updateLikeColor();
   }
 
   private static createTimeSinceComment(commentDate: Date): string {
@@ -69,5 +88,13 @@ export default class PostComment extends BaseComponent<'div'> {
       return `${count} ${interval.text}${count !== 1 ? 's' : ''} ago`;
     }
     return 'Just now';
+  }
+
+  private updateLikeInfoOnServer(flag: boolean): void {
+    const likeData: UpdateComment = {
+      userId: this.userId,
+      like: flag,
+    };
+    updateComment(this.commentId, likeData).then((res: CommentResponse) => console.log(res));
   }
 }

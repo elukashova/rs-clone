@@ -95,4 +95,10 @@ export type CreateCommentRequest = {
   body: string;
 };
 
-export type UpdateRequestData = UpdateUserData | UpdateActivity;
+export type UpdateComment = {
+  body?: string;
+  userId?: string;
+  like?: boolean;
+};
+
+export type UpdateRequestData = UpdateUserData | UpdateActivity | UpdateComment;

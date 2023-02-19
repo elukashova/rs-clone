@@ -13,7 +13,7 @@
 .comment__wrapper {
   display: flex;
   flex-direction: column;
-  gap: 0.5em;
+  gap: 0.3em;
 }
 
 .comment__name {
@@ -43,6 +43,7 @@
   cursor: pointer;
   width: 1.2em;
   height: 1.2em;
+  margin-bottom: 0.5em;
 }
 
 .comment__like:hover {

@@ -23,6 +23,7 @@ export type CommentResponse = {
   userId: string;
   avatarUrl: string;
   username: string;
+  likes: string[];
 };
 
 export type ActivityResponse = {

@@ -121,15 +121,6 @@ export default class Post extends BaseComponent<'div'> {
   private postComment = (): void => {
     this.commentArea.element.classList.remove('active');
     this.handleCommentArea();
-    // const data = {
-    //   id: 9,
-    //   body: 'my first fake comment',
-    //   createdAt: new Date('2023-02-18T19:45:39.052Z'),
-    //   userId: 'd6b7f86d-17ff-418d-a3f9-cc1e3e5c8574',
-    //   avatarUrl: '../../assets/images/avatars/default.png',
-    //   username: 'Elena Lukashova',
-    // };
-    // this.element.append(new Comment(data).element);
     const commentData: CreateCommentRequest = {
       activityId: this.postId,
       body: this.commentArea.textValue,
