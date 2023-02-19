@@ -26,7 +26,7 @@ export default class NewRoutePage extends BaseComponent<'section'> {
   // eslint-disable-next-line max-len
   private routeTypes: string[] = [this.dictionary.routeType, this.dictionary.walking, this.dictionary.cycling];
 
-  private heading = new BaseComponent('h3', this.element, 'new-route-page__heading', this.dictionary.heading);
+  private heading = new BaseComponent('h2', this.element, 'new-route-page__heading titles', this.dictionary.heading);
 
   private optionsContainer = new BaseComponent('div', this.element, 'new-route-page__options');
 

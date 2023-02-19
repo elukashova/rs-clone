@@ -21,7 +21,7 @@ export default class Header extends BaseComponent<'header'> {
     text: '',
     parent: this.contentWrapper.element,
     additionalClasses: 'header-link-logo link',
-    attributes: { href: Routes.Dashboard },
+    attributes: { href: Routes.SignUp },
   });
 
   private logoIcon = new Picture(this.logoLink.element, 'header-icon_logo', {
@@ -65,6 +65,7 @@ export default class Header extends BaseComponent<'header'> {
     text: 'header.exit',
     parent: this.avatarDropDownContent.element,
     additionalClasses: 'header-link-avatar link',
+    attributes: { href: Routes.LogOut },
   });
 
   private addDropDown = new BaseComponent('div', this.linksContainer.element, 'header-add-dropdown');
@@ -113,17 +114,9 @@ export default class Header extends BaseComponent<'header'> {
 
   constructor(parent: HTMLElement, private replaceMainCallback: () => void) {
     super('header', parent, 'header');
-    this.openMenu();
-    // this.changeLanguageOnThisPage();
     this.changeLanguage();
     this.changeTheme();
     this.subscribeToEvents();
-  }
-
-  public openMenu(): void {
-    this.avatarIcon.element.addEventListener('click', () => {
-      console.log('open avatar menu');
-    });
   }
 
   public changeLanguage(): void {

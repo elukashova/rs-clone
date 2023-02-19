@@ -22,6 +22,12 @@ enum SvgNames {
   CloseRound = 'close-round',
   CloseThin = 'close-thin',
   Pencil = 'pencil',
+  DropdownDown = 'dropdown-down',
+  DropdownUp = 'dropdown-up',
+  Comment = 'comment',
+  Heart = 'heart',
+  Like = 'like',
+  HeartFull = 'heart-full',
 
   Hiking = 'hiking',
   Running = 'running',

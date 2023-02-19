@@ -6,11 +6,11 @@ import SvgNames from '../../../../components/base-component/svg/svg.types';
 import Button from '../../../../components/base-component/button/button';
 import eventEmitter from '../../../../utils/event-emitter';
 import Picture from '../../../../components/base-component/picture/picture';
-import EditableTextarea from '../../../../components/base-component/textarea/editable-textarea';
-import { TextareaTypes } from '../../../../components/base-component/textarea/editable-textarea.types';
+import EditableTextarea from '../../../../components/base-component/textarea/editable-textarea/editable-textarea';
+import { TextareaTypes } from '../../../../components/base-component/textarea/editable-textarea/editable-textarea.types';
 import { ProjectColors } from '../../../../utils/consts';
 import Routes from '../../../../app/router/router.types';
-import { User } from '../../../../app/loader/loader.types';
+import { User } from '../../../../app/loader/loader-responses.types';
 import { EventData } from '../../../../utils/event-emitter.types';
 
 export default class ProfileCard extends BaseComponent<'div'> {

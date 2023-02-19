@@ -1,14 +1,15 @@
-import { Token, UpdateUserData, User } from '../../../app/loader/loader.types';
-import { updateUser } from '../../../app/loader/services/user-services';
-import { checkDataInLocalStorage } from '../../../utils/local-storage';
-import BaseComponent from '../base-component';
-import SvgNames from '../svg/svg.types';
+import { Token, UpdateUserData } from '../../../../app/loader/loader-requests.types';
+import { User } from '../../../../app/loader/loader-responses.types';
+import { updateUser } from '../../../../app/loader/services/user-services';
+import { checkDataInLocalStorage } from '../../../../utils/local-storage';
+import BaseComponent from '../../base-component';
+import SvgNames from '../../svg/svg.types';
 import { TextareaTypes, TextareaLength, TextareaColsNumber } from './editable-textarea.types';
-import { ProjectColors, VALID_NAME } from '../../../utils/consts';
-import { ValidityMessages } from '../../../pages/splash/forms/form.types';
-import DefaultUserInfo from '../../../pages/dashboard/left-menu/left-menu.types';
-import './textarea.css';
-import EditBlock from '../edit-block/edit-block';
+import { ProjectColors, VALID_NAME } from '../../../../utils/consts';
+import { ValidityMessages } from '../../../../pages/splash/forms/form.types';
+import DefaultUserInfo from '../../../../pages/dashboard/left-menu/left-menu.types';
+import '../textarea.css';
+import EditBlock from '../../edit-block/edit-block';
 
 export default class EditableTextarea extends BaseComponent<'div'> {
   private textarea: BaseComponent<'textarea'> = new BaseComponent(
@@ -18,7 +19,6 @@ export default class EditableTextarea extends BaseComponent<'div'> {
     '',
     {
       spellcheck: 'false',
-      autofocus: 'off',
       autocomplete: 'off',
       required: '',
       rows: '1',

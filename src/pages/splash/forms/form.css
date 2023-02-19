@@ -1,43 +1,83 @@
 .login-form,
 .signup-form {
-  margin: auto;
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  width: 863px;
-  padding: 100px 120px 40px;
+  justify-content: center;
+  gap: 1em;
+  width: calc(20em + 25vw);
+  padding: 3.5em 6em 3.5em;
   background-color: white;
-}
-
-.login-form-message,
-.signup__form-message {
-  color: grey;
-  font-size: 18px;
+  border-radius: 5px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
 }
 
 .signup__form_header,
 .login__form_header {
-  margin: 0 0 10px;
-  font-size: 30px;
+  margin: 0;
+  padding: 0;
+  font-size: calc(1em + 1vw);
 }
 
-.form-input input {
-  height: 54px;
-  padding: 0 10px;
+.login-form-message,
+.signup__form-message {
+  margin: 0 0 0.5em;
+  color: #949494;
+  font-size: calc(0.5em + 0.7vw);
+  font-weight: 300;
+}
+
+.form-input .input-text,
+.signup__dropdown_input {
+  height: 2.6em;
+  padding: 0 0.6em;
   border-radius: 6px;
-  border: 2px solid #1565d8;
-  box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.6);
-  font-size: 16px;
-  color: #494949;
+  border: 1px solid #1cbaa7;
+  font-size: 1.1em;
+  font-family: 'Work Sans', sans-serif;
+  color: #949494;
+  transition: all 0.3s;
+}
+
+.form-input .input-text:focus,
+.signup__dropdown_input:focus {
+  border: 1px solid #219486;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+}
+
+.form-input .label,
+.signup__dropdown .label {
+  text-transform: uppercase;
+  font-size: calc(0.5em + 0.4vw);
+}
+
+.signup__buttons-wrapper {
+  display: flex;
+  justify-content: space-between;
 }
 
 .signup__message-login,
 .login_message-sigup {
   align-self: center;
+  font-size: calc(0.5em + 0.5vw);
 }
 
-.invalid {
-  box-shadow: 0 0 3px rgba(255, 0, 0, 0.5);
-  border: 1px red solid;
+.invalid .input-text {
+  border: 1px solid red;
   outline: 0;
+}
+
+.invalid .input-text:focus {
+  border: 1px solid red;
+  outline: 0;
+}
+
+.signup__login-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.signup__error-message,
+.login__error-message {
+  font-size: calc(0.5em + 0.5vw);
 }

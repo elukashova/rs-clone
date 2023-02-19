@@ -1,5 +1,6 @@
+import './google-btn.css';
 import jwtdecode from 'jwt-decode';
-import { LogIn, SignUp } from '../../../app/loader/loader.types';
+import { LogIn, SignUp } from '../../../app/loader/loader-requests.types';
 import { GOOGLE_CLIENT_ID } from '../../../utils/consts';
 import BaseComponent from '../../../components/base-component/base-component';
 import { GoogleAccount, GoogleBtnData, GoogleBtnTypes, LogInCallback, SignUpCallback } from './google-btn.types';
@@ -22,7 +23,7 @@ export default class GoogleButton extends BaseComponent<'div'> {
   };
 
   constructor(private data: GoogleBtnData, type: GoogleBtnTypes, private isFirstAccess: boolean) {
-    super('div', data.parent, data.btnClass);
+    super('div', data.parent, `${data.btnClass} sign_in_btn_wrapper`);
     this.googleSignUpCallback = this.isFirstAccess ? this.data.signupCallback : undefined;
     this.googleLogInCallback = !this.isFirstAccess ? this.data.loginCallback : undefined;
     this.initializeGoogleBtnId(type);
@@ -43,6 +44,7 @@ export default class GoogleButton extends BaseComponent<'div'> {
       text: type,
       size: 'large',
       type: 'standard',
+      shape: 'square',
     });
   }
 

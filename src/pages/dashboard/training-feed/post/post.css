@@ -5,36 +5,35 @@
   width: 100%;
   padding: 2em;
   background: white;
+  border-radius: 5px;
 }
 
 .post__user-info {
-  display: flex;
-  align-items: center;
-  gap: 2em;
+  display: grid;
+  grid-template-columns: 1fr 10fr 1fr;
+  gap: 1.5em;
 }
 
 .post__user-info-container {
   display: flex;
   flex-direction: column;
-  gap: 0.5em;
+  gap: 0.3em;
 }
 
 .post__photo {
-  width: 3em;
-  height: 3em;
+  width: 3.5rem;
+  height: 3.5rem;
   border-radius: 50%;
 }
 
-.post__activity-icon {
-  width: 3em;
-  height: 3em;
-  border-radius: 50%;
+.post__name {
+  text-transform: uppercase;
+  font-size: calc(0.7em + 0.5vw);
 }
 
-.post__activity-icon > svg {
-  display: block;
-  width: 100%;
-  height: 100%;
+.post__data-place {
+  font-weight: 300;
+  color: #949494;
 }
 
 .post__edit {
@@ -49,27 +48,64 @@
 }
 
 .post__activity-container {
-  display: flex;
-  align-items: center;
-  gap: 2em;
+  display: grid;
+  grid-template-columns: 1fr 10fr;
+  gap: 1.3em;
+}
+
+.post__activity-icon {
+  width: 3.5em;
+  height: calc(0.8em + 1vw);
+  border-radius: 50%;
+}
+
+.post__activity-icon > svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.post__activity-title {
+  padding-top: 0.2em;
+  margin-bottom: 1em;
+  font-size: calc(0.7em + 0.5vw);
+  font-weight: 600;
 }
 
 .post__info {
   display: flex;
-  /* gap: 40px; */
-  margin-left: 4.5em;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
 }
 
-.post__info > div {
+.post__data {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 1em;
+  width: 100%;
+}
+
+.post__data .post__data-single:not(:last-child) {
+  border-right: 1px solid #90dad1;
+}
+
+.post__data > div:not(:first-child) {
+  padding-left: 0.5em;
+}
+
+.post__data-single {
   display: flex;
   flex-direction: column;
-  gap: 1em;
-  width: 8em;
-  padding: 0.5em;
+  gap: 0.3em;
+  width: 25%;
 }
 
-.post__info > div:not(:last-child) {
-  border-right: 1px solid grey;
+.post__data-title {
+  font-size: calc(0.5em + 0.5vw);
+  text-transform: uppercase;
+  font-weight: 400;
+  color: #ff8d24;
 }
 
 .post__icons {
@@ -79,41 +115,96 @@
 }
 
 .post__icon {
-  padding: 1em;
-  border-radius: 4px;
-  background-color: wheat;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.1em;
+  width: 4.5em;
+  height: 2em;
+  padding: 0.5em;
+  font-family: 'Work Sans', sans-serif;
+  border-radius: 5px;
+}
+
+.post__icon-counter {
+  pointer-events: none;
+  user-select: none;
 }
 
 .post__like,
 .post__comment {
-  width: 1em;
-  height: 1em;
   cursor: pointer;
 }
 
+.post__comment {
+  padding-top: 0.3em;
+  width: calc(0.9em + 1vw);
+  height: 2em;
+}
+
+.post__like {
+  width: calc(0.5em + 0.8vw);
+  height: 2em;
+}
+
+.post__add-comment-wrapper {
+  display: grid;
+  grid-template-columns: 3.5em 10fr 1fr;
+  gap: 1.5em;
+  border-width: 80%;
+  padding-top: 1em;
+}
+
+.post__add-comment-user {
+  height: calc(0.8em + 1.3vw);
+  width: calc(0.8em + 1.3vw);
+  justify-self: center;
+}
+
 .post__add-comment {
-  display: none;
-  width: 80%;
-  margin: 1em auto;
+  justify-self: stretch;
+  width: 100%;
 }
 
 .post__add-comment > textarea {
   width: 100%;
-  height: 8em;
-  padding: 2em;
+  height: 7em;
+  padding: 1em;
   resize: none;
+  border-radius: 5px;
+  border: 1px solid #949494;
+  font-family: 'Work Sans', sans-serif;
+  font-size: calc(0.7em + 0.3vw);
+  color: #949494;
 }
 
-.post__button {
-  display: block;
-  margin-left: auto;
-  margin-top: 1em;
+.post__add-comment-button {
+  height: 2em;
+  padding: 0.5em;
 }
 
-.post__button:disabled {
-  background-color: grey;
+.post__add-comment-button:disabled {
+  background-color: #90dad1;
+  pointer-events: none;
 }
 
-.active {
-  display: block;
+.map img {
+  width: 100%;
+}
+
+.post__add-comment_show-more {
+  font-weight: 300;
+  color: #949494;
+  font-size: calc(0.5em + 0.4vw);
+  transition: color 0.3s;
+  cursor: pointer;
+}
+
+.post__add-comment_show-more:hover {
+  color: #1cbaa7;
+}
+
+.comments-added {
+  padding-bottom: 1em;
+  border-bottom: 1px solid #90dad1;
 }

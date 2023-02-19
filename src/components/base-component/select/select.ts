@@ -1,110 +1,144 @@
 import i18next from 'i18next';
-import { REST_COUNTRIES } from '../../../utils/consts';
+import './select.css';
 import { getClassNames } from '../../../utils/utils';
 import BaseComponent from '../base-component';
-import { CountryResponse } from '../../../pages/splash/forms/form.types';
+import SvgButton from '../button/svg-btn';
+import SvgNames from '../svg/svg.types';
+import { ProjectColors } from '../../../utils/consts';
 
-export default class Select extends BaseComponent<'select'> {
-  private label: BaseComponent<'label'> = new BaseComponent('label', undefined, '', 'Country');
+export default class Select extends BaseComponent<'div'> {
+  public label: BaseComponent<'label'> = new BaseComponent(
+    'label',
+    this.element,
+    `${this.prefix}__label label`,
+    // 'Type of activity',
+  );
+
+  private title = new BaseComponent('span', this.label.element, '', 'Type of activity');
+
+  public select: BaseComponent<'select'> = new BaseComponent(
+    'select',
+    this.label.element,
+    `${this.prefix}__select select`,
+    '',
+    { readonly: '' },
+  );
 
   private options: string[];
 
-  private optionsAll: HTMLOptionElement[] = [];
+  public optionsAll: HTMLLIElement[] = [];
 
-  private callToAction: string = '--Please choose your country--';
+  private dropdownButton: SvgButton = new SvgButton(
+    this.label.element,
+    '',
+    `${this.prefix}__select__dropdown_btn select__dropdown_btn`,
+  );
+
+  private listWrapper: BaseComponent<'div'> = new BaseComponent(
+    'div',
+    this.element,
+    `${this.prefix}__select_dropdown_list-wrapper select__dropdown_list-wrapper`,
+  );
+
+  private list: BaseComponent<'ul'> = new BaseComponent(
+    'ul',
+    this.listWrapper.element,
+    `${this.prefix}__select_dropdown_list select__dropdown_list`,
+  );
+
+  private currentOption: BaseComponent<'option'>;
 
   constructor(
-    parent: HTMLElement,
+    private parent: HTMLElement,
     options: string[],
+    private prefix: string,
     additionalClasses?: string,
-    countries?: boolean,
     attributes?: {
       [key: string]: string;
     },
   ) {
-    const classes = getClassNames('select', additionalClasses);
-    super('select', undefined, classes, '', attributes);
+    const classes = getClassNames('select-wrapper', additionalClasses);
+    super('div', parent, classes, '', attributes);
+
     this.options = options;
-    if (!countries) {
-      parent.append(this.element);
-      this.addOptions(options);
-    } else {
-      parent.append(this.label.element);
-      parent.append(this.element);
-      this.createCountriesList();
-      this.element.setAttribute('required', '');
-    }
-    this.element.addEventListener('change', () => {
-      if (this.optionsAll) {
-        this.getSelectedValue();
-      }
-    });
-    this.setOptionNames();
+    this.currentOption = this.setDefaultValue();
+
+    this.addOptions(options);
+    this.setDropDownButton();
+    this.addEventListeners();
+  }
+
+  private addEventListeners(): void {
+    this.element.addEventListener('mouseover', this.selectCallback);
+    // this.select.element.addEventListener('blur', this.blurCallback);
+    this.element.addEventListener('mouseout', this.hideOptionsList);
+    this.dropdownButton.element.setAttribute('disabled', '');
   }
 
   public addOptions(options: string[]): void {
     options.forEach((option) => {
-      const optionElement = this.createOption(i18next.t(option)).element;
-      this.element.append(optionElement);
+      const optionElement = Select.createOption(option).element;
+      this.list.element.append(optionElement);
       this.optionsAll.push(optionElement);
+      optionElement.addEventListener('click', this.collectInputCallback);
     });
   }
 
-  private createOption(name: string): BaseComponent<'option'> {
-    return new BaseComponent('option', undefined, '', name, {
-      value: name === this.callToAction ? '' : name,
+  private static createOption(name: string): BaseComponent<'li'> {
+    return new BaseComponent('li', undefined, 'select__dropdown_list-option', name, {
+      value: name,
     });
-  }
-
-  private createCountriesList(): void {
-    Select.retrieveCountriesData().then((countriesList: string[]) => {
-      countriesList.unshift(this.callToAction);
-      this.addOptions(countriesList);
-    });
-  }
-
-  private static async retrieveCountriesData(): Promise<string[]> {
-    return Select.loadCountrySelectOptions().then((countries: CountryResponse[]) => {
-      const names: string[] = countries.reduce((result: string[], country: CountryResponse) => {
-        result.push(country.name);
-        return result;
-      }, []);
-      return names;
-    });
-  }
-
-  private static loadCountrySelectOptions(): Promise<CountryResponse[]> {
-    return fetch(REST_COUNTRIES).then((response: Response) => response.json());
   }
 
   public get selectValue(): string {
-    const value: string = this.element.value === this.callToAction ? '' : this.element.value;
-    if (!value) {
-      this.showInvalidState();
-    }
-    return value;
+    return this.select.element.value;
   }
 
-  private showInvalidState(): void {
-    this.element.classList.add('invalid');
-    this.element.addEventListener('change', this.checkIfValidSelectCallback);
+  private setDropDownButton(): void {
+    this.dropdownButton.appendSvg(SvgNames.DropdownDown, 'select', ProjectColors.Grey);
   }
 
-  private checkIfValidSelectCallback = (): void => {
-    if (this.selectValue !== '') {
-      this.element.classList.remove('invalid');
-      this.element.removeEventListener('change', this.checkIfValidSelectCallback);
+  public collectInputCallback = (e: Event): void => {
+    if (e.target instanceof HTMLLIElement) {
+      this.currentOption.element.value = `${e.target.textContent}`;
+      this.currentOption.element.textContent = `${e.target.textContent}`;
+      this.hideOptionsList();
     }
   };
 
-  public getSelectedValue(): string {
-    let selectedIndex: number = -1;
-    this.optionsAll.forEach((option: HTMLOptionElement, index: number): void => {
-      if (option.selected) {
-        selectedIndex = index;
+  private setDefaultValue(): BaseComponent<'option'> {
+    return new BaseComponent('option', this.select.element, 'select__option-default', this.options[0]);
+  }
+
+  private selectCallback = (e: Event): void => {
+    e.preventDefault();
+    if (!this.listWrapper.element.classList.contains('visible')) {
+      this.dropdownButton.replaceBtnSvg(SvgNames.DropdownUp, 'select', ProjectColors.Grey);
+      this.showOptionsList();
+      this.highlightCurrentOption();
+    } else {
+      this.hideOptionsList();
+    }
+  };
+
+  private showOptionsList(): void {
+    this.listWrapper.element.classList.add('visible');
+  }
+
+  private hideOptionsList = (): void => {
+    this.listWrapper.element.classList.remove('visible');
+    this.dropdownButton.replaceBtnSvg(SvgNames.DropdownDown, 'select', ProjectColors.Grey);
+  };
+
+  private highlightCurrentOption(): void {
+    this.optionsAll.forEach((option) => {
+      if (option.classList.contains('currentSelection')) {
+        option.classList.remove('currentSelection');
+      }
+      if (option.textContent === this.currentOption.element.value) {
+        option.classList.add('currentSelection');
       }
     });
-    return this.options[selectedIndex];
   }
 
   public setOptionNames(): void {

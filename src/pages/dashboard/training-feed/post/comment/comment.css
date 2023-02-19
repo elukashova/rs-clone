@@ -1,21 +1,57 @@
 .comment {
+  display: grid;
+  grid-template-columns: 3.5em 1fr;
+  gap: 1.5em;
+}
+
+.comment__photo {
+  height: calc(0.8em + 1.3vw);
+  width: calc(0.8em + 1.3vw);
+  justify-self: center;
+}
+
+.comment__wrapper {
   display: flex;
   flex-direction: column;
-  gap: 1em;
+  gap: 0.3em;
+}
+
+.comment__name {
+  font-weight: 400;
+  font-size: calc(0.5em + 0.5vw);
+}
+
+.comment__date {
+  font-weight: 300;
+  color: #949494;
+  font-size: calc(0.5em + 0.4vw);
+}
+
+.comment__message {
+  margin-bottom: 0.5em;
+  font-weight: 300;
+  font-size: calc(0.5em + 0.4vw);
+}
+
+.comment__icons {
+  display: flex;
+  justify-content: space-between;
 }
 
 .comment__like {
   display: block;
-  width: 30px;
-  height: 30px;
+  cursor: pointer;
+  width: 1.2em;
+  height: 1.2em;
+  margin-bottom: 0.5em;
+}
+
+.comment__like:hover {
+  fill: #219486;
 }
 
 .comment__info {
   display: flex;
-  align-items: center;
-  gap: 1em;
-}
-
-.comment__date {
-  margin-left: auto;
+  flex-direction: row;
+  justify-content: space-between;
 }

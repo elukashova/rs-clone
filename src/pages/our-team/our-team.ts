@@ -18,7 +18,7 @@ export default class OurTeam extends BaseComponent<'section'> {
 
   private formContainer = new BaseComponent('div', this.element, 'our-team__container');
 
-  private title = new BaseComponent('h2', this.formContainer.element, 'our-team__title', this.dictionary.title);
+  private title = new BaseComponent('h2', this.formContainer.element, 'our-team__title titles', this.dictionary.title);
 
   private infoAboutTeam = new BaseComponent(
     'p',
