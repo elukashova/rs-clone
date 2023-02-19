@@ -74,6 +74,7 @@ export type FriendData = {
   country?: string;
   avatarUrl: string;
   activities: Activity[];
+  challenges: string[];
 };
 
 export enum SportType {

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable max-lines-per-function */
 import './challenges.css';
 import BaseComponent from '../../components/base-component/base-component';
 import ActivityBlock from './activity-element/activity-element';
@@ -5,7 +7,9 @@ import SvgNames from '../../components/base-component/svg/svg.types';
 // import Challenge from './challenge/challenge';
 import { checkDataInLocalStorage } from '../../utils/local-storage';
 import { FriendData, Token } from '../../app/loader/loader.types';
-// import { getFriends } from '../../app/loader/services/friends-services';
+import users from '../../mock/find-friends.data';
+import { ChallengesTypes, Activities } from './types-challenges';
+import Challenge from './challenge/challenge';
 
 export default class Challenges extends BaseComponent<'section'> {
   private token: Token | null = checkDataInLocalStorage('userSessionToken');
@@ -14,14 +18,11 @@ export default class Challenges extends BaseComponent<'section'> {
 
   private formContainer = new BaseComponent('div', this.element, 'challenges__container');
 
-  private challengeTitle = new BaseComponent(
-    'h2',
-    this.formContainer.element,
-    'challenges__title titles',
-    'Challenges',
-  );
+  private titleWrapper = new BaseComponent('div', this.formContainer.element, 'challenges__title-wrapper');
 
-  private typeOfChallenge = new BaseComponent('div', this.formContainer.element, 'challenges__types-block');
+  private challengeTitle = new BaseComponent('h2', this.titleWrapper.element, 'challenges__title titles', 'Challenges');
+
+  private typeOfChallenge = new BaseComponent('div', this.titleWrapper.element, 'challenges__types-block');
 
   private allTypes = new ActivityBlock(
     this.typeOfChallenge.element,
@@ -62,23 +63,87 @@ export default class Challenges extends BaseComponent<'section'> {
 
   constructor(parent: HTMLElement) {
     super('section', parent, 'challenges challenges-section');
-    // this.getFriendsRequest();
-    /* .then((data) => {
-      this.renderPage(data);
-    }); */
+    this.getFriendsRequest();
   }
 
-  /*  private getFriendsRequest() {
+  private getFriendsRequest(): void {
     if (this.token) {
-      getFriends(this.token).then((usersData: FriendData[]): void => {
+      /* getFriends(this.token).then((usersData: FriendData[]): void => {
         this.usersData = usersData;
-      });
+      }); */
+      this.usersData = users;
+      this.renderPage(this.usersData);
     }
-  } */
+  }
 
-  /* private renderPage(data: FriendData[]): void {
-    console.log(data);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const first = new Challenge(this.challengesBlock.element, 'running');
-  } */
+  private renderPage(data: FriendData[]): void {
+    const hikingUsers = Challenges.checkChallenges(data, ChallengesTypes.Hiking);
+    const hiking = new Challenge(
+      this.challengesBlock.element,
+      ChallengesTypes.Hiking,
+      [Activities.Hiking, Activities.Walking, Activities.Running, Activities.Cycling],
+      hikingUsers,
+      'Conquer your Everest',
+      'Climb to a height of 8,849 meters in a year. Each of your trainings takes into account the height elevation that has been completed. Your task is to accumulate a height equal to the height of Everest in a year.',
+      ['03/01/2023', '03/01/2024'],
+      true,
+    );
+
+    const slothUsers = Challenges.checkChallenges(data, ChallengesTypes.Sloth);
+    const sloth = new Challenge(
+      this.challengesBlock.element,
+      ChallengesTypes.Sloth,
+      [Activities.Walking],
+      slothUsers,
+      'International Sloth Day',
+      'Just relax. Spend the day doing nothing at all! Well... maybe just a little bit of movement to eat deliciously',
+      ['10/20/2023', '10/20/2023'],
+      false,
+    );
+
+    const cyclingUsers = Challenges.checkChallenges(data, ChallengesTypes.Cycling);
+    const cycling = new Challenge(
+      this.challengesBlock.element,
+      ChallengesTypes.Cycling,
+      [Activities.Cycling],
+      cyclingUsers,
+      'Unbending spirit',
+      "It can be hard to focus on a goal, but this week will be an exception. Take part in the challenge in which you have to make a trip by cycle every day. Are you ready? Let's go!",
+      ['02/25/2023', '03/04/2023'],
+      true,
+    );
+
+    const runningUsers = Challenges.checkChallenges(data, ChallengesTypes.Running);
+    const running = new Challenge(
+      this.challengesBlock.element,
+      ChallengesTypes.Running,
+      [Activities.Hiking, Activities.Walking, Activities.Running, Activities.Cycling],
+      runningUsers,
+      'The Tour de Valiance',
+      'Do you know The Tour de France - the most famous and most challenging 3,000 km cycle race in the world? Not everyone will be able to ride it, but you have a chance to ride, walk or run its length within a year. Will you accept the challenge?',
+      ['03/01/2023', '03/01/2024'],
+      true,
+    );
+
+    const photoUsers = Challenges.checkChallenges(data, ChallengesTypes.Photo);
+    const photo = new Challenge(
+      this.challengesBlock.element,
+      ChallengesTypes.Photo,
+      [Activities.Hiking, Activities.Walking, Activities.Running, Activities.Cycling],
+      runningUsers,
+      'Like Van Gogh',
+      'Launch applications to track your movement and draw a picture (for example, a cat, a heart or maybe "The Starry Night"?) as you move. Tag #striversChallenge on your social media. We will share the coolest track pictures!',
+      ['02/19/2023', '03/19/2023'],
+      false,
+    );
+  }
+
+  private static checkChallenges(data: FriendData[], challenge: string): string[] {
+    const avatars: string[] = [];
+    const filtered = data.filter((user: FriendData) => user.challenges.includes(challenge));
+    filtered.forEach((user: FriendData) => {
+      avatars.push(user.avatarUrl);
+    });
+    return avatars;
+  }
 }

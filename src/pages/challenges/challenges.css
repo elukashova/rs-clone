@@ -1,10 +1,16 @@
 .challenges-section {
-  width: 80%;
   display: flex;
   justify-content: center;
 }
 
 .challenges__container {
+  width: 80%;
+}
+
+.challenges__title-wrapper {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 12%;
 }
 
 .challenges__title {
@@ -14,6 +20,42 @@
   display: flex;
   justify-content: flex-start;
   gap: 3rem;
+}
+
+.challenges__challenges-block {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  gap: 4rem;
+}
+
+.challenge {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 100%;
+  height: 100%;
+}
+
+.challenge__image {
+  width: 100%;
+  height: auto;
+}
+
+.challenge__title {
+  font-size: 1rem;
+}
+
+.challenge__description,
+.challenge__date-start,
+.challenge__date-end,
+.challenge__days-to-end,
+.challenge__friend {
+  font-size: 0.8rem;
+}
+
+.challenge__date-start,
+.challenge__date-end {
+  font-style: italic;
 }
 
 .challenges__activity {
@@ -37,4 +79,44 @@
 .challenges-activity__text-type {
   font-size: 1rem;
   color: #949494;
+}
+
+.challenge__friends-block {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 60% 35%;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+}
+
+.challenge__friend {
+}
+
+.challenge__avatars-block {
+  position: relative;
+  height: 3.55rem;
+}
+
+.challenge__avatars-block :nth-child(1) {
+  position: absolute;
+  top: 0.3rem;
+  left: 0;
+}
+
+.challenge__avatars-block :nth-child(2) {
+  position: absolute;
+  top: 0.3rem;
+  left: 2.5rem;
+}
+
+.challenge__avatars-block :nth-child(3) {
+  position: absolute;
+  top: 0.3rem;
+  left: 5rem;
+}
+
+.challenge__button {
+  width: 100%;
 }

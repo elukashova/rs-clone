@@ -246,6 +246,7 @@ export default class Friends extends BaseComponent<'section'> {
     if (this.token) {
       getFriends(this.token).then((usersData: FriendData[]): void => {
         if (usersData.length) {
+          console.log(usersData);
           this.friendsAll = usersData.map((user: FriendData, index: number): Friend => {
             const friend: Friend = new Friend(this.friendsBlock.element, user, 'not-friends__element', {
               id: `not-friends-${index}`,
