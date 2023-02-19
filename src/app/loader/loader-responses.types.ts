@@ -26,7 +26,7 @@ export type CommentResponse = {
   likes: string[];
 };
 
-export type ActivityResponse = {
+export interface ActivityResponse {
   id: number;
   time: string;
   date: string;
@@ -50,7 +50,7 @@ export type ActivityResponse = {
     mapId?: string;
     travelMode?: string;
   };
-};
+}
 
 export type FriendData = {
   id: string;

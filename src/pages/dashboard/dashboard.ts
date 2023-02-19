@@ -11,6 +11,7 @@ import eventEmitter from '../../utils/event-emitter';
 import { transformNameFormat } from '../../utils/utils';
 import AvatarSources from '../../components/avatar-modal/avatar-modal.types';
 import DefaultUserInfo from './left-menu/left-menu.types';
+import ActivityDataForPosts from './dashboard.types';
 
 export default class Dashboard extends BaseComponent<'section'> {
   private leftMenu!: LeftMenu;
@@ -45,8 +46,10 @@ export default class Dashboard extends BaseComponent<'section'> {
         };
         this.setUserInfo(user);
         this.leftMenu = new LeftMenu(this.currentUser, replaceMainCallback);
+
+        const relevantActivities: ActivityDataForPosts[] = Dashboard.collectAllActivities(user);
         this.element.insertBefore(this.leftMenu.element, this.trainingFeed.element);
-        this.posts = TrainingFeed.addPosts(this.currentUser);
+        this.posts = TrainingFeed.addPosts(relevantActivities);
         if (this.posts.length) {
           this.trainingFeed.deleteGreetingMessage();
           this.trainingFeed.element.append(...this.posts);
@@ -68,6 +71,38 @@ export default class Dashboard extends BaseComponent<'section'> {
     if (this.token) {
       Dashboard.updateUser(this.token, { avatarUrl: this.currentUser.avatarUrl });
     }
+  }
+
+  private static collectAllActivities(user: User): ActivityDataForPosts[] {
+    const allActivitiesData: ActivityDataForPosts[] = [];
+
+    if (user.activities.length > 0) {
+      user.activities.forEach((activity) => {
+        const userInfo = {
+          username: user.username,
+          avatarUrl: user.avatarUrl,
+          ...activity,
+        };
+        allActivitiesData.push(userInfo);
+      });
+    }
+
+    if (user.following.length > 0) {
+      user.following.forEach((followee) => {
+        if (followee.activities.length > 0) {
+          followee.activities.forEach((activity) => {
+            const followeeInfo: ActivityDataForPosts = {
+              username: followee.username,
+              avatarUrl: followee.avatarUrl,
+              ...activity,
+            };
+            allActivitiesData.push(followeeInfo);
+          });
+        }
+      });
+    }
+
+    return allActivitiesData;
   }
 
   private static updateUser(token: Token, data: UpdateUserData): Promise<void | null> {

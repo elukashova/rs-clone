@@ -7,7 +7,7 @@ import Post from './post/post';
 import { ProjectColors } from '../../../utils/consts';
 import Svg from '../../../components/base-component/svg/svg';
 import { sortActivitiesByDate } from '../../../utils/utils';
-import { User } from '../../../app/loader/loader-responses.types';
+import ActivityDataForPosts from '../dashboard.types';
 
 export default class TrainingFeed extends BaseComponent<'article'> {
   public message = new BaseComponent('span', undefined, 'training-feed__message', 'Лента пока пуста, Вы можете');
@@ -22,9 +22,9 @@ export default class TrainingFeed extends BaseComponent<'article'> {
     super('article', parent, 'training-feed');
   }
 
-  public static addPosts(data: User): HTMLDivElement[] {
+  public static addPosts(data: ActivityDataForPosts[]): HTMLDivElement[] {
     const posts: HTMLDivElement[] = [];
-    const sortedActivities = sortActivitiesByDate(data.activities);
+    const sortedActivities = sortActivitiesByDate(data);
     sortedActivities.forEach((activity) => {
       const post: Post = new Post();
       if (activity.kudos) {
@@ -36,9 +36,9 @@ export default class TrainingFeed extends BaseComponent<'article'> {
         post.appendExistingComments(activity.comments);
       }
       post.postId = activity.id;
-      post.photo.element.src = data.avatarUrl;
-      post.userImage.element.src = data.avatarUrl;
-      post.name.element.textContent = data.username;
+      post.photo.element.src = activity.avatarUrl;
+      post.userImage.element.src = activity.avatarUrl;
+      post.name.element.textContent = activity.username;
       post.activityTitle.element.textContent = activity.title;
       post.date.element.textContent = TrainingFeed.changeDateFormat(activity.date, activity.time);
       post.distance.value = `${activity.distance} km`;
@@ -97,4 +97,10 @@ export default class TrainingFeed extends BaseComponent<'article'> {
       day: 'numeric',
     })} at ${time}`;
   }
+
+  // private subscribeToEvents(): void {
+  //   eventEmitter.on('updateAvatar', (source: EventData) => {
+  //     this.updateProfilePicture(source);
+  //   });
+  // }
 }
