@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable max-lines-per-function */
 import Avatar from '../../../components/base-component/avatar-image/avatar';
 import BaseComponent from '../../../components/base-component/base-component';
@@ -81,13 +82,12 @@ export default class Challenge extends BaseComponent<'div'> {
   private renderChallenge(): void {
     this.challengeImage = new Picture(this.element, 'challenge__image', {
       src: `../../../assets/images/challenges/${this.type}.jpg`,
-      /*  style: 'width:15rem; height: 100%', */
     });
     this.title = new BaseComponent('h4', this.element, 'challenge__title', `${this.titleText}`);
 
     this.descriptionBlock = new BaseComponent('div', this.element, 'challenge__description-block');
 
-    this.allTypes.forEach((type) => {
+    this.allTypes.forEach((type: string): void => {
       this.activityIcon = new Svg(
         this.descriptionBlock.element,
         type,
@@ -103,8 +103,8 @@ export default class Challenge extends BaseComponent<'div'> {
       `${this.descriptionText}`,
     );
 
-    const [start, end] = this.dateText;
-    const dateToEnd = Challenge.getDaysToEnd(start, end);
+    const [start, end]: string[] = this.dateText;
+    const dateToEnd: number = Challenge.getDaysToEnd(end);
     this.dateBlock = new BaseComponent('div', this.descriptionBlock.element, 'challenge__date-block');
     this.dateStart = new BaseComponent('span', this.dateBlock.element, 'challenge__date-start', `${start}`);
     this.dateEnd = new BaseComponent('span', this.dateBlock.element, 'challenge__date-end', ` - ${end}`);
@@ -161,26 +161,24 @@ export default class Challenge extends BaseComponent<'div'> {
   }
 
   private addAvatar(avatarUrl: string): void {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const newAvatar = new Avatar(this.avatarsBlock.element, 'challenge__friend-avatar', {
       src: avatarUrl || './assets/images/avatars/default.png',
     });
   }
 
-  private static getDaysToEnd(date1: string, date2: string): number {
-    const startDate = new Date(Date.now());
-    const endDate = new Date(Date.parse(date2));
-    const timeDifference = endDate.getTime() - startDate.getTime();
-    const daysToEnd = Math.ceil(timeDifference / (1000 * 3600 * 24));
+  private static getDaysToEnd(date2: string): number {
+    const startDate: Date = new Date(Date.now());
+    const endDate: Date = new Date(Date.parse(date2));
+    const timeDifference: number = endDate.getTime() - startDate.getTime();
+    const daysToEnd: number = Math.ceil(timeDifference / (1000 * 3600 * 24));
     return daysToEnd;
   }
 
   private addListeners(): void {
-    this.button.element.addEventListener('click', () => this.setButtonFunction());
+    this.button.element.addEventListener('click', (): void => this.setButtonFunction());
   }
 
   private setButtonFunction(): void {
-    console.log(this.button, this.button.element);
     if (this.challengeIsAdded === false) {
       this.button.element.style.backgroundColor = ProjectColors.Orange;
       this.button.element.textContent = 'Accepted';

@@ -1,11 +1,9 @@
 /* eslint-disable arrow-body-style */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable max-lines-per-function */
+/* eslint-disable max-len */
 import './challenges.css';
 import BaseComponent from '../../components/base-component/base-component';
 import ActivityBlock from './activity-element/activity-element';
 import SvgNames from '../../components/base-component/svg/svg.types';
-// import Challenge from './challenge/challenge';
 import { checkDataInLocalStorage } from '../../utils/local-storage';
 import { FriendData, Token } from '../../app/loader/loader.types';
 import users from '../../mock/find-friends.data';
@@ -68,6 +66,18 @@ export default class Challenges extends BaseComponent<'section'> {
 
   private challengesBlock = new BaseComponent('div', this.formContainer.element, 'challenges__challenges-block');
 
+  private hikingChallenge!: Challenge;
+
+  private slothChallenge!: Challenge;
+
+  private cyclingChallenge!: Challenge;
+
+  private runningChallenge!: Challenge;
+
+  private photoChallenge!: Challenge;
+
+  private yogaChallenge!: Challenge;
+
   constructor(parent: HTMLElement) {
     super('section', parent, 'challenges challenges-section');
     this.getFriendsRequest();
@@ -75,6 +85,7 @@ export default class Challenges extends BaseComponent<'section'> {
 
   private getFriendsRequest(): void {
     if (this.token) {
+      // тут будет получение данных с сервера
       /* getFriends(this.token).then((usersData: FriendData[]): void => {
         this.usersData = usersData;
       }); */
@@ -85,8 +96,22 @@ export default class Challenges extends BaseComponent<'section'> {
   }
 
   private renderPage(data: FriendData[]): void {
+    this.renderFirstChallenges(data);
+    this.renderSecondChallenges(data);
+    this.challengesAll = [
+      this.hikingChallenge,
+      this.slothChallenge,
+      this.cyclingChallenge,
+      this.runningChallenge,
+      this.photoChallenge,
+      this.yogaChallenge,
+    ];
+    this.typesAll = [this.allTypes, this.cycling, this.running, this.walking, this.hiking];
+  }
+
+  private renderFirstChallenges(data: FriendData[]): void {
     const hikingUsers = Challenges.checkChallenges(data, ChallengesTypes.Hiking);
-    const hiking = new Challenge(
+    this.hikingChallenge = new Challenge(
       this.challengesBlock.element,
       ChallengesTypes.Hiking,
       [Activities.Hiking, Activities.Walking, Activities.Running, Activities.Cycling],
@@ -98,7 +123,7 @@ export default class Challenges extends BaseComponent<'section'> {
     );
 
     const slothUsers = Challenges.checkChallenges(data, ChallengesTypes.Sloth);
-    const sloth = new Challenge(
+    this.slothChallenge = new Challenge(
       this.challengesBlock.element,
       ChallengesTypes.Sloth,
       [Activities.Walking],
@@ -110,7 +135,7 @@ export default class Challenges extends BaseComponent<'section'> {
     );
 
     const cyclingUsers = Challenges.checkChallenges(data, ChallengesTypes.Cycling);
-    const cycling = new Challenge(
+    this.cyclingChallenge = new Challenge(
       this.challengesBlock.element,
       ChallengesTypes.Cycling,
       [Activities.Cycling],
@@ -120,9 +145,11 @@ export default class Challenges extends BaseComponent<'section'> {
       ['02/25/2023', '03/04/2023'],
       true,
     );
+  }
 
+  private renderSecondChallenges(data: FriendData[]): void {
     const runningUsers = Challenges.checkChallenges(data, ChallengesTypes.Running);
-    const running = new Challenge(
+    this.runningChallenge = new Challenge(
       this.challengesBlock.element,
       ChallengesTypes.Running,
       [Activities.Hiking, Activities.Walking, Activities.Running, Activities.Cycling],
@@ -134,11 +161,11 @@ export default class Challenges extends BaseComponent<'section'> {
     );
 
     const photoUsers = Challenges.checkChallenges(data, ChallengesTypes.Photo);
-    const photo = new Challenge(
+    this.photoChallenge = new Challenge(
       this.challengesBlock.element,
       ChallengesTypes.Photo,
       [Activities.Hiking, Activities.Walking, Activities.Running, Activities.Cycling],
-      runningUsers,
+      photoUsers,
       'Like Van Gogh',
       'Launch applications to track your movement and draw a picture (for example, a cat, a heart or maybe "The Starry Night"?) as you move. Tag #striversChallenge on your social media. We will share the coolest track pictures!',
       ['02/19/2023', '03/19/2023'],
@@ -146,7 +173,7 @@ export default class Challenges extends BaseComponent<'section'> {
     );
 
     const yogaUsers = Challenges.checkChallenges(data, ChallengesTypes.Yoga);
-    const yoga = new Challenge(
+    this.yogaChallenge = new Challenge(
       this.challengesBlock.element,
       ChallengesTypes.Yoga,
       [Activities.Hiking, Activities.Walking],
@@ -156,9 +183,6 @@ export default class Challenges extends BaseComponent<'section'> {
       ['02/19/2023', '03/19/2023'],
       true,
     );
-
-    this.challengesAll = [hiking, sloth, cycling, running, photo, yoga];
-    this.typesAll = [this.allTypes, this.cycling, this.running, this.walking, this.hiking];
   }
 
   private static checkChallenges(data: FriendData[], challenge: string): string[] {
@@ -201,10 +225,9 @@ export default class Challenges extends BaseComponent<'section'> {
     this.hiddenChallenge();
 
     const visibleChallenges = this.filterCards();
-    console.log(visibleChallenges);
     if (visibleChallenges.length) {
-      this.challengesAll.forEach((challenge) => {
-        visibleChallenges.forEach((visible) => {
+      this.challengesAll.forEach((challenge: Challenge): void => {
+        visibleChallenges.forEach((visible: Challenge): void => {
           if (challenge === visible) {
             challenge.element.classList.remove('hidden');
           }
@@ -216,10 +239,10 @@ export default class Challenges extends BaseComponent<'section'> {
   }
 
   private hiddenChallenge(): void {
-    this.challengesAll.forEach((challenge) => challenge.element.classList.add('hidden'));
+    this.challengesAll.forEach((challenge: Challenge): void => challenge.element.classList.add('hidden'));
   }
 
   private doVisibleChallenge(): void {
-    this.challengesAll.forEach((challenge) => challenge.element.classList.remove('hidden'));
+    this.challengesAll.forEach((challenge: Challenge): void => challenge.element.classList.remove('hidden'));
   }
 }
