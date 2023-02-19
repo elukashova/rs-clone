@@ -8,6 +8,10 @@ import { ProjectColors } from '../../../utils/consts';
 import Svg from '../../../components/base-component/svg/svg';
 import { sortActivitiesByDate } from '../../../utils/utils';
 import ActivityDataForPosts from '../dashboard.types';
+import eventEmitter from '../../../utils/event-emitter';
+import { EventData } from '../../../utils/event-emitter.types';
+// import eventEmitter from '../../../utils/event-emitter';
+// import { EventData } from '../../../utils/event-emitter.types';
 
 export default class TrainingFeed extends BaseComponent<'article'> {
   public message = new BaseComponent('span', undefined, 'training-feed__message', 'Лента пока пуста, Вы можете');
@@ -18,12 +22,24 @@ export default class TrainingFeed extends BaseComponent<'article'> {
 
   private buttonContainer: BaseComponent<'div'> | undefined;
 
-  constructor(parent: HTMLElement, private replaceMainCallback: () => void) {
+  private posts: Post[] = [];
+
+  // eslint-disable-next-line max-len
+  constructor(parent: HTMLElement, private replaceMainCallback: () => void, postData: ActivityDataForPosts[]) {
     super('article', parent, 'training-feed');
+    this.posts = TrainingFeed.addPosts(postData);
+    if (this.posts.length) {
+      this.deleteGreetingMessage();
+      this.posts.forEach((post) => this.element.append(post.element));
+    } else {
+      this.showGreetingMessage();
+    }
+
+    eventEmitter.on('friendDeleted', (data: EventData) => this.removeAllFriendPosts(data));
   }
 
-  public static addPosts(data: ActivityDataForPosts[]): HTMLDivElement[] {
-    const posts: HTMLDivElement[] = [];
+  public static addPosts(data: ActivityDataForPosts[]): Post[] {
+    const posts: Post[] = [];
     const sortedActivities = sortActivitiesByDate(data);
     sortedActivities.forEach((activity) => {
       const post: Post = new Post();
@@ -56,7 +72,7 @@ export default class TrainingFeed extends BaseComponent<'article'> {
       if (activity.route !== null) {
         post.initStaticMap(activity);
       }
-      posts.unshift(post.element);
+      posts.unshift(post);
     });
     return posts;
   }
@@ -100,9 +116,12 @@ export default class TrainingFeed extends BaseComponent<'article'> {
     })} at ${time}`;
   }
 
-  // private subscribeToEvents(): void {
-  //   eventEmitter.on('updateAvatar', (source: EventData) => {
-  //     this.updateProfilePicture(source);
-  //   });
-  // }
+  private removeAllFriendPosts(data: EventData): void {
+    this.posts.forEach((post) => {
+      if (post.postAuthorId === data.friendId) {
+        this.element.removeChild(post.element);
+        this.posts = this.posts.filter((singlePost) => !singlePost.postAuthorId === data.friendId);
+      }
+    });
+  }
 }

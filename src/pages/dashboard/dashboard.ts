@@ -16,9 +16,9 @@ import ActivityDataForPosts from './dashboard.types';
 export default class Dashboard extends BaseComponent<'section'> {
   private leftMenu!: LeftMenu;
 
-  private trainingFeed: TrainingFeed = new TrainingFeed(this.element, this.replaceMainCallback);
+  private trainingFeed!: TrainingFeed;
 
-  private rightMenu: RightMenu = new RightMenu(this.element, this.replaceMainCallback);
+  private rightMenu!: RightMenu;
 
   private token: Token | null = checkDataInLocalStorage('userSessionToken');
 
@@ -48,15 +48,10 @@ export default class Dashboard extends BaseComponent<'section'> {
         this.leftMenu = new LeftMenu(this.currentUser, replaceMainCallback);
 
         const relevantActivities: ActivityDataForPosts[] = Dashboard.collectAllActivities(user);
+        // eslint-disable-next-line max-len
+        this.trainingFeed = new TrainingFeed(this.element, this.replaceMainCallback, relevantActivities);
+        this.rightMenu = new RightMenu(this.element, this.replaceMainCallback);
         this.element.insertBefore(this.leftMenu.element, this.trainingFeed.element);
-        this.posts = TrainingFeed.addPosts(relevantActivities);
-        if (this.posts.length) {
-          this.trainingFeed.deleteGreetingMessage();
-          this.trainingFeed.element.append(...this.posts);
-        } else {
-          this.trainingFeed.element.innerHTML = '';
-          this.trainingFeed.showGreetingMessage();
-        }
       });
     }
   }

@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import './post.css';
 import BaseComponent from '../../../../components/base-component/base-component';
-import { CreateCommentRequest, Token, UpdateActivity } from '../../../../app/loader/loader-requests.types';
+import { CreateCommentRequest, FriendId, Token, UpdateActivity } from '../../../../app/loader/loader-requests.types';
 import { ActivityResponse, CommentResponse } from '../../../../app/loader/loader-responses.types';
 import PostInfo from './post-info/post-info';
 import PostIcon from './post-icon/post-icon';
@@ -17,6 +17,8 @@ import { deleteActivity, updateActivity } from '../../../../app/loader/services/
 import { checkDataInLocalStorage } from '../../../../utils/local-storage';
 import { createComment } from '../../../../app/loader/services/comment-services';
 import PostComment from './comment/comment';
+import { deleteFriend } from '../../../../app/loader/services/friends-services';
+import eventEmitter from '../../../../utils/event-emitter';
 
 export default class Post extends BaseComponent<'div'> {
   private userInfo = new BaseComponent('div', this.element, 'post__user-info');
@@ -314,7 +316,7 @@ export default class Post extends BaseComponent<'div'> {
           ProjectColors.Grey,
           'post__edit-svg',
         );
-        unfollowFriendSvg.svg.addEventListener('click', () => console.log('friend deleted'));
+        unfollowFriendSvg.svg.addEventListener('click', this.removeFriend);
       }
     }
   }
@@ -323,6 +325,17 @@ export default class Post extends BaseComponent<'div'> {
     deleteActivity(this.postId)
       .then(() => this.element.remove())
       .catch(() => null);
+  };
+
+  private removeFriend = (): void => {
+    if (this.token) {
+      const requestInfo: FriendId = {
+        friendId: this.postAuthorId,
+      };
+      deleteFriend(this.token, requestInfo).then(() => {
+        eventEmitter.emit('friendDeleted', { friendId: this.postAuthorId });
+      });
+    }
   };
 
   private static sortCommentsByDate(comments: CommentResponse[]): CommentResponse[] {
