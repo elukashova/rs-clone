@@ -6,6 +6,7 @@ import Button from '../../../components/base-component/button/button';
 import Picture from '../../../components/base-component/picture/picture';
 import Svg from '../../../components/base-component/svg/svg';
 import { ProjectColors } from '../../../utils/consts';
+import DefaultUserInfo from '../../dashboard/left-menu/left-menu.types';
 
 export default class Challenge extends BaseComponent<'div'> {
   private dictionary: Record<string, string> = {
@@ -172,7 +173,7 @@ export default class Challenge extends BaseComponent<'div'> {
 
   private addAvatar(avatarUrl: string): void {
     const newAvatar = new Avatar(this.avatarsBlock.element, 'challenge__friend-avatar', {
-      src: avatarUrl || './assets/images/avatars/default.png',
+      src: avatarUrl || DefaultUserInfo.DefaultUrl,
     });
   }
 
