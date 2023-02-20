@@ -16,33 +16,45 @@ import { convertRegexToPattern } from '../../../utils/utils';
 import DropdownInput from './dropdown-input/dropdown';
 
 export default class SignupForm extends BaseComponent<'form'> {
+  private dictionary: Record<string, string> = {
+    accountSignupHeading: 'splash.forms.accountSignupHeading',
+    alreadyMember: 'splash.forms.alreadyMember',
+    logIn: 'splash.forms.logIn',
+    becomeMember: 'splash.forms.becomeMember',
+    logInHere: 'splash.forms.logInHere',
+    signUp: 'splash.forms.signUp',
+    password: 'splash.forms.password',
+    email: 'splash.forms.email',
+    name: 'splash.forms.name',
+  };
+
   private formHeader: BaseComponent<'h4'> = new BaseComponent(
     'h4',
     this.element,
     'signup__form_header',
-    'Account Signup',
+    this.dictionary.accountSignupHeading,
   );
 
   private signUpMessage: BaseComponent<'span'> = new BaseComponent(
     'span',
     this.element,
     'signup__form-message',
-    'Become a member and enjoy exclusive promotions.',
+    this.dictionary.becomeMember,
   );
 
-  private nameInput: Input = new Input(this.element, 'signup__form-input form-input', 'Full Name', {
+  private nameInput: Input = new Input(this.element, 'signup__form-input form-input', this.dictionary.name, {
     type: 'text',
     pattern: convertRegexToPattern(VALID_NAME),
     required: '',
   });
 
-  private emailInput: Input = new Input(this.element, 'signup__form-input form-input', 'Email address', {
+  private emailInput: Input = new Input(this.element, 'signup__form-input form-input', this.dictionary.email, {
     type: 'email',
     pattern: convertRegexToPattern(VALID_EMAIL),
     required: '',
   });
 
-  private passwordInput: Input = new Input(this.element, 'signup__form-input form-input', 'Password', {
+  private passwordInput: Input = new Input(this.element, 'signup__form-input form-input', this.dictionary.password, {
     type: 'password',
     pattern: convertRegexToPattern(VALID_PASSWORD),
     required: '',
@@ -50,19 +62,21 @@ export default class SignupForm extends BaseComponent<'form'> {
 
   private countryInput: DropdownInput = new DropdownInput(this.element, 'signup', 'Country');
 
-  private signupButton: Button = new Button(this.element, 'Sign up', 'signup__btn-main btn_main', {
+  private signupButton: Button = new Button(this.element, this.dictionary.signUp, 'signup__btn-main btn_main', {
     type: 'submit',
   });
 
-  private logInMessage: BaseComponent<'span'> = new BaseComponent(
+  private logInMessage: BaseComponent<'span'> = new BaseComponent('span', this.element, 'signup__message-login');
+
+  private alreadyMember: BaseComponent<'span'> = new BaseComponent(
     'span',
-    this.element,
-    'signup__message-login',
-    'Already a member? ',
+    this.logInMessage.element,
+    '',
+    this.dictionary.alreadyMember,
   );
 
   private loginLink: NavigationLink = new NavigationLink(this.replaceMainCallback, {
-    text: 'Log in here',
+    text: this.dictionary.logInHere,
     parent: this.logInMessage.element,
     additionalClasses: 'signup__link-login',
   });
@@ -168,7 +182,7 @@ export default class SignupForm extends BaseComponent<'form'> {
     );
 
     const logInLink: NavigationLink = new NavigationLink(this.replaceMainCallback, {
-      text: 'log in',
+      text: this.dictionary.logIn,
       parent: message.element,
       additionalClasses: 'signup__link-login',
     });

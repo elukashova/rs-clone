@@ -13,13 +13,17 @@ import eventEmitter from '../../utils/event-emitter';
 import { EventData } from '../../utils/event-emitter.types';
 
 export default class ModalAvatar extends BaseComponent<'div'> {
+  private dictionary = {
+    avatar: 'avatar',
+  };
+
   private modal: BaseComponent<'div'> = new BaseComponent('div', this.element, 'avatars__modal');
 
   private header: BaseComponent<'h2'> = new BaseComponent(
     'h2',
     this.modal.element,
     'avatars__heading',
-    'Choose your avatar',
+    this.dictionary.avatar,
   );
 
   private avatarsWrapper: BaseComponent<'div'> = new BaseComponent('div', this.modal.element, 'avatars__imgs-wpapper');

@@ -12,8 +12,8 @@
 .profile-card__photo {
   position: absolute;
   transform: translateY(-100%);
-  width: 6.5em;
-  height: 6.5em;
+  width: 6em;
+  height: 6em;
   background-color: #219486;
   border: 5px solid #219486;
   border-radius: 50%;
@@ -46,7 +46,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: calc(15em + 10vw);
+  width: 95%;
 }
 
 .profile-card__name_wrapper {
@@ -120,7 +120,7 @@
 .profile-card__info {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  width: 100%;
+  width: 95%;
 }
 
 .profile-info {

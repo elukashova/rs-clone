@@ -1,17 +1,18 @@
+/* eslint-disable max-len */
 import './dashboard.css';
 import BaseComponent from '../../components/base-component/base-component';
 import LeftMenu from './left-menu/left-menu';
 import TrainingFeed from './training-feed/training-feed';
 import RightMenu from './right-menu/right-menu';
 import { getUser, updateUser } from '../../app/loader/services/user-services';
-import { Token, UpdateUserData } from '../../app/loader/loader-requests.types';
-import { User } from '../../app/loader/loader-responses.types';
 import { checkDataInLocalStorage, setDataToLocalStorage } from '../../utils/local-storage';
 import eventEmitter from '../../utils/event-emitter';
 import { transformNameFormat } from '../../utils/utils';
 import AvatarSources from '../../components/avatar-modal/avatar-modal.types';
 import DefaultUserInfo from './left-menu/left-menu.types';
 import ActivityDataForPosts from './dashboard.types';
+import { Token, UpdateUserData } from '../../app/loader/loader-requests.types';
+import { User } from '../../app/loader/loader-responses.types';
 
 export default class Dashboard extends BaseComponent<'section'> {
   private leftMenu!: LeftMenu;
@@ -19,6 +20,8 @@ export default class Dashboard extends BaseComponent<'section'> {
   private trainingFeed!: TrainingFeed;
 
   private rightMenu!: RightMenu;
+
+  private dashboardWrapper = new BaseComponent('div', this.element, 'sections-wrapper');
 
   private token: Token | null = checkDataInLocalStorage('userSessionToken');
 
@@ -46,12 +49,16 @@ export default class Dashboard extends BaseComponent<'section'> {
         };
         this.setUserInfo(user);
         this.leftMenu = new LeftMenu(this.currentUser, replaceMainCallback);
-
         const relevantActivities: ActivityDataForPosts[] = Dashboard.collectAllActivities(user);
         // eslint-disable-next-line max-len
-        this.trainingFeed = new TrainingFeed(this.element, this.replaceMainCallback, user, relevantActivities);
-        this.rightMenu = new RightMenu(this.element, this.replaceMainCallback);
-        this.element.insertBefore(this.leftMenu.element, this.trainingFeed.element);
+        this.trainingFeed = new TrainingFeed(
+          this.dashboardWrapper.element,
+          this.replaceMainCallback,
+          user,
+          relevantActivities,
+        );
+        this.rightMenu = new RightMenu(this.dashboardWrapper.element, this.replaceMainCallback);
+        this.dashboardWrapper.element.insertBefore(this.leftMenu.element, this.trainingFeed.element);
       });
     }
   }

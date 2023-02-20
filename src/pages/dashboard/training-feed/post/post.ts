@@ -22,6 +22,15 @@ import eventEmitter from '../../../../utils/event-emitter';
 import PostReactions from './post-reactions/post-reactions';
 
 export default class Post extends BaseComponent<'div'> {
+  private dictionary: Record<string, string> = {
+    distance: 'dashboard.trainingFeed.post.distance',
+    speed: 'dashboard.trainingFeed.post.speed',
+    time: 'dashboard.trainingFeed.post.time',
+    elevation: 'dashboard.trainingFeed.post.elevation',
+    commentPlaceholder: 'dashboard.trainingFeed.post.commentPlaceholder',
+    commentBtn: 'dashboard.trainingFeed.post.commentBtn',
+  };
+
   private userInfo = new BaseComponent('div', this.element, 'post__user-info');
 
   public photo: BaseComponent<'img'> = new Picture(this.userInfo.element, 'post__photo');
@@ -50,13 +59,13 @@ export default class Post extends BaseComponent<'div'> {
 
   public dataContainer = new BaseComponent('div', this.info.element, 'post__data');
 
-  public distance = new PostInfo(this.dataContainer.element, 'Distance');
+  public distance = new PostInfo(this.dataContainer.element, this.dictionary.distance);
 
-  public speed = new PostInfo(this.dataContainer.element, 'Speed');
+  public speed = new PostInfo(this.dataContainer.element, this.dictionary.speed);
 
-  public time = new PostInfo(this.dataContainer.element, 'Time');
+  public time = new PostInfo(this.dataContainer.element, this.dictionary.time);
 
-  public elevation = new PostInfo(this.dataContainer.element, 'Elevation');
+  public elevation = new PostInfo(this.dataContainer.element, this.dictionary.elevation);
 
   public map: BaseComponent<'div'> | undefined;
 
@@ -70,11 +79,15 @@ export default class Post extends BaseComponent<'div'> {
 
   private commentArea = new TextArea(this.textAreaWrapper.element, 'post__add-comment', '', {
     maxlength: '200',
-    placeholder: 'type something up to 200 characters',
+    placeholder: this.dictionary.commentPlaceholder,
     autofocus: '',
   });
 
-  private addCommentButton = new Button(this.textAreaWrapper.element, 'Comment', 'post__add-comment-button');
+  private addCommentButton = new Button(
+    this.textAreaWrapper.element,
+    this.dictionary.commentBtn,
+    'post__add-comment-button',
+  );
 
   private showAllCommentsElement: BaseComponent<'span'> = new BaseComponent(
     'span',
@@ -187,9 +200,9 @@ export default class Post extends BaseComponent<'div'> {
       const endLat = +activity.route.endPoint.split(',')[0];
       const endLng = +activity.route.endPoint.split(',')[1];
       const url = await GoogleMaps.drawStaticMap(
-        { lat: startLat, lng: startLng }, // надо будет заменить с сервера стартовую точку
-        { lat: endLat, lng: endLng }, // надо будет заменить с сервера конечную точку
-        activity.route.travelMode || 'walking', // надо будет заменить с сервера travelMode
+        { lat: startLat, lng: startLng },
+        { lat: endLat, lng: endLng },
+        activity.route.travelMode || 'walking',
       );
       this.googleMap = new BaseComponent('img', this.map.element, '', '', {
         src: `${url}`,
@@ -285,7 +298,7 @@ export default class Post extends BaseComponent<'div'> {
       this.isShown = true;
       this.isFirstAppend = false;
     } else {
-      this.showAllCommentsElement.element.textContent = 'Show recent comments';
+      this.showAllCommentsElement.textContent = 'Show recent comments';
       this.showAllCommentsElement.element.addEventListener('click', this.hideComments);
       this.showAllCommentsElement.element.removeEventListener('click', this.showAllComments);
       this.isShown = false;
@@ -294,7 +307,7 @@ export default class Post extends BaseComponent<'div'> {
   }
 
   private updateCommentsNumber(number: number): void {
-    this.showAllCommentsElement.element.textContent = `See all ${number} comments`;
+    this.showAllCommentsElement.textContent = `See all ${number} comments`;
   }
 
   private hideComments = (): void => {

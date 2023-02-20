@@ -7,7 +7,6 @@ import Loader from '../loader';
 import { CreateCommentRequest, Endpoints, Methods, Token, UpdateComment } from '../loader-requests.types';
 import { CommentResponse } from '../loader-responses.types';
 
-
 export const createComment = (token: Token, params: CreateCommentRequest): Promise<CommentResponse> =>
   Loader.postData(Methods.Post, Endpoints.CreateComment, params, token);
 

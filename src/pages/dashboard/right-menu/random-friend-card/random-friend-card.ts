@@ -5,12 +5,16 @@ import SvgNames from '../../../../components/base-component/svg/svg.types';
 import { ProjectColors } from '../../../../utils/consts';
 import Picture from '../../../../components/base-component/picture/picture';
 import { checkDataInLocalStorage } from '../../../../utils/local-storage';
-import { FriendId, Token } from '../../../../app/loader/loader-requests.types';
-import { FriendData } from '../../../../app/loader/loader-responses.types';
 import { addFriend, deleteFriend } from '../../../../app/loader/services/friends-services';
 import eventEmitter from '../../../../utils/event-emitter';
+import { FriendId, Token } from '../../../../app/loader/loader-requests.types';
+import { FriendData } from '../../../../app/loader/loader-responses.types';
 
 export default class RandomFriendCard extends BaseComponent<'div'> {
+  private dictionary: Record<string, string> = {
+    secret: 'dashboard.rightMenu.randomFriend.secret',
+  };
+
   private token: Token | null = checkDataInLocalStorage('userSessionToken');
 
   private plusButton: SvgButton = new SvgButton(this.element, '', 'suggested-friends__btn');
@@ -38,7 +42,7 @@ export default class RandomFriendCard extends BaseComponent<'div'> {
     'span',
     this.detailsWrapper.element,
     'suggested-friends__info_country',
-    this.user.country || 'Secret place',
+    this.user.country || this.dictionary.secret,
   );
 
   private isAdded: boolean = false;
@@ -73,11 +77,14 @@ export default class RandomFriendCard extends BaseComponent<'div'> {
 
   private setButtonFunction(): void {
     if (this.isAdded === false) {
-      this.plusButton.replaceBtnSvg(SvgNames.Plus, 'suggested-friends', ProjectColors.Turquoise);
+      // this.plusButton.replaceBtnSvg(SvgNames.Plus, 'suggested-friends', ProjectColors.Turquoise);
+      this.plusButton.element.classList.remove('suggested-friends__btn-active');
       this.plusButton.element.removeEventListener('click', this.deleteFriendCallback);
       this.plusButton.element.addEventListener('click', this.addFriendCallback);
     } else {
-      this.plusButton.replaceBtnSvg(SvgNames.CloseThin, 'close-btn suggested-friends', ProjectColors.Orange);
+      //  this.plusButton.replaceBtnSvg(SvgNames.CloseThin,
+      // 'close-btn suggested-friends', ProjectColors.Orange);
+      this.plusButton.element.classList.add('suggested-friends__btn-active');
       this.plusButton.element.removeEventListener('click', this.addFriendCallback);
       this.plusButton.element.addEventListener('click', this.deleteFriendCallback);
     }

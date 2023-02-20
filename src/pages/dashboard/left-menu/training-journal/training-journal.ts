@@ -4,7 +4,13 @@ import { sortActivitiesByDate } from '../../../../utils/utils';
 import './training-journal.css';
 
 export default class TrainingJournal extends BaseComponent<'div'> {
-  private heading = new BaseComponent('h4', this.element, 'training-journal__heading', 'last activity');
+  private dictionary: Record<string, string> = {
+    heading: 'dashboard.leftMenu.trainingJournal.heading',
+    defaulMessage: 'dashboard.leftMenu.trainingJournal.defaultMessage',
+    activities: 'dashboard.leftMenu.trainingJournal.activities',
+  };
+
+  private heading = new BaseComponent('h4', this.element, 'training-journal__heading', this.dictionary.heading);
 
   private infoWrapper: BaseComponent<'div'> = new BaseComponent('div', this.element, 'training-journal__info-wrapper');
 
@@ -18,7 +24,7 @@ export default class TrainingJournal extends BaseComponent<'div'> {
     'span',
     undefined,
     'training-journal__default-message',
-    'No activities to show yet',
+    this.dictionary.defaulMessage,
   );
 
   private activityName: BaseComponent<'span'> = new BaseComponent('span', undefined, 'training-journal__activity_name');
@@ -47,6 +53,6 @@ export default class TrainingJournal extends BaseComponent<'div'> {
 
   private static formatDate(date: string): string {
     const activityDate: Date = new Date(date);
-    return activityDate.toLocaleString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    return activityDate.toLocaleString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }); // не будет работать перевод
   }
 }

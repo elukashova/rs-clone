@@ -1,4 +1,5 @@
 import './training-feed.css';
+// import i18next from 'i18next';
 import BaseComponent from '../../../components/base-component/base-component';
 import Button from '../../../components/base-component/button/button';
 import Routes from '../../../app/router/router.types';
@@ -15,7 +16,13 @@ import { User } from '../../../app/loader/loader-responses.types';
 // import { EventData } from '../../../utils/event-emitter.types';
 
 export default class TrainingFeed extends BaseComponent<'article'> {
-  public message = new BaseComponent('span', undefined, 'training-feed__message', 'Лента пока пуста, Вы можете');
+  private dictionary: Record<string, string> = {
+    message: 'dashboard.trainingFeed.message',
+    addActivity: 'dashboard.trainingFeed.addActivity',
+    findFriends: 'dashboard.trainingFeed.findFriends',
+  };
+
+  public message = new BaseComponent('span', undefined, 'training-feed__message', this.dictionary.message);
 
   public addTrainingButton: Button | undefined;
 
@@ -39,7 +46,6 @@ export default class TrainingFeed extends BaseComponent<'article'> {
     postData: ActivityDataForPosts[],
   ) {
     super('article', parent, 'training-feed');
-
     this.currentUser.username = user.username;
     this.currentUser.avatarUrl = user.avatarUrl;
     this.currentUser.id = user.id;
@@ -97,9 +103,9 @@ export default class TrainingFeed extends BaseComponent<'article'> {
   public showGreetingMessage(): void {
     this.element.append(this.message.element);
     this.buttonContainer = new BaseComponent('div', this.element, 'training-feed__buttons');
-    this.addTrainingButton = new Button(this.buttonContainer.element, 'Add Activity', 'btn_main');
+    this.addTrainingButton = new Button(this.buttonContainer.element, this.dictionary.addActivity, 'btn_main');
     this.findFriendsButton = new NavigationLink(this.replaceMainCallback, {
-      text: 'Find friends',
+      text: this.dictionary.findFriends,
       parent: this.buttonContainer.element,
       additionalClasses: 'btn btn_main training-feed__button',
       attributes: { href: Routes.FindFriends },

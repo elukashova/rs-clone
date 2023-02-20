@@ -16,11 +16,22 @@ import { InputConflictMessages, ValidityMessages } from './form.types';
 import { convertRegexToPattern } from '../../../utils/utils';
 
 export default class LoginForm extends BaseComponent<'form'> {
+  private dictionary: Record<string, string> = {
+    accountLoginHeading: 'splash.forms.accountLoginHeading',
+    loginMessage: 'splash.forms.loginMessage',
+    logIn: 'splash.forms.logIn',
+    notMember: 'splash.forms.notMember',
+    signUpHere: 'splash.forms.signUpHere',
+    signUp: 'splash.forms.signUp',
+    password: 'splash.forms.password',
+    email: 'splash.forms.email',
+  };
+
   private formHeader: BaseComponent<'h4'> = new BaseComponent(
     'h4',
     this.element,
     'login__form_header',
-    'Account Login',
+    this.dictionary.accountLoginHeading,
   );
 
   private googleBtn: GoogleButton;
@@ -29,32 +40,38 @@ export default class LoginForm extends BaseComponent<'form'> {
     'span',
     this.element,
     'login-form-message',
-    'If you have an account, you can login with e-mail',
+    this.dictionary.loginMessage,
   );
 
-  public emailInput: Input = new Input(this.element, 'login__form-input form-input', 'Email address', {
+  public emailInput: Input = new Input(this.element, 'login__form-input form-input', this.dictionary.email, {
     type: 'email',
     required: '',
     pattern: convertRegexToPattern(VALID_EMAIL),
   });
 
-  public passwordInput: Input = new Input(this.element, 'login__form-input form-input', 'Password', {
+  public passwordInput: Input = new Input(this.element, 'login__form-input form-input', this.dictionary.password, {
     type: 'password',
     required: '',
     pattern: convertRegexToPattern(VALID_PASSWORD),
   });
 
-  public loginButton: Button = new Button(this.element, 'Log in', 'login__btn-main btn_main');
+  public loginButton: Button = new Button(this.element, this.dictionary.logIn, 'login__btn-main btn_main');
 
   private signUpMessage: BaseComponent<'span'> = new BaseComponent(
     'span',
     this.element,
     'login_message-sigup',
-    'Not a member? ',
+  ); // не будет реботать
+
+  private notMember: BaseComponent<'span'> = new BaseComponent(
+    'span',
+    this.signUpMessage.element,
+    '',
+    this.dictionary.notMember,
   );
 
   private signupLink: NavigationLink = new NavigationLink(this.replaceMainCallback, {
-    text: 'Sign up here',
+    text: this.dictionary.signUpHere,
     parent: this.signUpMessage.element,
     additionalClasses: 'login__link-signup',
   });
@@ -149,7 +166,7 @@ export default class LoginForm extends BaseComponent<'form'> {
     );
 
     const signUpLink: NavigationLink = new NavigationLink(this.replaceMainCallback, {
-      text: 'sign up',
+      text: this.dictionary.signUp,
       parent: message.element,
       additionalClasses: 'login__link-signup',
     });

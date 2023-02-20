@@ -53,7 +53,7 @@ export default class ActivityBlock extends BaseComponent<'div'> {
   }
 
   private addListeners(): void {
-    this.element.addEventListener('click', () => {
+    this.element.addEventListener('click', (): void => {
       if (this.activityIcon.svgColor === ProjectColors.Grey) {
         this.activityIcon.updateFillColor(ProjectColors.Orange);
         this.activityParagraph.element.style.color = ProjectColors.Orange;

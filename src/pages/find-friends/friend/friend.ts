@@ -8,6 +8,11 @@ import { FriendData } from '../../../app/loader/loader-responses.types';
 import { checkDataInLocalStorage } from '../../../utils/local-storage';
 
 export default class Friend extends BaseFriend {
+  private dictionary: Record<string, string> = {
+    unsubscribeBtn: 'findFriends.unsubscribeBtn',
+    subscribeBtn: 'findFriends.subscribeBtn',
+  };
+
   public token: Token | null = checkDataInLocalStorage('userSessionToken');
 
   public unsubscribeButton!: Button;
@@ -38,7 +43,7 @@ export default class Friend extends BaseFriend {
     });
     this.userName = new BaseComponent('h4', this.userData.element, 'friend__username', `${this.username}`);
     this.userCountry = new BaseComponent('p', this.userData.element, 'friend__user-country', `${this.country}` || '');
-    this.unsubscribeButton = new Button(this.element, 'Unsubscribe', 'friend__button');
+    this.unsubscribeButton = new Button(this.element, this.dictionary.unsubscribeBtn, 'friend__button');
   }
 
   private addListeners(): void {
@@ -66,12 +71,12 @@ export default class Friend extends BaseFriend {
   private setButtonFunction(): void {
     if (this.friendsIsAdded === false) {
       this.unsubscribeButton.element.style.backgroundColor = ProjectColors.Orange;
-      this.unsubscribeButton.element.textContent = 'Follow';
+      this.unsubscribeButton.textContent = this.dictionary.subscribeBtn;
       this.unsubscribeButton.element.removeEventListener('click', this.deleteFriendCallback);
       this.unsubscribeButton.element.addEventListener('click', this.addFriendCallback);
     } else {
       this.unsubscribeButton.element.style.backgroundColor = ProjectColors.Grey;
-      this.unsubscribeButton.element.textContent = 'Unfollow';
+      this.unsubscribeButton.textContent = this.dictionary.unsubscribeBtn;
       this.unsubscribeButton.element.removeEventListener('click', this.addFriendCallback);
       this.unsubscribeButton.element.addEventListener('click', this.deleteFriendCallback);
     }

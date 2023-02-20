@@ -1,3 +1,4 @@
+import i18next from 'i18next';
 import './select.css';
 import { getClassNames } from '../../../utils/utils';
 import BaseComponent from '../base-component';
@@ -10,8 +11,10 @@ export default class Select extends BaseComponent<'div'> {
     'label',
     this.element,
     `${this.prefix}__label label`,
-    'Type of activity',
+    // 'Type of activity',
   );
+
+  private title = new BaseComponent('span', this.label.element, '', 'Type of activity');
 
   public select: BaseComponent<'select'> = new BaseComponent(
     'select',
@@ -135,6 +138,16 @@ export default class Select extends BaseComponent<'div'> {
       if (option.textContent === this.currentOption.element.value) {
         option.classList.add('currentSelection');
       }
+    });
+  }
+
+  public setOptionNames(): void {
+    i18next.on('languageChanged', () => {
+      this.optionsAll.forEach((option, index) => {
+        // console.log(option, options, options[index]);
+        // eslint-disable-next-line no-param-reassign
+        option.textContent = i18next.t(this.options[index]);
+      });
     });
   }
 }

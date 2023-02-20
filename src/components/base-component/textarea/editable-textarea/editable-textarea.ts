@@ -83,7 +83,6 @@ export default class EditableTextarea extends BaseComponent<'div'> {
     this.isUpdate = false;
     this.textarea.element.value = this.currentValue;
     this.textarea.element.setAttribute('disabled', '');
-    // eslint-disable-next-line max-len
     this.editBlock.editBtn.replaceBtnSvg(SvgNames.Pencil, this.classes, ProjectColors.Grey);
     this.editBlock.removeOkButton();
     // eslint-disable-next-line max-len
