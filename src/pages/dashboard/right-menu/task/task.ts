@@ -6,11 +6,11 @@ export default class Task extends BaseComponent<'div'> {
   private dictionary: Record<string, string> = {
     participants: 'Participants', // перевод
     noProgress: 'Challenge without progress checking', // перевод
-    yogaChallenge: 'Yours hours',
-    hikingChallenge: 'Conquer your Everest',
-    runningChallenge: 'The Tour de Valiance',
-    slothChallenge: 'International Sloth Day',
-    cyclingChallenge: 'Unbending spirit',
+    yogaChallenge: 'Yours hours', // перевод
+    hikingChallenge: 'Conquer your Everest', // перевод
+    runningChallenge: 'The Tour de Valiance', // перевод
+    slothChallenge: 'International Sloth Day', // перевод
+    cyclingChallenge: 'Unbending spirit', // перевод
   };
 
   public type: string;
