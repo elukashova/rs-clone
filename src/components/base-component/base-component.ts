@@ -40,5 +40,8 @@ export default class BaseComponent<T extends keyof HTMLElementTagNameMap> {
 
   public set textContent(content: string) {
     this.element.textContent = i18next.t(content);
+    i18next.on('languageChanged', () => {
+      this.element.textContent = i18next.t(content);
+    });
   }
 }

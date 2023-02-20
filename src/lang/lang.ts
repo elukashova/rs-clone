@@ -77,6 +77,7 @@ i18next.use(LanguageDetector).init({
               followers: 'followers',
               followees: 'followees',
               activities: 'activities',
+              defaultBio: 'Share something about youself',
             },
             trainingJournal: {
               heading: 'Last activity',
@@ -241,6 +242,7 @@ i18next.use(LanguageDetector).init({
               followers: 'Подписчики',
               followees: 'Друзья',
               activities: 'Тренировки',
+              defaultBio: 'Добавьте информацию о себе',
             },
             trainingJournal: {
               heading: 'Последняя тренировка',
