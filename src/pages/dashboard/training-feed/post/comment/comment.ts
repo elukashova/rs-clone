@@ -5,9 +5,10 @@ import SvgNames from '../../../../../components/base-component/svg/svg.types';
 import Picture from '../../../../../components/base-component/picture/picture';
 import { ProjectColors } from '../../../../../utils/consts';
 import { CommentResponse } from '../../../../../app/loader/loader-responses.types';
-import { updateComment } from '../../../../../app/loader/services/comment-services';
+import { deleteComment, updateComment } from '../../../../../app/loader/services/comment-services';
 import { UpdateComment } from '../../../../../app/loader/loader-requests.types';
 import { checkDataInLocalStorage } from '../../../../../utils/local-storage';
+import eventEmitter from '../../../../../utils/event-emitter';
 
 export default class PostComment extends BaseComponent<'div'> {
   private photo = new Picture(this.element, 'comment__photo');
@@ -18,7 +19,7 @@ export default class PostComment extends BaseComponent<'div'> {
 
   private name = new BaseComponent('h4', this.info.element, 'comment__name');
 
-  private date = new BaseComponent('span', this.info.element, 'comment__date');
+  public date = new BaseComponent('span', this.info.element, 'comment__date');
 
   private message = new BaseComponent('span', this.commentWrapper.element, 'comment__message');
 
@@ -30,17 +31,20 @@ export default class PostComment extends BaseComponent<'div'> {
 
   private userId: string | null = checkDataInLocalStorage('MyStriversId');
 
-  private commentId: number = 0;
+  public commentId: number = 0;
 
   private likesAll: string[] = [];
 
   private isLiked: boolean = false;
 
-  private commentAuthorId: string = '';
+  public commentAuthorId: string = '';
+
+  public createdAt: Date;
 
   constructor(data: CommentResponse) {
     super('div', undefined, 'comment');
     this.retrieveDataForComment(data);
+    this.createdAt = data.createdAt;
     this.like.element.addEventListener('click', this.toggleLike);
   }
 
@@ -112,7 +116,20 @@ export default class PostComment extends BaseComponent<'div'> {
 
   private renderSvgButtons(): void {
     if (this.userId && this.userId === this.commentAuthorId) {
-      console.log('hey');
+      const deleteActivitySvg: Svg = new Svg(
+        this.iconsWrapper.element,
+        SvgNames.DeletePost,
+        ProjectColors.Grey,
+        'comment__delete-svg',
+      );
+      deleteActivitySvg.svg.addEventListener('click', this.deleteComment);
     }
   }
+
+  private deleteComment = (): void => {
+    deleteComment(this.commentId).then(() => {
+      this.element.remove();
+      eventEmitter.emit('commentDeleted', { commentId: this.commentId });
+    });
+  };
 }

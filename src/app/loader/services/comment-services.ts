@@ -12,3 +12,6 @@ export const createComment = (token: Token, params: CreateCommentRequest): Promi
 
 export const updateComment = (id: number, params: UpdateComment): Promise<CommentResponse> =>
   Loader.putData(Methods.Put, `${Endpoints.UpdateComment}${id}`, params);
+
+export const deleteComment = (id: number): Promise<void> =>
+  Loader.deleteData(Methods.Delete, `${Endpoints.DeleteComment}${id}`);

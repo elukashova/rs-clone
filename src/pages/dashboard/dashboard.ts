@@ -50,7 +50,6 @@ export default class Dashboard extends BaseComponent<'section'> {
         this.setUserInfo(user);
         this.leftMenu = new LeftMenu(this.currentUser, replaceMainCallback);
         const relevantActivities: ActivityDataForPosts[] = Dashboard.collectAllActivities(user);
-        // eslint-disable-next-line max-len
         this.trainingFeed = new TrainingFeed(
           this.dashboardWrapper.element,
           this.replaceMainCallback,

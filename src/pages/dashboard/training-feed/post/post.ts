@@ -20,6 +20,7 @@ import PostComment from './comment/comment';
 import { deleteFriend } from '../../../../app/loader/services/friends-services';
 import eventEmitter from '../../../../utils/event-emitter';
 import PostReactions from './post-reactions/post-reactions';
+import { EventData } from '../../../../utils/event-emitter.types';
 
 export default class Post extends BaseComponent<'div'> {
   private dictionary: Record<string, string> = {
@@ -103,9 +104,9 @@ export default class Post extends BaseComponent<'div'> {
 
   public postId: number = 0;
 
-  public commentsAll: HTMLElement[] = [];
+  public commentsAll: PostComment[] = [];
 
-  public commentsOnPage: HTMLElement[] = [];
+  public commentsOnPage: PostComment[] = [];
 
   public commentsLimitPerPost: number = 2;
 
@@ -125,6 +126,7 @@ export default class Post extends BaseComponent<'div'> {
     this.reactions.comment.svg.addEventListener('click', this.handleCommentArea);
     this.commentArea.element.addEventListener('input', this.handleCommentButton);
     this.addCommentButton.element.addEventListener('click', this.postComment);
+    eventEmitter.on('commentDeleted', (data: EventData) => this.updateCommentsAfterDeletion(data));
   }
 
   private postComment = (): void => {
@@ -150,19 +152,19 @@ export default class Post extends BaseComponent<'div'> {
       this.element.append(comment.element);
     } else if (this.commentsOnPage.length === 1) {
       const [existingComment] = this.commentsOnPage;
-      this.element.insertBefore(comment.element, existingComment);
+      this.element.insertBefore(comment.element, existingComment.element);
     } else {
       if (this.commentsOnPage.length === this.commentsLimitPerPost) {
         this.handleShowAllElement();
       }
       const [commentToLeave, commentToRemove] = this.commentsOnPage;
-      this.element.removeChild(commentToRemove);
+      this.element.removeChild(commentToRemove.element);
       this.commentsOnPage.pop();
-      this.element.insertBefore(comment.element, commentToLeave);
+      this.element.insertBefore(comment.element, commentToLeave.element);
     }
 
-    this.commentsOnPage.unshift(comment.element);
-    this.commentsAll.unshift(comment.element);
+    this.commentsOnPage.unshift(comment);
+    this.commentsAll.unshift(comment);
     this.updateCommentsNumber(this.commentsAll.length);
   }
 
@@ -252,20 +254,21 @@ export default class Post extends BaseComponent<'div'> {
   };
 
   public appendExistingComments(comments: CommentResponse[]): void {
-    const sortedComments: CommentResponse[] = Post.sortCommentsByDate(comments);
-    sortedComments.forEach((comment) => {
+    comments.forEach((comment) => {
       const newComment: PostComment = new PostComment(comment);
-      this.commentsAll.push(newComment.element);
+      this.commentsAll.push(newComment);
     });
 
+    const sortedComments: PostComment[] = Post.sortCommentsByDate(this.commentsAll);
+
     if (sortedComments.length < this.commentsLimitPerPost) {
-      const [comment] = this.commentsAll;
-      this.element.append(comment);
+      const [comment] = sortedComments;
+      this.element.append(comment.element);
       this.commentsOnPage.push(comment);
     } else {
       for (let i: number = 0; i < this.commentsLimitPerPost; i += 1) {
-        this.element.append(this.commentsAll[i]);
-        this.commentsOnPage.push(this.commentsAll[i]);
+        this.element.append(sortedComments[i].element);
+        this.commentsOnPage.push(sortedComments[i]);
       }
 
       if (sortedComments.length > this.commentsLimitPerPost) {
@@ -277,10 +280,10 @@ export default class Post extends BaseComponent<'div'> {
   }
 
   private showAllComments = (): void => {
-    const remainingComments: HTMLElement[] = this.commentsAll.filter(
+    const remainingComments: PostComment[] = this.commentsAll.filter(
       (comment) => !this.commentsOnPage.includes(comment),
     );
-    remainingComments.forEach((comment) => this.element.append(comment));
+    remainingComments.forEach((comment) => this.element.append(comment.element));
     this.handleShowAllElement();
   };
 
@@ -309,8 +312,8 @@ export default class Post extends BaseComponent<'div'> {
   }
 
   private hideComments = (): void => {
-    const commentsToHide: HTMLElement[] = this.commentsAll.filter((comment) => !this.commentsOnPage.includes(comment));
-    commentsToHide.forEach((comment) => this.element.removeChild(comment));
+    const commentsToHide: PostComment[] = this.commentsAll.filter((comment) => !this.commentsOnPage.includes(comment));
+    commentsToHide.forEach((comment) => this.element.removeChild(comment.element));
     this.handleShowAllElement();
   };
 
@@ -353,8 +356,54 @@ export default class Post extends BaseComponent<'div'> {
     }
   };
 
-  private static sortCommentsByDate(comments: CommentResponse[]): CommentResponse[] {
-    const commentsToSort: CommentResponse[] = [...comments];
+  private static sortCommentsByDate(comments: PostComment[]): PostComment[] {
+    const commentsToSort: PostComment[] = [...comments];
     return commentsToSort.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  }
+
+  private updateCommentsAfterDeletion(data: EventData): void {
+    const isOwnComment: PostComment[] = this.commentsAll.filter((comment) => comment.commentId === data.commentId);
+    if (isOwnComment.length !== 0) {
+      const [comment] = isOwnComment;
+      this.updateCommentsArraysAfterDeletion(comment);
+
+      if (this.commentsAll.length === 0) {
+        this.reactions.element.classList.remove('comments-added');
+      }
+
+      if (this.commentsAll.length >= 2) {
+        this.commentsOnPage.forEach((remainedComment) => this.element.removeChild(remainedComment.element));
+        const filteredComment: PostComment[] = this.commentsAll.filter(
+          (existingComment) => !this.commentsOnPage.includes(existingComment),
+        );
+
+        const [commentToAppend] = filteredComment;
+        this.commentsOnPage.push(commentToAppend);
+
+        const sortedComments = Post.sortCommentsByDate(this.commentsOnPage);
+        sortedComments.forEach((sortedComment) => this.element.append(sortedComment.element));
+
+        this.updateCommentsCounterAfterDeletion();
+      }
+    }
+  }
+
+  private updateCommentsArraysAfterDeletion(comment: PostComment): void {
+    const indexOne: number = this.commentsOnPage.indexOf(comment);
+    this.commentsOnPage.splice(indexOne, 1);
+
+    const indexTwo: number = this.commentsAll.indexOf(comment);
+    this.commentsAll.splice(indexTwo, 1);
+  }
+
+  private updateCommentsCounterAfterDeletion(): void {
+    if (this.commentsAll.length >= 2) {
+      this.element.removeChild(this.showAllCommentsElement.element);
+    }
+
+    if (this.commentsAll.length > 2) {
+      this.updateCommentsNumber(this.commentsAll.length);
+      this.element.appendChild(this.showAllCommentsElement.element);
+    }
   }
 }

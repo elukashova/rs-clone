@@ -24,7 +24,7 @@
 .comment__date {
   font-weight: 300;
   color: #949494;
-  font-size: calc(0.5em + 0.4vw);
+  font-size: calc(0.4em + 0.4vw);
 }
 
 .comment__message {
@@ -54,4 +54,9 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+}
+
+.comment__delete-svg {
+  width: calc(0.3em + 0.3vw);
+  height: calc(0.3em + 0.3vw);
 }

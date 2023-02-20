@@ -47,22 +47,19 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 0.5em;
-}
-
-.post-reaction__reaction {
-  width: calc(0.5em + 0.8vw);
-  height: calc(0.5em + 0.8vw);
+  gap: 0.6em;
 }
 
 .post-reaction__reaction-like {
-  width: calc(0.5em + 0.8vw);
-  height: calc(0.35em + 0.8vw);
+  width: calc(0.6em + 0.8vw);
+  height: calc(0.45em + 0.8vw);
+  margin-bottom: 0.1em;
 }
 
 .post-reaction__reaction-comment {
-  width: calc(0.5em + 0.8vw);
-  height: calc(0.65em + 0.8vw);
+  width: calc(0.6em + 0.8vw);
+  height: calc(0.75em + 0.8vw);
+  margin-top: 0.1em;
 }
 
 .post-reaction__reaction-svg {
