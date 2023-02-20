@@ -9,6 +9,14 @@ import { ActivityResponse, User } from '../../../../app/loader/loader-responses.
 import { getFirstAndLastDaysOfWeek } from '../../../../utils/utils';
 
 export default class OurActivity extends BaseComponent<'div'> {
+  private dictionary: Record<string, string> = {
+    weekHeader: 'dashboard.leftMenu.ourActivity.weekHeader',
+    chooseSportHeadingMain: 'dashboard.leftMenu.ourActivity.chooseSportHeadingMain',
+    yearHeader: 'dashboard.leftMenu.ourActivity.yearHeader',
+    chooseSportHeadingError: 'dashboard.leftMenu.ourActivity.chooseSportHeadingError',
+    noSports: 'dashboard.leftMenu.ourActivity.noSports',
+  };
+
   private activityIcons: BaseComponent<'div'> = new BaseComponent('div', this.element, 'our-activity__icons');
 
   private iconsChoiceWrapper: BaseComponent<'div'> = new BaseComponent(
@@ -35,7 +43,7 @@ export default class OurActivity extends BaseComponent<'div'> {
     'h4',
     this.weekHeaderWrapper.element,
     'our-activity__week-header',
-    'dashboard.leftMenu.ourActivity.weekHeader',
+    this.dictionary.weekHeader,
   );
 
   private totalWeeklyKm: BaseComponent<'span'> = new BaseComponent(
@@ -48,7 +56,7 @@ export default class OurActivity extends BaseComponent<'div'> {
     'h6',
     undefined,
     'our-activity__icons_header',
-    'dashboard.leftMenu.ourActivity.chooseSportHeadingMain',
+    this.dictionary.chooseSportHeadingMain,
   );
 
   private statistics = new BaseComponent('div', this.element, 'our-activity__statistics');
@@ -71,7 +79,7 @@ export default class OurActivity extends BaseComponent<'div'> {
     'h4',
     this.yearHeaderWrapper.element,
     'our-activity__year-header',
-    'dashboard.leftMenu.ourActivity.yearHeader',
+    this.dictionary.yearHeader,
   );
 
   private totalYearlyKm: BaseComponent<'span'> = new BaseComponent(
@@ -270,9 +278,9 @@ export default class OurActivity extends BaseComponent<'div'> {
 
   private checkCurrentChosenSportsNumber(): void {
     if (this.choosenSportsCounter === this.svgNumberOnPage) {
-      this.chooseSportsHeading.element.textContent = 'Please, choose max 3 sports'; // не будет работать перевод
+      this.chooseSportsHeading.textContent = this.dictionary.chooseSportHeadingError;
       setTimeout((): void => {
-        this.chooseSportsHeading.element.textContent = 'Choose your sports'; // не будет работать перевод
+        this.chooseSportsHeading.textContent = this.dictionary.chooseSportHeadingMain;
       }, 1000);
 
       this.allSvgElements.forEach((icon) => {
@@ -362,7 +370,7 @@ export default class OurActivity extends BaseComponent<'div'> {
       'h6',
       this.sportsIcons.element,
       'our-activity__icons_header',
-      'dashboard.leftMenu.ourActivity.noSports',
+      this.dictionary.noSports,
     );
   }
 
