@@ -69,7 +69,7 @@ module.exports = ({ develop }) => ({
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: 'Online store',
+      title: 'Strivers',
       template: './src/index.html',
       filename: './index.html',
     }),
