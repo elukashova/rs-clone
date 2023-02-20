@@ -41,7 +41,7 @@ export interface ActivityResponse {
   startPoint?: string;
   endPoint?: string;
   mapId?: string;
-  kudos?: string[];
+  kudos?: Kudo[];
   comments?: CommentResponse[];
   route?: {
     startPoint?: string;
@@ -58,4 +58,10 @@ export type FriendData = {
   country?: string;
   avatarUrl: string;
   activities: ActivityResponse[];
+};
+
+export type Kudo = {
+  userId: string;
+  avatarUrl: string;
+  createdAt: string;
 };

@@ -49,7 +49,7 @@ export default class Dashboard extends BaseComponent<'section'> {
 
         const relevantActivities: ActivityDataForPosts[] = Dashboard.collectAllActivities(user);
         // eslint-disable-next-line max-len
-        this.trainingFeed = new TrainingFeed(this.element, this.replaceMainCallback, relevantActivities);
+        this.trainingFeed = new TrainingFeed(this.element, this.replaceMainCallback, user, relevantActivities);
         this.rightMenu = new RightMenu(this.element, this.replaceMainCallback);
         this.element.insertBefore(this.leftMenu.element, this.trainingFeed.element);
       });
@@ -98,7 +98,6 @@ export default class Dashboard extends BaseComponent<'section'> {
         }
       });
     }
-
     return allActivitiesData;
   }
 

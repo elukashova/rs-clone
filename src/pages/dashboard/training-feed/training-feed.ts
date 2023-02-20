@@ -10,6 +10,7 @@ import { sortActivitiesByDate } from '../../../utils/utils';
 import ActivityDataForPosts from '../dashboard.types';
 import eventEmitter from '../../../utils/event-emitter';
 import { EventData } from '../../../utils/event-emitter.types';
+import { User } from '../../../app/loader/loader-responses.types';
 // import eventEmitter from '../../../utils/event-emitter';
 // import { EventData } from '../../../utils/event-emitter.types';
 
@@ -24,10 +25,26 @@ export default class TrainingFeed extends BaseComponent<'article'> {
 
   private posts: Post[] = [];
 
+  private currentUser: Pick<User, 'username' | 'avatarUrl' | 'id'> = {
+    username: '',
+    avatarUrl: '',
+    id: '',
+  };
+
   // eslint-disable-next-line max-len
-  constructor(parent: HTMLElement, private replaceMainCallback: () => void, postData: ActivityDataForPosts[]) {
+  constructor(
+    parent: HTMLElement,
+    private replaceMainCallback: () => void,
+    user: User,
+    postData: ActivityDataForPosts[],
+  ) {
     super('article', parent, 'training-feed');
-    this.posts = TrainingFeed.addPosts(postData);
+
+    this.currentUser.username = user.username;
+    this.currentUser.avatarUrl = user.avatarUrl;
+    this.currentUser.id = user.id;
+
+    this.posts = this.addPosts(postData);
     if (this.posts.length) {
       this.deleteGreetingMessage();
       this.posts.forEach((post) => this.element.append(post.element));
@@ -38,14 +55,14 @@ export default class TrainingFeed extends BaseComponent<'article'> {
     eventEmitter.on('friendDeleted', (data: EventData) => this.removeAllFriendPosts(data));
   }
 
-  public static addPosts(data: ActivityDataForPosts[]): Post[] {
+  public addPosts(data: ActivityDataForPosts[]): Post[] {
     const posts: Post[] = [];
     const sortedActivities = sortActivitiesByDate(data);
     sortedActivities.forEach((activity) => {
       const post: Post = new Post();
-      if (activity.kudos) {
+      if (activity.kudos && activity.kudos.length > 0) {
         post.checkIfLikedPost(activity.kudos);
-        post.updateLikesCounter(activity.kudos.length);
+        post.updateLikesCounter(activity.kudos);
       }
 
       if (activity.comments && activity.comments.length > 0) {
@@ -53,7 +70,7 @@ export default class TrainingFeed extends BaseComponent<'article'> {
       }
       post.postId = activity.id;
       post.photo.element.src = activity.avatarUrl;
-      post.userImage.element.src = activity.avatarUrl;
+      post.userCommentAvatar.element.src = this.currentUser.avatarUrl;
       post.name.element.textContent = activity.username;
       post.postAuthorId = activity.userId;
       post.defineButtonBasenOnAuthor();

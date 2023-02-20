@@ -7,6 +7,7 @@ import { ProjectColors } from '../../../../../utils/consts';
 import { CommentResponse } from '../../../../../app/loader/loader-responses.types';
 import { updateComment } from '../../../../../app/loader/services/comment-services';
 import { UpdateComment } from '../../../../../app/loader/loader-requests.types';
+import { checkDataInLocalStorage } from '../../../../../utils/local-storage';
 
 export default class PostComment extends BaseComponent<'div'> {
   private photo = new Picture(this.element, 'comment__photo');
@@ -27,7 +28,7 @@ export default class PostComment extends BaseComponent<'div'> {
 
   private likeSvg = new Svg(this.like.element, SvgNames.Heart, ProjectColors.Grey, 'comment__like');
 
-  private userId: string = '';
+  private userId: string | null = checkDataInLocalStorage('MyStriversId');
 
   private commentId: number = 0;
 
@@ -44,7 +45,6 @@ export default class PostComment extends BaseComponent<'div'> {
   private retrieveDataForComment(data: CommentResponse): void {
     this.photo.element.src = data.avatarUrl;
     this.date.element.textContent = PostComment.createTimeSinceComment(data.createdAt);
-    this.userId = data.userId;
     this.commentId = data.id;
     this.name.element.textContent = data.username;
     this.message.element.textContent = data.body;
@@ -69,7 +69,9 @@ export default class PostComment extends BaseComponent<'div'> {
   }
 
   private checkIfLikedPost(likes: string[]): void {
-    this.isLiked = likes.includes(this.userId);
+    if (this.userId) {
+      this.isLiked = likes.includes(this.userId);
+    }
     this.updateLikeColor();
   }
 
@@ -95,10 +97,12 @@ export default class PostComment extends BaseComponent<'div'> {
   }
 
   private updateLikeInfoOnServer(flag: boolean): void {
-    const likeData: UpdateComment = {
-      userId: this.userId,
-      like: flag,
-    };
-    updateComment(this.commentId, likeData);
+    if (this.userId) {
+      const likeData: UpdateComment = {
+        userId: this.userId,
+        like: flag,
+      };
+      updateComment(this.commentId, likeData);
+    }
   }
 }

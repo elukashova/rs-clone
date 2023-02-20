@@ -3,7 +3,7 @@
 import './post.css';
 import BaseComponent from '../../../../components/base-component/base-component';
 import { CreateCommentRequest, FriendId, Token, UpdateActivity } from '../../../../app/loader/loader-requests.types';
-import { ActivityResponse, CommentResponse } from '../../../../app/loader/loader-responses.types';
+import { ActivityResponse, CommentResponse, Kudo, User } from '../../../../app/loader/loader-responses.types';
 import PostInfo from './post-info/post-info';
 import PostIcon from './post-icon/post-icon';
 import SvgNames from '../../../../components/base-component/svg/svg.types';
@@ -19,6 +19,7 @@ import { createComment } from '../../../../app/loader/services/comment-services'
 import PostComment from './comment/comment';
 import { deleteFriend } from '../../../../app/loader/services/friends-services';
 import eventEmitter from '../../../../utils/event-emitter';
+import PostReactions from './post-reactions/post-reactions';
 
 export default class Post extends BaseComponent<'div'> {
   private userInfo = new BaseComponent('div', this.element, 'post__user-info');
@@ -61,15 +62,11 @@ export default class Post extends BaseComponent<'div'> {
 
   public googleMap: BaseComponent<'img'> | undefined;
 
-  private icons = new BaseComponent('div', this.element, 'post__icons');
-
-  private likeIcon = new PostIcon(this.icons.element, SvgNames.Like, ProjectColors.Turquoise, 'post__like');
-
-  private commentIcon = new PostIcon(this.icons.element, SvgNames.Comment, ProjectColors.Turquoise, 'post__comment');
+  private reactions: PostReactions = new PostReactions(this.element);
 
   private textAreaWrapper: BaseComponent<'div'> = new BaseComponent('div', undefined, 'post__add-comment-wrapper');
 
-  public userImage: BaseComponent<'img'> = new Picture(this.textAreaWrapper.element, 'post__add-comment-user');
+  public userCommentAvatar: BaseComponent<'img'> = new Picture(this.textAreaWrapper.element, 'post__add-comment-user');
 
   private commentArea = new TextArea(this.textAreaWrapper.element, 'post__add-comment', '', {
     maxlength: '200',
@@ -95,8 +92,6 @@ export default class Post extends BaseComponent<'div'> {
 
   public postId: number = 0;
 
-  public likesCounter: number = 0;
-
   public commentsAll: HTMLElement[] = [];
 
   public commentsOnPage: HTMLElement[] = [];
@@ -115,8 +110,8 @@ export default class Post extends BaseComponent<'div'> {
   }
 
   private addEventListeners(): void {
-    this.likeIcon.icon.svg.addEventListener('click', this.addLike);
-    this.commentIcon.element.addEventListener('click', this.handleCommentArea);
+    this.reactions.like.svg.addEventListener('click', this.addLike);
+    this.reactions.comment.svg.addEventListener('click', this.handleCommentArea);
     this.commentArea.element.addEventListener('input', this.handleCommentButton);
     this.addCommentButton.element.addEventListener('click', this.postComment);
   }
@@ -132,7 +127,7 @@ export default class Post extends BaseComponent<'div'> {
         .then((response: CommentResponse) => {
           const comment: PostComment = new PostComment(response);
           this.checkIfNotFirstComment(comment);
-          this.icons.element.classList.add('comments-added');
+          this.reactions.element.classList.add('comments-added');
           this.commentArea.textValue = '';
         })
         .catch(() => null);
@@ -163,12 +158,12 @@ export default class Post extends BaseComponent<'div'> {
   private addLike = (): void => {
     if (!this.isLiked) {
       this.isLiked = true;
-      this.likesCounter += 1;
+      this.reactions.likesCounter += 1;
     } else {
       this.isLiked = false;
-      this.likesCounter -= 1;
+      this.reactions.likesCounter -= 1;
     }
-    this.updateLikesCounter();
+    this.updateLikesCounter([], this.userCommentAvatar.element.src);
     this.updateLikeColor();
     if (this.token) {
       updateActivity(this.postId, { kudos: this.isLiked }, this.token).catch(() => null);
@@ -199,30 +194,39 @@ export default class Post extends BaseComponent<'div'> {
       this.googleMap = new BaseComponent('img', this.map.element, '', '', {
         src: `${url}`,
       });
-      this.element.insertBefore(this.map.element, this.icons.element);
+      this.element.insertBefore(this.map.element, this.reactions.element);
     }
   }
 
   private updateLikeColor(): void {
     if (this.isLiked === true) {
-      this.likeIcon.icon.updateFillColor(ProjectColors.Orange);
+      this.reactions.like.updateFillColor(ProjectColors.Yellow);
     } else {
-      this.likeIcon.icon.updateFillColor(ProjectColors.Turquoise);
+      this.reactions.like.updateFillColor(ProjectColors.LightTurquoise);
     }
   }
 
-  public checkIfLikedPost(likes: string[]): void {
+  public checkIfLikedPost(likes: Kudo[]): void {
     if (this.userId) {
-      this.isLiked = likes.includes(this.userId);
+      const filteredLikes = likes.filter((like) => like.userId === this.userId);
+      if (filteredLikes.length > 0) {
+        this.isLiked = true;
+      } else {
+        this.isLiked = false;
+      }
       this.updateLikeColor();
     }
   }
 
-  public updateLikesCounter(number?: number): void {
-    if (number) {
-      this.likesCounter = number;
+  public updateLikesCounter(likes?: Kudo[], avatarSrc?: string): void {
+    if (likes && likes.length > 0) {
+      this.reactions.kudos = likes.slice();
+      this.reactions.likesCounter = likes.length;
+      this.reactions.renderUsersAvatars();
+    } else if (avatarSrc) {
+      this.reactions.updateAvatarsForKudos(avatarSrc, this.isLiked);
     }
-    this.likeIcon.value = `${this.likesCounter}`;
+    this.reactions.updateLikesNumber();
   }
 
   private handleCommentArea = (): void => {
@@ -258,7 +262,7 @@ export default class Post extends BaseComponent<'div'> {
       }
     }
 
-    this.icons.element.classList.add('comments-added');
+    this.reactions.element.classList.add('comments-added');
   }
 
   private showAllComments = (): void => {
