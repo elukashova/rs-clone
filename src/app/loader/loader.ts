@@ -1,6 +1,6 @@
 // import { DEVELOPMENT_ENV } from '../../utils/consts';
-import { RequestData, Token, LoadRequest, Methods, FriendId, UpdateRequestData } from './loader-requests.types';
 import { PRODUCTION_ENV } from '../../utils/consts';
+import { FriendId, LoadRequest, Methods, RequestData, Token, UpdateRequestData } from './loader-requests.types';
 
 export default class Loader {
   // DEVELOPMENT_ENV

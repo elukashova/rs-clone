@@ -1,6 +1,10 @@
 .dashboard {
+  width: 90%;
+}
+
+.sections-wrapper {
   display: grid;
-  grid-template-columns: 1.7fr 3fr 1.3fr;
+  grid-template-columns: 25% 45% 25%;
   gap: 2em;
-  margin-top: 4.5em;
+  margin: 3rem 0 3rem 0;
 }

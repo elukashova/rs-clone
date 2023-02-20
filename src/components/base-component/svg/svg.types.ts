@@ -11,6 +11,7 @@ enum SvgNames {
   Star = 'star',
   Favorite = 'favorite',
   MapMarker = 'map-marker',
+  AddMap = 'map-add',
 
   Plus = 'plus',
   Plus2 = 'plus2',
@@ -28,6 +29,8 @@ enum SvgNames {
   Heart = 'heart',
   Like = 'like',
   HeartFull = 'heart-full',
+  Hands = 'hands',
+  Goal = 'goal',
 
   Hiking = 'hiking',
   Running = 'running',
