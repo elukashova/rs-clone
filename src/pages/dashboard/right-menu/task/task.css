@@ -37,6 +37,10 @@
   color: #949494;
 }
 
+.task__no-progress {
+  font-size: calc(0.5em + 0.3vw);
+}
+
 .task__progress-wrapper {
   position: relative;
 }

@@ -4,6 +4,9 @@
   flex-direction: column;
   gap: 1em;
   width: 100%;
+  padding: 1.5rem;
+  box-shadow: rgba(183, 183, 183, 0.076) 0px 0px 0px 1px;
+  background-color: rgb(255, 255, 255);
 }
 
 .training-feed__buttons {

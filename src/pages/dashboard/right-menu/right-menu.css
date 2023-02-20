@@ -18,7 +18,7 @@
 .add-challenge__wrapper,
 .suggested-friends__wrapper,
 .add-route__wrapper {
-  padding: 1rem;
+  padding: 1.5rem;
   box-shadow: rgba(183, 183, 183, 0.076) 0px 0px 0px 1px;
   background-color: rgb(255, 255, 255);
 }
@@ -29,6 +29,10 @@
   font-weight: 500;
   color: #ff8d24;
   font-family: 'Montserrat', sans-serif;
+}
+
+.link.add-challenge__link {
+  margin-bottom: 0.5rem;
 }
 
 .suggested-friends__wrapper {

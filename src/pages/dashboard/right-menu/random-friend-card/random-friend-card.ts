@@ -73,11 +73,14 @@ export default class RandomFriendCard extends BaseComponent<'div'> {
 
   private setButtonFunction(): void {
     if (this.isAdded === false) {
-      this.plusButton.replaceBtnSvg(SvgNames.Plus, 'suggested-friends', ProjectColors.Turquoise);
+      // this.plusButton.replaceBtnSvg(SvgNames.Plus, 'suggested-friends', ProjectColors.Turquoise);
+      this.plusButton.element.classList.remove('suggested-friends__btn-active');
       this.plusButton.element.removeEventListener('click', this.deleteFriendCallback);
       this.plusButton.element.addEventListener('click', this.addFriendCallback);
     } else {
-      this.plusButton.replaceBtnSvg(SvgNames.CloseThin, 'close-btn suggested-friends', ProjectColors.Orange);
+      //  this.plusButton.replaceBtnSvg(SvgNames.CloseThin,
+      // 'close-btn suggested-friends', ProjectColors.Orange);
+      this.plusButton.element.classList.add('suggested-friends__btn-active');
       this.plusButton.element.removeEventListener('click', this.addFriendCallback);
       this.plusButton.element.addEventListener('click', this.deleteFriendCallback);
     }
