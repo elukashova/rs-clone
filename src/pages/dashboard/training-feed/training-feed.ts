@@ -52,7 +52,7 @@ export default class TrainingFeed extends BaseComponent<'article'> {
       this.showGreetingMessage();
     }
 
-    eventEmitter.on('friendDeleted', (data: EventData) => this.removeAllFriendPosts(data));
+    this.subscribeToEvents();
   }
 
   public addPosts(data: ActivityDataForPosts[]): Post[] {
@@ -133,11 +133,25 @@ export default class TrainingFeed extends BaseComponent<'article'> {
     })} at ${time}`;
   }
 
+  private subscribeToEvents(): void {
+    eventEmitter.on('friendDeleted', (data: EventData) => this.removeAllFriendPosts(data));
+    eventEmitter.on('updateAvatar', (data: EventData) => this.updateAvatarAfterChanging(data));
+  }
+
   private removeAllFriendPosts(data: EventData): void {
     this.posts.forEach((post) => {
       if (post.postAuthorId === data.friendId) {
         this.element.removeChild(post.element);
         this.posts = this.posts.filter((singlePost) => !singlePost.postAuthorId === data.friendId);
+      }
+    });
+  }
+
+  private updateAvatarAfterChanging(data: EventData): void {
+    this.posts.forEach((post) => {
+      if (post.postAuthorId === this.currentUser.id) {
+        // eslint-disable-next-line no-param-reassign
+        post.photo.element.src = `${data.url}`;
       }
     });
   }
