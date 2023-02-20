@@ -6,6 +6,11 @@ export default class Task extends BaseComponent<'div'> {
   private dictionary: Record<string, string> = {
     participants: 'Participants', // перевод
     noProgress: 'Challenge without progress checking', // перевод
+    yogaChallenge: 'Yours hours',
+    hikingChallenge: 'Conquer your Everest',
+    runningChallenge: 'The Tour de Valiance',
+    slothChallenge: 'International Sloth Day',
+    cyclingChallenge: 'Unbending spirit',
   };
 
   public type: string;
@@ -81,27 +86,28 @@ export default class Task extends BaseComponent<'div'> {
   public getTaskName(): void {
     switch (this.type) {
       case 'yoga':
+        this.taskName = this.dictionary.yogaChallenge;
         this.taskName = 'Yours hours';
         this.goal = ['567', '7']; // minutes, 9.27h
         this.progressInclude = true;
         break;
       case 'hiking':
-        this.taskName = 'Conquer your Everest';
+        this.taskName = this.dictionary.hikingChallenge;
         this.goal = ['8849', '365']; // meters
         this.progressInclude = true;
         break;
       case 'running':
-        this.taskName = 'The Tour de Valiance';
+        this.taskName = this.dictionary.runningChallenge;
         this.goal = ['3000', '365']; // km
         this.progressInclude = true;
         break;
       case 'sloth':
-        this.taskName = 'International Sloth Day';
+        this.taskName = this.dictionary.slothChallenge;
         this.goal = ['8849', '365'];
         this.progressInclude = false;
         break;
       case 'cycling':
-        this.taskName = 'Unbending spirit';
+        this.taskName = this.dictionary.cyclingChallenge;
         this.goal = ['7', '7']; // activity every day
         this.progressInclude = true;
         break;

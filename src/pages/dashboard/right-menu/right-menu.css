@@ -23,6 +23,12 @@
   background-color: rgb(255, 255, 255);
 }
 
+.add-challenge__wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
 .link.right-menu__link {
   font-size: calc(0.7em + 0.3vw);
   text-transform: uppercase;
