@@ -3,6 +3,11 @@ import BaseComponent from '../../../../components/base-component/base-component'
 import Picture from '../../../../components/base-component/picture/picture';
 
 export default class Task extends BaseComponent<'div'> {
+  private dictionary: Record<string, string> = {
+    participants: 'Participants', // перевод
+    noProgress: 'Challenge without progress checking', // перевод
+  };
+
   public type: string;
 
   public taskName!: string;
@@ -55,7 +60,7 @@ export default class Task extends BaseComponent<'div'> {
       'span',
       this.taskData.element,
       'task__participants',
-      `Participants: ${20 || 0}`,
+      `${this.dictionary.participants}: ${20 || 0}`,
     );
 
     if (this.progressInclude === true) {
@@ -69,12 +74,7 @@ export default class Task extends BaseComponent<'div'> {
       this.progressBox = new BaseComponent('div', this.progressWrapper.element, 'task__progress-box progress-box');
       this.progressBar = new BaseComponent('div', this.progressBox.element, 'task__progress-bar progress-bar');
     } else {
-      this.noProgress = new BaseComponent(
-        'p',
-        this.taskData.element,
-        'task__no-progress',
-        'Challenge without progress checking',
-      );
+      this.noProgress = new BaseComponent('p', this.taskData.element, 'task__no-progress', this.dictionary.noProgress);
     }
   }
 

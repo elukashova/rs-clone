@@ -8,6 +8,16 @@ import Svg from '../../../components/base-component/svg/svg';
 import { ProjectColors } from '../../../utils/consts';
 
 export default class Challenge extends BaseComponent<'div'> {
+  private dictionary: Record<string, string> = {
+    toEndMany: 'To end of challenge are', // перевод "До конца челленджа"
+    days: 'days', // перевод "дней"
+    toEndOne: 'To end of challenge is', // перевод "До конца челленджа"
+    day: 'day', // перевод "день"
+    challengeOver: 'Sorry, challenge is over', // перевод
+    acceptButton: 'Accept', // перевод
+    acceptedButton: 'Accepted', // перевод
+  };
+
   public type: string;
 
   public challengeImage!: Picture;
@@ -113,21 +123,21 @@ export default class Challenge extends BaseComponent<'div'> {
         'span',
         this.descriptionBlock.element,
         'challenge__days-to-end',
-        `To end of challenge are ${dateToEnd} days.`,
+        `${this.dictionary.toEndMany} ${dateToEnd} ${this.dictionary.days}.`,
       );
     } else if (dateToEnd === 1) {
       this.dateToEnd = new BaseComponent(
         'span',
         this.descriptionBlock.element,
         'challenge__days-to-end',
-        `To end of challenge is ${dateToEnd} day.`,
+        `${this.dictionary.toEndOne} ${dateToEnd} ${this.dictionary.day}.`,
       );
     } else {
       this.dateToEnd = new BaseComponent(
         'span',
         this.descriptionBlock.element,
         'challenge__days-to-end',
-        'Sorry, challenge is over',
+        `${this.dictionary.challengeOver}`,
       );
     }
 
@@ -142,7 +152,7 @@ export default class Challenge extends BaseComponent<'div'> {
         `Friends in challenge: ${this.avatarData.length}`,
       );
     }
-    this.button = new Button(this.element, 'Accept', 'challenge__button');
+    this.button = new Button(this.element, this.dictionary.acceptButton, 'challenge__button');
     this.addListeners();
   }
 
@@ -181,14 +191,14 @@ export default class Challenge extends BaseComponent<'div'> {
   private setButtonFunction(): void {
     if (this.challengeIsAdded === false) {
       this.button.element.style.backgroundColor = ProjectColors.Orange;
-      this.button.element.textContent = 'Accepted';
+      this.button.textContent = this.dictionary.acceptedButton;
       this.challengeIsAdded = true;
       // Надо добавить отправку челленджей юзера на сервер
       /* this.button.element.removeEventListener('click', this.deleteChallengeCallback);
       this.button.element.addEventListener('click', this.addChallengeCallback); */
     } else {
       this.button.element.style.backgroundColor = ProjectColors.Turquoise;
-      this.button.element.textContent = 'Accept';
+      this.button.textContent = this.dictionary.acceptButton;
       this.challengeIsAdded = false;
       /* this.button.element.removeEventListener('click', this.addChallengeCallback);
       this.button.element.addEventListener('click', this.deleteChallengeCallback); */
