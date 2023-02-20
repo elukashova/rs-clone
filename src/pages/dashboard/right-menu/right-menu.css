@@ -2,7 +2,7 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 1em;
+  gap: 1.6em;
 }
 
 .add-route-link__wrapper {
@@ -15,9 +15,15 @@
   border-radius: 5px;
 }
 
+.add-challenge__wrapper,
+.suggested-friends__wrapper,
+.add-route__wrapper {
+  padding: 1rem;
+  box-shadow: rgba(183, 183, 183, 0.076) 0px 0px 0px 1px;
+  background-color: rgb(255, 255, 255);
+}
+
 .link.right-menu__link {
-  padding: 0;
-  margin: 0;
   font-size: calc(0.7em + 0.3vw);
   text-transform: uppercase;
   font-weight: 500;
@@ -25,35 +31,36 @@
   font-family: 'Montserrat', sans-serif;
 }
 
-.link.right-menu__link:hover {
-  color: #219486;
-}
-
 .suggested-friends__wrapper {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
   width: 100%;
-  padding: 1em 1em 1em;
   gap: 0.5em;
   background: white;
   border-radius: 5px;
 }
 
-/* .right-menu__heading {
-  padding: 0;
-  margin: 0;
-  font-size: calc(0.7em + 0.3vw);
-  text-transform: uppercase;
-  font-weight: 500;
-  color: #ff8d24;
-} */
-
-.add-route__wrapper {
+.add-route__wrapper,
+.add-challenge__header-wrapper,
+.suggested-friends__header-wrapper {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 1rem;
+  margin-bottom: 0.7rem;
+}
+
+.add-route__wrapper:hover .add-route__icon {
+  fill: #ff6200;
+  transition: fill 0.5s ease-in-out;
+}
+
+.add-route__wrapper:hover .link.right-menu__link,
+.add-challenge__header-wrapper:hover .link.right-menu__link,
+.suggested-friends__header-wrapper:hover .link.right-menu__link {
+  color: #ff6200;
+  transition: color 0.5s ease-in;
 }
 
 .add-route__icon-wrapper,

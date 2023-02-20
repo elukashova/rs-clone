@@ -11,6 +11,7 @@ enum SvgNames {
   Star = 'star',
   Favorite = 'favorite',
   MapMarker = 'map-marker',
+  AddMap = 'map-add',
 
   Plus = 'plus',
   Plus2 = 'plus2',

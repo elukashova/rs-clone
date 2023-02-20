@@ -1,7 +1,7 @@
 .suggested-friends__friend {
   display: flex;
   align-items: center;
-  gap: 0.8em;
+  gap: 1.2rem;
   width: 100%;
 }
 
@@ -9,9 +9,7 @@
   display: flex;
   align-items: center;
   gap: 0.5em;
-  padding: 1em;
   width: 100%;
-  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
 }
 
 .suggested-friends__friend_photo {

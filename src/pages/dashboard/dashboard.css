@@ -2,5 +2,6 @@
   display: grid;
   grid-template-columns: 1.7fr 3fr 1.3fr;
   gap: 2em;
-  margin-top: 4.5em;
+  width: 90%;
+  margin-top: 3rem;
 }

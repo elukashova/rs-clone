@@ -1,6 +1,6 @@
 import './task.css';
-import BaseComponent from '../../../../../components/base-component/base-component';
-import Picture from '../../../../../components/base-component/picture/picture';
+import BaseComponent from '../../../../components/base-component/base-component';
+import Picture from '../../../../components/base-component/picture/picture';
 
 export default class Task extends BaseComponent<'div'> {
   public type: string;
