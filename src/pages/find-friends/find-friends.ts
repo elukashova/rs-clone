@@ -15,6 +15,14 @@ import SvgNames from '../../components/base-component/svg/svg.types';
 import { ProjectColors } from '../../utils/consts';
 
 export default class Friends extends BaseComponent<'section'> {
+  private dictionary: Record<string, string> = {
+    notFriendsTitle: 'findFriends.notFriendsTitle',
+    friendsTitle: 'findFriends.friendsTitle',
+    notFriendsSearch: 'findFriends.notFriendsSearch',
+    noFriendsMessage: 'findFriends.noFriendsMessage',
+    allFriendsMessage: 'findFriends.allFriendsMessage',
+  };
+
   public notFriendsAll: NotFriend[] = [];
 
   public friendsAll: Friend[] = [];
@@ -41,13 +49,13 @@ export default class Friends extends BaseComponent<'section'> {
     'h2',
     this.notFriendsBlock.element,
     'not-friends__title titles',
-    'Find friends',
+    this.dictionary.notFriendsTitle,
   );
 
   private notFriendsSearch = new Input(
     this.notFriendsBlock.element,
     'not-friends__input-search input-search',
-    'Sportsman name',
+    this.dictionary.notFriendsSearch,
     {
       type: 'search',
     },
@@ -61,12 +69,17 @@ export default class Friends extends BaseComponent<'section'> {
     'h2',
     this.friendsBlock.element,
     'friends__title titles',
-    'My Subscriptions',
+    this.dictionary.friendsTitle,
   );
 
-  private friendsSearch = new Input(this.friendsBlock.element, 'friends__input-search input-search', 'Sportsman name', {
-    type: 'search',
-  });
+  private friendsSearch = new Input(
+    this.friendsBlock.element,
+    'friends__input-search input-search',
+    this.dictionary.notFriendsSearch,
+    {
+      type: 'search',
+    },
+  );
 
   private token: Token | null = checkDataInLocalStorage('userSessionToken');
 
@@ -127,7 +140,7 @@ export default class Friends extends BaseComponent<'section'> {
       'div',
       this.notFriendsBlock.element,
       'not-friends__not-found',
-      'It seems that you have added all available users as friends.',
+      this.dictionary.allFriendsMessage,
     );
   }
 
@@ -281,7 +294,7 @@ export default class Friends extends BaseComponent<'section'> {
       'div',
       this.friendsBlock.element,
       'not-friends__not-found',
-      'It seems that you have no friends yet. You can find friends on the left side of this page.',
+      this.dictionary.noFriendsMessage,
     );
   }
 

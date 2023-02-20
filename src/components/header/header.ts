@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import './header.css';
+import i18next from 'i18next';
 import BaseComponent from '../base-component/base-component';
 import Avatar from '../base-component/avatar-image/avatar';
 import Picture from '../base-component/picture/picture';
@@ -11,6 +13,8 @@ import eventEmitter from '../../utils/event-emitter';
 import { EventData } from '../../utils/event-emitter.types';
 
 export default class Header extends BaseComponent<'header'> {
+  private languages: { en: string; rus: string } = { en: 'en', rus: 'rus' };
+
   private contentWrapper = new BaseComponent('div', this.element, 'header-content-wrapper');
 
   private logoLink = new NavigationLink(this.replaceMainCallback, {
@@ -37,28 +41,28 @@ export default class Header extends BaseComponent<'header'> {
   private avatarDropDownContent = new BaseComponent('div', this.avatarDropDown.element, 'header-avatar-content');
 
   private personalPageLink = new NavigationLink(this.replaceMainCallback, {
-    text: 'My Dashboard',
+    text: 'header.personalPage',
     parent: this.avatarDropDownContent.element,
     additionalClasses: 'header-link-avatar link',
     attributes: { href: Routes.Dashboard },
   });
 
   private myRoutesPageLink = new NavigationLink(this.replaceMainCallback, {
-    text: 'My Routes',
+    text: 'header.myRoutes',
     parent: this.avatarDropDownContent.element,
     additionalClasses: 'header-link-avatar link',
     attributes: { href: Routes.MyRoutes },
   });
 
   private settingsPageLink = new NavigationLink(this.replaceMainCallback, {
-    text: 'Settings',
+    text: 'header.settings',
     parent: this.avatarDropDownContent.element,
     additionalClasses: 'header-link-avatar link',
     attributes: { href: Routes.Settings },
   });
 
-  private logout = new NavigationLink(this.replaceMainCallback, {
-    text: 'Log Out',
+  private exit = new NavigationLink(this.replaceMainCallback, {
+    text: 'header.exit',
     parent: this.avatarDropDownContent.element,
     additionalClasses: 'header-link-avatar link',
     attributes: { href: Routes.LogOut },
@@ -71,28 +75,28 @@ export default class Header extends BaseComponent<'header'> {
   private addDropDownContent = new BaseComponent('div', this.addDropDown.element, 'header-add-content');
 
   private addActivityLink = new NavigationLink(this.replaceMainCallback, {
-    text: 'Add new activity',
+    text: 'header.addActivity',
     parent: this.addDropDownContent.element,
     additionalClasses: 'header-link-add link',
     attributes: { href: Routes.AddActivity },
   });
 
   private addNewRouteLink = new NavigationLink(this.replaceMainCallback, {
-    text: 'Add new route',
+    text: 'header.addRoute',
     parent: this.addDropDownContent.element,
     additionalClasses: 'header-link-add link',
     attributes: { href: Routes.AddRoute },
   });
 
   private findFriendsLink = new NavigationLink(this.replaceMainCallback, {
-    text: 'Find friends',
+    text: 'header.findFriends',
     parent: this.addDropDownContent.element,
     additionalClasses: 'header-link-add link',
     attributes: { href: Routes.FindFriends },
   });
 
   private challenges = new NavigationLink(this.replaceMainCallback, {
-    text: 'Challenges',
+    text: 'header.challenges',
     parent: this.addDropDownContent.element,
     additionalClasses: 'header-link-add link',
     attributes: { href: Routes.Challenges },
@@ -117,7 +121,19 @@ export default class Header extends BaseComponent<'header'> {
 
   public changeLanguage(): void {
     this.languageIcon.element.addEventListener('click', () => {
-      console.log('change language');
+      const language: string | null = localStorage.getItem('i18nextLng');
+      console.log(language);
+      switch (language) {
+        case this.languages.en:
+          console.log(this.languages.en);
+          i18next.changeLanguage(this.languages.rus);
+          break;
+        case this.languages.rus:
+          i18next.changeLanguage(this.languages.en);
+          break;
+        default:
+          break;
+      }
     });
   }
 

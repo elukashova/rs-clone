@@ -14,6 +14,12 @@ import { User } from '../../../../app/loader/loader-responses.types';
 import { EventData } from '../../../../utils/event-emitter.types';
 
 export default class ProfileCard extends BaseComponent<'div'> {
+  private dictionary: Record<string, string> = {
+    followers: 'dashboard.leftMenu.profileCard.followers',
+    followees: 'dashboard.leftMenu.profileCard.followees',
+    activities: 'dashboard.leftMenu.profileCard.activities',
+  };
+
   private photo: Picture = new Picture(this.element, 'profile-card__photo');
 
   private changePhotoButton: Button = new Button(this.element, '', 'profile-card__photo_btn');
@@ -34,21 +40,21 @@ export default class ProfileCard extends BaseComponent<'div'> {
   private followeesCounter: number = this.user.following.length;
 
   public followers: ProfileInfo = new ProfileInfo(
-    'followers',
+    this.dictionary.followers,
     Routes.FindFriends,
     this.replaceMainCallback,
     this.user.followedBy.length,
   );
 
   public followees: ProfileInfo = new ProfileInfo(
-    'followees',
+    this.dictionary.followees,
     Routes.FindFriends,
     this.replaceMainCallback,
     this.user.following.length,
   );
 
   public trainings: ProfileInfo = new ProfileInfo(
-    'activities',
+    this.dictionary.activities,
     Routes.AddActivity,
     this.replaceMainCallback,
     this.user.activities.length,

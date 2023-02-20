@@ -8,12 +8,20 @@ import { Token } from '../../../app/loader/loader-requests.types';
 import { FriendData } from '../../../app/loader/loader-responses.types';
 import { getNotFriends } from '../../../app/loader/services/friends-services';
 import { provideRandomUsers } from '../../../utils/utils';
-import Task from './task/task';
 import Svg from '../../../components/base-component/svg/svg';
 import SvgNames from '../../../components/base-component/svg/svg.types';
 import { ProjectColors } from '../../../utils/consts';
+import Task from './task/task';
 
 export default class RightMenu extends BaseComponent<'aside'> {
+  private dictionary: Record<string, string> = {
+    addNewRoute: 'dashboard.rightMenu.addNewRoute',
+    heading: 'dashboard.rightMenu.friendsHeading',
+    headingChallenges: 'Your challenges', // перевод
+    // allTasks: 'dashboard.rightMenu.tasks.allTasksButton', // перевод (удалить из словаря)
+    // heading: 'dashboard.rightMenu.tasks.allTasksButton', // перевод (удалить из словаря)
+  };
+
   private token: Token | null = checkDataInLocalStorage('userSessionToken');
 
   private friendsCardsLimit: number = 0;
@@ -62,7 +70,7 @@ export default class RightMenu extends BaseComponent<'aside'> {
           );
 
           this.friendsHeading = new NavigationLink(this.replaceMainCallback, {
-            text: 'Suggested friends',
+            text: this.dictionary.heading,
             parent: this.addFriendsHeaderWrapper.element,
             additionalClasses: 'right-menu__link suggested-friends__link link',
             attributes: { href: Routes.FindFriends },
@@ -99,7 +107,7 @@ export default class RightMenu extends BaseComponent<'aside'> {
       );
 
       this.challengeHeading = new NavigationLink(this.replaceMainCallback, {
-        text: 'Your challenges',
+        text: this.dictionary.headingChallenges,
         parent: this.addChallengeHeaderWrapper.element,
         additionalClasses: 'right-menu__link add-challenge__link link',
         attributes: { href: Routes.Challenges },
@@ -124,7 +132,7 @@ export default class RightMenu extends BaseComponent<'aside'> {
     );
 
     this.addRouteLink = new NavigationLink(this.replaceMainCallback, {
-      text: 'Add new route',
+      text: this.dictionary.addNewRoute,
       parent: this.addRouteLinkWrapper.element,
       additionalClasses: 'right-menu__link add-route__link link',
       attributes: { href: Routes.AddRoute },

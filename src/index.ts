@@ -1,4 +1,5 @@
 import App from './app/app';
+import './lang/lang';
 import './styles.css';
 // import CustomMap from './map/custom-map';
 
