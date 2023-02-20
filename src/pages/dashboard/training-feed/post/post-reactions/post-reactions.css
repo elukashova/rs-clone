@@ -20,7 +20,7 @@
   height: calc(0.5em + 0.8vw);
   width: calc(0.5em + 0.8vw);
   border-radius: 50%;
-  border: 1px solid white;
+  border: 2px solid white;
 }
 
 .post-reactions__avatar-front {
@@ -41,10 +41,6 @@
   font-weight: 300;
   color: #949494;
   font-size: calc(0.4em + 0.4vw);
-}
-
-.post-reactions__avatar-middle .post-reactions__likes-number {
-  transform: translateX(-30%);
 }
 
 .post-reactions__svg-wrapper {

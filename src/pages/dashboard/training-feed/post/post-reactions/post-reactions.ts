@@ -38,27 +38,15 @@ export default class PostReactions extends BaseComponent<'div'> {
     'post-reactions__svg-wrapper',
   );
 
-  private likeElement: BaseComponent<'span'> = new BaseComponent(
-    'span',
-    this.svgButtonsWrapper.element,
-    'post-reaction__reaction',
-  );
-
   public like: Svg = new Svg(
-    this.likeElement.element,
+    this.svgButtonsWrapper.element,
     SvgNames.Like,
     ProjectColors.LightTurquoise,
     'post-reaction__reaction-svg post-reaction__reaction-like',
   );
 
-  private commentElement: BaseComponent<'span'> = new BaseComponent(
-    'span',
-    this.svgButtonsWrapper.element,
-    'post-reaction__reaction',
-  );
-
   public comment: Svg = new Svg(
-    this.commentElement.element,
+    this.svgButtonsWrapper.element,
     SvgNames.Comment,
     ProjectColors.LightTurquoise,
     'post-reaction__reaction-svg post-reaction__reaction-comment',

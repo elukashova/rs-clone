@@ -45,8 +45,6 @@ export default class Post extends BaseComponent<'div'> {
 
   public place = new BaseComponent('span', this.datePlaceContainer.element);
 
-  private edit = new BaseComponent('span', this.userInfo.element, 'post__edit');
-
   private activityContainer = new BaseComponent('div', this.element, 'post__activity-container');
 
   public activityIcon = new BaseComponent('span', this.activityContainer.element, 'post__activity-icon');
@@ -168,7 +166,7 @@ export default class Post extends BaseComponent<'div'> {
     this.updateCommentsNumber(this.commentsAll.length);
   }
 
-  private addLike = (): void => {
+  private addLike = (e: Event): void => {
     if (!this.isLiked) {
       this.isLiked = true;
       this.reactions.likesCounter += 1;
@@ -320,7 +318,7 @@ export default class Post extends BaseComponent<'div'> {
     if (this.userId) {
       if (this.postAuthorId === this.userId) {
         const deleteActivitySvg: Svg = new Svg(
-          this.edit.element,
+          this.userInfo.element,
           SvgNames.DeletePost,
           ProjectColors.Grey,
           'post__edit-svg',
@@ -328,7 +326,7 @@ export default class Post extends BaseComponent<'div'> {
         deleteActivitySvg.svg.addEventListener('click', this.deletePostAndActivity);
       } else {
         const unfollowFriendSvg: Svg = new Svg(
-          this.edit.element,
+          this.userInfo.element,
           SvgNames.Unfollow,
           ProjectColors.Grey,
           'post__edit-svg',

@@ -36,6 +36,8 @@ export default class PostComment extends BaseComponent<'div'> {
 
   private isLiked: boolean = false;
 
+  private commentAuthorId: string = '';
+
   constructor(data: CommentResponse) {
     super('div', undefined, 'comment');
     this.retrieveDataForComment(data);
@@ -46,12 +48,14 @@ export default class PostComment extends BaseComponent<'div'> {
     this.photo.element.src = data.avatarUrl;
     this.date.element.textContent = PostComment.createTimeSinceComment(data.createdAt);
     this.commentId = data.id;
+    this.commentAuthorId = data.userId;
     this.name.element.textContent = data.username;
     this.message.element.textContent = data.body;
     if (data.likes && data.likes.length > 0) {
       this.likesAll = data.likes;
       this.checkIfLikedPost(this.likesAll);
     }
+    this.renderSvgButtons();
   }
 
   private toggleLike = (): void => {
@@ -103,6 +107,12 @@ export default class PostComment extends BaseComponent<'div'> {
         like: flag,
       };
       updateComment(this.commentId, likeData);
+    }
+  }
+
+  private renderSvgButtons(): void {
+    if (this.userId && this.userId === this.commentAuthorId) {
+      console.log('hey');
     }
   }
 }

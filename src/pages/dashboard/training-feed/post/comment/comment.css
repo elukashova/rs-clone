@@ -28,7 +28,7 @@
 }
 
 .comment__message {
-  margin-bottom: 0.5em;
+  margin-bottom: 0.4em;
   font-weight: 300;
   font-size: calc(0.5em + 0.4vw);
 }
@@ -41,8 +41,8 @@
 .comment__like {
   display: block;
   cursor: pointer;
-  width: 1.2em;
-  height: 1.2em;
+  width: calc(0.5em + 0.5vw);
+  height: calc(0.5em + 0.5vw);
   margin-bottom: 0.5em;
 }
 
