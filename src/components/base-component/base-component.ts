@@ -1,3 +1,5 @@
+import i18next from 'i18next';
+
 export default class BaseComponent<T extends keyof HTMLElementTagNameMap> {
   public element: HTMLElementTagNameMap[T];
 
@@ -19,7 +21,8 @@ export default class BaseComponent<T extends keyof HTMLElementTagNameMap> {
     }
 
     if (content) {
-      this.element.textContent = content;
+      this.element.textContent = i18next.t(content).toString();
+      this.setContent(content);
     }
 
     if (attributes) {
@@ -27,5 +30,18 @@ export default class BaseComponent<T extends keyof HTMLElementTagNameMap> {
         this.element.setAttribute(key, value);
       });
     }
+  }
+
+  private setContent(content: string): void {
+    i18next.on('languageChanged', () => {
+      this.element.textContent = i18next.t(content);
+    });
+  }
+
+  public set textContent(content: string) {
+    this.element.textContent = i18next.t(content);
+    i18next.on('languageChanged', () => {
+      this.element.textContent = i18next.t(content);
+    });
   }
 }

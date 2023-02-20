@@ -16,7 +16,7 @@ export default class Task extends BaseComponent<'div'> {
   public init(photo: string, name: string, participants: string): void {
     this.photo.element.src = photo;
     this.name.element.textContent = name;
-    this.participants.element.textContent = `${participants} участников`;
+    this.participants.element.textContent = `${participants} participants`; // не будет работать перевод
     const container = document.createElement('div');
     container.append(this.name.element, this.participants.element);
     this.element.append(this.photo.element, container);

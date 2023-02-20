@@ -3,6 +3,7 @@
 import { v4 } from 'uuid';
 import { decode, LatLngTuple } from '@googlemaps/polyline-codec';
 import './google-maps.css';
+import i18next from 'i18next';
 import BaseComponent from '../components/base-component/base-component';
 import Button from '../components/base-component/button/button';
 import { ProjectColors } from '../utils/consts';
@@ -86,6 +87,7 @@ export default class GoogleMaps {
     this.initMap(this.mapWrapper.element, center);
     this.currentTravelMode = GoogleMaps.getTravelMode(travelMode.toUpperCase());
     this.parentElement = parent;
+    this.changeLanguageOnThisPage();
   }
 
   public renderMap(parent: HTMLElement): void {
@@ -108,12 +110,12 @@ export default class GoogleMaps {
     this.directionsRenderer.setMap(this.map);
 
     // переменные и слушатель для определения местоположения пользователя по геолокации
-    this.locationButton = new Button(document.body, 'Go to current location');
+    this.locationButton = new Button(document.body, i18next.t('map.locationBtn'));
     this.locationButton.element.style.marginTop = '10px';
     this.locationButton.element.style.marginLeft = '20%';
     this.map.controls[google.maps.ControlPosition.TOP_CENTER].push(this.locationButton.element);
 
-    this.clearButton = new Button(document.body, 'Clear map');
+    this.clearButton = new Button(document.body, i18next.t('map.clearBtn'));
     this.clearButton.element.style.marginTop = '10px';
     this.clearButton.element.style.marginLeft = '20px';
     this.map.controls[google.maps.ControlPosition.TOP_CENTER].push(this.clearButton.element);
@@ -448,5 +450,12 @@ export default class GoogleMaps {
     this.currentTravelMode = travelMode;
     const temp: void = await this.doDirectionRequest(origin, destination, travelMode);
     return temp;
+  }
+
+  private changeLanguageOnThisPage(): void {
+    i18next.on('languageChanged', () => {
+      this.locationButton.element.textContent = i18next.t('map.locationBtn');
+      this.clearButton.element.textContent = i18next.t('map.clearBtn');
+    });
   }
 }
