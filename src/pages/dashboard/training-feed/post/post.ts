@@ -80,11 +80,15 @@ export default class Post extends BaseComponent<'div'> {
 
   private commentArea = new TextArea(this.textAreaWrapper.element, 'post__add-comment', '', {
     maxlength: '200',
-    placeholder: 'type something up to 200 characters',
+    placeholder: this.dictionary.commentPlaceholder,
     autofocus: '',
   });
 
-  private addCommentButton = new Button(this.textAreaWrapper.element, 'Comment', 'post__add-comment-button');
+  private addCommentButton = new Button(
+    this.textAreaWrapper.element,
+    this.dictionary.commentBtn,
+    'post__add-comment-button',
+  );
 
   private showAllCommentsElement: BaseComponent<'span'> = new BaseComponent(
     'span',
@@ -293,7 +297,7 @@ export default class Post extends BaseComponent<'div'> {
       this.isShown = true;
       this.isFirstAppend = false;
     } else {
-      this.showAllCommentsElement.element.textContent = 'Show recent comments';
+      this.showAllCommentsElement.textContent = 'Show recent comments';
       this.showAllCommentsElement.element.addEventListener('click', this.hideComments);
       this.showAllCommentsElement.element.removeEventListener('click', this.showAllComments);
       this.isShown = false;
@@ -302,7 +306,7 @@ export default class Post extends BaseComponent<'div'> {
   }
 
   private updateCommentsNumber(number: number): void {
-    this.showAllCommentsElement.element.textContent = `See all ${number} comments`;
+    this.showAllCommentsElement.textContent = `See all ${number} comments`;
   }
 
   private hideComments = (): void => {
