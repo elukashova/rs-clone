@@ -31,11 +31,20 @@ export default class AddActivity extends BaseComponent<'section'> {
     title: 'addActivityPage.title',
     description: 'addActivityPage.description',
     descriptionPlaceholder: 'addActivityPage.descriptionPlaceholder',
-    save: 'addActivityPage.save',
     walking: 'addActivityPage.walking',
     hiking: 'addActivityPage.hiking',
     cycling: 'addActivityPage.cycling',
     running: 'addActivityPage.running',
+    save: 'addActivityPage.save',
+    morning: 'addActivityPage.morning',
+    afternoon: 'addActivityPage.afternoon',
+    evening: 'addActivityPage.evening',
+    night: 'addActivityPage.night',
+    run: 'addActivityPage.run',
+    hike: 'addActivityPage.hike',
+    ride: 'addActivityPage.ride',
+    walk: 'addActivityPage.walk',
+    mapTitle: 'addActivityPage.mapTitle',
   };
 
   private trainingTypes: string[] = [
@@ -198,7 +207,7 @@ export default class AddActivity extends BaseComponent<'section'> {
     'span',
     this.mapBlock.element,
     'map__title',
-    'Activity route',
+    this.dictionary.mapTitle,
   );
 
   private mapDiv: BaseComponent<'div'> = new BaseComponent('div', this.mapBlock.element, 'map', '', { id: 'map' });

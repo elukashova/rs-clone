@@ -104,4 +104,9 @@ export default class Input extends BaseComponent<'div'> {
       this.input.element.placeholder = i18next.t(placeholder);
     });
   }
+
+  public set placeholder(content: string) {
+    console.log(content, i18next.t(content));
+    this.input.element.placeholder = i18next.t(content);
+  }
 }

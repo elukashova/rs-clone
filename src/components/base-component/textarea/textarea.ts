@@ -22,7 +22,8 @@ export default class TextArea extends BaseComponent<'div'> {
     super('div', parent, classes, undefined, attributes);
 
     if (labelText) {
-      this.label = new BaseComponent('label', this.element, `${labelText}-label`, labelText);
+      this.label = new BaseComponent('label', this.element, `${labelText}-label`);
+      this.title = new BaseComponent('span', this.label.element, '', labelText);
       this.textArea = new BaseComponent('textarea', this.label.element, 'textarea', '', attributes);
     } else {
       this.textArea = new BaseComponent('textarea', this.element, 'textarea', '', attributes);
