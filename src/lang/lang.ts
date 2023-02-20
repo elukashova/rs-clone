@@ -110,13 +110,16 @@ i18next.use(LanguageDetector).init({
           },
         },
         findFriends: {
-          unsubscribeBtn: 'Unsubscribe',
-          subscribeBtn: 'Subscribe',
+          unsubscribeBtn: 'Unfollow',
+          subscribeBtn: 'follow',
           activities: 'Activities',
           notFriendsTitle: 'Find friends',
           notFriendsSearch: 'Sportsman name',
           friendsSearch: 'Sportsman name',
           friendsTitle: 'My Subscriptions',
+          noFriendsMessage:
+            'It seems that you have no friends yet. You can find friends on the left side of this page.',
+          allFriendsMessage: 'It seems that you have added all available users as friends.',
         },
         newRoute: {
           heading: 'Add route',
@@ -273,6 +276,8 @@ i18next.use(LanguageDetector).init({
           notFriendsSearch: 'Имя спортсмена',
           friendsSearch: 'Имя спортсмена',
           friendsTitle: 'Мои подписки',
+          noFriendsMessage: 'У вас пока не добавлено ни одного друга. Вы можете найти друзей на левой стороне страницы',
+          allFriendsMessage: 'Вы добавили всех возможных друзей.',
         },
         newRoute: {
           heading: 'Добавить маршрут',

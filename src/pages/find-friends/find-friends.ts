@@ -19,6 +19,8 @@ export default class Friends extends BaseComponent<'section'> {
     notFriendsTitle: 'findFriends.notFriendsTitle',
     friendsTitle: 'findFriends.friendsTitle',
     notFriendsSearch: 'findFriends.notFriendsSearch',
+    noFriendsMessage: 'findFriends.noFriendsMessage',
+    allFriendsMessage: 'findFriends.allFriendsMessage',
   };
 
   public notFriendsAll: NotFriend[] = [];
@@ -138,7 +140,7 @@ export default class Friends extends BaseComponent<'section'> {
       'div',
       this.notFriendsBlock.element,
       'not-friends__not-found',
-      'It seems that you have added all available users as friends.',
+      this.dictionary.allFriendsMessage,
     );
   }
 
@@ -291,7 +293,7 @@ export default class Friends extends BaseComponent<'section'> {
       'div',
       this.friendsBlock.element,
       'not-friends__not-found',
-      'It seems that you have no friends yet. You can find friends on the left side of this page.',
+      this.dictionary.noFriendsMessage,
     );
   }
 

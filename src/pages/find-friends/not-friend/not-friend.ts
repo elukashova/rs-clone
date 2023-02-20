@@ -10,6 +10,7 @@ import { checkDataInLocalStorage } from '../../../utils/local-storage';
 export default class NotFriend extends BaseFriend {
   private dictionary: Record<string, string> = {
     activities: 'findFriends.activities',
+    unsubscribeBtn: 'findFriends.unsubscribeBtn',
     subscribeBtn: 'findFriends.subscribeBtn',
   };
 
@@ -18,6 +19,8 @@ export default class NotFriend extends BaseFriend {
   public subscribeButton!: Button;
 
   public countOffActivity: number | undefined;
+
+  private activityInfoTitle!: BaseComponent<'span'>;
 
   public activityCount?: BaseComponent<'p'>;
 
@@ -56,8 +59,9 @@ export default class NotFriend extends BaseFriend {
       'not-friend__user-country',
       `${this.country}` || '',
     );
-    this.subscribeButton = new Button(this.userDataBlock.element, 'Follow', 'not-friend__button');
-    const activityInfo = new BaseComponent('p', this.activityData.element, 'not-friend__activity-text', 'Activities');
+    this.subscribeButton = new Button(this.userDataBlock.element, this.dictionary.subscribeBtn, 'not-friend__button');
+    const activityInfo = new BaseComponent('div', this.activityData.element, 'not-friend__activity-text');
+    this.activityInfoTitle = new BaseComponent('span', activityInfo.element, '', this.dictionary.activities);
     this.activityCount = new BaseComponent(
       'p',
       activityInfo.element,
@@ -89,12 +93,12 @@ export default class NotFriend extends BaseFriend {
   private setButtonFunction(): void {
     if (this.notFriendsIsAdded === false) {
       this.subscribeButton.element.style.backgroundColor = ProjectColors.Turquoise;
-      this.subscribeButton.element.textContent = 'Follow';
+      this.subscribeButton.textContent = this.dictionary.subscribeBtn;
       this.subscribeButton.element.removeEventListener('click', this.deleteFriendCallback);
       this.subscribeButton.element.addEventListener('click', this.addFriendCallback);
     } else {
       this.subscribeButton.element.style.backgroundColor = ProjectColors.Orange;
-      this.subscribeButton.element.textContent = 'Unfollow';
+      this.subscribeButton.textContent = this.dictionary.unsubscribeBtn;
       this.subscribeButton.element.removeEventListener('click', this.addFriendCallback);
       this.subscribeButton.element.addEventListener('click', this.deleteFriendCallback);
     }

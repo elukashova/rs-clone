@@ -10,6 +10,7 @@ import { checkDataInLocalStorage } from '../../../utils/local-storage';
 export default class Friend extends BaseFriend {
   private dictionary: Record<string, string> = {
     unsubscribeBtn: 'findFriends.unsubscribeBtn',
+    subscribeBtn: 'findFriends.subscribeBtn',
   };
 
   public token: Token | null = checkDataInLocalStorage('userSessionToken');
@@ -70,12 +71,12 @@ export default class Friend extends BaseFriend {
   private setButtonFunction(): void {
     if (this.friendsIsAdded === false) {
       this.unsubscribeButton.element.style.backgroundColor = ProjectColors.Orange;
-      this.unsubscribeButton.element.textContent = 'Follow';
+      this.unsubscribeButton.textContent = this.dictionary.subscribeBtn;
       this.unsubscribeButton.element.removeEventListener('click', this.deleteFriendCallback);
       this.unsubscribeButton.element.addEventListener('click', this.addFriendCallback);
     } else {
       this.unsubscribeButton.element.style.backgroundColor = ProjectColors.Grey;
-      this.unsubscribeButton.element.textContent = 'Unfollow';
+      this.unsubscribeButton.textContent = this.dictionary.unsubscribeBtn;
       this.unsubscribeButton.element.removeEventListener('click', this.addFriendCallback);
       this.unsubscribeButton.element.addEventListener('click', this.deleteFriendCallback);
     }

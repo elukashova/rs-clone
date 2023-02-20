@@ -37,4 +37,8 @@ export default class BaseComponent<T extends keyof HTMLElementTagNameMap> {
       this.element.textContent = i18next.t(content);
     });
   }
+
+  public set textContent(content: string) {
+    this.element.textContent = i18next.t(content);
+  }
 }
