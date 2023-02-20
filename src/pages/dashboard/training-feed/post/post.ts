@@ -116,8 +116,9 @@ export default class Post extends BaseComponent<'div'> {
 
   public postAuthorId: string = '';
 
-  constructor() {
+  constructor(userId: string) {
     super('div', undefined, 'post');
+    this.postAuthorId = userId;
     this.addEventListeners();
   }
 
@@ -138,7 +139,7 @@ export default class Post extends BaseComponent<'div'> {
     if (this.token) {
       createComment(this.token, commentData)
         .then((response: CommentResponse) => {
-          const comment: PostComment = new PostComment(response);
+          const comment: PostComment = new PostComment(response, this.postAuthorId);
           this.checkIfNotFirstComment(comment);
           this.reactions.element.classList.add('comments-added');
           this.commentArea.textValue = '';
@@ -255,7 +256,7 @@ export default class Post extends BaseComponent<'div'> {
 
   public appendExistingComments(comments: CommentResponse[]): void {
     comments.forEach((comment) => {
-      const newComment: PostComment = new PostComment(comment);
+      const newComment: PostComment = new PostComment(comment, this.postAuthorId);
       this.commentsAll.push(newComment);
     });
 

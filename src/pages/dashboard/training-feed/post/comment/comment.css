@@ -40,10 +40,11 @@
 
 .comment__like {
   display: block;
-  cursor: pointer;
   width: calc(0.5em + 0.5vw);
   height: calc(0.5em + 0.5vw);
   margin-bottom: 0.5em;
+  cursor: pointer;
+  transition: fill 0.3s;
 }
 
 .comment__like:hover {
@@ -59,4 +60,10 @@
 .comment__delete-svg {
   width: calc(0.3em + 0.3vw);
   height: calc(0.3em + 0.3vw);
+  cursor: pointer;
+  transition: fill 0.3s;
+}
+
+.comment__delete-svg:hover {
+  fill: #219486;
 }

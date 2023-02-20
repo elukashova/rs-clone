@@ -65,7 +65,7 @@ export default class TrainingFeed extends BaseComponent<'article'> {
     const posts: Post[] = [];
     const sortedActivities = sortActivitiesByDate(data);
     sortedActivities.forEach((activity) => {
-      const post: Post = new Post();
+      const post: Post = new Post(activity.userId);
       if (activity.kudos && activity.kudos.length > 0) {
         post.checkIfLikedPost(activity.kudos);
         post.updateLikesCounter(activity.kudos);
@@ -78,7 +78,6 @@ export default class TrainingFeed extends BaseComponent<'article'> {
       post.photo.element.src = activity.avatarUrl;
       post.userCommentAvatar.element.src = this.currentUser.avatarUrl;
       post.name.element.textContent = activity.username;
-      post.postAuthorId = activity.userId;
       post.defineButtonBasenOnAuthor();
       post.activityTitle.element.textContent = activity.title;
       post.date.element.textContent = TrainingFeed.changeDateFormat(activity.date, activity.time);

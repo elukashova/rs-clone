@@ -41,10 +41,13 @@ export default class PostComment extends BaseComponent<'div'> {
 
   public createdAt: Date;
 
-  constructor(data: CommentResponse) {
+  public postAuthorId: string = '';
+
+  constructor(data: CommentResponse, postAuthorId: string) {
     super('div', undefined, 'comment');
-    this.retrieveDataForComment(data);
     this.createdAt = data.createdAt;
+    this.postAuthorId = postAuthorId;
+    this.retrieveDataForComment(data);
     this.like.element.addEventListener('click', this.toggleLike);
   }
 
@@ -115,14 +118,16 @@ export default class PostComment extends BaseComponent<'div'> {
   }
 
   private renderSvgButtons(): void {
-    if (this.userId && this.userId === this.commentAuthorId) {
-      const deleteActivitySvg: Svg = new Svg(
-        this.iconsWrapper.element,
-        SvgNames.DeletePost,
-        ProjectColors.Grey,
-        'comment__delete-svg',
-      );
-      deleteActivitySvg.svg.addEventListener('click', this.deleteComment);
+    if (this.userId) {
+      if (this.userId === this.commentAuthorId || this.userId === this.postAuthorId) {
+        const deleteActivitySvg: Svg = new Svg(
+          this.iconsWrapper.element,
+          SvgNames.DeletePost,
+          ProjectColors.Grey,
+          'comment__delete-svg',
+        );
+        deleteActivitySvg.svg.addEventListener('click', this.deleteComment);
+      }
     }
   }
 
