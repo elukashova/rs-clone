@@ -5,10 +5,10 @@ import SvgNames from '../../../../components/base-component/svg/svg.types';
 import { ProjectColors } from '../../../../utils/consts';
 import Picture from '../../../../components/base-component/picture/picture';
 import { checkDataInLocalStorage } from '../../../../utils/local-storage';
-import { FriendId, Token } from '../../../../app/loader/loader-requests.types';
-import { FriendData } from '../../../../app/loader/loader-responses.types';
 import { addFriend, deleteFriend } from '../../../../app/loader/services/friends-services';
 import eventEmitter from '../../../../utils/event-emitter';
+import { FriendId, Token } from '../../../../app/loader/loader-requests.types';
+import { FriendData } from '../../../../app/loader/loader-responses.types';
 
 export default class RandomFriendCard extends BaseComponent<'div'> {
   private token: Token | null = checkDataInLocalStorage('userSessionToken');

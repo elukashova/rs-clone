@@ -4,13 +4,13 @@ import LeftMenu from './left-menu/left-menu';
 import TrainingFeed from './training-feed/training-feed';
 import RightMenu from './right-menu/right-menu';
 import { getUser, updateUser } from '../../app/loader/services/user-services';
-import { Token, UpdateUserData } from '../../app/loader/loader-requests.types';
-import { User } from '../../app/loader/loader-responses.types';
 import { checkDataInLocalStorage, setDataToLocalStorage } from '../../utils/local-storage';
 import eventEmitter from '../../utils/event-emitter';
 import { transformNameFormat } from '../../utils/utils';
 import AvatarSources from '../../components/avatar-modal/avatar-modal.types';
 import DefaultUserInfo from './left-menu/left-menu.types';
+import { Token, UpdateUserData } from '../../app/loader/loader-requests.types';
+import { User } from '../../app/loader/loader-responses.types';
 
 export default class Dashboard extends BaseComponent<'section'> {
   private leftMenu!: LeftMenu;

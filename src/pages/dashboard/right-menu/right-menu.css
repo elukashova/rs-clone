@@ -2,7 +2,6 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 1em;
 }
 
@@ -16,17 +15,17 @@
   border-radius: 5px;
 }
 
-.add-route-link {
+.link.right-menu__link {
+  padding: 0;
+  margin: 0;
+  font-size: calc(0.7em + 0.3vw);
   text-transform: uppercase;
-  font-weight: 400;
-  color: #1cbaa7;
-  font-size: calc(0.6em + 0.3vw);
-  cursor: pointer;
-  text-decoration: none;
-  transition: color 0.3s;
+  font-weight: 500;
+  color: #ff8d24;
+  font-family: 'Montserrat', sans-serif;
 }
 
-.add-route-link:hover {
+.link.right-menu__link:hover {
   color: #219486;
 }
 
@@ -42,12 +41,27 @@
   border-radius: 5px;
 }
 
-.suggested-friends__heading {
+/* .right-menu__heading {
   padding: 0;
   margin: 0;
-  margin-bottom: 0.5em;
   font-size: calc(0.7em + 0.3vw);
   text-transform: uppercase;
   font-weight: 500;
   color: #ff8d24;
+} */
+
+.add-route__wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.add-route__icon-wrapper,
+.add-route__icon,
+.suggested-friends__icon,
+.suggested-friends__icon-wrapper,
+.add-challenge__icon-wrapper,
+.add-challenge__icon {
+  width: 2.5rem;
+  height: 2.5rem;
 }

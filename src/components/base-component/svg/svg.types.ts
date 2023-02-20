@@ -28,6 +28,8 @@ enum SvgNames {
   Heart = 'heart',
   Like = 'like',
   HeartFull = 'heart-full',
+  Hands = 'hands',
+  Goal = 'goal',
 
   Hiking = 'hiking',
   Running = 'running',

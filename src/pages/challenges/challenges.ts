@@ -8,7 +8,8 @@ import { checkDataInLocalStorage } from '../../utils/local-storage';
 import users from '../../mock/find-friends.data';
 import { ChallengesTypes, Activities } from './types-challenges';
 import Challenge from './challenge/challenge';
-import { FriendData, Token } from '../../app/loader/loader-requests.types';
+import { Token } from '../../app/loader/loader-requests.types';
+import { FriendData } from '../../app/loader/loader-responses.types';
 
 export default class Challenges extends BaseComponent<'section'> {
   private token: Token | null = checkDataInLocalStorage('userSessionToken');
@@ -187,10 +188,11 @@ export default class Challenges extends BaseComponent<'section'> {
 
   private static checkChallenges(data: FriendData[], challenge: string): string[] {
     const avatars: string[] = [];
-    const filtered = data.filter((user: FriendData) => user.challenges.includes(challenge));
+    /* const filtered = data.filter((user: FriendData) => user.challenges.includes(challenge));
     filtered.forEach((user: FriendData) => {
       avatars.push(user.avatarUrl);
-    });
+    }); */
+    console.log(avatars, data, challenge);
     return avatars;
   }
 
