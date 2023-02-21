@@ -84,6 +84,7 @@ export type UpdateUserData = {
   email?: string;
   id?: string;
   username?: string;
+  challenges?: string[];
 };
 
 export type UpdateActivity = {

@@ -16,6 +16,7 @@ import Picture from '../../components/base-component/picture/picture';
 import { convertRegexToPattern } from '../../utils/utils';
 import { ValidityMessages } from '../splash/forms/form.types';
 import Routes from '../../app/router/router.types';
+import LoadingTimer from '../../components/base-component/loading/loading';
 // import DropdownInput from '../splash/forms/dropdown-input/dropdown';
 
 export default class AddActivity extends BaseComponent<'section'> {
@@ -54,12 +55,14 @@ export default class AddActivity extends BaseComponent<'section'> {
     this.dictionary.running,
   ];
 
+  private loadingMap = new LoadingTimer('div');
+
   private formContainer = new BaseComponent('div', this.element, 'add-activity__container');
 
   private heading = new BaseComponent(
-    'h3',
+    'h2',
     this.formContainer.element,
-    'add-activity__heading',
+    'add-activity__heading titles',
     this.dictionary.heading,
   );
 
@@ -229,6 +232,8 @@ export default class AddActivity extends BaseComponent<'section'> {
 
   private static circle: Picture;
 
+  private static background: BaseComponent<'div'>;
+
   constructor(parent: HTMLElement, private replaceMainCallback: () => void) {
     super('section', parent, 'add-activity add-activity-section');
     this.search.addSvgIcon(SvgNames.Search, ProjectColors.Grey, 'search');
@@ -342,7 +347,7 @@ export default class AddActivity extends BaseComponent<'section'> {
     const updatedValue: string = AddActivity.checkSelect(this.training.select.element.value);
     if ((this.map.startPoint, this.map.endPoint)) {
       this.map.updateTravelMode(updatedValue, this.map.startPoint, this.map.endPoint).then((): void => {
-        AddActivity.showLoadingCircle();
+        this.loadingMap.showLoadingCircle();
         this.updateInputsFromMap();
       });
     } else {
@@ -369,21 +374,8 @@ export default class AddActivity extends BaseComponent<'section'> {
       this.durationSeconds.newInputValue = `${seconds}`;
       const elevationCount = this.map.elevationTotal.split(',')[0];
       this.elevation.newInputValue = `${elevationCount}`;
-      AddActivity.deleteLoadingCircle();
+      this.loadingMap.deleteLoadingCircle();
     }, 3000);
-  }
-
-  private static showLoadingCircle(): void {
-    this.circle = new Picture(document.body, 'circle', { src: './assets/icons/timer.gif' });
-    this.circle.element.style.position = 'fixed';
-    this.circle.element.style.top = '50%';
-    this.circle.element.style.left = '50%';
-    this.circle.element.style.transform = 'translate(-50%, -50%)';
-    this.circle.element.style.zIndex = '150';
-  }
-
-  private static deleteLoadingCircle(): void {
-    document.body.removeChild(this.circle.element);
   }
 
   private resetResults(): void {

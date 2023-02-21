@@ -1,11 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable max-lines-per-function */
+import { Token } from '../../../app/loader/loader-requests.types';
+import { updateUser } from '../../../app/loader/services/user-services';
 import Avatar from '../../../components/base-component/avatar-image/avatar';
 import BaseComponent from '../../../components/base-component/base-component';
 import Button from '../../../components/base-component/button/button';
 import Picture from '../../../components/base-component/picture/picture';
 import Svg from '../../../components/base-component/svg/svg';
 import { ProjectColors } from '../../../utils/consts';
+import eventEmitter from '../../../utils/event-emitter';
+import { checkDataInLocalStorage } from '../../../utils/local-storage';
 import DefaultUserInfo from '../../dashboard/left-menu/left-menu.types';
 
 export default class Challenge extends BaseComponent<'div'> {
@@ -18,6 +22,8 @@ export default class Challenge extends BaseComponent<'div'> {
     acceptButton: 'Accept', // перевод
     acceptedButton: 'Accepted', // перевод
   };
+
+  private token: Token | null = checkDataInLocalStorage('userSessionToken');
 
   public type: string;
 
@@ -186,7 +192,10 @@ export default class Challenge extends BaseComponent<'div'> {
   }
 
   private addListeners(): void {
-    this.button.element.addEventListener('click', (): void => this.setButtonFunction());
+    this.button.element.addEventListener('click', (): void => {
+      this.setButtonFunction();
+      Challenge.subscribeToEvents();
+    });
   }
 
   private setButtonFunction(): void {
@@ -204,5 +213,9 @@ export default class Challenge extends BaseComponent<'div'> {
       /* this.button.element.removeEventListener('click', this.addChallengeCallback);
       this.button.element.addEventListener('click', this.deleteChallengeCallback); */
     }
+  }
+
+  private static subscribeToEvents(): void {
+    eventEmitter.emit('challengesUpdate', {});
   }
 }

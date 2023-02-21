@@ -7,9 +7,11 @@ import SvgNames from '../../components/base-component/svg/svg.types';
 import { checkDataInLocalStorage } from '../../utils/local-storage';
 import users from '../../mock/find-friends.data';
 import { ChallengesTypes, Activities } from './types-challenges';
-import Challenge from './challenge/challenge';
 import { Token } from '../../app/loader/loader-requests.types';
 import { FriendData } from '../../app/loader/loader-responses.types';
+import Challenge from './challenge/challenge';
+import { updateUser } from '../../app/loader/services/user-services';
+import eventEmitter from '../../utils/event-emitter';
 
 export default class Challenges extends BaseComponent<'section'> {
   private dictionary: Record<string, string> = {
@@ -114,6 +116,7 @@ export default class Challenges extends BaseComponent<'section'> {
   constructor(parent: HTMLElement) {
     super('section', parent, 'challenges challenges-section');
     this.getFriendsRequest();
+    this.subscribeOnEvent();
   }
 
   private getFriendsRequest(): void {
@@ -278,5 +281,29 @@ export default class Challenges extends BaseComponent<'section'> {
 
   private doVisibleChallenge(): void {
     this.challengesAll.forEach((challenge: Challenge): void => challenge.element.classList.remove('hidden'));
+  }
+
+  private subscribeOnEvent(): void {
+    eventEmitter.on('challengesUpdate', (): void => {
+      this.check();
+    });
+  }
+
+  private check(): void {
+    const challenges = this.getAllAddedChallenges();
+    this.sendChallenges(challenges);
+  }
+
+  private getAllAddedChallenges(): string[] {
+    const challengeTypes = this.challengesAll
+      .filter((challenge) => challenge.challengeIsAdded === true)
+      .map((challenge) => challenge.type);
+    return challengeTypes;
+  }
+
+  private sendChallenges(data: string[]): void {
+    if (this.token) {
+      updateUser(this.token, { challenges: data }); /* .then(() => console.log(challenges)) */
+    }
   }
 }

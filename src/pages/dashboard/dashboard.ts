@@ -34,6 +34,7 @@ export default class Dashboard extends BaseComponent<'section'> {
     followedBy: [],
     avatarUrl: '',
     activities: [],
+    challenges: [],
   };
 
   private posts: HTMLDivElement[] = [];
@@ -57,6 +58,8 @@ export default class Dashboard extends BaseComponent<'section'> {
           this.trainingFeed.element.innerHTML = '';
           this.trainingFeed.showGreetingMessage();
         }
+        /* this.rightMenu.myChallenges = user.challenges; */
+        console.log(user.challenges);
       });
     }
   }

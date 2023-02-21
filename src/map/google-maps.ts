@@ -19,6 +19,14 @@ import {
 } from './interface-map';
 
 export default class GoogleMaps {
+  private dictionary: Record<string, string> = {
+    elevationError: "Can't show elevation", // перевод
+    elevation: 'Elevation (meters)', // перевод
+    locationFound: 'Location found!', // перевод
+    notFoundRoute: 'Unfortunately, we were unable to find such a route. Do you want to build a different route?', // перевод
+    ok: 'OK', // перевод
+  };
+
   public parentElement: HTMLElement;
 
   public map!: google.maps.Map;
@@ -74,12 +82,7 @@ export default class GoogleMaps {
 
   private elevationChart: boolean = true;
 
-  constructor(
-    parent: HTMLElement,
-    center: Coordinates,
-    travelMode: string, // 'WALKING' или 'BICYCLING'
-    elevationChart: boolean, // нужен график с высотой или нет
-  ) {
+  constructor(parent: HTMLElement, center: Coordinates, travelMode: string, elevationChart: boolean) {
     this.mapId = v4();
     this.latLng = center;
     this.elevationChart = elevationChart;
@@ -104,7 +107,6 @@ export default class GoogleMaps {
       center: latLng,
       mapTypeId: google.maps.MapTypeId.ROADMAP,
       mapTypeControl: false,
-      streetViewControl: false,
     };
     this.map = new google.maps.Map(parent, myOptions);
     this.directionsRenderer.setMap(this.map);
@@ -245,7 +247,7 @@ export default class GoogleMaps {
         }
       }
     } catch (error: unknown) {
-      console.log(`Can't show elevation: ${error}`);
+      console.log(`${this.dictionary.elevationError}: ${error}`);
     }
   }
 
@@ -270,7 +272,7 @@ export default class GoogleMaps {
     chart.draw(data, {
       height: 150,
       legend: 'none',
-      title: 'Elevation (meters)',
+      title: this.dictionary.elevation,
       colors: [ProjectColors.DarkTurquoise, ProjectColors.Turquoise],
     });
   }
@@ -331,7 +333,7 @@ export default class GoogleMaps {
             lng: position.coords.longitude,
           };
           this.infoWindow.setPosition(pos);
-          this.infoWindow.setContent('Location found!');
+          this.infoWindow.setContent(this.dictionary.LocationFound);
           this.infoWindow.open(this.map);
           this.map.setCenter(pos);
         },
@@ -355,8 +357,8 @@ export default class GoogleMaps {
     const popup: google.maps.InfoWindow = new google.maps.InfoWindow();
     const block: HTMLDivElement = document.createElement('div');
     block.classList.add('google-maps__popup');
-    block.textContent = 'Unfortunately, we were unable to find such a route. Do you want to build a different route?';
-    const button: Button = new Button(block, 'OK', 'google-maps__popup-button');
+    block.textContent = this.dictionary.notFoundRoute;
+    const button: Button = new Button(block, this.dictionary.ok, 'google-maps__popup-button');
 
     block.append(button.element);
     popup.setContent(block);
