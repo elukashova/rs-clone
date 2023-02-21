@@ -75,7 +75,7 @@ i18next.use(LanguageDetector).init({
             },
             profileCard: {
               followers: 'followers',
-              followees: 'followees',
+              followees: 'following',
               activities: 'activities',
               defaultBio: 'Share something about youself',
             },
@@ -90,8 +90,6 @@ i18next.use(LanguageDetector).init({
             },
             tasks: {
               participants: 'participants',
-              heading: 'Your tasks',
-              allTasksButton: 'All Tasks',
             },
             addNewRoute: 'Add new route',
             friendsHeading: 'Suggested friends',
@@ -142,6 +140,42 @@ i18next.use(LanguageDetector).init({
           roadType: 'Road type',
           routeName: 'Route name',
           description: 'Description',
+        },
+        challenges: {
+          participants: 'Participants',
+          noProgress: 'Challenge without progress checking',
+          hikingChallenge: 'Conquer your Everest',
+          runningChallenge: 'The Tour de Valiance',
+          slothChallenge: 'International Sloth Day',
+          cyclingChallenge: 'Unbending spirit',
+          title: 'Challenges',
+          headingChallenges: 'Your challenges',
+          typeAll: 'All',
+          typeRunning: 'Running',
+          typeCycling: 'Cycling',
+          typeHiking: 'Hiking',
+          typeWalking: 'Walking',
+          hikingTitle: 'Conquer your Everest',
+          hikingDescription:
+            'Climb to a height of 8,849 meters in a year. Each of your training takes into account the height elevation that has been completed. Your task is to accumulate a height equal to the height of Everest in a year.',
+          slothTitle: 'International Sloth Day',
+          slothDescription:
+            'Just relax. Spend the day doing nothing at all! Well... maybe just a little bit of movement to eat deliciously',
+          cyclingTitle: 'Unbending spirit',
+          cyclingDescription:
+            "It can be hard to focus on a goal, but this week will be an exception. Take part in the challenge in which you have to make a trip by cycle every day. Are you ready? Let's go!",
+          runningTitle: 'The Tour de Valiance',
+          runningDescription:
+            'Do you know The Tour de France - the most famous and most challenging 3,000 km cycle race in the world? Not everyone will be able to ride it, but you have a chance to ride, walk or run its length within a year. Will you accept the challenge?',
+          photoTitle: 'Like Van Gogh',
+          photoDescription:
+            'Launch applications to track your movement and draw a picture (for example, a cat, a heart or maybe "The Starry Night"?) as you move. Tag #striversChallenge on your social media. We will share the coolest track pictures!',
+          yogaTitle: 'Yours hours',
+          yogaDescription:
+            'Did you know that the first season of Game of Thrones is 9 hours and 27 minutes long? There are people who watched it in a week. Could you allocate the same amount of time for walking per week? We challenge you.',
+          challengeOver: 'Sorry, challenge is over',
+          acceptButton: 'Accept',
+          acceptedButton: 'Accepted',
         },
         ourTeam: {
           title: 'Meet the Big Bug Theory team',
@@ -240,7 +274,7 @@ i18next.use(LanguageDetector).init({
             },
             profileCard: {
               followers: 'Подписчики',
-              followees: 'Друзья',
+              followees: 'Подписки',
               activities: 'Тренировки',
               defaultBio: 'Добавьте информацию о себе',
             },
@@ -255,8 +289,6 @@ i18next.use(LanguageDetector).init({
             },
             tasks: {
               participants: 'участников',
-              heading: 'Ваши задания',
-              allTasksButton: 'Все задания',
             },
             addNewRoute: 'Добавить новый маршрут',
             friendsHeading: 'Рекомендованные друзья',
@@ -306,6 +338,37 @@ i18next.use(LanguageDetector).init({
           roadType: 'Тип покрытия',
           routeName: 'Имя маршрута',
           description: 'Описание маршрута',
+        },
+        challenges: {
+          participants: 'Участники',
+          noProgress: 'В этом испытании прогресс не отслеживается',
+          headingChallenges: 'Испытания',
+          title: 'Испытания',
+          typeAll: 'Все виды',
+          typeRunning: 'Бег',
+          typeCycling: 'Велозаезд',
+          typeHiking: 'Хайк',
+          typeWalking: 'Ходьба',
+          hikingTitle: 'Покори свой Эверест',
+          hikingDescription:
+            'Поднимись на высоту 8,849 метров за один год. Каждая законченная тренировка считает высоту подъема и добавляет ее к общему количеству. Ваша задача — за год набрать высоту, равную высоте Эвереста.',
+          slothTitle: 'Международный день ленивца',
+          slothDescription: 'Можешь расслабиться. Ничего не делай в этот день! Разве что...пробежка до холодильника?',
+          cyclingTitle: 'Несгибаемый дух',
+          cyclingDescription:
+            'Бывает сложно сфокусироваться на цели, но только не на этой неделе. В этом испытании тебе нужно совершать велозаезд каждый день. Тебе страшно? Мне нет',
+          runningTitle: 'Тур de Valiance',
+          runningDescription:
+            'Если ты знаком с туром de France - самым известным и сложным 3,000 км велозаезде в мире, то знаешь что не каждый способен его пройти, но у тебя есть возможность проехать, пройти или пробежать такое же расстояние за один год. Готов рискнуть?',
+          photoTitle: 'Как Ван Гог',
+          photoDescription:
+            'Запусти приложение чтобы отслеживать свои движания и нарисовать картину (на пример кошку, сердечко или "Звезднную Ночь") во время их. Поставь #striversChallenge в своей соц. сети и мы выложим самые классные работы',
+          yogaTitle: 'Ваши часы',
+          yogaDescription:
+            'А ты знал что первый сезон Игры Престолов длится 9 часов и 29 минут? Некоторые умудрились посмотреть его за неделю. А сможешь ли ты потратить столько же времени в неделю на ходьбу? Проверим.',
+          challengeOver: 'Просим прощения, испытание уже закончилось',
+          acceptButton: 'Пройти',
+          acceptedButton: 'Добавлено',
         },
         ourTeam: {
           title: 'Встречаем the Big Bug Theory',
