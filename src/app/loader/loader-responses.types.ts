@@ -26,7 +26,7 @@ export type CommentResponse = {
   likes: string[];
 };
 
-export type ActivityResponse = {
+export interface ActivityResponse {
   id: number;
   time: string;
   date: string;
@@ -41,7 +41,7 @@ export type ActivityResponse = {
   startPoint?: string;
   endPoint?: string;
   mapId?: string;
-  kudos?: string[];
+  kudos?: Kudo[];
   comments?: CommentResponse[];
   route?: {
     startPoint?: string;
@@ -50,7 +50,7 @@ export type ActivityResponse = {
     mapId?: string;
     travelMode?: string;
   };
-};
+}
 
 export type FriendData = {
   id: string;
@@ -58,4 +58,10 @@ export type FriendData = {
   country?: string;
   avatarUrl: string;
   activities: ActivityResponse[];
+};
+
+export type Kudo = {
+  userId: string;
+  avatarUrl: string;
+  createdAt: string;
 };

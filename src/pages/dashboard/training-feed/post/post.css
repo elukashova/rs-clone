@@ -3,14 +3,17 @@
   flex-direction: column;
   gap: 1em;
   width: 100%;
-  padding: 2em;
+  padding: 1.5em 2em;
   background: white;
   border-radius: 5px;
+  box-shadow: rgba(183, 183, 183, 0.076) 0px 0px 0px 1px;
+  background-color: rgb(255, 255, 255);
 }
 
 .post__user-info {
   display: grid;
-  grid-template-columns: 1fr 10fr 1fr;
+  grid-template-columns: 1fr 10fr 0.1fr;
+  align-items: center;
   gap: 1.5em;
 }
 
@@ -36,15 +39,17 @@
   color: #949494;
 }
 
-.post__edit {
-  height: 3em;
-  width: 3em;
-  margin-left: auto;
-  background: url('../../../../assets/icons/svg/expand-icon.svg');
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
+.post__edit-svg {
+  width: calc(0.4em + 0.4vw);
+  height: calc(0.4em + 0.4vw);
+  align-self: flex-start;
+  margin-top: 0.1em;
+  transition: fill 0.3s;
   cursor: pointer;
+}
+
+.post__edit-svg:hover {
+  fill: #1cbaa7;
 }
 
 .post__activity-container {
@@ -57,6 +62,7 @@
   width: 3.5em;
   height: calc(0.8em + 1vw);
   border-radius: 50%;
+  opacity: 60%;
 }
 
 .post__activity-icon > svg {
@@ -65,17 +71,26 @@
   height: 100%;
 }
 
+.post__activity-textcontent {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3em;
+}
+
 .post__activity-title {
-  padding-top: 0.2em;
-  margin-bottom: 1em;
   font-size: calc(0.7em + 0.5vw);
   font-weight: 600;
+}
+
+.post__activity-description {
+  font-weight: 300;
 }
 
 .post__info {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  gap: 1em;
   width: 100%;
 }
 
@@ -174,7 +189,7 @@
   border-radius: 5px;
   border: 1px solid #949494;
   font-family: 'Work Sans', sans-serif;
-  font-size: calc(0.7em + 0.3vw);
+  font-size: calc(0.6em + 0.3vw);
   color: #949494;
 }
 

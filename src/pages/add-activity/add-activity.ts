@@ -306,9 +306,12 @@ export default class AddActivity extends BaseComponent<'section'> {
       if (this.checkNumberInputs(e)) {
         this.collectActivityData();
         if (this.token) {
-          createActivity(this.data, this.token);
-          window.history.pushState({}, '', Routes.Dashboard);
-          this.replaceMainCallback();
+          createActivity(this.data, this.token)
+            .then(() => {
+              window.history.pushState({}, '', Routes.Dashboard);
+              this.replaceMainCallback();
+            })
+            .catch(() => null);
         }
       }
     });

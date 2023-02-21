@@ -9,3 +9,6 @@ export const createActivity = (params: ActivityRequest, token: Token): Promise<A
 
 export const updateActivity = (id: number, params: UpdateActivity, token: Token): Promise<void> =>
   Loader.putData(Methods.Put, `${Endpoints.UpdateActivity}${id}`, params, token);
+
+export const deleteActivity = (id: number): Promise<void> =>
+  Loader.deleteData(Methods.Delete, `${Endpoints.DeleteActivity}${id}`);
