@@ -240,13 +240,6 @@ export default class AddActivity extends BaseComponent<'section'> {
     this.addListeners();
     this.setDefaultTime();
     this.updateTitle();
-    /* this.map.doDirectionRequest(
-      { lat: -33.397, lng: 150.644 },
-      { lat: -33.393, lng: 150.641 },
-      google.maps.TravelMode.WALKING,
-    );
-    google.maps.event.clearInstanceListeners(this.map);
-    this.map.doMapRequired(); */
   }
 
   private collectActivityData(): void {
@@ -286,7 +279,8 @@ export default class AddActivity extends BaseComponent<'section'> {
   }
 
   private setMap(): void {
-    if (this.map.markers.length) {
+    console.log(this.map.markers);
+    if (this.map.markers.length === 2) {
       this.data.startPoint = AddActivity.joinMapDataIntoString(
         this.map.startPoint.lat.toString(),
         this.map.startPoint.lng.toString(),
@@ -329,6 +323,7 @@ export default class AddActivity extends BaseComponent<'section'> {
 
     this.map.clearButton.element.addEventListener('click', () => {
       this.resetResults();
+      /* this.map.deleteRoute(); */
     });
 
     this.time.input.element.addEventListener('input', () => {
@@ -344,15 +339,16 @@ export default class AddActivity extends BaseComponent<'section'> {
   };
 
   private updateMap = (): void => {
+    console.log(this.map.startPoint, this.map.endPoint, this.map.directionsRenderer);
     const updatedValue: string = AddActivity.checkSelect(this.training.select.element.value);
     if ((this.map.startPoint, this.map.endPoint)) {
       this.map.updateTravelMode(updatedValue, this.map.startPoint, this.map.endPoint).then((): void => {
-        this.loadingMap.showLoadingCircle();
+        // this.loadingMap.showLoadingCircle();
         this.updateInputsFromMap();
       });
     } else {
       this.map.deleteMap();
-      this.map = new GoogleMaps(this.mapDiv.element, { lat: -33.397, lng: 150.644 }, updatedValue, true);
+      this.map = new GoogleMaps(this.mapDiv.element, { lat: 38.771, lng: -9.058 }, updatedValue, true);
     }
   };
 
@@ -374,7 +370,7 @@ export default class AddActivity extends BaseComponent<'section'> {
       this.durationSeconds.newInputValue = `${seconds}`;
       const elevationCount = this.map.elevationTotal.split(',')[0];
       this.elevation.newInputValue = `${elevationCount}`;
-      this.loadingMap.deleteLoadingCircle();
+      // this.loadingMap.deleteLoadingCircle();
     }, 3000);
   }
 

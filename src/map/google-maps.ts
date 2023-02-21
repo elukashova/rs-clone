@@ -151,6 +151,7 @@ export default class GoogleMaps {
       if (this.chartElevation) {
         this.chartElevation.element.remove();
       }
+      console.log(this.startPoint, this.endPoint, this.directionsRenderer);
     });
   }
 
