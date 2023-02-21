@@ -71,17 +71,26 @@
   height: 100%;
 }
 
+.post__activity-textcontent {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3em;
+}
+
 .post__activity-title {
-  padding-top: 0.2em;
-  margin-bottom: 1em;
   font-size: calc(0.7em + 0.5vw);
   font-weight: 600;
+}
+
+.post__activity-description {
+  font-weight: 300;
 }
 
 .post__info {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  gap: 1em;
   width: 100%;
 }
 

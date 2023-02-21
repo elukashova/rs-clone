@@ -80,6 +80,7 @@ export default class TrainingFeed extends BaseComponent<'article'> {
       post.name.element.textContent = activity.username;
       post.defineButtonBasenOnAuthor();
       post.activityTitle.element.textContent = activity.title;
+      post.activityDescription.element.textContent = activity.description || '';
       post.date.element.textContent = TrainingFeed.changeDateFormat(activity.date, activity.time);
       post.distance.value = `${activity.distance} km`;
       post.speed.value = `${TrainingFeed.countSpeed(activity.duration, Number(activity.distance))} km/h`;

@@ -54,7 +54,19 @@ export default class Post extends BaseComponent<'div'> {
 
   private info = new BaseComponent('div', this.activityContainer.element, 'post__info');
 
-  public activityTitle = new BaseComponent('h4', this.info.element, 'post__activity-title');
+  private textContentWrapper: BaseComponent<'div'> = new BaseComponent(
+    'div',
+    this.info.element,
+    'post__activity-textcontent',
+  );
+
+  public activityTitle = new BaseComponent('h4', this.textContentWrapper.element, 'post__activity-title');
+
+  public activityDescription: BaseComponent<'span'> = new BaseComponent(
+    'span',
+    this.textContentWrapper.element,
+    'post__activity-description',
+  );
 
   public dataContainer = new BaseComponent('div', this.info.element, 'post__data');
 
