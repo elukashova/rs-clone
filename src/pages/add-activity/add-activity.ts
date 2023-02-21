@@ -17,6 +17,7 @@ import Picture from '../../components/base-component/picture/picture';
 import { convertRegexToPattern } from '../../utils/utils';
 import { ValidityMessages } from '../splash/forms/form.types';
 import Routes from '../../app/router/router.types';
+import eventEmitter from '../../utils/event-emitter';
 import LoadingTimer from '../../components/base-component/loading/loading';
 // import DropdownInput from '../splash/forms/dropdown-input/dropdown';
 
@@ -55,8 +56,6 @@ export default class AddActivity extends BaseComponent<'section'> {
     this.dictionary.cycling,
     this.dictionary.running,
   ];
-
-  private loadingMap = new LoadingTimer('div');
 
   private formContainer = new BaseComponent('div', this.element, 'add-activity__container');
 
@@ -319,12 +318,20 @@ export default class AddActivity extends BaseComponent<'section'> {
     // слушатель для селекта
     this.training.optionsAll.forEach((el) => el.addEventListener('click', this.selectSportCallback));
 
-    /*     google.maps.event.addListener(this.map, 'route_changed', () => {
-      console.log(this.map.markers);
+    google.maps.event.addListener(this.map, 'click', () => {
+      console.log('test in map');
+      /* console.log(this.map.markers);
       if (this.map.markers.length === 2) {
         this.updateMap();
-      }
-    }); */
+      } */
+    });
+
+    this.mapBlock.element.addEventListener('click', () => {
+      this.subscribeOnEvent();
+      /* if (this.map.markers.length === 2) {
+        this.updateMap();
+      } */
+    });
 
     this.map.clearButton.element.addEventListener('click', () => {
       this.resetResults();
@@ -337,6 +344,14 @@ export default class AddActivity extends BaseComponent<'section'> {
     });
   }
 
+  private subscribeOnEvent(): void {
+    eventEmitter.on('changeMap', (): void => {
+      if (this.map.markers.length === 2) {
+        this.updateMap();
+      }
+    });
+  }
+
   private selectSportCallback = (): void => {
     this.updateMap();
     this.updateTitle();
@@ -346,8 +361,9 @@ export default class AddActivity extends BaseComponent<'section'> {
     const updatedValue: string = AddActivity.checkSelect(this.training.select.element.value);
     if (this.map.markers.length === 2) {
       this.map.updateTravelMode(updatedValue, this.map.startPoint, this.map.endPoint).then((): void => {
-        this.loadingMap.showLoadingCircle();
-        this.updateInputsFromMap();
+        const loadingMap = new LoadingTimer(document.body);
+        loadingMap.showLoadingCircle();
+        this.updateInputsFromMap(loadingMap);
       });
     } else {
       this.map.deleteMap();
@@ -364,7 +380,7 @@ export default class AddActivity extends BaseComponent<'section'> {
     }
   }
 
-  private updateInputsFromMap(): void {
+  private updateInputsFromMap(loadingMap: LoadingTimer): void {
     setTimeout(() => {
       this.distance.newInputValue = `${this.map.distanceTotal}`;
       const { hours, minutes, seconds } = this.map.timeTotal;
@@ -373,7 +389,7 @@ export default class AddActivity extends BaseComponent<'section'> {
       this.durationSeconds.newInputValue = `${seconds}`;
       const elevationCount = this.map.elevationTotal.split(',')[0];
       this.elevation.newInputValue = `${elevationCount}`;
-      this.loadingMap.deleteLoadingCircle();
+      loadingMap.deleteLoadingCircle();
     }, 3000);
   }
 

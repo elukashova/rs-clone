@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 /* eslint-disable object-curly-newline */
 /* eslint-disable max-len */
 import { v4 } from 'uuid';
@@ -17,6 +18,7 @@ import {
   APIKey,
   StaticMapRequest,
 } from './interface-map';
+import eventEmitter from '../utils/event-emitter';
 
 export default class GoogleMaps {
   private dictionary: Record<string, string> = {
@@ -46,7 +48,7 @@ export default class GoogleMaps {
 
   public infoWindow: google.maps.InfoWindow = new google.maps.InfoWindow();
 
-  public directions: google.maps.DirectionsResult[] = [];
+  public directions: google.maps.DirectionsResult | undefined;
 
   public marker!: google.maps.Marker;
 
@@ -127,11 +129,18 @@ export default class GoogleMaps {
     this.addListeners();
   }
 
+  private static subscribeToEvents(): void {
+    eventEmitter.emit('changeMap', {});
+  }
+
   private addListeners(): void {
     // слушатель добавления маркеров (не более 2)
     this.map.addListener('click', (event: google.maps.MapMouseEvent): void => {
       if (this.markers.length < this.maxMarkerCount) {
         this.placeMarker(event.latLng, this.map);
+      }
+      if (this.markers.length === this.maxMarkerCount && !this.directions) {
+        GoogleMaps.subscribeToEvents();
       }
     });
 
@@ -140,12 +149,11 @@ export default class GoogleMaps {
       this.changeGeolocation();
     });
 
-    this.directionsRenderer.addListener('route_changed', (): void => {
+    this.directionsRenderer.addListener('directions_changed', (): void => {
       const directions: google.maps.DirectionsResult | null = this.directionsRenderer.getDirections();
       if (directions) {
         this.getTotalDistanceAndTime(directions.routes[0]);
       }
-      console.log(directions);
     });
 
     this.clearButton.element.addEventListener('click', (event: MouseEvent): void => {
@@ -230,6 +238,7 @@ export default class GoogleMaps {
         if (status === 'OK' && result) {
           this.directionsRenderer.setMap(this.map);
           this.directionsRenderer.setDirections(result);
+          this.directions = result;
           this.getTotalDistanceAndTime(result.routes[0]);
           if (this.elevationChart) {
             this.doElevationRequest(result);
@@ -391,6 +400,7 @@ export default class GoogleMaps {
     this.elevationTotal = '0,0';
     this.markers.forEach((marker: google.maps.Marker): void => marker.setMap(null));
     this.markers.length = 0;
+    this.directions = undefined;
   }
 
   public deleteMap(): void {
