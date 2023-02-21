@@ -62,6 +62,7 @@ export default class Select extends BaseComponent<'div'> {
 
     this.options = options;
     this.currentOption = this.setDefaultValue();
+    this.currentOption.element.value = i18next.t(this.options[0], { lng: 'en' }).toLowerCase();
 
     this.addOptions(options);
     this.setDropDownButton();
@@ -86,7 +87,7 @@ export default class Select extends BaseComponent<'div'> {
 
   private static createOption(name: string): BaseComponent<'li'> {
     return new BaseComponent('li', undefined, 'select__dropdown_list-option', name, {
-      value: name,
+      value: i18next.t(name, { lng: 'en' }).toLowerCase(),
     });
   }
 
@@ -100,7 +101,8 @@ export default class Select extends BaseComponent<'div'> {
 
   public collectInputCallback = (e: Event): void => {
     if (e.target instanceof HTMLLIElement) {
-      this.currentOption.element.value = `${e.target.textContent}`;
+      const value = e.target.getAttribute('value');
+      if (value) this.currentOption.element.value = value;
       this.currentOption.element.textContent = `${e.target.textContent}`;
       this.hideOptionsList();
     }
@@ -144,7 +146,6 @@ export default class Select extends BaseComponent<'div'> {
   public setOptionNames(): void {
     i18next.on('languageChanged', () => {
       this.optionsAll.forEach((option, index) => {
-        // console.log(option, options, options[index]);
         // eslint-disable-next-line no-param-reassign
         option.textContent = i18next.t(this.options[index]);
       });
