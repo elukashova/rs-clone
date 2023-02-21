@@ -138,7 +138,7 @@ export default class GoogleMaps {
       this.changeGeolocation();
     });
 
-    this.directionsRenderer.addListener('directions_changed', (): void => {
+    this.directionsRenderer.addListener('route_changed', (): void => {
       const directions: google.maps.DirectionsResult | null = this.directionsRenderer.getDirections();
       if (directions) {
         this.getTotalDistanceAndTime(directions.routes[0]);
@@ -189,6 +189,7 @@ export default class GoogleMaps {
       opacity: 1,
       icon: './assets/icons/png/geo.png',
       draggable: false,
+      anchorPoint: new google.maps.Point(15, 30),
     });
     map.panTo(location);
     map.setZoom(ZoomSettings.Closer);

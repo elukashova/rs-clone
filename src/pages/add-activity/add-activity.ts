@@ -341,9 +341,9 @@ export default class AddActivity extends BaseComponent<'section'> {
   private updateMap = (): void => {
     console.log(this.map.startPoint, this.map.endPoint, this.map.directionsRenderer);
     const updatedValue: string = AddActivity.checkSelect(this.training.select.element.value);
-    if ((this.map.startPoint, this.map.endPoint)) {
+    if (this.map.markers.length /* (this.map.startPoint, this.map.endPoint) */) {
       this.map.updateTravelMode(updatedValue, this.map.startPoint, this.map.endPoint).then((): void => {
-        // this.loadingMap.showLoadingCircle();
+        this.loadingMap.showLoadingCircle();
         this.updateInputsFromMap();
       });
     } else {
@@ -370,7 +370,7 @@ export default class AddActivity extends BaseComponent<'section'> {
       this.durationSeconds.newInputValue = `${seconds}`;
       const elevationCount = this.map.elevationTotal.split(',')[0];
       this.elevation.newInputValue = `${elevationCount}`;
-      // this.loadingMap.deleteLoadingCircle();
+      this.loadingMap.deleteLoadingCircle();
     }, 3000);
   }
 
