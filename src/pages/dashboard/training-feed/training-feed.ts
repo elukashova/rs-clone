@@ -1,9 +1,7 @@
 import './training-feed.css';
-// import i18next from 'i18next';
 import BaseComponent from '../../../components/base-component/base-component';
 import Button from '../../../components/base-component/button/button';
 import Routes from '../../../app/router/router.types';
-import NavigationLink from '../../../components/base-component/link/link';
 import Post from './post/post';
 import { ProjectColors } from '../../../utils/consts';
 import Svg from '../../../components/base-component/svg/svg';
@@ -12,8 +10,6 @@ import ActivityDataForPosts from '../dashboard.types';
 import eventEmitter from '../../../utils/event-emitter';
 import { EventData } from '../../../utils/event-emitter.types';
 import { User } from '../../../app/loader/loader-responses.types';
-// import eventEmitter from '../../../utils/event-emitter';
-// import { EventData } from '../../../utils/event-emitter.types';
 
 export default class TrainingFeed extends BaseComponent<'article'> {
   private dictionary: Record<string, string> = {
@@ -26,7 +22,7 @@ export default class TrainingFeed extends BaseComponent<'article'> {
 
   public addTrainingButton: Button | undefined;
 
-  public findFriendsButton: NavigationLink | undefined;
+  public findFriendsButton: Button | undefined;
 
   private buttonContainer: BaseComponent<'div'> | undefined;
 
@@ -38,7 +34,6 @@ export default class TrainingFeed extends BaseComponent<'article'> {
     id: '',
   };
 
-  // eslint-disable-next-line max-len
   constructor(
     parent: HTMLElement,
     private replaceMainCallback: () => void,
@@ -104,11 +99,16 @@ export default class TrainingFeed extends BaseComponent<'article'> {
     this.element.append(this.message.element);
     this.buttonContainer = new BaseComponent('div', this.element, 'training-feed__buttons');
     this.addTrainingButton = new Button(this.buttonContainer.element, this.dictionary.addActivity, 'btn_main');
-    this.findFriendsButton = new NavigationLink(this.replaceMainCallback, {
-      text: this.dictionary.findFriends,
-      parent: this.buttonContainer.element,
-      additionalClasses: 'btn btn_main training-feed__button',
-      attributes: { href: Routes.FindFriends },
+    this.findFriendsButton = new Button(this.buttonContainer.element, this.dictionary.findFriends, 'btn_main');
+
+    this.addTrainingButton.element.addEventListener('click', () => {
+      window.history.pushState({}, '', Routes.AddActivity);
+      this.replaceMainCallback();
+    });
+
+    this.findFriendsButton?.element.addEventListener('click', () => {
+      window.history.pushState({}, '', Routes.FindFriends);
+      this.replaceMainCallback();
     });
   }
 
