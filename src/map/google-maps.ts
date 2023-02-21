@@ -104,6 +104,8 @@ export default class GoogleMaps {
   public initMap(parent: HTMLElement, latLng: { lat: number; lng: number }): void {
     const myOptions: OptionsForMap = {
       zoom: this.zoom,
+      minZoom: 0,
+      maxZoom: 20,
       center: latLng,
       mapTypeId: google.maps.MapTypeId.ROADMAP,
       mapTypeControl: false,
@@ -143,6 +145,7 @@ export default class GoogleMaps {
       if (directions) {
         this.getTotalDistanceAndTime(directions.routes[0]);
       }
+      console.log(directions);
     });
 
     this.clearButton.element.addEventListener('click', (event: MouseEvent): void => {

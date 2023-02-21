@@ -318,15 +318,15 @@ export default class AddActivity extends BaseComponent<'section'> {
     // слушатель для селекта
     this.training.optionsAll.forEach((el) => el.addEventListener('click', this.selectSportCallback));
 
-    this.mapBlock.element.addEventListener('click', () => {
-      if (this.map.marker && this.map.markers.length === 2) {
+    google.maps.event.addListener(this.map, 'route_changed', () => {
+      console.log(this.map.markers);
+      if (this.map.markers.length === 2) {
         this.updateMap();
       }
     });
 
     this.map.clearButton.element.addEventListener('click', () => {
       this.resetResults();
-      /* this.map.deleteRoute(); */
     });
 
     this.time.input.element.addEventListener('input', () => {

@@ -24,6 +24,8 @@ export type OptionsForMap = {
   mapTypeId?: google.maps.MapTypeId;
   mapTypeControl?: boolean;
   streetViewControl?: boolean;
+  minZoom?: number;
+  maxZoom?: number;
 };
 
 export type DirectionsRenderer = google.maps.DirectionsResult | null;
