@@ -154,8 +154,14 @@ export default class GoogleMaps {
       if (this.chartElevation) {
         this.chartElevation.element.remove();
       }
-      console.log(this.startPoint, this.endPoint, this.directionsRenderer);
     });
+
+    /*     google.maps.event.addListener(this.map, 'zoom_changed', () => {
+      const zoomLevel = this.map.getZoom();
+      if (zoomLevel) {
+        this.map.setZoom(zoomLevel);
+      }
+    }); */
   }
 
   // размещаем маркер

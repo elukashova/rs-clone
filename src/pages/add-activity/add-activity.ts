@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 /* eslint-disable max-len */
 import './add-activity.css';
 // import i18next from 'i18next';
@@ -342,7 +343,6 @@ export default class AddActivity extends BaseComponent<'section'> {
   };
 
   private updateMap = (): void => {
-    console.log(this.map.startPoint, this.map.endPoint, this.map.directionsRenderer);
     const updatedValue: string = AddActivity.checkSelect(this.training.select.element.value);
     if (this.map.markers.length === 2) {
       this.map.updateTravelMode(updatedValue, this.map.startPoint, this.map.endPoint).then((): void => {
