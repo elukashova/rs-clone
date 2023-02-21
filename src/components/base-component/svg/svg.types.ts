@@ -29,6 +29,8 @@ enum SvgNames {
   Heart = 'heart',
   Like = 'like',
   HeartFull = 'heart-full',
+  DeletePost = 'delete',
+  Unfollow = 'remove-friend',
   Hands = 'hands',
   Goal = 'goal',
 

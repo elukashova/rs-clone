@@ -34,6 +34,7 @@ export enum Endpoints {
   GetAllActivities = 'activity',
   GetOneActivity = 'activity/',
   UpdateActivity = 'activity/',
+  DeleteActivity = 'activity/',
   CreateComment = 'comment',
   UpdateComment = 'comment/',
   DeleteComment = 'comment/',

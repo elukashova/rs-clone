@@ -1,7 +1,13 @@
 .comment {
   display: grid;
   grid-template-columns: 3.5em 1fr;
-  gap: 1.5em;
+  gap: 0.5em;
+}
+
+.comment__info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .comment__photo {
@@ -24,34 +30,81 @@
 .comment__date {
   font-weight: 300;
   color: #949494;
-  font-size: calc(0.5em + 0.4vw);
+  font-size: calc(0.4em + 0.4vw);
+}
+
+.comment__text-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5em;
 }
 
 .comment__message {
-  margin-bottom: 0.5em;
+  width: 85%;
+  margin-bottom: 0.4em;
+  box-sizing: border-box;
+  border: none;
   font-weight: 300;
   font-size: calc(0.5em + 0.4vw);
+  font-family: 'Work Sans', sans-serif;
+  background: none;
+  resize: none;
+  overflow: hidden;
+  word-wrap: break-word;
+}
+
+.active-comment {
+  border: 1px solid #949494;
+  border-radius: 5px;
+  padding: 0.3em;
+  caret-color: #ff8d24;
 }
 
 .comment__icons {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .comment__like {
   display: block;
-  cursor: pointer;
-  width: 1.2em;
-  height: 1.2em;
+  width: calc(0.5em + 0.5vw);
+  height: calc(0.5em + 0.5vw);
   margin-bottom: 0.5em;
+  cursor: pointer;
+  transition: fill 0.3s;
 }
 
 .comment__like:hover {
   fill: #219486;
 }
 
-.comment__info {
+.comment__icons-editing {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  gap: 0.5em;
+}
+
+.comment__delete-svg,
+.comment__edit-svg {
+  width: calc(0.3em + 0.3vw);
+  height: calc(0.3em + 0.3vw);
+  cursor: pointer;
+  transition: fill 0.3s;
+}
+
+.comment__delete-svg:hover,
+.comment__edit-svg:hover {
+  fill: #219486;
+}
+
+.comment__comment-button {
+  align-self: flex-start;
+  padding: 0.4em 0.4em;
+  font-size: calc(0.5em + 0.3vw);
+}
+
+.comment__comment-button:disabled {
+  background-color: #90dad1;
+  pointer-events: none;
 }

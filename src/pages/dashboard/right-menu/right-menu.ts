@@ -44,9 +44,9 @@ export default class RightMenu extends BaseComponent<'aside'> {
 
   private addRouteLinkWrapper: BaseComponent<'div'> | null = null;
 
-  private addRouteIconWrapper: BaseComponent<'div'> | null = null;
-
   private addRouteLinkIcon: Svg | null = null;
+
+  private addRouteIconWrapper: BaseComponent<'div'> | null = null;
 
   private addRouteLink: NavigationLink | null = null;
 

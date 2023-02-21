@@ -10,17 +10,18 @@ import eventEmitter from '../../utils/event-emitter';
 import { transformNameFormat } from '../../utils/utils';
 import AvatarSources from '../../components/avatar-modal/avatar-modal.types';
 import DefaultUserInfo from './left-menu/left-menu.types';
+import ActivityDataForPosts from './dashboard.types';
 import { Token, UpdateUserData } from '../../app/loader/loader-requests.types';
 import { User } from '../../app/loader/loader-responses.types';
 
 export default class Dashboard extends BaseComponent<'section'> {
   private leftMenu!: LeftMenu;
 
+  private trainingFeed!: TrainingFeed;
+
+  private rightMenu!: RightMenu;
+
   private dashboardWrapper = new BaseComponent('div', this.element, 'sections-wrapper');
-
-  private trainingFeed: TrainingFeed = new TrainingFeed(this.dashboardWrapper.element, this.replaceMainCallback);
-
-  private rightMenu: RightMenu = new RightMenu(this.dashboardWrapper.element, this.replaceMainCallback);
 
   private token: Token | null = checkDataInLocalStorage('userSessionToken');
 
@@ -49,17 +50,15 @@ export default class Dashboard extends BaseComponent<'section'> {
         };
         this.setUserInfo(user);
         this.leftMenu = new LeftMenu(this.currentUser, replaceMainCallback);
+        const relevantActivities: ActivityDataForPosts[] = Dashboard.collectAllActivities(user);
+        this.trainingFeed = new TrainingFeed(
+          this.dashboardWrapper.element,
+          this.replaceMainCallback,
+          user,
+          relevantActivities,
+        );
+        this.rightMenu = new RightMenu(this.dashboardWrapper.element, this.replaceMainCallback);
         this.dashboardWrapper.element.insertBefore(this.leftMenu.element, this.trainingFeed.element);
-        this.posts = TrainingFeed.addPosts(this.currentUser);
-        if (this.posts.length) {
-          this.trainingFeed.deleteGreetingMessage();
-          this.trainingFeed.element.append(...this.posts);
-        } else {
-          this.trainingFeed.element.innerHTML = '';
-          this.trainingFeed.showGreetingMessage();
-        }
-        /* this.rightMenu.myChallenges = user.challenges; */
-        console.log(user.challenges);
       });
     }
   }
@@ -74,6 +73,39 @@ export default class Dashboard extends BaseComponent<'section'> {
     if (this.token) {
       Dashboard.updateUser(this.token, { avatarUrl: this.currentUser.avatarUrl });
     }
+  }
+
+  private static collectAllActivities(user: User): ActivityDataForPosts[] {
+    const allActivitiesData: ActivityDataForPosts[] = [];
+
+    if (user.activities.length > 0) {
+      user.activities.forEach((activity) => {
+        const userInfo = {
+          username: user.username,
+          avatarUrl: user.avatarUrl,
+          userId: user.id,
+          ...activity,
+        };
+        allActivitiesData.push(userInfo);
+      });
+    }
+
+    if (user.following.length > 0) {
+      user.following.forEach((followee) => {
+        if (followee.activities.length > 0) {
+          followee.activities.forEach((activity) => {
+            const followeeInfo: ActivityDataForPosts = {
+              username: followee.username,
+              avatarUrl: followee.avatarUrl,
+              userId: followee.id,
+              ...activity,
+            };
+            allActivitiesData.push(followeeInfo);
+          });
+        }
+      });
+    }
+    return allActivitiesData;
   }
 
   private static updateUser(token: Token, data: UpdateUserData): Promise<void | null> {

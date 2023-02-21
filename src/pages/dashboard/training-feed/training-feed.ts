@@ -1,13 +1,14 @@
 import './training-feed.css';
-import i18next from 'i18next';
 import BaseComponent from '../../../components/base-component/base-component';
 import Button from '../../../components/base-component/button/button';
 import Routes from '../../../app/router/router.types';
-import NavigationLink from '../../../components/base-component/link/link';
 import Post from './post/post';
 import { ProjectColors } from '../../../utils/consts';
 import Svg from '../../../components/base-component/svg/svg';
 import { sortActivitiesByDate } from '../../../utils/utils';
+import ActivityDataForPosts from '../dashboard.types';
+import eventEmitter from '../../../utils/event-emitter';
+import { EventData } from '../../../utils/event-emitter.types';
 import { User } from '../../../app/loader/loader-responses.types';
 
 export default class TrainingFeed extends BaseComponent<'article'> {
@@ -21,33 +22,60 @@ export default class TrainingFeed extends BaseComponent<'article'> {
 
   public addTrainingButton: Button | undefined;
 
-  public findFriendsButton: NavigationLink | undefined;
+  public findFriendsButton: Button | undefined;
 
   private buttonContainer: BaseComponent<'div'> | undefined;
 
-  constructor(parent: HTMLElement, private replaceMainCallback: () => void) {
+  private posts: Post[] = [];
+
+  private currentUser: Pick<User, 'username' | 'avatarUrl' | 'id'> = {
+    username: '',
+    avatarUrl: '',
+    id: '',
+  };
+
+  constructor(
+    parent: HTMLElement,
+    private replaceMainCallback: () => void,
+    user: User,
+    postData: ActivityDataForPosts[],
+  ) {
     super('article', parent, 'training-feed');
-    console.log(i18next.t('key'));
+    this.currentUser.username = user.username;
+    this.currentUser.avatarUrl = user.avatarUrl;
+    this.currentUser.id = user.id;
+
+    this.posts = this.addPosts(postData);
+    if (this.posts.length) {
+      this.deleteGreetingMessage();
+      this.posts.forEach((post) => this.element.append(post.element));
+    } else {
+      this.showGreetingMessage();
+    }
+
+    this.subscribeToEvents();
   }
 
-  public static addPosts(data: User): HTMLDivElement[] {
-    const posts: HTMLDivElement[] = [];
-    const sortedActivities = sortActivitiesByDate(data.activities);
+  public addPosts(data: ActivityDataForPosts[]): Post[] {
+    const posts: Post[] = [];
+    const sortedActivities = sortActivitiesByDate(data);
     sortedActivities.forEach((activity) => {
-      const post: Post = new Post();
-      if (activity.kudos) {
+      const post: Post = new Post(activity.userId);
+      if (activity.kudos && activity.kudos.length > 0) {
         post.checkIfLikedPost(activity.kudos);
-        post.updateLikesCounter(activity.kudos.length);
+        post.updateLikesCounter(activity.kudos);
       }
 
       if (activity.comments && activity.comments.length > 0) {
         post.appendExistingComments(activity.comments);
       }
       post.postId = activity.id;
-      post.photo.element.src = data.avatarUrl;
-      post.userImage.element.src = data.avatarUrl;
-      post.name.element.textContent = data.username;
+      post.photo.element.src = activity.avatarUrl;
+      post.userCommentAvatar.element.src = this.currentUser.avatarUrl;
+      post.name.element.textContent = activity.username;
+      post.defineButtonBasenOnAuthor();
       post.activityTitle.element.textContent = activity.title;
+      post.activityDescription.element.textContent = activity.description || '';
       post.date.element.textContent = TrainingFeed.changeDateFormat(activity.date, activity.time);
       post.distance.value = `${activity.distance} km`;
       post.speed.value = `${TrainingFeed.countSpeed(activity.duration, Number(activity.distance))} km/h`;
@@ -62,7 +90,7 @@ export default class TrainingFeed extends BaseComponent<'article'> {
       if (activity.route !== null) {
         post.initStaticMap(activity);
       }
-      posts.unshift(post.element);
+      posts.unshift(post);
     });
     return posts;
   }
@@ -71,11 +99,16 @@ export default class TrainingFeed extends BaseComponent<'article'> {
     this.element.append(this.message.element);
     this.buttonContainer = new BaseComponent('div', this.element, 'training-feed__buttons');
     this.addTrainingButton = new Button(this.buttonContainer.element, this.dictionary.addActivity, 'btn_main');
-    this.findFriendsButton = new NavigationLink(this.replaceMainCallback, {
-      text: this.dictionary.findFriends,
-      parent: this.buttonContainer.element,
-      additionalClasses: 'btn btn_main training-feed__button',
-      attributes: { href: Routes.FindFriends },
+    this.findFriendsButton = new Button(this.buttonContainer.element, this.dictionary.findFriends, 'btn_main');
+
+    this.addTrainingButton.element.addEventListener('click', () => {
+      window.history.pushState({}, '', Routes.AddActivity);
+      this.replaceMainCallback();
+    });
+
+    this.findFriendsButton?.element.addEventListener('click', () => {
+      window.history.pushState({}, '', Routes.FindFriends);
+      this.replaceMainCallback();
     });
   }
 
@@ -104,5 +137,28 @@ export default class TrainingFeed extends BaseComponent<'article'> {
       month: 'long',
       day: 'numeric',
     })} at ${time}`;
+  }
+
+  private subscribeToEvents(): void {
+    eventEmitter.on('friendDeleted', (data: EventData) => this.removeAllFriendPosts(data));
+    eventEmitter.on('updateAvatar', (data: EventData) => this.updateAvatarAfterChanging(data));
+  }
+
+  private removeAllFriendPosts(data: EventData): void {
+    this.posts.forEach((post) => {
+      if (post.postAuthorId === data.friendId) {
+        this.element.removeChild(post.element);
+        this.posts = this.posts.filter((singlePost) => !singlePost.postAuthorId === data.friendId);
+      }
+    });
+  }
+
+  private updateAvatarAfterChanging(data: EventData): void {
+    this.posts.forEach((post) => {
+      if (post.postAuthorId === this.currentUser.id) {
+        // eslint-disable-next-line no-param-reassign
+        post.photo.element.src = `${data.url}`;
+      }
+    });
   }
 }

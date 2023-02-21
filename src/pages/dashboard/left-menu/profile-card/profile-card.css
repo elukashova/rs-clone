@@ -3,7 +3,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 3em 1em 1em;
+  padding: 4.5em 1em 1em;
   gap: 1em;
   background: white;
   border-radius: 5px;
@@ -67,9 +67,10 @@
   background: none;
 }
 
-.profile-card__name_btn-edit:hover,
-.profile-card__about_btn-edit:hover {
+.profile-card__name_btn:hover,
+.profile-card__about_btn:hover {
   background: none;
+  background-color: none;
 }
 
 .profile-card__name_btn_svg,

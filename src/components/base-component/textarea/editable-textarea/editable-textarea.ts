@@ -71,7 +71,6 @@ export default class EditableTextarea extends BaseComponent<'div'> {
     this.textarea.element.focus();
     this.textarea.element.addEventListener('input', this.resizeTextarea);
     this.textarea.element.selectionStart = this.textarea.element.value.length;
-    // eslint-disable-next-line max-len
     this.editBlock.editBtn.replaceBtnSvg(SvgNames.CloseThin, this.classes, ProjectColors.Grey);
     this.editBlock.appendOkButton(this.updateOkButtonCallback);
     this.updateTextAlignment();

@@ -5,10 +5,17 @@ import SvgNames from '../../../../../components/base-component/svg/svg.types';
 import Picture from '../../../../../components/base-component/picture/picture';
 import { ProjectColors } from '../../../../../utils/consts';
 import { CommentResponse } from '../../../../../app/loader/loader-responses.types';
-import { updateComment } from '../../../../../app/loader/services/comment-services';
+import { deleteComment, updateComment } from '../../../../../app/loader/services/comment-services';
 import { UpdateComment } from '../../../../../app/loader/loader-requests.types';
+import { checkDataInLocalStorage } from '../../../../../utils/local-storage';
+import eventEmitter from '../../../../../utils/event-emitter';
+import Button from '../../../../../components/base-component/button/button';
 
 export default class PostComment extends BaseComponent<'div'> {
+  private dictionary: Record<string, string> = {
+    commentBtn: 'dashboard.trainingFeed.post.commentBtn',
+  };
+
   private photo = new Picture(this.element, 'comment__photo');
 
   private commentWrapper: BaseComponent<'div'> = new BaseComponent('div', this.element, 'comment__wrapper');
@@ -17,41 +24,84 @@ export default class PostComment extends BaseComponent<'div'> {
 
   private name = new BaseComponent('h4', this.info.element, 'comment__name');
 
-  private date = new BaseComponent('span', this.info.element, 'comment__date');
+  public date = new BaseComponent('span', this.info.element, 'comment__date');
 
-  private message = new BaseComponent('span', this.commentWrapper.element, 'comment__message');
+  private textWrapper: BaseComponent<'div'> = new BaseComponent(
+    'div',
+    this.commentWrapper.element,
+    'comment__text-wrapper',
+  );
+
+  private message: BaseComponent<'textarea'> = new BaseComponent(
+    'textarea',
+    this.textWrapper.element,
+    'comment__message',
+    '',
+    {
+      maxlength: '200',
+      disabled: '',
+    },
+  );
 
   private iconsWrapper: BaseComponent<'div'> = new BaseComponent('div', this.commentWrapper.element, 'comment__icons');
 
   private like = new BaseComponent('span', this.iconsWrapper.element);
 
+  private editingIconsWrapper: BaseComponent<'div'> = new BaseComponent(
+    'div',
+    this.iconsWrapper.element,
+    'comment__icons-editing',
+  );
+
   private likeSvg = new Svg(this.like.element, SvgNames.Heart, ProjectColors.Grey, 'comment__like');
 
-  private userId: string = '';
+  private commentButton: Button | undefined;
 
-  private commentId: number = 0;
+  private editCommentSvg: Svg | undefined;
+
+  private cancelEditSvg: Svg | undefined;
+
+  private userId: string | null = checkDataInLocalStorage('MyStriversId');
+
+  public commentId: number = 0;
 
   private likesAll: string[] = [];
 
   private isLiked: boolean = false;
 
-  constructor(data: CommentResponse) {
+  public commentAuthorId: string = '';
+
+  public createdAt: Date;
+
+  public postAuthorId: string = '';
+
+  public isUpdate: boolean = false;
+
+  private currentCommentText: string = '';
+
+  constructor(data: CommentResponse, postAuthorId: string) {
     super('div', undefined, 'comment');
+    this.createdAt = data.createdAt;
+    this.postAuthorId = postAuthorId;
     this.retrieveDataForComment(data);
     this.like.element.addEventListener('click', this.toggleLike);
+    this.message.element.addEventListener('keydown', this.changeDefaultBehavior);
   }
 
   private retrieveDataForComment(data: CommentResponse): void {
     this.photo.element.src = data.avatarUrl;
     this.date.element.textContent = PostComment.createTimeSinceComment(data.createdAt);
-    this.userId = data.userId;
     this.commentId = data.id;
+    this.commentAuthorId = data.userId;
     this.name.element.textContent = data.username;
     this.message.element.textContent = data.body;
+    this.currentCommentText = data.body;
     if (data.likes && data.likes.length > 0) {
       this.likesAll = data.likes;
       this.checkIfLikedPost(this.likesAll);
     }
+    this.renderDeleteButton();
+    this.renderEditButton();
   }
 
   private toggleLike = (): void => {
@@ -69,7 +119,9 @@ export default class PostComment extends BaseComponent<'div'> {
   }
 
   private checkIfLikedPost(likes: string[]): void {
-    this.isLiked = likes.includes(this.userId);
+    if (this.userId) {
+      this.isLiked = likes.includes(this.userId);
+    }
     this.updateLikeColor();
   }
 
@@ -95,10 +147,167 @@ export default class PostComment extends BaseComponent<'div'> {
   }
 
   private updateLikeInfoOnServer(flag: boolean): void {
-    const likeData: UpdateComment = {
-      userId: this.userId,
-      like: flag,
-    };
-    updateComment(this.commentId, likeData);
+    if (this.userId) {
+      const likeData: UpdateComment = {
+        userId: this.userId,
+        like: flag,
+      };
+      updateComment(this.commentId, likeData);
+    }
   }
+
+  private renderDeleteButton(): void {
+    if (this.userId) {
+      if (this.userId === this.commentAuthorId || this.userId === this.postAuthorId) {
+        const deleteCommentSvg: Svg = new Svg(
+          this.editingIconsWrapper.element,
+          SvgNames.DeletePost,
+          ProjectColors.Grey,
+          'comment__delete-svg',
+        );
+        deleteCommentSvg.svg.addEventListener('click', this.deleteComment);
+      }
+    }
+  }
+
+  private deleteComment = (): void => {
+    deleteComment(this.commentId).then(() => {
+      this.element.remove();
+      eventEmitter.emit('commentDeleted', { commentId: this.commentId });
+    });
+  };
+
+  private renderEditButton(): void {
+    if (this.userId && this.userId === this.commentAuthorId) {
+      this.editCommentSvg = new Svg(
+        this.editingIconsWrapper.element,
+        SvgNames.Edit,
+        ProjectColors.Grey,
+        'comment__edit-svg',
+      );
+      this.editCommentSvg.svg.addEventListener('click', this.activateTextarea);
+    }
+  }
+
+  private activateTextarea = (): void => {
+    this.message.element.removeAttribute('disabled');
+    this.message.element.focus();
+    this.message.element.classList.add('active-comment');
+    this.message.element.selectionStart = this.message.element.value.length;
+
+    this.renderCommentButton();
+    this.message.element.addEventListener('input', this.handleCommentButton);
+
+    if (this.editCommentSvg) {
+      this.editCommentSvg.svg.removeEventListener('click', this.activateTextarea);
+      this.editingIconsWrapper.element.removeChild(this.editCommentSvg.svg);
+      this.cancelEditSvg = new Svg(
+        this.editingIconsWrapper.element,
+        SvgNames.CloseThin,
+        ProjectColors.Grey,
+        'comment__edit-svg',
+      );
+      this.cancelEditSvg.svg.addEventListener('click', this.cancelUpdate);
+    }
+  };
+
+  private cancelUpdate = (): void => {
+    this.message.element.value = this.currentCommentText;
+    this.removeCommentButton();
+    this.resetCommentArea();
+  };
+
+  private changeDefaultBehavior = (e: KeyboardEvent): void => {
+    if (e.code === 'Enter') {
+      e.preventDefault();
+      this.updateComment();
+    }
+  };
+
+  private renderCommentButton(): void {
+    this.commentButton = new Button(this.textWrapper.element, this.dictionary.commentBtn, 'comment__comment-button');
+    this.commentButton.element.addEventListener('click', this.updateComment);
+  }
+
+  private handleCommentButton = (): void => {
+    if (this.message.element.value.length === 0) {
+      if (this.commentButton) {
+        this.commentButton.element.disabled = true;
+      }
+    } else if (this.commentButton) {
+      this.commentButton.element.disabled = false;
+    }
+  };
+
+  private updateComment = (): void => {
+    this.currentCommentText = this.message.element.value;
+    const dataForUpdate: UpdateComment = {
+      body: this.message.element.value,
+    };
+    updateComment(this.commentId, dataForUpdate).then(() => {
+      this.removeCommentButton();
+      this.resetCommentArea();
+    });
+  };
+
+  private resetCommentArea(): void {
+    this.message.element.setAttribute('disabled', '');
+    this.message.element.classList.remove('active-comment');
+    if (this.cancelEditSvg) {
+      this.cancelEditSvg.svg.removeEventListener('click', this.cancelUpdate);
+      this.editingIconsWrapper.element.removeChild(this.cancelEditSvg.svg);
+      this.editCommentSvg = new Svg(
+        this.editingIconsWrapper.element,
+        SvgNames.Edit,
+        ProjectColors.Grey,
+        'comment__edit-svg',
+      );
+      this.editCommentSvg.svg.addEventListener('click', this.activateTextarea);
+    }
+  }
+
+  private removeCommentButton(): void {
+    if (this.commentButton) {
+      this.commentButton.element.removeEventListener('click', this.updateComment);
+      this.textWrapper.element.removeChild(this.commentButton.element);
+    }
+  }
+
+  //   private activateTextarea = (): void => {
+  //     this.isUpdate = true;
+  //     this.message.element.removeAttribute('disabled');
+  //     this.message.element.focus();
+  //     this.message.element.selectionStart = this.message.element.value.length;
+  //     this.message.element.classList.add('active-comment');
+  //     if (this.editBlock) {
+  //       this.editBlock.editBtn.replaceBtnSvg(SvgNames.CloseThin, 'comment', ProjectColors.Grey);
+  //       this.editBlock.appendOkButton(this.updateOkButtonCallback);
+  //       // eslint-disable-next-line max-len
+  //       this.editBlock.replaceUpdateBtnEventListener(
+  // this.isUpdate, this.cancelUpdate, this.activateTextarea);
+  //     }
+  //   };
+
+  //   private updateOkButtonCallback = (): void => {
+  //     console.log(this.createdAt);
+  //   };
+
+  //   private cancelUpdate = (): void => {
+  //     this.isUpdate = false;
+  //     this.message.element.textContent = this.currentCommentText;
+  //     this.message.element.setAttribute('disabled', '');
+  //     this.message.element.classList.remove('active-comment');
+  //     if (this.editBlock) {
+  //       this.editBlock.editBtn.replaceBtnSvg(SvgNames.Pencil, 'comment', ProjectColors.Grey);
+  //       this.editBlock.removeOkButton();
+  //       // eslint-disable-next-line max-len
+  //       this.editBlock.replaceUpdateBtnEventListener
+  // (this.isUpdate, this.cancelUpdate, this.activateTextarea);
+  //     }
+  //   };
+
+  //   private changeDefaultBehavior = (): void => {
+
+  //   }
+  // }
 }
