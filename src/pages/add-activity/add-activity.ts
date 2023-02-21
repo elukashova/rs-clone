@@ -239,6 +239,7 @@ export default class AddActivity extends BaseComponent<'section'> {
     this.addListeners();
     this.setDefaultTime();
     this.updateTitle();
+    this.subscribeOnEvent();
   }
 
   private collectActivityData(): void {
@@ -315,13 +316,6 @@ export default class AddActivity extends BaseComponent<'section'> {
 
     // слушатель для селекта
     this.training.optionsAll.forEach((el) => el.addEventListener('click', this.selectSportCallback));
-
-    this.mapBlock.element.addEventListener('click', () => {
-      this.subscribeOnEvent();
-      /* if (this.map.markers.length === 2) {
-        this.updateMap();
-      } */
-    });
 
     this.map.clearButton.element.addEventListener('click', () => {
       this.resetResults();

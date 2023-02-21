@@ -5,7 +5,7 @@ import Picture from '../picture/picture';
 export default class LoadingTimer extends BaseComponent<'div'> {
   public circle!: Picture;
 
-  constructor(parent: HTMLElement) {
+  constructor(private parent: HTMLElement) {
     super('div', parent, 'loading-background');
     this.circle = new Picture(this.element, 'loading-circle', { src: './assets/icons/timer.gif' });
   }
@@ -24,7 +24,7 @@ export default class LoadingTimer extends BaseComponent<'div'> {
     }, 300);
 
     setTimeout(() => {
-      document.body.removeChild(this.element);
+      this.parent.removeChild(this.element);
     }, 600);
   }
 }
