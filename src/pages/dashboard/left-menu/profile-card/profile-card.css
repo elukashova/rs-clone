@@ -67,9 +67,10 @@
   background: none;
 }
 
-.profile-card__name_btn-edit:hover,
-.profile-card__about_btn-edit:hover {
+.profile-card__name_btn:hover,
+.profile-card__about_btn:hover {
   background: none;
+  background-color: none;
 }
 
 .profile-card__name_btn_svg,
