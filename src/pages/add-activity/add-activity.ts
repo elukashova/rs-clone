@@ -19,7 +19,6 @@ import { ValidityMessages } from '../splash/forms/form.types';
 import Routes from '../../app/router/router.types';
 import eventEmitter from '../../utils/event-emitter';
 import LoadingTimer from '../../components/base-component/loading/loading';
-// import DropdownInput from '../splash/forms/dropdown-input/dropdown';
 
 export default class AddActivity extends BaseComponent<'section'> {
   private dictionary: Record<string, string> = {
@@ -363,6 +362,7 @@ export default class AddActivity extends BaseComponent<'section'> {
       this.map.updateTravelMode(updatedValue, this.map.startPoint, this.map.endPoint).then((): void => {
         const loadingMap = new LoadingTimer(document.body);
         loadingMap.showLoadingCircle();
+        console.log(this.map);
         this.updateInputsFromMap(loadingMap);
       });
     } else {
@@ -373,7 +373,7 @@ export default class AddActivity extends BaseComponent<'section'> {
 
   private static checkSelect(value: string): string {
     switch (value) {
-      case 'Cycling':
+      case 'cycling':
         return 'BICYCLING';
       default:
         return 'WALKING';
@@ -450,13 +450,13 @@ export default class AddActivity extends BaseComponent<'section'> {
     let sportType: string;
 
     switch (sport) {
-      case 'Running':
+      case 'Running' || 'Бег':
         sportType = 'run';
         break;
-      case 'Cycling':
+      case 'Cycling' || 'Велозаезд':
         sportType = 'ride';
         break;
-      case 'Hiking':
+      case 'Hiking' || 'Хайкинг':
         sportType = 'hike';
         break;
       default:
