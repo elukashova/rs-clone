@@ -318,12 +318,12 @@ export default class AddActivity extends BaseComponent<'section'> {
     // слушатель для селекта
     this.training.optionsAll.forEach((el) => el.addEventListener('click', this.selectSportCallback));
 
-    google.maps.event.addListener(this.map, 'route_changed', () => {
+    /*     google.maps.event.addListener(this.map, 'route_changed', () => {
       console.log(this.map.markers);
       if (this.map.markers.length === 2) {
         this.updateMap();
       }
-    });
+    }); */
 
     this.map.clearButton.element.addEventListener('click', () => {
       this.resetResults();
@@ -344,7 +344,7 @@ export default class AddActivity extends BaseComponent<'section'> {
   private updateMap = (): void => {
     console.log(this.map.startPoint, this.map.endPoint, this.map.directionsRenderer);
     const updatedValue: string = AddActivity.checkSelect(this.training.select.element.value);
-    if (this.map.markers.length /* (this.map.startPoint, this.map.endPoint) */) {
+    if (this.map.markers.length === 2) {
       this.map.updateTravelMode(updatedValue, this.map.startPoint, this.map.endPoint).then((): void => {
         this.loadingMap.showLoadingCircle();
         this.updateInputsFromMap();
