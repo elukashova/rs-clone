@@ -14,7 +14,6 @@ import {
   Coordinates,
   MapRequest,
   OptionsForMap,
-  ZoomSettings,
   APIKey,
   StaticMapRequest,
 } from './interface-map';
@@ -70,7 +69,7 @@ export default class GoogleMaps {
 
   public maxMarkerCount: number = 2;
 
-  public zoom: number = 10;
+  public zoom: number = 13;
 
   public latLng: { lat: number; lng: number };
 
@@ -209,7 +208,6 @@ export default class GoogleMaps {
       anchorPoint: new google.maps.Point(15, 30),
     });
     map.panTo(location);
-    map.setZoom(ZoomSettings.Closer);
     return this.marker;
   }
 

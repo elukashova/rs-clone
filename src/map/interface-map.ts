@@ -35,10 +35,6 @@ export enum GeoErrors {
   Browser = "Error: This browser doesn't support geolocation.",
 }
 
-export enum ZoomSettings {
-  Closer = 11,
-}
-
 export enum MaxMarkers {
   Count = 2,
 }
