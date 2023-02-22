@@ -13,6 +13,7 @@ import Pagination from '../../components/base-component/pagination-block/paginat
 import { getFriends, getNotFriends } from '../../app/loader/services/friends-services';
 import SvgNames from '../../components/base-component/svg/svg.types';
 import { ProjectColors } from '../../utils/consts';
+import LoadingTimer from '../../components/base-component/loading/loading';
 
 export default class Friends extends BaseComponent<'section'> {
   private dictionary: Record<string, string> = {
@@ -22,6 +23,8 @@ export default class Friends extends BaseComponent<'section'> {
     noFriendsMessage: 'findFriends.noFriendsMessage',
     allFriendsMessage: 'findFriends.allFriendsMessage',
   };
+
+  public loadingTimer = new LoadingTimer(document.body);
 
   public notFriendsAll: NotFriend[] = [];
 
@@ -45,41 +48,9 @@ export default class Friends extends BaseComponent<'section'> {
 
   private notFriendsBlock = new BaseComponent('div', this.notFriendsContainer.element, 'not-friends__block');
 
-  private notFriendsTitle = new BaseComponent(
-    'h2',
-    this.notFriendsBlock.element,
-    'not-friends__title titles',
-    this.dictionary.notFriendsTitle,
-  );
-
-  private notFriendsSearch = new Input(
-    this.notFriendsBlock.element,
-    'not-friends__input-search input-search',
-    this.dictionary.notFriendsSearch,
-    {
-      type: 'search',
-    },
-  );
-
   private friendsContainer = new BaseComponent('div', this.findingContainer.element, 'friends__block-container');
 
   private friendsBlock = new BaseComponent('div', this.friendsContainer.element, 'friends__block');
-
-  private friendsTitle = new BaseComponent(
-    'h2',
-    this.friendsBlock.element,
-    'friends__title titles',
-    this.dictionary.friendsTitle,
-  );
-
-  private friendsSearch = new Input(
-    this.friendsBlock.element,
-    'friends__input-search input-search',
-    this.dictionary.notFriendsSearch,
-    {
-      type: 'search',
-    },
-  );
 
   private token: Token | null = checkDataInLocalStorage('userSessionToken');
 
@@ -87,15 +58,68 @@ export default class Friends extends BaseComponent<'section'> {
 
   private friendsPagination!: Pagination;
 
+  private notFriendsTitle!: BaseComponent<'h2'>;
+
+  private notFriendsSearch!: Input;
+
+  private friendsTitle!: BaseComponent<'h2'>;
+
+  private friendsSearch!: Input;
+
   constructor(parent: HTMLElement) {
     super('section', parent, 'find-friends find-friends-section');
-    this.renderPage();
+    /* this.loadingMap.showLoadingCircle(); */
+    /* this.renderPage(); */
+    this.init();
+  }
+
+  private init(): void {
+    this.loadingTimer.showLoadingCircle();
+    setTimeout(() => {
+      this.loadingTimer.deleteLoadingCircle();
+      this.renderPage();
+    }, 3000);
   }
 
   private renderPage(): void {
+    this.renderTitles();
     this.getNotFriendsForRender();
     this.getFriendsForRender();
     this.addSvgIcons();
+  }
+
+  private renderTitles(): void {
+    this.notFriendsTitle = new BaseComponent(
+      'h2',
+      this.notFriendsBlock.element,
+      'not-friends__title titles',
+      this.dictionary.notFriendsTitle,
+    );
+
+    this.notFriendsSearch = new Input(
+      this.notFriendsBlock.element,
+      'not-friends__input-search input-search',
+      this.dictionary.notFriendsSearch,
+      {
+        type: 'search',
+      },
+    );
+
+    this.friendsTitle = new BaseComponent(
+      'h2',
+      this.friendsBlock.element,
+      'friends__title titles',
+      this.dictionary.friendsTitle,
+    );
+
+    this.friendsSearch = new Input(
+      this.friendsBlock.element,
+      'friends__input-search input-search',
+      this.dictionary.notFriendsSearch,
+      {
+        type: 'search',
+      },
+    );
   }
 
   private getNotFriendsForRender(): void {
@@ -123,6 +147,9 @@ export default class Friends extends BaseComponent<'section'> {
   private addSvgIcons(): void {
     this.notFriendsSearch.addSvgIcon(SvgNames.Search, ProjectColors.Grey, 'search');
     this.friendsSearch.addSvgIcon(SvgNames.Search, ProjectColors.Grey, 'search');
+    /* setTimeout(() => {
+      this.loadingMap.deleteLoadingCircle();
+    }, 1000); */
   }
 
   private addPaginationForNotFriends(): void {
