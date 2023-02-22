@@ -68,8 +68,6 @@ export default class Friends extends BaseComponent<'section'> {
 
   constructor(parent: HTMLElement) {
     super('section', parent, 'find-friends find-friends-section');
-    /* this.loadingMap.showLoadingCircle(); */
-    /* this.renderPage(); */
     this.init();
   }
 

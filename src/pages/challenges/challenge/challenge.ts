@@ -198,7 +198,7 @@ export default class Challenge extends BaseComponent<'div'> {
     });
   }
 
-  private setButtonFunction(): void {
+  public setButtonFunction(): void {
     if (this.challengeIsAdded === false) {
       this.button.element.style.backgroundColor = ProjectColors.Orange;
       this.button.textContent = this.dictionary.acceptedButton;

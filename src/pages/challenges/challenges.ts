@@ -5,13 +5,12 @@ import BaseComponent from '../../components/base-component/base-component';
 import ActivityBlock from './activity-element/activity-element';
 import SvgNames from '../../components/base-component/svg/svg.types';
 import { checkDataInLocalStorage } from '../../utils/local-storage';
-import users from '../../mock/find-friends.data';
-import { ChallengesTypes, Activities } from './types-challenges';
 import { Token } from '../../app/loader/loader-requests.types';
-import { FriendData } from '../../app/loader/loader-responses.types';
+import { FriendData, User } from '../../app/loader/loader-responses.types';
 import Challenge from './challenge/challenge';
-import { updateUser } from '../../app/loader/services/user-services';
+import { getUser, updateUser } from '../../app/loader/services/user-services';
 import eventEmitter from '../../utils/event-emitter';
+import { Activities, ChallengesTypes } from './types-challenges';
 
 export default class Challenges extends BaseComponent<'section'> {
   private dictionary: Record<string, string> = {
@@ -43,7 +42,7 @@ export default class Challenges extends BaseComponent<'section'> {
 
   private token: Token | null = checkDataInLocalStorage('userSessionToken');
 
-  public usersData: FriendData[] = [];
+  public usersData!: User;
 
   public challengesAll: Challenge[] = [];
 
@@ -113,6 +112,10 @@ export default class Challenges extends BaseComponent<'section'> {
 
   private yogaChallenge!: Challenge;
 
+  private challenges: string[] = [];
+
+  private challengesForRequest: string[] = [];
+
   constructor(parent: HTMLElement) {
     super('section', parent, 'challenges challenges-section');
     this.getFriendsRequest();
@@ -121,13 +124,14 @@ export default class Challenges extends BaseComponent<'section'> {
 
   private getFriendsRequest(): void {
     if (this.token) {
-      // тут будет получение данных с сервера
-      /* getFriends(this.token).then((usersData: FriendData[]): void => {
-        this.usersData = usersData;
-      }); */
-      this.usersData = users;
-      this.renderPage(this.usersData);
-      this.addListeners();
+      getUser(this.token).then((user: User) => {
+        this.usersData = user;
+        if (user.challenges && user.challenges.length) {
+          this.challenges = user.challenges;
+        }
+        this.renderPage(this.usersData.following);
+        this.addListeners();
+      });
     }
   }
 
@@ -143,6 +147,7 @@ export default class Challenges extends BaseComponent<'section'> {
       this.yogaChallenge,
     ];
     this.typesAll = [this.allTypes, this.cycling, this.running, this.walking, this.hiking];
+    this.isAddedForChallenges();
   }
 
   private renderFirstChallenges(data: FriendData[]): void {
@@ -221,13 +226,22 @@ export default class Challenges extends BaseComponent<'section'> {
     );
   }
 
+  private isAddedForChallenges(): void {
+    this.challengesAll.every((challenge) => {
+      if (this.challenges.includes(challenge.type)) {
+        // eslint-disable-next-line no-param-reassign
+        challenge.setButtonFunction();
+      }
+      return challenge;
+    });
+  }
+
   private static checkChallenges(data: FriendData[], challenge: string): string[] {
     const avatars: string[] = [];
-    /* const filtered = data.filter((user: FriendData) => user.challenges.includes(challenge));
+    const filtered = data.filter((user: FriendData) => user.challenges.includes(challenge));
     filtered.forEach((user: FriendData) => {
       avatars.push(user.avatarUrl);
-    }); */
-    console.log(avatars, data, challenge);
+    });
     return avatars;
   }
 
@@ -290,8 +304,8 @@ export default class Challenges extends BaseComponent<'section'> {
   }
 
   private check(): void {
-    const challenges = this.getAllAddedChallenges();
-    this.sendChallenges(challenges);
+    this.challengesForRequest = this.getAllAddedChallenges();
+    this.sendChallenges(this.challengesForRequest);
   }
 
   private getAllAddedChallenges(): string[] {
@@ -303,7 +317,7 @@ export default class Challenges extends BaseComponent<'section'> {
 
   private sendChallenges(data: string[]): void {
     if (this.token) {
-      updateUser(this.token, { challenges: data }); /* .then(() => console.log(challenges)) */
+      updateUser(this.token, { challenges: data.length === 0 ? [] : data });
     }
   }
 }

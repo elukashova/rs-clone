@@ -5,7 +5,7 @@ import NavigationLink from '../../../components/base-component/link/link';
 import RandomFriendCard from './random-friend-card/random-friend-card';
 import { checkDataInLocalStorage } from '../../../utils/local-storage';
 import { Token } from '../../../app/loader/loader-requests.types';
-import { FriendData } from '../../../app/loader/loader-responses.types';
+import { FriendData, User } from '../../../app/loader/loader-responses.types';
 import { getNotFriends } from '../../../app/loader/services/friends-services';
 import { provideRandomUsers } from '../../../utils/utils';
 import Svg from '../../../components/base-component/svg/svg';
@@ -50,12 +50,17 @@ export default class RightMenu extends BaseComponent<'aside'> {
 
   private addRouteLink: NavigationLink | null = null;
 
+  private challenges: string[] | undefined;
+
   /* public myChallenges: string[] | undefined = []; */
 
-  constructor(parent: HTMLElement, private replaceMainCallback: () => void) {
+  // eslint-disable-next-line max-len
+  constructor(parent: HTMLElement, private replaceMainCallback: () => void, user: User) {
     super('aside', parent, 'right-menu');
+    this.challenges = user.challenges;
     this.doRequestAndRenderChallenges();
     this.doRequestAndShowFriends();
+    console.log(user);
   }
 
   private doRequestAndShowFriends(): void {
@@ -94,12 +99,8 @@ export default class RightMenu extends BaseComponent<'aside'> {
   }
 
   private doRequestAndRenderChallenges(): void {
-    if (this.token) {
-      // получаем данные с сервера по челленджам
-      /* getNotFriends(this.token).then((users: FriendData[]) => {}); */
-    }
-    const challenges = ['sloth', 'yoga', 'hiking', 'photo']; /* 'sloth', 'yoga', 'hiking', 'photo' */
-    if (challenges.length) {
+    console.log(this.challenges);
+    if (this.challenges && this.challenges.length) {
       this.addChallengeLinkWrapper = new BaseComponent('div', this.element, 'add-challenge__wrapper');
 
       this.addChallengeHeaderWrapper = new BaseComponent(
@@ -114,8 +115,9 @@ export default class RightMenu extends BaseComponent<'aside'> {
         additionalClasses: 'right-menu__link add-challenge__link link',
         attributes: { href: Routes.Challenges },
       });
-      for (let i: number = 0; i < 3; i += 1) {
-        this.newChallenge = new Task(this.addChallengeLinkWrapper.element, challenges[i]);
+      const numInstances = Math.min(this.challenges.length, 3);
+      for (let i: number = 0; i < numInstances; i += 1) {
+        this.newChallenge = new Task(this.addChallengeLinkWrapper.element, this.challenges[i]);
         this.challengesAll.push(this.newChallenge);
       }
     }
