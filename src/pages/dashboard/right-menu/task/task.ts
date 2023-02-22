@@ -4,13 +4,14 @@ import Picture from '../../../../components/base-component/picture/picture';
 
 export default class Task extends BaseComponent<'div'> {
   private dictionary: Record<string, string> = {
-    participants: 'Participants', // перевод
-    noProgress: 'Challenge without progress checking', // перевод
-    yogaChallenge: 'Yours hours', // перевод
-    hikingChallenge: 'Conquer your Everest', // перевод
-    runningChallenge: 'The Tour de Valiance', // перевод
-    slothChallenge: 'International Sloth Day', // перевод
-    cyclingChallenge: 'Unbending spirit', // перевод
+    participants: 'challenges.participants',
+    noProgress: 'challenges.noProgress',
+    yogaChallenge: 'challenges.yogaTitle',
+    hikingChallenge: 'challenges.hikingTitle',
+    runningChallenge: 'challenges.runningTitle',
+    slothChallenge: 'challenges.slothTitle',
+    cyclingChallenge: 'challenges.cyclingTitle',
+    photoChallenge: 'challenges.photoTitle',
   };
 
   public type: string;
@@ -87,7 +88,6 @@ export default class Task extends BaseComponent<'div'> {
     switch (this.type) {
       case 'yoga':
         this.taskName = this.dictionary.yogaChallenge;
-        this.taskName = 'Yours hours';
         this.goal = ['567', '7']; // minutes, 9.27h
         this.progressInclude = true;
         break;
@@ -112,7 +112,7 @@ export default class Task extends BaseComponent<'div'> {
         this.progressInclude = true;
         break;
       case 'photo':
-        this.taskName = 'Like Van Gogh';
+        this.taskName = this.dictionary.photoTitle;
         this.goal = ['8849', '365'];
         this.progressInclude = false;
         break;
