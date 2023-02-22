@@ -10,6 +10,7 @@ import Challenges from '../../pages/challenges/challenges';
 import OurTeam from '../../pages/our-team/our-team';
 import { checkDataInLocalStorage } from '../../utils/local-storage';
 import { Token } from '../loader/loader-requests.types';
+import Settings from '../../pages/settings/settings';
 
 export default class Router {
   private main: Main;
@@ -29,6 +30,8 @@ export default class Router {
   private challenges: Challenges | null = null;
 
   private aboutTeam: OurTeam | null = null;
+
+  private settings: Settings | null = null;
 
   private token: Token | null = null;
 
@@ -64,6 +67,7 @@ export default class Router {
     this.switchLocation(location);
   };
 
+  // eslint-disable-next-line max-lines-per-function
   private switchLocation(location: string): void {
     switch (location) {
       case Routes.SignUp:
@@ -97,6 +101,10 @@ export default class Router {
       case Routes.Challenges:
         this.challenges = new Challenges(this.main.element);
         this.main.setContent(this.challenges);
+        break;
+      case Routes.Settings:
+        this.settings = new Settings(this.main.element);
+        this.main.setContent(this.settings);
         break;
       default:
         console.log('will be 404 page'); // temporary placeholder

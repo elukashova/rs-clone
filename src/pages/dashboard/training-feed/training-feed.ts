@@ -6,10 +6,9 @@ import Post from './post/post';
 import { ProjectColors } from '../../../utils/consts';
 import Svg from '../../../components/base-component/svg/svg';
 import { sortActivitiesByDate } from '../../../utils/utils';
-import ActivityDataForPosts from '../dashboard.types';
 import eventEmitter from '../../../utils/event-emitter';
 import { EventData } from '../../../utils/event-emitter.types';
-import { User } from '../../../app/loader/loader-responses.types';
+import { ActivityResponse, User } from '../../../app/loader/loader-responses.types';
 
 export default class TrainingFeed extends BaseComponent<'article'> {
   private dictionary: Record<string, string> = {
@@ -34,12 +33,8 @@ export default class TrainingFeed extends BaseComponent<'article'> {
     id: '',
   };
 
-  constructor(
-    parent: HTMLElement,
-    private replaceMainCallback: () => void,
-    user: User,
-    postData: ActivityDataForPosts[],
-  ) {
+  // eslint-disable-next-line max-len
+  constructor(parent: HTMLElement, private replaceMainCallback: () => void, user: User, postData: ActivityResponse[]) {
     super('article', parent, 'training-feed');
     this.currentUser.username = user.username;
     this.currentUser.avatarUrl = user.avatarUrl;
@@ -56,7 +51,7 @@ export default class TrainingFeed extends BaseComponent<'article'> {
     this.subscribeToEvents();
   }
 
-  public addPosts(data: ActivityDataForPosts[]): Post[] {
+  public addPosts(data: ActivityResponse[]): Post[] {
     const posts: Post[] = [];
     const sortedActivities = sortActivitiesByDate(data);
     sortedActivities.forEach((activity) => {

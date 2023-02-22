@@ -20,7 +20,7 @@ export default class DropdownInput extends Input {
 
   private optionsStrings: string[] = [];
 
-  constructor(private parent: HTMLElement, private prefix: string, private text: string) {
+  constructor(parent: HTMLElement, private prefix: string, text: string) {
     super(parent, `${prefix}__dropdown dropdown-menu`, text, {
       type: text,
       required: '',
@@ -32,8 +32,8 @@ export default class DropdownInput extends Input {
     this.input.element.addEventListener('blur', this.hideOptionsList);
   }
 
-  public retrieveDataForDropdown(countriesList: string[]): void {
-    this.optionsStrings = countriesList.slice();
+  public retrieveDataForDropdown(options: string[]): void {
+    this.optionsStrings = options.slice();
     this.appendOptions(this.optionsStrings);
   }
 

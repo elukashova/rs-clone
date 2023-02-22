@@ -10,9 +10,9 @@ import { createUser } from '../../../app/loader/services/user-services';
 import { setDataToLocalStorage } from '../../../utils/local-storage';
 import { GoogleBtnClasses, GoogleBtnTypes } from '../google-button/google-btn.types';
 import GoogleButton from '../google-button/google-btn';
-import { REST_COUNTRIES, VALID_EMAIL, VALID_NAME, VALID_PASSWORD } from '../../../utils/consts';
-import { CountryResponse, InputConflictMessages, ValidityMessages } from './form.types';
-import { convertRegexToPattern } from '../../../utils/utils';
+import { VALID_EMAIL, VALID_NAME, VALID_PASSWORD } from '../../../utils/consts';
+import { InputConflictMessages, ValidityMessages } from './form.types';
+import { convertRegexToPattern, retrieveCountriesData } from '../../../utils/utils';
 import DropdownInput from './dropdown-input/dropdown';
 
 export default class SignupForm extends BaseComponent<'form'> {
@@ -191,22 +191,8 @@ export default class SignupForm extends BaseComponent<'form'> {
   }
 
   private createCountriesList(): void {
-    SignupForm.retrieveCountriesData().then((countriesList: string[]) => {
+    retrieveCountriesData().then((countriesList: string[]) => {
       this.countryInput.retrieveDataForDropdown(countriesList);
     });
-  }
-
-  private static async retrieveCountriesData(): Promise<string[]> {
-    return SignupForm.loadCountryInputOptions().then((countries: CountryResponse[]) => {
-      const names: string[] = countries.reduce((result: string[], country: CountryResponse) => {
-        result.push(country.name.replace(/\(.*?\)/g, '').split(',')[0]);
-        return result;
-      }, []);
-      return names;
-    });
-  }
-
-  private static loadCountryInputOptions(): Promise<CountryResponse[]> {
-    return fetch(REST_COUNTRIES).then((response: Response) => response.json());
   }
 }

@@ -1,0 +1,122 @@
+.settings {
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 3rem 0 3rem 0;
+  padding: 1.5em 2em;
+  background: white;
+  box-shadow: rgba(183, 183, 183, 0.076) 0px 0px 0px 1px;
+  border-radius: 5px;
+}
+
+.settings__wrapper {
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.settings__avatar-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.settings__photo {
+  width: calc(3.5em + 3vw);
+  height: calc(3.5em + 3vw);
+  background-color: #219486;
+  border: 5px solid #219486;
+  border-radius: 50%;
+}
+
+.settings__photo_btn {
+  position: absolute;
+  z-index: 2;
+  transform: translateX(130%) translateY(330%);
+  width: 1.5em;
+  height: 1.5em;
+  padding: 0;
+  border-radius: 50%;
+  outline: none;
+}
+
+.settings__photo_btn_svg {
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 50%;
+  transition: fill 0.3s;
+}
+
+.settings__photo_btn_svg:hover {
+  fill: #1cbaa7;
+}
+
+.settings__inputs-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.settings__inputs_name-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+
+.settings__name_wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 95%;
+}
+
+.settings__name_label {
+  width: 15%;
+  text-transform: uppercase;
+  font-size: calc(0.5em + 0.4vw);
+}
+
+.settings__name_btn,
+.settings__about_btn {
+  width: 1.5em;
+  height: 1.5em;
+  padding: 0;
+  border-radius: 50%;
+  outline: none;
+  background: none;
+}
+
+.settings__name_btn:hover,
+.settings__about_btn:hover {
+  background: none;
+  background-color: none;
+}
+
+.settings__name_btn_svg,
+.settings__about_btn_svg {
+  width: calc(0.35em + 0.25vw);
+  height: calc(0.35em + 0.25vw);
+  transition: fill 0.3s;
+}
+
+.settings__name_btn_svg:hover,
+.settings__about_btn_svg:hover {
+  fill: #1cbaa7;
+}
+
+.settings__name,
+.settings__about {
+  width: 90%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Work Sans', sans-serif;
+  font-size: calc(0.2em + 0.9vw);
+  text-align: left;
+  border: none;
+  border-bottom: 1px solid white;
+  pointer-events: none;
+  word-wrap: break-word;
+}

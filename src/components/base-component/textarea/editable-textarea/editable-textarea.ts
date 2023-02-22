@@ -12,7 +12,7 @@ import '../textarea.css';
 import EditBlock from '../../edit-block/edit-block';
 
 export default class EditableTextarea extends BaseComponent<'div'> {
-  private textarea: BaseComponent<'textarea'> = new BaseComponent(
+  public textarea: BaseComponent<'textarea'> = new BaseComponent(
     'textarea',
     this.element,
     `${this.classes} textarea`,
@@ -42,7 +42,13 @@ export default class EditableTextarea extends BaseComponent<'div'> {
 
   private token: Token | null = checkDataInLocalStorage('userSessionToken');
 
-  constructor(parent: HTMLElement, private classes: string, text: string, type: TextareaTypes) {
+  constructor(
+    parent: HTMLElement,
+    private classes: string,
+    text: string,
+    type: TextareaTypes,
+    private isDashboard: boolean,
+  ) {
     super('div', parent, `${classes}_wrapper`);
 
     this.currentValue = text;
@@ -73,7 +79,9 @@ export default class EditableTextarea extends BaseComponent<'div'> {
     this.textarea.element.selectionStart = this.textarea.element.value.length;
     this.editBlock.editBtn.replaceBtnSvg(SvgNames.CloseThin, this.classes, ProjectColors.Grey);
     this.editBlock.appendOkButton(this.updateOkButtonCallback);
-    this.updateTextAlignment();
+    if (this.isDashboard === true) {
+      this.updateTextAlignment();
+    }
     // eslint-disable-next-line max-len
     this.editBlock.replaceUpdateBtnEventListener(this.isUpdate, this.cancelUpdate, this.activateTextarea);
   };
@@ -86,7 +94,9 @@ export default class EditableTextarea extends BaseComponent<'div'> {
     this.editBlock.removeOkButton();
     // eslint-disable-next-line max-len
     this.editBlock.replaceUpdateBtnEventListener(this.isUpdate, this.cancelUpdate, this.activateTextarea);
-    this.updateTextAlignment();
+    if (this.isDashboard === true) {
+      this.updateTextAlignment();
+    }
     this.resizeTextarea();
   };
 
