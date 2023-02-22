@@ -65,6 +65,7 @@ export type FriendData = {
   country?: string;
   avatarUrl: string;
   activities: ActivityResponse[];
+  challenges: string[];
 };
 
 export type Kudo = {

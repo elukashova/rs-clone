@@ -14,7 +14,7 @@ export default class Pagination extends BaseComponent<'div'> {
 
   public currentPage: number = 1;
 
-  public totalPages: number = 0;
+  public totalPages: number = 1;
 
   public itemsPerPage: number = 4;
 
@@ -35,10 +35,19 @@ export default class Pagination extends BaseComponent<'div'> {
     this.currentPage = page;
     this.itemsPerPage = limit;
     this.elementsCount = elementCounts;
-    this.totalPages = Math.ceil(this.elementsCount / this.itemsPerPage);
+    this.countTheTotal();
     this.classes = classes;
     this.render();
     this.disableArrowsFirstLastPage(this.currentPage);
+  }
+
+  private countTheTotal(): void {
+    console.log(this.elementsCount);
+    if (this.elementsCount === 0) {
+      this.totalPages = 1;
+    } else {
+      this.totalPages = Math.ceil(this.elementsCount / this.itemsPerPage);
+    }
   }
 
   private render(): void {
@@ -66,7 +75,7 @@ export default class Pagination extends BaseComponent<'div'> {
     if (this.totalPages !== this.currentPage) {
       this.enableRightArrowBtn();
     }
-    if (this.totalPages === 0) {
+    if (this.totalPages === 1) {
       this.totalPages = 1;
     }
     this.updatePages();

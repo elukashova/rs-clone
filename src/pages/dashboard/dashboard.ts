@@ -57,7 +57,7 @@ export default class Dashboard extends BaseComponent<'section'> {
           user,
           relevantActivities,
         );
-        this.rightMenu = new RightMenu(this.dashboardWrapper.element, this.replaceMainCallback);
+        this.rightMenu = new RightMenu(this.dashboardWrapper.element, this.replaceMainCallback, user);
         this.dashboardWrapper.element.insertBefore(this.leftMenu.element, this.trainingFeed.element);
       });
     }
