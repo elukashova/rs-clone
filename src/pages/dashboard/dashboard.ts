@@ -35,6 +35,7 @@ export default class Dashboard extends BaseComponent<'section'> {
     followedBy: [],
     avatarUrl: '',
     activities: [],
+    challenges: [],
   };
 
   private posts: HTMLDivElement[] = [];

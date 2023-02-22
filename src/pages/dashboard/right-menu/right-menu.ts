@@ -48,6 +48,8 @@ export default class RightMenu extends BaseComponent<'aside'> {
 
   private addRouteLink: NavigationLink | null = null;
 
+  /* public myChallenges: string[] | undefined = []; */
+
   constructor(parent: HTMLElement, private replaceMainCallback: () => void) {
     super('aside', parent, 'right-menu');
     this.doRequestAndRenderChallenges();

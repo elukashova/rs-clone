@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 /* eslint-disable max-len */
 import './add-activity.css';
 // import i18next from 'i18next';
@@ -16,7 +17,8 @@ import Picture from '../../components/base-component/picture/picture';
 import { convertRegexToPattern } from '../../utils/utils';
 import { ValidityMessages } from '../splash/forms/form.types';
 import Routes from '../../app/router/router.types';
-// import DropdownInput from '../splash/forms/dropdown-input/dropdown';
+import eventEmitter from '../../utils/event-emitter';
+import LoadingTimer from '../../components/base-component/loading/loading';
 
 export default class AddActivity extends BaseComponent<'section'> {
   private dictionary: Record<string, string> = {
@@ -57,9 +59,9 @@ export default class AddActivity extends BaseComponent<'section'> {
   private formContainer = new BaseComponent('div', this.element, 'add-activity__container');
 
   private heading = new BaseComponent(
-    'h3',
+    'h2',
     this.formContainer.element,
-    'add-activity__heading',
+    'add-activity__heading titles',
     this.dictionary.heading,
   );
 
@@ -229,19 +231,15 @@ export default class AddActivity extends BaseComponent<'section'> {
 
   private static circle: Picture;
 
+  private static background: BaseComponent<'div'>;
+
   constructor(parent: HTMLElement, private replaceMainCallback: () => void) {
     super('section', parent, 'add-activity add-activity-section');
     this.search.addSvgIcon(SvgNames.Search, ProjectColors.Grey, 'search');
     this.addListeners();
     this.setDefaultTime();
     this.updateTitle();
-    /* this.map.doDirectionRequest(
-      { lat: -33.397, lng: 150.644 },
-      { lat: -33.393, lng: 150.641 },
-      google.maps.TravelMode.WALKING,
-    );
-    google.maps.event.clearInstanceListeners(this.map);
-    this.map.doMapRequired(); */
+    this.subscribeOnEvent();
   }
 
   private collectActivityData(): void {
@@ -281,7 +279,7 @@ export default class AddActivity extends BaseComponent<'section'> {
   }
 
   private setMap(): void {
-    if (this.map.markers.length) {
+    if (this.map.markers.length === 2) {
       this.data.startPoint = AddActivity.joinMapDataIntoString(
         this.map.startPoint.lat.toString(),
         this.map.startPoint.lng.toString(),
@@ -319,12 +317,6 @@ export default class AddActivity extends BaseComponent<'section'> {
     // слушатель для селекта
     this.training.optionsAll.forEach((el) => el.addEventListener('click', this.selectSportCallback));
 
-    this.mapBlock.element.addEventListener('click', () => {
-      if (this.map.marker && this.map.markers.length === 2) {
-        this.updateMap();
-      }
-    });
-
     this.map.clearButton.element.addEventListener('click', () => {
       this.resetResults();
     });
@@ -336,6 +328,14 @@ export default class AddActivity extends BaseComponent<'section'> {
     });
   }
 
+  private subscribeOnEvent(): void {
+    eventEmitter.on('changeMap', (): void => {
+      if (this.map.markers.length === 2) {
+        this.updateMap();
+      }
+    });
+  }
+
   private selectSportCallback = (): void => {
     this.updateMap();
     this.updateTitle();
@@ -343,27 +343,28 @@ export default class AddActivity extends BaseComponent<'section'> {
 
   private updateMap = (): void => {
     const updatedValue: string = AddActivity.checkSelect(this.training.select.element.value);
-    if ((this.map.startPoint, this.map.endPoint)) {
+    if (this.map.markers.length === 2) {
       this.map.updateTravelMode(updatedValue, this.map.startPoint, this.map.endPoint).then((): void => {
-        AddActivity.showLoadingCircle();
-        this.updateInputsFromMap();
+        const loadingMap = new LoadingTimer(document.body);
+        loadingMap.showLoadingCircle();
+        this.updateInputsFromMap(loadingMap);
       });
     } else {
       this.map.deleteMap();
-      this.map = new GoogleMaps(this.mapDiv.element, { lat: -33.397, lng: 150.644 }, updatedValue, true);
+      this.map = new GoogleMaps(this.mapDiv.element, { lat: 38.771, lng: -9.058 }, updatedValue, true);
     }
   };
 
   private static checkSelect(value: string): string {
     switch (value) {
-      case 'Cycling':
+      case 'cycling':
         return 'BICYCLING';
       default:
         return 'WALKING';
     }
   }
 
-  private updateInputsFromMap(): void {
+  private updateInputsFromMap(loadingMap: LoadingTimer): void {
     setTimeout(() => {
       this.distance.newInputValue = `${this.map.distanceTotal}`;
       const { hours, minutes, seconds } = this.map.timeTotal;
@@ -372,21 +373,8 @@ export default class AddActivity extends BaseComponent<'section'> {
       this.durationSeconds.newInputValue = `${seconds}`;
       const elevationCount = this.map.elevationTotal.split(',')[0];
       this.elevation.newInputValue = `${elevationCount}`;
-      AddActivity.deleteLoadingCircle();
+      loadingMap.deleteLoadingCircle();
     }, 3000);
-  }
-
-  private static showLoadingCircle(): void {
-    this.circle = new Picture(document.body, 'circle', { src: './assets/icons/timer.gif' });
-    this.circle.element.style.position = 'fixed';
-    this.circle.element.style.top = '50%';
-    this.circle.element.style.left = '50%';
-    this.circle.element.style.transform = 'translate(-50%, -50%)';
-    this.circle.element.style.zIndex = '150';
-  }
-
-  private static deleteLoadingCircle(): void {
-    document.body.removeChild(this.circle.element);
   }
 
   private resetResults(): void {
@@ -446,13 +434,13 @@ export default class AddActivity extends BaseComponent<'section'> {
     let sportType: string;
 
     switch (sport) {
-      case 'Running':
+      case 'Running' || 'Бег':
         sportType = 'run';
         break;
-      case 'Cycling':
+      case 'Cycling' || 'Велозаезд':
         sportType = 'ride';
         break;
-      case 'Hiking':
+      case 'Hiking' || 'Хайкинг':
         sportType = 'hike';
         break;
       default:

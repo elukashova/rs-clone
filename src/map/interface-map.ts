@@ -24,6 +24,8 @@ export type OptionsForMap = {
   mapTypeId?: google.maps.MapTypeId;
   mapTypeControl?: boolean;
   streetViewControl?: boolean;
+  minZoom?: number;
+  maxZoom?: number;
 };
 
 export type DirectionsRenderer = google.maps.DirectionsResult | null;
@@ -31,10 +33,6 @@ export type DirectionsRenderer = google.maps.DirectionsResult | null;
 export enum GeoErrors {
   Service = "Error: The Geolocation service don't work now.",
   Browser = "Error: This browser doesn't support geolocation.",
-}
-
-export enum ZoomSettings {
-  Closer = 11,
 }
 
 export enum MaxMarkers {

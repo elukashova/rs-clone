@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 /* eslint-disable object-curly-newline */
 /* eslint-disable max-len */
 import { v4 } from 'uuid';
@@ -13,12 +14,20 @@ import {
   Coordinates,
   MapRequest,
   OptionsForMap,
-  ZoomSettings,
   APIKey,
   StaticMapRequest,
 } from './interface-map';
+import eventEmitter from '../utils/event-emitter';
 
 export default class GoogleMaps {
+  private dictionary: Record<string, string> = {
+    elevationError: "Can't show elevation", // перевод
+    elevation: 'Elevation (meters)', // перевод
+    locationFound: 'Location found!', // перевод
+    notFoundRoute: 'Unfortunately, we were unable to find such a route. Do you want to build a different route?', // перевод
+    ok: 'OK', // перевод
+  };
+
   public parentElement: HTMLElement;
 
   public map!: google.maps.Map;
@@ -38,7 +47,7 @@ export default class GoogleMaps {
 
   public infoWindow: google.maps.InfoWindow = new google.maps.InfoWindow();
 
-  public directions: google.maps.DirectionsResult[] = [];
+  public directions: google.maps.DirectionsResult | undefined;
 
   public marker!: google.maps.Marker;
 
@@ -60,7 +69,7 @@ export default class GoogleMaps {
 
   public maxMarkerCount: number = 2;
 
-  public zoom: number = 10;
+  public zoom: number = 13;
 
   public latLng: { lat: number; lng: number };
 
@@ -74,12 +83,7 @@ export default class GoogleMaps {
 
   private elevationChart: boolean = true;
 
-  constructor(
-    parent: HTMLElement,
-    center: Coordinates,
-    travelMode: string, // 'WALKING' или 'BICYCLING'
-    elevationChart: boolean, // нужен график с высотой или нет
-  ) {
+  constructor(parent: HTMLElement, center: Coordinates, travelMode: string, elevationChart: boolean) {
     this.mapId = v4();
     this.latLng = center;
     this.elevationChart = elevationChart;
@@ -101,10 +105,11 @@ export default class GoogleMaps {
   public initMap(parent: HTMLElement, latLng: { lat: number; lng: number }): void {
     const myOptions: OptionsForMap = {
       zoom: this.zoom,
+      minZoom: 0,
+      maxZoom: 20,
       center: latLng,
       mapTypeId: google.maps.MapTypeId.ROADMAP,
       mapTypeControl: false,
-      streetViewControl: false,
     };
     this.map = new google.maps.Map(parent, myOptions);
     this.directionsRenderer.setMap(this.map);
@@ -123,11 +128,18 @@ export default class GoogleMaps {
     this.addListeners();
   }
 
+  private static subscribeToEvents(): void {
+    eventEmitter.emit('changeMap', {});
+  }
+
   private addListeners(): void {
     // слушатель добавления маркеров (не более 2)
     this.map.addListener('click', (event: google.maps.MapMouseEvent): void => {
       if (this.markers.length < this.maxMarkerCount) {
         this.placeMarker(event.latLng, this.map);
+      }
+      if (this.markers.length === this.maxMarkerCount && !this.directions) {
+        GoogleMaps.subscribeToEvents();
       }
     });
 
@@ -150,6 +162,13 @@ export default class GoogleMaps {
         this.chartElevation.element.remove();
       }
     });
+
+    /*     google.maps.event.addListener(this.map, 'zoom_changed', () => {
+      const zoomLevel = this.map.getZoom();
+      if (zoomLevel) {
+        this.map.setZoom(zoomLevel);
+      }
+    }); */
   }
 
   // размещаем маркер
@@ -186,9 +205,9 @@ export default class GoogleMaps {
       opacity: 1,
       icon: './assets/icons/png/geo.png',
       draggable: false,
+      anchorPoint: new google.maps.Point(15, 30),
     });
     map.panTo(location);
-    map.setZoom(ZoomSettings.Closer);
     return this.marker;
   }
 
@@ -217,6 +236,7 @@ export default class GoogleMaps {
         if (status === 'OK' && result) {
           this.directionsRenderer.setMap(this.map);
           this.directionsRenderer.setDirections(result);
+          this.directions = result;
           this.getTotalDistanceAndTime(result.routes[0]);
           if (this.elevationChart) {
             this.doElevationRequest(result);
@@ -245,7 +265,7 @@ export default class GoogleMaps {
         }
       }
     } catch (error: unknown) {
-      console.log(`Can't show elevation: ${error}`);
+      console.log(`${this.dictionary.elevationError}: ${error}`);
     }
   }
 
@@ -270,7 +290,7 @@ export default class GoogleMaps {
     chart.draw(data, {
       height: 150,
       legend: 'none',
-      title: 'Elevation (meters)',
+      title: this.dictionary.elevation,
       colors: [ProjectColors.DarkTurquoise, ProjectColors.Turquoise],
     });
   }
@@ -331,7 +351,7 @@ export default class GoogleMaps {
             lng: position.coords.longitude,
           };
           this.infoWindow.setPosition(pos);
-          this.infoWindow.setContent('Location found!');
+          this.infoWindow.setContent(this.dictionary.LocationFound);
           this.infoWindow.open(this.map);
           this.map.setCenter(pos);
         },
@@ -355,8 +375,8 @@ export default class GoogleMaps {
     const popup: google.maps.InfoWindow = new google.maps.InfoWindow();
     const block: HTMLDivElement = document.createElement('div');
     block.classList.add('google-maps__popup');
-    block.textContent = 'Unfortunately, we were unable to find such a route. Do you want to build a different route?';
-    const button: Button = new Button(block, 'OK', 'google-maps__popup-button');
+    block.textContent = this.dictionary.notFoundRoute;
+    const button: Button = new Button(block, this.dictionary.ok, 'google-maps__popup-button');
 
     block.append(button.element);
     popup.setContent(block);
@@ -378,6 +398,7 @@ export default class GoogleMaps {
     this.elevationTotal = '0,0';
     this.markers.forEach((marker: google.maps.Marker): void => marker.setMap(null));
     this.markers.length = 0;
+    this.directions = undefined;
   }
 
   public deleteMap(): void {

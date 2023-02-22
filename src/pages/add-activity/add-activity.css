@@ -1,12 +1,13 @@
 .add-activity-section {
   height: max-content;
-  margin-top: 4.5em;
+  width: 90%;
+  margin: 4.5em 0;
   background-color: #ffffff;
   border-radius: 5px;
 }
 
 .add-activity__container {
-  padding: 3% 15%;
+  padding: 3% 10%;
 }
 
 .add-activity__heading {
