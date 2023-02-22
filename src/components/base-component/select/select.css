@@ -2,7 +2,7 @@
   appearance: none;
 }
 
-.label {
+.select .label {
   position: relative;
   display: flex;
   flex-direction: column;

@@ -4,7 +4,7 @@
   flex-direction: column;
   align-items: center;
   margin: 3rem 0 3rem 0;
-  padding: 1.5em 2em;
+  padding: 1.5em 2em 3em;
   background: white;
   box-shadow: rgba(183, 183, 183, 0.076) 0px 0px 0px 1px;
   border-radius: 5px;
@@ -14,7 +14,7 @@
   width: 60%;
   display: flex;
   flex-direction: column;
-  gap: 1em;
+  gap: calc(0.5em + 3vh);
 }
 
 .settings__avatar-wrapper {
@@ -56,30 +56,37 @@
 .settings__inputs-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 1em;
+  gap: calc(0.5em + 1.5vh);
 }
 
-.settings__inputs_name-wrapper {
+.settings__inputs_name-wrapper,
+.settings__inputs_bio-wrapper {
   display: flex;
   align-items: center;
+  flex-wrap: nowrap;
   gap: 1em;
 }
 
-.settings__name_wrapper {
+.settings__name_wrapper,
+.settings__about_wrapper {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 95%;
 }
 
-.settings__name_label {
-  width: 15%;
+.settings__name_label,
+.settings__input span,
+.settings__dropdown .label,
+.settings__bio_label {
   text-transform: uppercase;
   font-size: calc(0.5em + 0.4vw);
+  white-space: nowrap;
 }
 
 .settings__name_btn,
-.settings__about_btn {
+.settings__about_btn,
+.settings__input_btn {
   width: 1.5em;
   height: 1.5em;
   padding: 0;
@@ -89,34 +96,112 @@
 }
 
 .settings__name_btn:hover,
-.settings__about_btn:hover {
+.settings__about_btn:hover,
+.settings__input_btn:hover {
   background: none;
   background-color: none;
 }
 
 .settings__name_btn_svg,
-.settings__about_btn_svg {
+.settings__about_btn_svg,
+.settings__input_btn_svg {
   width: calc(0.35em + 0.25vw);
   height: calc(0.35em + 0.25vw);
   transition: fill 0.3s;
 }
 
 .settings__name_btn_svg:hover,
-.settings__about_btn_svg:hover {
+.settings__about_btn_svg:hover,
+.settings__input_btn_svg:hover {
   fill: #1cbaa7;
 }
 
 .settings__name,
 .settings__about {
-  width: 90%;
+  width: 85%;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: 'Work Sans', sans-serif;
   font-size: calc(0.2em + 0.9vw);
+  color: #949494;
   text-align: left;
   border: none;
   border-bottom: 1px solid white;
   pointer-events: none;
   word-wrap: break-word;
+}
+
+.settings__name:disabled,
+.settings__about:disabled {
+  width: 90%;
+}
+
+.settings__input {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1em;
+}
+
+.settings__input .label,
+.settings__dropdown .label {
+  width: calc(100% - 1.5em);
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1em;
+}
+
+.settings__input_title {
+  text-transform: uppercase;
+  font-size: calc(0.5em + 0.4vw);
+}
+
+.settings__input .input-text,
+.settings__dropdown .input-text {
+  height: 2em;
+  padding: 0;
+  font-size: calc(0.2em + 0.9vw);
+  font-family: 'Work Sans', sans-serif;
+  text-align: center;
+  background: none;
+  border: none;
+  border-radius: 6px;
+  color: #949494;
+  transition: all 0.3s;
+  width: 100%;
+}
+
+.settings__dropdown .input-text::placeholder {
+  font-size: calc(0.2em + 0.9vw);
+  font-family: 'Work Sans', sans-serif;
+  color: #949494;
+}
+
+.settings__input .input-text::-webkit-calendar-picker-indicator {
+  filter: invert(55%);
+}
+
+.settings__input_edit-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.settings__input-date .input-text:disabled {
+  padding-right: 10%;
+}
+
+.settings__country-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.settings__btn-delete {
+  width: 50%;
+  align-self: center;
 }

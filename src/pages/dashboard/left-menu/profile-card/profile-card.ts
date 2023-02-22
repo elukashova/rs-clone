@@ -18,6 +18,7 @@ export default class ProfileCard extends BaseComponent<'div'> {
     followers: 'dashboard.leftMenu.profileCard.followers',
     followees: 'dashboard.leftMenu.profileCard.followees',
     activities: 'dashboard.leftMenu.profileCard.activities',
+    defaultBio: 'Share something about youself', // перевести
   };
 
   private photo: Picture = new Picture(this.element, 'profile-card__photo');
@@ -63,7 +64,8 @@ export default class ProfileCard extends BaseComponent<'div'> {
   // eslint-disable-next-line max-len
   constructor(parent: HTMLElement, private user: User, private replaceMainCallback: () => void) {
     super('div', parent, 'profile-card');
-    this.render(user.avatarUrl, user.username, user.bio);
+    const bio: string = user.bio || '';
+    this.render(user.avatarUrl, user.username, bio);
     this.changePhotoButton.element.addEventListener('click', this.changePhotoBtnCallback);
     this.subscribeToEvents();
   }
@@ -73,6 +75,9 @@ export default class ProfileCard extends BaseComponent<'div'> {
     this.photo.element.setAttribute('src', url);
     this.name = new EditableTextarea(this.element, 'profile-card__name', name, TextareaTypes.Username, true);
     this.about = new EditableTextarea(this.element, 'profile-card__about', bio, TextareaTypes.Bio, true);
+    if (bio.length === 0) {
+      this.about.textarea.element.placeholder = this.dictionary.defaultBio;
+    }
     this.profileScore = new BaseComponent('div', this.element, 'profile-card__info');
     // eslint-disable-next-line prettier/prettier, max-len
     this.profileScore.element.append(this.followers.element, this.followees.element, this.trainings.element);

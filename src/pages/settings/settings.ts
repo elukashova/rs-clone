@@ -10,11 +10,11 @@ import DropdownInput from '../splash/forms/dropdown-input/dropdown';
 import { getUser } from '../../app/loader/services/user-services';
 import { User } from '../../app/loader/loader-responses.types';
 import { TextareaTypes } from '../../components/base-component/textarea/editable-textarea/editable-textarea.types';
-import { convertRegexToPattern } from '../../utils/utils';
+import { convertRegexToPattern, retrieveCountriesData } from '../../utils/utils';
 import { ProjectColors, VALID_EMAIL } from '../../utils/consts';
-import Select from '../../components/base-component/select/select';
 import Svg from '../../components/base-component/svg/svg';
 import SvgNames from '../../components/base-component/svg/svg.types';
+import GenderBlock from './gender-block/gender-block';
 
 export default class Settings extends BaseComponent<'section'> {
   private dictionary: Record<string, string> = {
@@ -25,10 +25,6 @@ export default class Settings extends BaseComponent<'section'> {
     name: 'Name',
     email: 'Email',
     dateOfBirth: 'Date of birth',
-    gender: 'Gender',
-    genderDefault: 'Prefer not to say',
-    genderMan: 'Man',
-    genderWoman: 'Woman',
     country: 'Country',
     bio: 'Short bio',
   };
@@ -86,15 +82,15 @@ export default class Settings extends BaseComponent<'section'> {
 
   private dateOfBirth: Input | null = null;
 
-  private gender: Select | null = null;
+  private genderBlock: GenderBlock | null = null;
 
-  private genderOptions: string[] = [
-    this.dictionary.genderDefault,
-    this.dictionary.genderMan,
-    this.dictionary.genderWoman,
-  ];
+  private countryWrapper: BaseComponent<'div'> | null = null;
 
   private country: DropdownInput | null = null;
+
+  private bioWrapper: BaseComponent<'div'> | null = null;
+
+  private bioLabel: BaseComponent<'label'> | null = null;
 
   private bio: EditableTextarea | null = null;
 
@@ -113,6 +109,7 @@ export default class Settings extends BaseComponent<'section'> {
     }
   }
 
+  // eslint-disable-next-line max-lines-per-function
   private renderPage(user: User): void {
     this.profileImage.element.src = user.avatarUrl;
     this.name = new EditableTextarea(
@@ -122,22 +119,41 @@ export default class Settings extends BaseComponent<'section'> {
       TextareaTypes.Username,
       false,
     );
-    this.email = new Input(this.inputsWrapper.element, 'signup__form-input form-input', this.dictionary.email, {
+    this.email = new Input(this.inputsWrapper.element, 'settings__input', this.dictionary.email, {
       value: user.email,
       type: 'email',
       pattern: convertRegexToPattern(VALID_EMAIL),
       required: '',
+      disabled: '',
     });
     this.dateOfBirth = new Input(
       this.inputsWrapper.element,
-      'add-activity__input input-date',
+      'settings__input settings__input-date',
       this.dictionary.dateOfBirth,
       {
         type: 'date',
+        disabled: '',
       },
     );
-    this.gender = new Select(this.inputsWrapper.element, this.genderOptions, 'settings', 'settings__select-wrapper');
-    this.country = new DropdownInput(this.inputsWrapper.element, 'settings', 'Country');
-    this.bio = new EditableTextarea(this.inputsWrapper.element, 'settings__about', user.bio, TextareaTypes.Bio, false);
+    this.genderBlock = new GenderBlock(this.inputsWrapper.element);
+    this.countryWrapper = new BaseComponent('div', this.inputsWrapper.element, 'settings__country-wrapper');
+    this.country = new DropdownInput(this.countryWrapper.element, 'settings', 'country');
+    this.bioWrapper = new BaseComponent('div', this.inputsWrapper.element, 'settings__inputs_bio-wrapper');
+    this.bioLabel = new BaseComponent('label', this.bioWrapper.element, 'settings__bio_label', this.dictionary.bio);
+    this.bio = new EditableTextarea(this.bioWrapper.element, 'settings__about', user.bio, TextareaTypes.Bio, false);
+
+    [this.email, this.dateOfBirth].forEach((input) => input.attachEditButton('settings__input'));
+    this.country.attachEditButton('settings__gender', this.countryWrapper.element);
+    this.email.title.element.classList.add('settings__input_title');
+    this.country.input.element.value = user.country || '';
+    this.createCountriesList();
+  }
+
+  private createCountriesList(): void {
+    retrieveCountriesData().then((countriesList: string[]) => {
+      if (this.country) {
+        this.country.retrieveDataForDropdown(countriesList);
+      }
+    });
   }
 }

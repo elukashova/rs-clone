@@ -25,8 +25,6 @@ export default class DropdownInput extends Input {
       type: text,
       required: '',
     });
-    const inputClasses = ['signup__dropdown_input', 'signup__dropdown'];
-    inputClasses.forEach((className) => this.input.element.classList.add(className));
 
     this.input.element.addEventListener('input', this.filterOptionsCallback);
     this.input.element.addEventListener('blur', this.hideOptionsList);
@@ -130,4 +128,66 @@ export default class DropdownInput extends Input {
       this.setValidState();
     }
   };
+
+  // public attachEditButton(classes: string): void {
+  //   this.editBlockWrapper = new BaseComponent('div', this.element, `${classes}_edit-wrapper`);
+  //   this.editBlock = new EditBlock(this.editBlockWrapper.element, classes);
+  //   this.input.element.disabled = true;
+  //   this.classes = classes;
+  //   this.editBlock.editBtn.element.addEventListener('click', this.activateInput);
+  // }
+
+  // private activateInput = (): void => {
+  //   this.isUpdate = true;
+  //   this.currentValue = this.input.element.value;
+  //   this.input.element.disabled = false;
+  //   this.input.element.focus();
+  //   if (this.editBlock) {
+  //     this.editBlock.editBtn.replaceBtnSvg(SvgNames.CloseThin, this.classes, ProjectColors.Grey);
+  //     this.editBlock.appendOkButton(this.updateOkButtonCallback);
+  //     // eslint-disable-next-line max-len
+  //     this.editBlock.replaceUpdateBtnEventListener(this.
+  // isUpdate, this.cancelUpdate, this.activateInput);
+  //   }
+  // };
+
+  // private cancelUpdate = (): void => {
+  //   this.isUpdate = false;
+  //   this.input.element.value = this.currentValue;
+  //   this.input.element.disabled = true;
+  //   if (this.editBlock) {
+  //     this.editBlock.editBtn.replaceBtnSvg(SvgNames.Pencil, this.classes, ProjectColors.Grey);
+  //     this.editBlock.removeOkButton();
+  //     // eslint-disable-next-line max-len, max-len, max-len
+  //     this.editBlock.replaceUpdateBtnEventLi
+  // stener(this.isUpdate, this.cancelUpdate, this.activateInput);
+  //   }
+  // };
+
+  // private updateOkButtonCallback = (): void => {
+  //   if (this.type === InputTypes.Email) {
+  //     if (!this.checkInput(ValidityMessages.Email)) {
+  //       return;
+  //     }
+  //   }
+
+  //   if (this.token) {
+  //     const { value } = this.input.element;
+  //     this.currentValue = value;
+  //     updateUser(this.token, this.checkCurrentType(value))
+  //       .then((user: User) => {
+  //         if (user) {
+  //           this.cancelUpdate();
+  //         }
+  //       })
+  //       .catch(() => null);
+  //   }
+  // };
+
+  // private checkCurrentType(value: string): UpdateUserData {
+  //   if (this.type === InputTypes.Email) {
+  //     return { email: value };
+  //   }
+  //   return { birth: value };
+  // }
 }

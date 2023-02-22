@@ -110,6 +110,9 @@ export default class SignupForm extends BaseComponent<'form'> {
       this.isNewUser,
     );
 
+    const inputClasses = ['signup__dropdown_input', 'signup__dropdown'];
+    inputClasses.forEach((className) => this.countryInput.input.element.classList.add(className));
+
     this.createCountriesList();
     this.loginLink.element.setAttribute('href', Routes.LogIn);
     this.signupButton.element.addEventListener('click', this.signupBtnCallback);
