@@ -18,9 +18,9 @@ export default class Challenge extends BaseComponent<'div'> {
     days: 'days', // перевод "дней"
     toEndOne: 'To end of challenge is', // перевод "До конца челленджа"
     day: 'day', // перевод "день"
-    challengeOver: 'Sorry, challenge is over', // перевод
-    acceptButton: 'Accept', // перевод
-    acceptedButton: 'Accepted', // перевод
+    challengeOver: 'challenges.challengeOver',
+    acceptButton: 'challenges.acceptButton',
+    acceptedButton: 'challenges.acceptedButton',
   };
 
   private token: Token | null = checkDataInLocalStorage('userSessionToken');

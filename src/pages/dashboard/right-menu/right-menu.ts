@@ -17,9 +17,7 @@ export default class RightMenu extends BaseComponent<'aside'> {
   private dictionary: Record<string, string> = {
     addNewRoute: 'dashboard.rightMenu.addNewRoute',
     heading: 'dashboard.rightMenu.friendsHeading',
-    headingChallenges: 'Your challenges', // перевод
-    // allTasks: 'dashboard.rightMenu.tasks.allTasksButton', // перевод (удалить из словаря)
-    // heading: 'dashboard.rightMenu.tasks.allTasksButton', // перевод (удалить из словаря)
+    headingChallenges: 'challenges.headingChallenges',
   };
 
   private token: Token | null = checkDataInLocalStorage('userSessionToken');

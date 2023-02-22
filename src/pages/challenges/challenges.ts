@@ -14,30 +14,24 @@ import { Activities, ChallengesTypes } from './types-challenges';
 
 export default class Challenges extends BaseComponent<'section'> {
   private dictionary: Record<string, string> = {
-    title: 'Challenges', // перевод
-    typeAll: 'All', // перевод 'Все виды'
-    typeRunning: 'Running', // перевод
-    typeCycling: 'Cycling', // перевод
-    typeHiking: 'Hiking', // перевод
-    typeWalking: 'Walking', // перевод
-    hikingTitle: 'Conquer your Everest', // перевод
-    hikingDescription:
-      'Climb to a height of 8,849 meters in a year. Each of your trainings takes into account the height elevation that has been completed. Your task is to accumulate a height equal to the height of Everest in a year.', // перевод
-    slothTitle: 'International Sloth Day', // перевод
-    slothDescription:
-      'Just relax. Spend the day doing nothing at all! Well... maybe just a little bit of movement to eat deliciously', // перевод
-    cyclingTitle: 'Unbending spirit', // перевод
-    cyclingDescription:
-      "It can be hard to focus on a goal, but this week will be an exception. Take part in the challenge in which you have to make a trip by cycle every day. Are you ready? Let's go!", // перевод
-    runningTitle: 'The Tour de Valiance', // перевод
-    runningDescription:
-      'Do you know The Tour de France - the most famous and most challenging 3,000 km cycle race in the world? Not everyone will be able to ride it, but you have a chance to ride, walk or run its length within a year. Will you accept the challenge?', // перевод
-    photoTitle: 'Like Van Gogh', // перевод
-    photoDescription:
-      'Launch applications to track your movement and draw a picture (for example, a cat, a heart or maybe "The Starry Night"?) as you move. Tag #striversChallenge on your social media. We will share the coolest track pictures!', // перевод
-    yogaTitle: 'Yours hours', // перевод
-    yogaDescription:
-      'Did you know that the first season of Game of Thrones is 9 hours and 27 minutes long? There are people who watched it in a week. Could you allocate the same amount of time for walking per week? We challenge you.', // перевод
+    title: 'challenges.title',
+    typeAll: 'challenges.typeAll',
+    typeRunning: 'challenges.typeRunning',
+    typeCycling: 'challenges.typeCycling',
+    typeHiking: 'challenges.typeHiking',
+    typeWalking: 'challenges.typeWalking',
+    hikingTitle: 'challenges.hikingTitle',
+    hikingDescription: 'challenges.hikingDescription',
+    slothTitle: 'challenges.slothTitle',
+    slothDescription: 'challenges.slothDescription',
+    cyclingTitle: 'challenges.cyclingTitle',
+    cyclingDescription: 'challenges.cyclingDescription',
+    runningTitle: 'challenges.runningTitle',
+    runningDescription: 'challenges.runningDescription',
+    photoTitle: 'challenges.photoTitle',
+    photoDescription: 'challenges.photoDescription',
+    yogaTitle: 'challenges.yogaTitle',
+    yogaDescription: 'challenges.yogaDescription',
   };
 
   private token: Token | null = checkDataInLocalStorage('userSessionToken');
