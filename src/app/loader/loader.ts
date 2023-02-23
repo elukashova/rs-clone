@@ -15,6 +15,7 @@ export default class Loader {
   }
 
   private static load(request: LoadRequest): Promise<Response> {
+    console.log(request);
     const headers: HeadersInit = {
       'Content-Type': 'application/json',
       ...(request.token && { Authorization: `Bearer ${request.token}` }),

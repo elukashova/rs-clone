@@ -7,7 +7,7 @@ import Button from '../../components/base-component/button/button';
 import EditableTextarea from '../../components/base-component/textarea/editable-textarea/editable-textarea';
 import Input from '../../components/base-component/text-input-and-label/text-input';
 import DropdownInput from '../splash/forms/dropdown-input/dropdown';
-import { getUser } from '../../app/loader/services/user-services';
+import { deleteUser, getUser } from '../../app/loader/services/user-services';
 import { User } from '../../app/loader/loader-responses.types';
 import { TextareaTypes } from '../../components/base-component/textarea/editable-textarea/editable-textarea.types';
 import { convertRegexToPattern, retrieveCountriesData } from '../../utils/utils';
@@ -16,6 +16,7 @@ import Svg from '../../components/base-component/svg/svg';
 import SvgNames from '../../components/base-component/svg/svg.types';
 import GenderBlock from './gender-block/gender-block';
 import eventEmitter from '../../utils/event-emitter';
+import Routes from '../../app/router/router.types';
 
 export default class Settings extends BaseComponent<'section'> {
   private dictionary: Record<string, string> = {
@@ -103,7 +104,7 @@ export default class Settings extends BaseComponent<'section'> {
     'settings__btn-delete',
   );
 
-  constructor(parent: HTMLElement) {
+  constructor(parent: HTMLElement, private replaceMainCallback: () => void) {
     super('section', parent, 'settings section');
     if (this.token) {
       getUser(this.token).then((user: User) => {
@@ -162,6 +163,7 @@ export default class Settings extends BaseComponent<'section'> {
 
   private addEventListeners(): void {
     this.changePhotoButton.element.addEventListener('click', this.changePhotoBtnCallback);
+    this.deleteAccountButton.element.addEventListener('click', this.deleteAccountCallback);
   }
 
   private changePhotoBtnCallback = (): void => {
@@ -180,10 +182,6 @@ export default class Settings extends BaseComponent<'section'> {
     }
   }
 
-  // // private setCountryChoice = (): void => {
-  // //   if (this.country)
-  // // }
-
   private createCountriesList(): void {
     retrieveCountriesData().then((countriesList: string[]) => {
       if (this.country) {
@@ -191,4 +189,16 @@ export default class Settings extends BaseComponent<'section'> {
       }
     });
   }
+
+  private deleteAccountCallback = (e: Event): void => {
+    e.preventDefault();
+    if (this.token) {
+      deleteUser(this.token).then(() => {
+        localStorage.removeItem('userSessionToken');
+        this.token = null;
+        window.history.pushState({}, '', Routes.SignUp);
+        this.replaceMainCallback();
+      });
+    }
+  };
 }
