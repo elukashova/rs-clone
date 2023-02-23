@@ -7,12 +7,11 @@ import SvgNames from '../../svg/svg.types';
 import { TextareaTypes, TextareaLength, TextareaColsNumber } from './editable-textarea.types';
 import { ProjectColors, VALID_NAME } from '../../../../utils/consts';
 import { ValidityMessages } from '../../../../pages/splash/forms/form.types';
-import DefaultUserInfo from '../../../../pages/dashboard/left-menu/left-menu.types';
 import '../textarea.css';
 import EditBlock from '../../edit-block/edit-block';
 
 export default class EditableTextarea extends BaseComponent<'div'> {
-  private textarea: BaseComponent<'textarea'> = new BaseComponent(
+  public textarea: BaseComponent<'textarea'> = new BaseComponent(
     'textarea',
     this.element,
     `${this.classes} textarea`,
@@ -42,7 +41,13 @@ export default class EditableTextarea extends BaseComponent<'div'> {
 
   private token: Token | null = checkDataInLocalStorage('userSessionToken');
 
-  constructor(parent: HTMLElement, private classes: string, text: string, type: TextareaTypes) {
+  constructor(
+    parent: HTMLElement,
+    private classes: string,
+    text: string,
+    type: TextareaTypes,
+    private isDashboard: boolean,
+  ) {
     super('div', parent, `${classes}_wrapper`);
 
     this.currentValue = text;
@@ -52,6 +57,7 @@ export default class EditableTextarea extends BaseComponent<'div'> {
     this.addEventListeners();
     this.defineMaxLength();
     this.resizeTextarea();
+    this.updateTextAlignment();
   }
 
   private addEventListeners(): void {
@@ -73,7 +79,9 @@ export default class EditableTextarea extends BaseComponent<'div'> {
     this.textarea.element.selectionStart = this.textarea.element.value.length;
     this.editBlock.editBtn.replaceBtnSvg(SvgNames.CloseThin, this.classes, ProjectColors.Grey);
     this.editBlock.appendOkButton(this.updateOkButtonCallback);
-    this.updateTextAlignment();
+    if (this.isDashboard === true) {
+      this.updateTextAlignment();
+    }
     // eslint-disable-next-line max-len
     this.editBlock.replaceUpdateBtnEventListener(this.isUpdate, this.cancelUpdate, this.activateTextarea);
   };
@@ -86,7 +94,9 @@ export default class EditableTextarea extends BaseComponent<'div'> {
     this.editBlock.removeOkButton();
     // eslint-disable-next-line max-len
     this.editBlock.replaceUpdateBtnEventListener(this.isUpdate, this.cancelUpdate, this.activateTextarea);
-    this.updateTextAlignment();
+    if (this.isDashboard === true) {
+      this.updateTextAlignment();
+    }
     this.resizeTextarea();
   };
 
@@ -117,7 +127,7 @@ export default class EditableTextarea extends BaseComponent<'div'> {
     if (this.token) {
       const { value } = this.textarea.element;
       this.currentValue = value;
-      EditableTextarea.updateUser(this.token, this.checkCurrentType(value))
+      updateUser(this.token, this.checkCurrentType(value))
         .then((user: User) => {
           if (user) {
             this.cancelUpdate();
@@ -146,7 +156,7 @@ export default class EditableTextarea extends BaseComponent<'div'> {
 
     if (this.type === TextareaTypes.Bio) {
       if (validityState.valueMissing) {
-        this.textarea.element.value = DefaultUserInfo.DefaultBio;
+        this.textarea.element.value = '';
       }
     }
 
@@ -179,7 +189,11 @@ export default class EditableTextarea extends BaseComponent<'div'> {
     const { value } = this.textarea.element;
     const letters: number = value.split('').length;
 
-    this.rowsNumber = Math.ceil(letters / defaultCols);
+    if (letters === 0) {
+      this.rowsNumber = 1;
+    } else {
+      this.rowsNumber = Math.ceil(letters / defaultCols);
+    }
     this.textarea.element.rows = this.rowsNumber;
   };
 
@@ -188,8 +202,4 @@ export default class EditableTextarea extends BaseComponent<'div'> {
       this.cancelUpdate();
     }
   };
-
-  private static updateUser(token: Token, data: UpdateUserData): Promise<User> {
-    return updateUser(token, data).then((user: User) => user);
-  }
 }

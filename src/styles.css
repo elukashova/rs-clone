@@ -65,6 +65,7 @@ body {
   background-position: center center;
   background-attachment: fixed;
   cursor: default;
+  transition: all 0.3s;
 }
 
 .main {

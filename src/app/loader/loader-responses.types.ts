@@ -11,6 +11,8 @@ export type User = {
   email: string;
   id: string;
   username: string;
+  birth: string;
+  gender: string;
   following: FriendData[];
   followedBy: FriendData[];
   activities: ActivityResponse[];
@@ -27,7 +29,13 @@ export type CommentResponse = {
   likes: string[];
 };
 
-export interface ActivityResponse {
+interface ActivityDataForPosts {
+  username: string;
+  avatarUrl: string;
+  userId: string;
+}
+
+export interface ActivityResponse extends ActivityDataForPosts {
   id: number;
   time: string;
   date: string;

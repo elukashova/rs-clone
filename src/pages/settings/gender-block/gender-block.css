@@ -1,0 +1,83 @@
+.settings__gender_wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.settings__gender_title {
+  text-transform: uppercase;
+  font-size: calc(0.5em + 0.4vw);
+}
+
+.settings__gender_current {
+  font-family: 'Work Sans', sans-serif;
+  font-size: calc(0.2em + 0.9vw);
+  color: #949494;
+  text-align: center;
+  padding-right: 3%;
+}
+
+.settings__buttons-radio {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1em;
+  width: 50%;
+  height: 0;
+  visibility: hidden;
+  transform: scaleY(0);
+  transform-origin: center top;
+  transition: transform 0.3s ease;
+}
+
+.visible-buttons {
+  visibility: visible;
+  transform: scaleY(1);
+  height: fit-content;
+}
+
+.radio-label {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-direction: row-reverse;
+  gap: 1em;
+  font-family: 'Work Sans', sans-serif;
+  font-size: calc(0.2em + 0.9vw);
+  color: #949494;
+}
+
+.input-radio {
+  height: calc(0.4em + 0.4vw);
+  width: calc(0.4em + 0.4vw);
+  border-radius: 50%;
+  border: 1px solid #219486;
+  appearance: none;
+}
+
+.input-radio:checked {
+  background: #ff8d24;
+}
+
+.settings__gender_btn {
+  width: 1.5em;
+  height: 1.5em;
+  padding: 0;
+  border-radius: 50%;
+  outline: none;
+  background: none;
+}
+
+.settings__gender_btn:hover {
+  background: none;
+  background-color: none;
+}
+
+.settings__gender_btn_svg {
+  width: calc(0.35em + 0.25vw);
+  height: calc(0.35em + 0.25vw);
+  transition: fill 0.3s;
+}
+
+.settings__gender_btn_svg:hover {
+  fill: #1cbaa7;
+}
