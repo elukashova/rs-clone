@@ -87,6 +87,8 @@ export default class Settings extends BaseComponent<'section'> {
 
   private countryWrapper: BaseComponent<'div'> | null = null;
 
+  private countryLabel: BaseComponent<'label'> | null = null;
+
   private country: DropdownInput | null = null;
 
   private bioWrapper: BaseComponent<'div'> | null = null;
@@ -111,6 +113,7 @@ export default class Settings extends BaseComponent<'section'> {
     }
   }
 
+  // eslint-disable-next-line max-lines-per-function
   private renderPage(user: User): void {
     this.profileImage.element.src = user.avatarUrl;
     this.name = new EditableTextarea(
@@ -138,7 +141,13 @@ export default class Settings extends BaseComponent<'section'> {
     );
     this.genderBlock = new GenderBlock(this.inputsWrapper.element);
     this.countryWrapper = new BaseComponent('div', this.inputsWrapper.element, 'settings__country-wrapper');
-    this.country = new DropdownInput(this.countryWrapper.element, 'settings', 'country');
+    this.countryLabel = new BaseComponent(
+      'label',
+      this.countryWrapper.element,
+      'settings__country_label',
+      this.dictionary.country,
+    );
+    this.country = new DropdownInput(this.countryWrapper.element, 'settings', '');
     this.bioWrapper = new BaseComponent('div', this.inputsWrapper.element, 'settings__inputs_bio-wrapper');
     this.bioLabel = new BaseComponent('label', this.bioWrapper.element, 'settings__bio_label', this.dictionary.bio);
     this.bio = new EditableTextarea(this.bioWrapper.element, 'settings__about', user.bio, TextareaTypes.Bio, false);
@@ -163,13 +172,17 @@ export default class Settings extends BaseComponent<'section'> {
 
   private setCurrentValues(user: User): void {
     if (this.country) {
-      this.country.newInputValue = user.country || '';
+      this.country.input.element.value = user.country;
     }
 
     if (this.dateOfBirth) {
       this.dateOfBirth.newInputValue = user.birth;
     }
   }
+
+  // // private setCountryChoice = (): void => {
+  // //   if (this.country)
+  // // }
 
   private createCountriesList(): void {
     retrieveCountriesData().then((countriesList: string[]) => {

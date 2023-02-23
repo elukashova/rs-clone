@@ -78,7 +78,8 @@
 .settings__name_label,
 .settings__input span,
 .settings__dropdown .label,
-.settings__bio_label {
+.settings__bio_label,
+.settings__country_label {
   text-transform: uppercase;
   font-size: calc(0.5em + 0.4vw);
   white-space: nowrap;
@@ -146,7 +147,7 @@
 
 .settings__input .label,
 .settings__dropdown .label {
-  width: calc(100% - 1.5em);
+  width: 100%;
   padding: 0;
   display: flex;
   flex-direction: row;
@@ -171,7 +172,6 @@
   border: none;
   border-radius: 6px;
   color: #949494;
-  transition: all 0.3s;
   width: 100%;
 }
 
@@ -201,7 +201,32 @@
   width: 100%;
 }
 
+.settings__gender_edit-wrapper,
+.settings__input_edit-wrapper {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.settings__dropdown .input-text {
+  width: 100%;
+  text-align: center;
+  padding-right: 10%;
+}
+
 .settings__btn-delete {
   width: 50%;
   align-self: center;
+}
+
+.settings__dropdown {
+  width: 100%;
+}
+
+.settings__dropdown_list-wrapper,
+.settings__dropdown_list {
+  width: 100%;
+}
+
+.settings__about {
+  padding-right: 5%;
 }
