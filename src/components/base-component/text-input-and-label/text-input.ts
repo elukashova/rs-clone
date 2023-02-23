@@ -145,7 +145,10 @@ export default class Input extends BaseComponent<'div'> {
     this.isUpdate = true;
     this.currentValue = this.input.element.value;
     this.input.element.disabled = false;
+    this.newInputValue = '';
     this.input.element.focus();
+    this.newInputValue = this.currentValue;
+    this.input.element.addEventListener('keydown', this.changeDefaultBehavior);
     if (this.editBlock) {
       this.editBlock.editBtn.replaceBtnSvg(SvgNames.CloseThin, this.classes, ProjectColors.Grey);
       this.editBlock.appendOkButton(this.updateOkButtonCallback);
@@ -156,7 +159,7 @@ export default class Input extends BaseComponent<'div'> {
 
   private cancelUpdate = (): void => {
     this.isUpdate = false;
-    this.input.element.value = this.currentValue;
+    this.newInputValue = this.currentValue;
     this.input.element.disabled = true;
     if (this.editBlock) {
       this.editBlock.editBtn.replaceBtnSvg(SvgNames.Pencil, this.classes, ProjectColors.Grey);
@@ -195,4 +198,12 @@ export default class Input extends BaseComponent<'div'> {
     }
     return {};
   }
+
+  private changeDefaultBehavior = (e: KeyboardEvent): void => {
+    if (e.code === 'Enter') {
+      this.isUpdate = false;
+      e.preventDefault();
+      this.updateOkButtonCallback();
+    }
+  };
 }

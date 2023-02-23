@@ -15,6 +15,7 @@ import { ProjectColors, VALID_EMAIL } from '../../utils/consts';
 import Svg from '../../components/base-component/svg/svg';
 import SvgNames from '../../components/base-component/svg/svg.types';
 import GenderBlock from './gender-block/gender-block';
+import eventEmitter from '../../utils/event-emitter';
 
 export default class Settings extends BaseComponent<'section'> {
   private dictionary: Record<string, string> = {
@@ -105,11 +106,11 @@ export default class Settings extends BaseComponent<'section'> {
     if (this.token) {
       getUser(this.token).then((user: User) => {
         this.renderPage(user);
+        this.addEventListeners();
       });
     }
   }
 
-  // eslint-disable-next-line max-lines-per-function
   private renderPage(user: User): void {
     this.profileImage.element.src = user.avatarUrl;
     this.name = new EditableTextarea(
@@ -145,8 +146,28 @@ export default class Settings extends BaseComponent<'section'> {
     [this.email, this.dateOfBirth].forEach((input) => input.attachEditButton('settings__input'));
     this.country.attachEditButton('settings__gender', this.countryWrapper.element);
     this.email.title.element.classList.add('settings__input_title');
-    this.country.input.element.value = user.country || '';
+    this.setCurrentValues(user);
     this.createCountriesList();
+  }
+
+  private addEventListeners(): void {
+    this.changePhotoButton.element.addEventListener('click', this.changePhotoBtnCallback);
+  }
+
+  private changePhotoBtnCallback = (): void => {
+    if (this.profileImage) {
+      eventEmitter.emit('openAvatarModal', { url: this.profileImage.element.src });
+    }
+  };
+
+  private setCurrentValues(user: User): void {
+    if (this.country) {
+      this.country.newInputValue = user.country || '';
+    }
+
+    if (this.dateOfBirth) {
+      this.dateOfBirth.newInputValue = user.birth;
+    }
   }
 
   private createCountriesList(): void {

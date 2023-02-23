@@ -11,6 +11,8 @@ export type User = {
   email: string;
   id: string;
   username: string;
+  birth: string;
+  gender: string;
   following: FriendData[];
   followedBy: FriendData[];
   activities: ActivityResponse[];
