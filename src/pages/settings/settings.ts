@@ -143,6 +143,7 @@ export default class Settings extends BaseComponent<'section'> {
     this.bioLabel = new BaseComponent('label', this.bioWrapper.element, 'settings__bio_label', this.dictionary.bio);
     this.bio = new EditableTextarea(this.bioWrapper.element, 'settings__about', user.bio, TextareaTypes.Bio, false);
 
+    this.genderBlock.newCurrentValue = user.gender;
     [this.email, this.dateOfBirth].forEach((input) => input.attachEditButton('settings__input'));
     this.country.attachEditButton('settings__gender', this.countryWrapper.element);
     this.email.title.element.classList.add('settings__input_title');

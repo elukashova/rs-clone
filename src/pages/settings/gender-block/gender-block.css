@@ -10,18 +10,22 @@
 }
 
 .settings__gender_current {
+  padding-right: 5%;
+  width: 100%;
   font-family: 'Work Sans', sans-serif;
   font-size: calc(0.2em + 0.9vw);
   color: #949494;
   text-align: center;
-  padding-right: 3%;
+  visibility: visible;
+  transform: scaleY(1);
 }
 
 .settings__buttons-radio {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 0.1em;
-  width: 50%;
+  width: 0;
   height: 0;
   visibility: hidden;
   transform: scaleY(0);
@@ -30,9 +34,17 @@
 }
 
 .visible-buttons {
+  width: 50%;
+  height: fit-content;
   visibility: visible;
   transform: scaleY(1);
-  height: fit-content;
+}
+
+.current-hidden {
+  width: 0;
+  height: 0;
+  visibility: hidden;
+  transform: scaleY(0);
 }
 
 .radio-label {
