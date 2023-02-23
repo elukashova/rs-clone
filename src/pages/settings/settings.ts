@@ -7,7 +7,7 @@ import Button from '../../components/base-component/button/button';
 import EditableTextarea from '../../components/base-component/textarea/editable-textarea/editable-textarea';
 import Input from '../../components/base-component/text-input-and-label/text-input';
 import DropdownInput from '../splash/forms/dropdown-input/dropdown';
-import { getUser } from '../../app/loader/services/user-services';
+import { deleteUser, getUser } from '../../app/loader/services/user-services';
 import { User } from '../../app/loader/loader-responses.types';
 import { TextareaTypes } from '../../components/base-component/textarea/editable-textarea/editable-textarea.types';
 import { convertRegexToPattern, retrieveCountriesData } from '../../utils/utils';
@@ -16,6 +16,7 @@ import Svg from '../../components/base-component/svg/svg';
 import SvgNames from '../../components/base-component/svg/svg.types';
 import GenderBlock from './gender-block/gender-block';
 import eventEmitter from '../../utils/event-emitter';
+import Routes from '../../app/router/router.types';
 
 export default class Settings extends BaseComponent<'section'> {
   private dictionary: Record<string, string> = {
@@ -87,6 +88,8 @@ export default class Settings extends BaseComponent<'section'> {
 
   private countryWrapper: BaseComponent<'div'> | null = null;
 
+  private countryLabel: BaseComponent<'label'> | null = null;
+
   private country: DropdownInput | null = null;
 
   private bioWrapper: BaseComponent<'div'> | null = null;
@@ -101,7 +104,7 @@ export default class Settings extends BaseComponent<'section'> {
     'settings__btn-delete',
   );
 
-  constructor(parent: HTMLElement) {
+  constructor(parent: HTMLElement, private replaceMainCallback: () => void) {
     super('section', parent, 'settings section');
     if (this.token) {
       getUser(this.token).then((user: User) => {
@@ -111,6 +114,7 @@ export default class Settings extends BaseComponent<'section'> {
     }
   }
 
+  // eslint-disable-next-line max-lines-per-function
   private renderPage(user: User): void {
     this.profileImage.element.src = user.avatarUrl;
     this.name = new EditableTextarea(
@@ -138,11 +142,18 @@ export default class Settings extends BaseComponent<'section'> {
     );
     this.genderBlock = new GenderBlock(this.inputsWrapper.element);
     this.countryWrapper = new BaseComponent('div', this.inputsWrapper.element, 'settings__country-wrapper');
-    this.country = new DropdownInput(this.countryWrapper.element, 'settings', 'country');
+    this.countryLabel = new BaseComponent(
+      'label',
+      this.countryWrapper.element,
+      'settings__country_label',
+      this.dictionary.country,
+    );
+    this.country = new DropdownInput(this.countryWrapper.element, 'settings', '');
     this.bioWrapper = new BaseComponent('div', this.inputsWrapper.element, 'settings__inputs_bio-wrapper');
     this.bioLabel = new BaseComponent('label', this.bioWrapper.element, 'settings__bio_label', this.dictionary.bio);
     this.bio = new EditableTextarea(this.bioWrapper.element, 'settings__about', user.bio, TextareaTypes.Bio, false);
 
+    this.genderBlock.newCurrentValue = user.gender;
     [this.email, this.dateOfBirth].forEach((input) => input.attachEditButton('settings__input'));
     this.country.attachEditButton('settings__gender', this.countryWrapper.element);
     this.email.title.element.classList.add('settings__input_title');
@@ -152,6 +163,7 @@ export default class Settings extends BaseComponent<'section'> {
 
   private addEventListeners(): void {
     this.changePhotoButton.element.addEventListener('click', this.changePhotoBtnCallback);
+    this.deleteAccountButton.element.addEventListener('click', this.deleteAccountCallback);
   }
 
   private changePhotoBtnCallback = (): void => {
@@ -162,7 +174,7 @@ export default class Settings extends BaseComponent<'section'> {
 
   private setCurrentValues(user: User): void {
     if (this.country) {
-      this.country.newInputValue = user.country || '';
+      this.country.input.element.value = user.country;
     }
 
     if (this.dateOfBirth) {
@@ -177,4 +189,16 @@ export default class Settings extends BaseComponent<'section'> {
       }
     });
   }
+
+  private deleteAccountCallback = (e: Event): void => {
+    e.preventDefault();
+    if (this.token) {
+      deleteUser(this.token).then(() => {
+        localStorage.removeItem('userSessionToken');
+        this.token = null;
+        window.history.pushState({}, '', Routes.SignUp);
+        this.replaceMainCallback();
+      });
+    }
+  };
 }

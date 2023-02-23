@@ -25,7 +25,8 @@ export enum Endpoints {
   Login = 'auth/signin',
   Signup = 'auth/signup',
   GetUser = 'auth/me',
-  UpdateUser = 'update',
+  UpdateUser = 'user',
+  DeleteUser = 'user',
   GetFriends = 'friends',
   GetNotFriends = 'no-friends',
   AddFriend = 'friends',
@@ -86,6 +87,7 @@ export type UpdateUserData = {
   id?: string;
   username?: string;
   birth?: string;
+  gender?: string;
   challenges?: string[];
 };
 

@@ -12,3 +12,6 @@ export const getUser = (token: Token): Promise<User> => Loader.getData(Methods.G
 
 export const updateUser = (token: Token, params: UpdateUserData): Promise<User> =>
   Loader.putData(Methods.Put, Endpoints.UpdateUser, params, token);
+
+export const deleteUser = (token: Token): Promise<void> =>
+  Loader.deleteData(Methods.Delete, Endpoints.DeleteUser, undefined, token);

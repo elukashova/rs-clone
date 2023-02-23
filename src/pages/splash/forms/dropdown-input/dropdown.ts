@@ -2,6 +2,9 @@ import './dropdown.css';
 import BaseComponent from '../../../../components/base-component/base-component';
 import Input from '../../../../components/base-component/text-input-and-label/text-input';
 import { ValidityMessages } from '../form.types';
+import eventEmitter from '../../../../utils/event-emitter';
+import { updateUser } from '../../../../app/loader/services/user-services';
+import { User } from '../../../../app/loader/loader-responses.types';
 
 export default class DropdownInput extends Input {
   private listWrapper: BaseComponent<'div'> = new BaseComponent(
@@ -28,6 +31,9 @@ export default class DropdownInput extends Input {
 
     this.input.element.addEventListener('input', this.filterOptionsCallback);
     this.input.element.addEventListener('blur', this.hideOptionsList);
+    eventEmitter.on('countryEditButtonsAttached', () => {
+      this.changeOkButtonCallback();
+    });
   }
 
   public retrieveDataForDropdown(options: string[]): void {
@@ -95,7 +101,7 @@ export default class DropdownInput extends Input {
     }
   }
 
-  public checkIfValidCountry(): boolean {
+  public checkIfValidCountry = (): boolean => {
     const validityState: ValidityState = this.input.element.validity;
 
     if (validityState.valueMissing) {
@@ -115,7 +121,7 @@ export default class DropdownInput extends Input {
     this.handleCustomValidity('');
     this.setValidState();
     return true;
-  }
+  };
 
   private handleCustomValidity(message: string): void {
     this.input.element.setCustomValidity(message);
@@ -129,65 +135,29 @@ export default class DropdownInput extends Input {
     }
   };
 
-  // public attachEditButton(classes: string): void {
-  //   this.editBlockWrapper = new BaseComponent('div', this.element, `${classes}_edit-wrapper`);
-  //   this.editBlock = new EditBlock(this.editBlockWrapper.element, classes);
-  //   this.input.element.disabled = true;
-  //   this.classes = classes;
-  //   this.editBlock.editBtn.element.addEventListener('click', this.activateInput);
-  // }
+  private changeOkButtonCallback(): void {
+    if (this.editBlock && this.editBlock.okButton) {
+      this.editBlock.okButton.element.removeEventListener('click', this.updateOkButtonCallback);
+      this.editBlock.okButton.element.addEventListener('click', this.countriesOkButtonCallback);
+      console.log('here');
+    }
+  }
 
-  // private activateInput = (): void => {
-  //   this.isUpdate = true;
-  //   this.currentValue = this.input.element.value;
-  //   this.input.element.disabled = false;
-  //   this.input.element.focus();
-  //   if (this.editBlock) {
-  //     this.editBlock.editBtn.replaceBtnSvg(SvgNames.CloseThin, this.classes, ProjectColors.Grey);
-  //     this.editBlock.appendOkButton(this.updateOkButtonCallback);
-  //     // eslint-disable-next-line max-len
-  //     this.editBlock.replaceUpdateBtnEventListener(this.
-  // isUpdate, this.cancelUpdate, this.activateInput);
-  //   }
-  // };
+  private countriesOkButtonCallback = (): void => {
+    if (!this.checkIfValidCountry()) {
+      return;
+    }
 
-  // private cancelUpdate = (): void => {
-  //   this.isUpdate = false;
-  //   this.input.element.value = this.currentValue;
-  //   this.input.element.disabled = true;
-  //   if (this.editBlock) {
-  //     this.editBlock.editBtn.replaceBtnSvg(SvgNames.Pencil, this.classes, ProjectColors.Grey);
-  //     this.editBlock.removeOkButton();
-  //     // eslint-disable-next-line max-len, max-len, max-len
-  //     this.editBlock.replaceUpdateBtnEventLi
-  // stener(this.isUpdate, this.cancelUpdate, this.activateInput);
-  //   }
-  // };
-
-  // private updateOkButtonCallback = (): void => {
-  //   if (this.type === InputTypes.Email) {
-  //     if (!this.checkInput(ValidityMessages.Email)) {
-  //       return;
-  //     }
-  //   }
-
-  //   if (this.token) {
-  //     const { value } = this.input.element;
-  //     this.currentValue = value;
-  //     updateUser(this.token, this.checkCurrentType(value))
-  //       .then((user: User) => {
-  //         if (user) {
-  //           this.cancelUpdate();
-  //         }
-  //       })
-  //       .catch(() => null);
-  //   }
-  // };
-
-  // private checkCurrentType(value: string): UpdateUserData {
-  //   if (this.type === InputTypes.Email) {
-  //     return { email: value };
-  //   }
-  //   return { birth: value };
-  // }
+    if (this.token) {
+      const { value } = this.input.element;
+      this.currentValue = value;
+      updateUser(this.token, { country: value })
+        .then((user: User) => {
+          if (user) {
+            this.cancelUpdate();
+          }
+        })
+        .catch(() => null);
+    }
+  };
 }

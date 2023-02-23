@@ -5,7 +5,9 @@ import EditBlock from '../../../components/base-component/edit-block/edit-block'
 import SvgNames from '../../../components/base-component/svg/svg.types';
 import { ProjectColors } from '../../../utils/consts';
 import { checkDataInLocalStorage } from '../../../utils/local-storage';
-import { Token } from '../../../app/loader/loader-requests.types';
+import { Token, UpdateUserData } from '../../../app/loader/loader-requests.types';
+import { updateUser } from '../../../app/loader/services/user-services';
+import { User } from '../../../app/loader/loader-responses.types';
 
 export default class GenderBlock extends BaseComponent<'div'> {
   private token: Token | null = checkDataInLocalStorage('userSessionToken');
@@ -39,11 +41,15 @@ export default class GenderBlock extends BaseComponent<'div'> {
     this.dictionary.genderDefault,
     {
       type: 'radio',
+      name: 'gender',
+      value: 'Prefer not to say',
     },
   );
 
   private genderMan: Input = new Input(this.radioButtons.element, 'settings__input-radio', this.dictionary.genderMan, {
     type: 'radio',
+    name: 'gender',
+    value: 'Man',
   });
 
   private genderWoman: Input = new Input(
@@ -52,6 +58,8 @@ export default class GenderBlock extends BaseComponent<'div'> {
     this.dictionary.genderWoman,
     {
       type: 'radio',
+      name: 'gender',
+      value: 'Woman',
     },
   );
 
@@ -65,21 +73,61 @@ export default class GenderBlock extends BaseComponent<'div'> {
 
   private isUpdate: boolean = false;
 
+  private currentValue: string = '';
+
+  private currentChoice: UpdateUserData = {
+    gender: '',
+  };
+
   constructor(parent: HTMLElement) {
     super('div', parent, 'settings__gender_wrapper');
     this.editBlock.editBtn.element.addEventListener('click', this.showChoiceOptions);
     this.handleGenderInputs();
-    // this.renderRadioButtons();
+    this.addEventListeners();
   }
+
+  public set newCurrentValue(text: string) {
+    this.genderCurrentChoice.element.textContent = text;
+  }
+
+  private addEventListeners(): void {
+    // eslint-disable-next-line max-len
+    [this.genderDefault.input.element, this.genderMan.input.element, this.genderWoman.input.element].forEach(
+      (input) => {
+        input.addEventListener('click', this.saveCurrentChoice);
+      },
+    );
+  }
+
+  private saveCurrentChoice = (e: Event): void => {
+    if (e.target instanceof HTMLInputElement) {
+      this.currentChoice.gender = e.target.value;
+    }
+  };
 
   private showChoiceOptions = (): void => {
     this.isUpdate = true;
+    this.currentValue = `${this.genderCurrentChoice.element.textContent}`;
+    this.highlightCurrentChoice();
+    this.genderCurrentChoice.element.classList.add('current-hidden');
     this.radioButtons.element.classList.add('visible-buttons');
     this.editBlock.editBtn.replaceBtnSvg(SvgNames.CloseThin, 'settings__gender', ProjectColors.Grey);
     this.editBlock.appendOkButton(this.updateOkButtonCallback);
     // eslint-disable-next-line max-len
     this.editBlock.replaceUpdateBtnEventListener(this.isUpdate, this.cancelUpdate, this.showChoiceOptions);
   };
+
+  private highlightCurrentChoice(): void {
+    // eslint-disable-next-line max-len
+    [this.genderDefault.input.element, this.genderMan.input.element, this.genderWoman.input.element].forEach(
+      (input) => {
+        if (input.value === this.currentValue) {
+          // eslint-disable-next-line no-param-reassign
+          input.checked = true;
+        }
+      },
+    );
+  }
 
   private handleGenderInputs(): void {
     [this.genderDefault, this.genderMan, this.genderWoman].forEach((input) => {
@@ -92,23 +140,22 @@ export default class GenderBlock extends BaseComponent<'div'> {
 
   private updateOkButtonCallback = (): void => {
     if (this.token) {
-      // const { value } = this.textarea.element;
-      // this.currentValue = value;
-      // updateUser(this.token, this.checkCurrentType(value))
-      //   .then((user: User) => {
-      //     if (user) {
-      //       this.cancelUpdate();
-      //     }
-      //   })
-      //   .catch(() => null);
-      console.log(this.token);
+      updateUser(this.token, this.currentChoice)
+        .then((user: User) => {
+          if (user) {
+            this.cancelUpdate();
+            this.newCurrentValue = `${this.currentChoice.gender}`;
+          }
+        })
+        .catch(() => null);
     }
   };
 
   private cancelUpdate = (): void => {
     this.isUpdate = false;
     this.radioButtons.element.classList.remove('visible-buttons');
-    // this.textarea.element.value = this.currentValue;
+    this.genderCurrentChoice.element.classList.remove('current-hidden');
+    this.genderCurrentChoice.element.textContent = this.currentValue;
     this.editBlock.editBtn.replaceBtnSvg(SvgNames.Pencil, 'settings__gender', ProjectColors.Grey);
     this.editBlock.removeOkButton();
     // eslint-disable-next-line max-len
