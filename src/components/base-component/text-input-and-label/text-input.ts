@@ -12,6 +12,7 @@ import { checkDataInLocalStorage } from '../../../utils/local-storage';
 import { Token, UpdateUserData } from '../../../app/loader/loader-requests.types';
 import { updateUser } from '../../../app/loader/services/user-services';
 import { User } from '../../../app/loader/loader-responses.types';
+import eventEmitter from '../../../utils/event-emitter';
 
 export default class Input extends BaseComponent<'div'> {
   public input!: BaseComponent<'input'>;
@@ -28,17 +29,17 @@ export default class Input extends BaseComponent<'div'> {
 
   private editBlockWrapper: BaseComponent<'div'> | null = null;
 
-  private editBlock: EditBlock | null = null;
+  public editBlock: EditBlock | null = null;
 
   private isUpdate: boolean = false;
 
-  private currentValue: string = '';
+  public currentValue: string = '';
 
   private classes: string = '';
 
   public type: string;
 
-  private token: Token | null = checkDataInLocalStorage('userSessionToken');
+  public token: Token | null = checkDataInLocalStorage('userSessionToken');
 
   constructor(
     parent: HTMLElement,
@@ -154,10 +155,13 @@ export default class Input extends BaseComponent<'div'> {
       this.editBlock.appendOkButton(this.updateOkButtonCallback);
       // eslint-disable-next-line max-len
       this.editBlock.replaceUpdateBtnEventListener(this.isUpdate, this.cancelUpdate, this.activateInput);
+      if (this.type === InputTypes.Text) {
+        eventEmitter.emit('countryEditButtonsAttached', {});
+      }
     }
   };
 
-  private cancelUpdate = (): void => {
+  public cancelUpdate = (): void => {
     this.isUpdate = false;
     this.newInputValue = this.currentValue;
     this.input.element.disabled = true;
@@ -169,7 +173,7 @@ export default class Input extends BaseComponent<'div'> {
     }
   };
 
-  private updateOkButtonCallback = (): void => {
+  public updateOkButtonCallback = (): void => {
     if (this.type === InputTypes.Email) {
       if (!this.checkInput(ValidityMessages.Email)) {
         return;

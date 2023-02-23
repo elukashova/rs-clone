@@ -103,7 +103,7 @@ export default class Router {
         this.main.setContent(this.challenges);
         break;
       case Routes.Settings:
-        this.settings = new Settings(this.main.element);
+        this.settings = new Settings(this.main.element, this.locationHandler);
         this.main.setContent(this.settings);
         break;
       default:

@@ -58,7 +58,6 @@ export default class RightMenu extends BaseComponent<'aside'> {
     this.challenges = user.challenges;
     this.doRequestAndRenderChallenges();
     this.doRequestAndShowFriends();
-    console.log(user);
   }
 
   private doRequestAndShowFriends(): void {
@@ -97,7 +96,6 @@ export default class RightMenu extends BaseComponent<'aside'> {
   }
 
   private doRequestAndRenderChallenges(): void {
-    console.log(this.challenges);
     if (this.challenges && this.challenges.length) {
       this.addChallengeLinkWrapper = new BaseComponent('div', this.element, 'add-challenge__wrapper');
 
