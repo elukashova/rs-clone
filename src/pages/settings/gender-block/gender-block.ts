@@ -31,43 +31,63 @@ export default class GenderBlock extends BaseComponent<'div'> {
     'settings__gender_current',
   );
 
-  private genderDefault: Input | null = null;
+  private radioButtons: BaseComponent<'div'> = new BaseComponent('div', this.element, 'settings__buttons-radio');
 
-  private genderMan: Input | null = null;
+  private genderDefault: Input = new Input(
+    this.radioButtons.element,
+    'settings__input-radio',
+    this.dictionary.genderDefault,
+    {
+      type: 'radio',
+    },
+  );
 
-  private genderWoman: Input | null = null;
+  private genderMan: Input = new Input(this.radioButtons.element, 'settings__input-radio', this.dictionary.genderMan, {
+    type: 'radio',
+  });
 
-  private editBlock: EditBlock = new EditBlock(this.element, 'settings__gender');
+  private genderWoman: Input = new Input(
+    this.radioButtons.element,
+    'settings__input-radio',
+    this.dictionary.genderWoman,
+    {
+      type: 'radio',
+    },
+  );
+
+  private editBlockWrapper: BaseComponent<'div'> = new BaseComponent(
+    'div',
+    this.element,
+    'settings__gender_edit-wrapper',
+  );
+
+  private editBlock: EditBlock = new EditBlock(this.editBlockWrapper.element, 'settings__gender');
 
   private isUpdate: boolean = false;
 
   constructor(parent: HTMLElement) {
     super('div', parent, 'settings__gender_wrapper');
     this.editBlock.editBtn.element.addEventListener('click', this.showChoiceOptions);
+    this.handleGenderInputs();
     // this.renderRadioButtons();
   }
 
   private showChoiceOptions = (): void => {
     this.isUpdate = true;
-    this.renderRadioButtons();
+    this.radioButtons.element.classList.add('visible-buttons');
     this.editBlock.editBtn.replaceBtnSvg(SvgNames.CloseThin, 'settings__gender', ProjectColors.Grey);
     this.editBlock.appendOkButton(this.updateOkButtonCallback);
     // eslint-disable-next-line max-len
     this.editBlock.replaceUpdateBtnEventListener(this.isUpdate, this.cancelUpdate, this.showChoiceOptions);
   };
 
-  private renderRadioButtons(): void {
-    this.genderDefault = new Input(this.element, 'settings__input-radio', this.dictionary.genderDefault, {
-      type: 'radio',
-      checked: '',
+  private handleGenderInputs(): void {
+    [this.genderDefault, this.genderMan, this.genderWoman].forEach((input) => {
+      input.element.classList.remove('input');
+      input.input.element.classList.remove('input-text');
+      input.label.element.classList.add('radio-label');
+      input.input.element.classList.add('input-radio');
     });
-    this.genderMan = new Input(this.element, 'settings__input-radio', this.dictionary.genderMan, {
-      type: 'radio',
-    });
-    this.genderWoman = new Input(this.element, 'settings__input-radio', this.dictionary.genderWoman, {
-      type: 'radio',
-    });
-    this.genderDefault.element.setAttribute('checked', '');
   }
 
   private updateOkButtonCallback = (): void => {
@@ -87,6 +107,7 @@ export default class GenderBlock extends BaseComponent<'div'> {
 
   private cancelUpdate = (): void => {
     this.isUpdate = false;
+    this.radioButtons.element.classList.remove('visible-buttons');
     // this.textarea.element.value = this.currentValue;
     this.editBlock.editBtn.replaceBtnSvg(SvgNames.Pencil, 'settings__gender', ProjectColors.Grey);
     this.editBlock.removeOkButton();
