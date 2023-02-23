@@ -9,6 +9,15 @@ i18next.use(LanguageDetector).init({
       translation: {
         avatar: 'Choose your avatar',
         select: '--Please choose your country--',
+        other: {
+          km: '{{count}} km',
+          hour: '{{count}} hr',
+          meterArrow: '&uarr; {{count}} m',
+          meter: '{{count}} m',
+          speed: '{{count}} km/h',
+          minute: '{{count}} m',
+          at: 'at',
+        },
         header: {
           avatar: 'Your avatar',
           personalPage: 'Personal page',
@@ -208,6 +217,15 @@ i18next.use(LanguageDetector).init({
       translation: {
         avatar: 'Ваш аватар',
         select: '--Выберите Вашу страну--',
+        other: {
+          km: '{{count}} км',
+          hour: '{{count}} ч',
+          meterArrow: '&uarr; {{count}} м',
+          meter: '{{count}} м',
+          speed: '{{count}} км/ч',
+          minute: '{{count}} м',
+          at: 'в',
+        },
         header: {
           avatar: 'Ваш аватар',
           personalPage: 'Личная страница',
