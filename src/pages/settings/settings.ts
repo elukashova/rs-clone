@@ -10,7 +10,7 @@ import DropdownInput from '../splash/forms/dropdown-input/dropdown';
 import { deleteUser, getUser } from '../../app/loader/services/user-services';
 import { User } from '../../app/loader/loader-responses.types';
 import { TextareaTypes } from '../../components/base-component/textarea/editable-textarea/editable-textarea.types';
-import { convertRegexToPattern, retrieveCountriesData } from '../../utils/utils';
+import { convertRegexToPattern } from '../../utils/utils';
 import { ProjectColors, VALID_EMAIL } from '../../utils/consts';
 import Svg from '../../components/base-component/svg/svg';
 import SvgNames from '../../components/base-component/svg/svg.types';
