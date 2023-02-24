@@ -1,4 +1,5 @@
 import './post-reactions.css';
+import i18next from 'i18next';
 import BaseComponent from '../../../../../components/base-component/base-component';
 import Picture from '../../../../../components/base-component/picture/picture';
 import Svg from '../../../../../components/base-component/svg/svg';
@@ -8,6 +9,10 @@ import { Kudo } from '../../../../../app/loader/loader-responses.types';
 import { checkDataInLocalStorage } from '../../../../../utils/local-storage';
 
 export default class PostReactions extends BaseComponent<'div'> {
+  private dictionary: Record<string, string> = {
+    kudo: 'other.comment.kudo',
+  };
+
   private counterWrapper: BaseComponent<'div'> = new BaseComponent(
     'div',
     this.element,
@@ -64,6 +69,9 @@ export default class PostReactions extends BaseComponent<'div'> {
 
   constructor(parent: HTMLElement) {
     super('div', parent, 'post-reactions');
+    i18next.on('languageChanged', () => {
+      this.updateLikesNumber();
+    });
   }
 
   public renderUsersAvatars(): void {
@@ -87,7 +95,8 @@ export default class PostReactions extends BaseComponent<'div'> {
 
   public updateLikesNumber(): void {
     if (this.likesCounter > 0) {
-      this.likesNumber.element.textContent = `${this.likesCounter} kudos`;
+      // eslint-disable-next-line max-len
+      this.likesNumber.element.textContent = i18next.t(this.dictionary.kudo, { count: this.likesCounter });
     } else {
       this.likesNumber.element.textContent = '';
     }

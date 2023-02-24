@@ -39,6 +39,8 @@ export default class Post extends BaseComponent<'div'> {
     speed: 'other.speed',
     minute: 'other.minute',
     at: 'other.at',
+    seeAll: 'other.comment.seeAll',
+    showRecent: 'other.comment.showRecent',
   };
 
   private userInfo = new BaseComponent('div', this.element, 'post__user-info');
@@ -358,12 +360,18 @@ export default class Post extends BaseComponent<'div'> {
 
     if (!this.isShown) {
       this.updateCommentsNumber(this.commentsAll.length);
+      i18next.on('languageChanged', () => {
+        this.updateCommentsNumber(this.commentsAll.length);
+      });
       this.showAllCommentsElement.element.addEventListener('click', this.showAllComments);
       this.showAllCommentsElement.element.removeEventListener('click', this.hideComments);
       this.isShown = true;
       this.isFirstAppend = false;
     } else {
-      this.showAllCommentsElement.textContent = 'Show recent comments';
+      this.showAllCommentsElement.textContent = i18next.t(this.dictionary.showRecent);
+      i18next.on('languageChanged', () => {
+        this.showAllCommentsElement.element.textContent = i18next.t(this.dictionary.showRecent);
+      });
       this.showAllCommentsElement.element.addEventListener('click', this.hideComments);
       this.showAllCommentsElement.element.removeEventListener('click', this.showAllComments);
       this.isShown = false;
@@ -372,7 +380,7 @@ export default class Post extends BaseComponent<'div'> {
   }
 
   private updateCommentsNumber(number: number): void {
-    this.showAllCommentsElement.textContent = `See all ${number} comments`;
+    this.showAllCommentsElement.element.textContent = i18next.t(this.dictionary.seeAll, { count: number });
   }
 
   private hideComments = (): void => {
