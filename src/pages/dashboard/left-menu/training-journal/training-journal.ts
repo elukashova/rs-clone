@@ -2,6 +2,8 @@
 import i18next from 'i18next';
 import { ActivityResponse, User } from '../../../../app/loader/loader-responses.types';
 import BaseComponent from '../../../../components/base-component/base-component';
+import eventEmitter from '../../../../utils/event-emitter';
+import { EventData } from '../../../../utils/event-emitter.types';
 import { sortActivitiesByDate } from '../../../../utils/utils';
 import './training-journal.css';
 
@@ -33,14 +35,18 @@ export default class TrainingJournal extends BaseComponent<'div'> {
 
   private activityDate: BaseComponent<'span'> = new BaseComponent('span', undefined, 'training-journal__activity_date');
 
+  private activities: ActivityResponse[] = [];
+
   constructor(parent: HTMLElement, user: User) {
     super('div', parent, 'training-journal');
     if (user.activities.length > 0) {
       this.activityWrapper.element.append(this.activityName.element, this.activityDate.element);
-      this.showLastActivity(user.activities);
+      this.activities = user.activities;
+      this.showLastActivity(this.activities);
     } else {
       this.element.append(this.defaultMessage.element);
     }
+    eventEmitter.on('activityRemoved', (data: EventData) => this.updateLastActivity(data));
   }
 
   private showLastActivity(activities: ActivityResponse[]): void {
@@ -60,5 +66,20 @@ export default class TrainingJournal extends BaseComponent<'div'> {
     const language: string = localStorage.getItem('i18nextLng')!;
     const activityDate: Date = new Date(date);
     return activityDate.toLocaleString(language, { year: 'numeric', month: 'long', day: 'numeric' });
+  }
+
+  private updateLastActivity(data: EventData): void {
+    this.cleanContent();
+    this.activities = this.activities.filter((activity) => activity.id !== data.activityId);
+    if (this.activities.length > 0) {
+      this.showLastActivity(this.activities);
+    } else {
+      this.element.append(this.defaultMessage.element);
+    }
+  }
+
+  private cleanContent(): void {
+    this.activityName.element.textContent = '';
+    this.activityDate.element.textContent = '';
   }
 }
