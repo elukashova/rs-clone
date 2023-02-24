@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import i18next from 'i18next';
 import { ActivityResponse, User } from '../../../../app/loader/loader-responses.types';
 import BaseComponent from '../../../../components/base-component/base-component';
 import { sortActivitiesByDate } from '../../../../utils/utils';
@@ -48,11 +50,15 @@ export default class TrainingJournal extends BaseComponent<'div'> {
     const formattedDate: string = TrainingJournal.formatDate(lastActivity.date);
 
     this.activityName.element.textContent = lastActivity.title;
+    i18next.on('languageChanged', () => {
+      this.activityDate.element.textContent = TrainingJournal.formatDate(lastActivity.date);
+    });
     this.activityDate.element.textContent = formattedDate;
   }
 
   private static formatDate(date: string): string {
+    const language: string = localStorage.getItem('i18nextLng')!;
     const activityDate: Date = new Date(date);
-    return activityDate.toLocaleString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }); // не будет работать перевод
+    return activityDate.toLocaleString(language, { year: 'numeric', month: 'long', day: 'numeric' });
   }
 }
