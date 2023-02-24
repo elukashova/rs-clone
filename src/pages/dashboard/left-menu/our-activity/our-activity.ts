@@ -1,4 +1,6 @@
+/* eslint-disable max-len */
 import './our-activity.css';
+import i18next from 'i18next';
 import BaseComponent from '../../../../components/base-component/base-component';
 import ActivityGraph from './activity-graph/activity-graph';
 import Svg from '../../../../components/base-component/svg/svg';
@@ -15,6 +17,9 @@ export default class OurActivity extends BaseComponent<'div'> {
     yearHeader: 'dashboard.leftMenu.ourActivity.yearHeader',
     chooseSportHeadingError: 'dashboard.leftMenu.ourActivity.chooseSportHeadingError',
     noSports: 'dashboard.leftMenu.ourActivity.noSports',
+    km: 'other.km',
+    meterArrow: 'other.meter',
+    hour: 'other.hour',
   };
 
   private activityIcons: BaseComponent<'div'> = new BaseComponent('div', this.element, 'our-activity__icons');
@@ -127,6 +132,9 @@ export default class OurActivity extends BaseComponent<'div'> {
     this.setSvgEventListeners();
     this.updateSportActivityData();
     this.editBlock.editBtn.element.addEventListener('click', this.activateSportChanging);
+    i18next.on('languageChanged', () => {
+      this.updateStats();
+    });
   }
 
   private renderSportSVGs(): void {
@@ -375,10 +383,10 @@ export default class OurActivity extends BaseComponent<'div'> {
   }
 
   private updateStats(): void {
-    this.totalWeeklyKm.element.textContent = `${this.kmCounter} km`; // не будет работать перевод
-    this.time.element.textContent = `${this.hoursCounter} hr`; // не будет работать перевод
-    this.elevation.element.innerHTML = `&uarr; ${this.elevationCounter} m`; // не будет работать перевод
-    this.totalYearlyKm.element.textContent = `${this.yearKmCounter} km`; // не будет работать перевод
+    this.totalWeeklyKm.element.textContent = i18next.t(this.dictionary.km, { count: this.kmCounter });
+    this.time.element.textContent = i18next.t(this.dictionary.hour, { count: this.hoursCounter });
+    this.elevation.element.innerHTML = i18next.t(this.dictionary.meterArrow, { count: this.elevationCounter });
+    this.totalYearlyKm.element.textContent = i18next.t(this.dictionary.km, { count: this.yearKmCounter });
   }
 
   private updateSportActivityData(): void {

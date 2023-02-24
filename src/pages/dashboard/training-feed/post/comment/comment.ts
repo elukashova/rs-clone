@@ -1,4 +1,5 @@
 import './comment.css';
+import i18next from 'i18next';
 import BaseComponent from '../../../../../components/base-component/base-component';
 import Svg from '../../../../../components/base-component/svg/svg';
 import SvgNames from '../../../../../components/base-component/svg/svg.types';
@@ -14,6 +15,13 @@ import Button from '../../../../../components/base-component/button/button';
 export default class PostComment extends BaseComponent<'div'> {
   private dictionary: Record<string, string> = {
     commentBtn: 'dashboard.trainingFeed.post.commentBtn',
+    year: 'other.comment.year',
+    month: 'other.comment.month',
+    day: 'other.comment.day',
+    hour: 'other.comment.hour',
+    minute: 'other.comment.minute',
+    second: 'other.comment.second',
+    now: 'other.comment.now',
   };
 
   private photo = new Picture(this.element, 'comment__photo');
@@ -86,11 +94,14 @@ export default class PostComment extends BaseComponent<'div'> {
     this.retrieveDataForComment(data);
     this.like.element.addEventListener('click', this.toggleLike);
     this.message.element.addEventListener('keydown', this.changeDefaultBehavior);
+    i18next.on('languageChanged', () => {
+      this.date.element.textContent = this.createTimeSinceComment(data.createdAt);
+    });
   }
 
   private retrieveDataForComment(data: CommentResponse): void {
     this.photo.element.src = data.avatarUrl;
-    this.date.element.textContent = PostComment.createTimeSinceComment(data.createdAt);
+    this.date.element.textContent = this.createTimeSinceComment(data.createdAt);
     this.commentId = data.id;
     this.commentAuthorId = data.userId;
     this.name.element.textContent = data.username;
@@ -125,14 +136,14 @@ export default class PostComment extends BaseComponent<'div'> {
     this.updateLikeColor();
   }
 
-  private static createTimeSinceComment(commentDate: Date): string {
+  private createTimeSinceComment(commentDate: Date): string {
     const intervals = [
-      { text: 'year', seconds: 31536000 },
-      { text: 'month', seconds: 2592000 },
-      { text: 'day', seconds: 86400 },
-      { text: 'hour', seconds: 3600 },
-      { text: 'minute', seconds: 60 },
-      { text: 'second', seconds: 1 },
+      { text: this.dictionary.year, seconds: 31536000 },
+      { text: this.dictionary.month, seconds: 2592000 },
+      { text: this.dictionary.day, seconds: 86400 },
+      { text: this.dictionary.hour, seconds: 3600 },
+      { text: this.dictionary.minute, seconds: 60 },
+      { text: this.dictionary.second, seconds: 1 },
     ];
 
     const date: Date = new Date(commentDate);
@@ -141,9 +152,10 @@ export default class PostComment extends BaseComponent<'div'> {
     const interval = intervals.find((int) => int.seconds < seconds);
     if (interval) {
       const count = Math.floor(seconds / interval.seconds);
-      return `${count} ${interval.text}${count !== 1 ? 's' : ''} ago`;
+      // return `${count} ${interval.text}${count !== 1 ? 's' : ''} ago`;
+      return i18next.t(interval.text, { count });
     }
-    return 'Just now';
+    return i18next.t(this.dictionary.now);
   }
 
   private updateLikeInfoOnServer(flag: boolean): void {

@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import './post.css';
+import i18next from 'i18next';
 import BaseComponent from '../../../../components/base-component/base-component';
 import { CreateCommentRequest, FriendId, Token, UpdateActivity } from '../../../../app/loader/loader-requests.types';
 import { ActivityResponse, CommentResponse, Kudo, User } from '../../../../app/loader/loader-responses.types';
@@ -21,15 +23,24 @@ import { deleteFriend } from '../../../../app/loader/services/friends-services';
 import eventEmitter from '../../../../utils/event-emitter';
 import PostReactions from './post-reactions/post-reactions';
 import { EventData } from '../../../../utils/event-emitter.types';
+import { changeDateFormat, countSpeed } from '../../../../utils/utils';
 
 export default class Post extends BaseComponent<'div'> {
   private dictionary: Record<string, string> = {
     distance: 'dashboard.trainingFeed.post.distance',
-    speed: 'dashboard.trainingFeed.post.speed',
+    speedTitle: 'dashboard.trainingFeed.post.speed',
     time: 'dashboard.trainingFeed.post.time',
     elevation: 'dashboard.trainingFeed.post.elevation',
     commentPlaceholder: 'dashboard.trainingFeed.post.commentPlaceholder',
     commentBtn: 'dashboard.trainingFeed.post.commentBtn',
+    km: 'other.km',
+    hour: 'other.hour',
+    meter: 'other.meter',
+    speed: 'other.speed',
+    minute: 'other.minute',
+    at: 'other.at',
+    seeAll: 'other.comment.seeAll',
+    showRecent: 'other.comment.showRecent',
   };
 
   private userInfo = new BaseComponent('div', this.element, 'post__user-info');
@@ -72,7 +83,7 @@ export default class Post extends BaseComponent<'div'> {
 
   public distance = new PostInfo(this.dataContainer.element, this.dictionary.distance);
 
-  public speed = new PostInfo(this.dataContainer.element, this.dictionary.speed);
+  public speed = new PostInfo(this.dataContainer.element, this.dictionary.speedTitle);
 
   public time = new PostInfo(this.dataContainer.element, this.dictionary.time);
 
@@ -128,9 +139,17 @@ export default class Post extends BaseComponent<'div'> {
 
   public postAuthorId: string = '';
 
-  constructor(userId: string) {
+  public distanceStat: string | undefined;
+
+  public speedStat: string;
+
+  public activity: ActivityResponse;
+
+  constructor(userId: string, activity: ActivityResponse) {
     super('div', undefined, 'post');
     this.postAuthorId = userId;
+    this.activity = activity;
+    this.speedStat = countSpeed(activity.duration, Number(activity.distance));
     this.addEventListeners();
   }
 
@@ -140,6 +159,22 @@ export default class Post extends BaseComponent<'div'> {
     this.commentArea.element.addEventListener('input', this.handleCommentButton);
     this.addCommentButton.element.addEventListener('click', this.postComment);
     eventEmitter.on('commentDeleted', (data: EventData) => this.updateCommentsAfterDeletion(data));
+    this.setStatsForPost();
+    this.changeDateFormat(this.activity.date, this.activity.time);
+    i18next.on('languageChanged', () => {
+      this.setStatsForPost();
+      this.changeDateFormat(this.activity.date, this.activity.time);
+    });
+  }
+
+  private changeDateFormat(dateString: string, time: string): void {
+    const language: string = localStorage.getItem('i18nextLng')!;
+    const date = `${new Date(dateString).toLocaleString(language, {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    })} ${i18next.t(this.dictionary.at)} ${time}`;
+    this.date.element.textContent = date;
   }
 
   private postComment = (): void => {
@@ -159,6 +194,24 @@ export default class Post extends BaseComponent<'div'> {
         .catch(() => null);
     }
   };
+
+  public setStatsForPost(): void {
+    this.distance.value = i18next.t(this.dictionary.km, { count: +this.activity.distance! });
+    this.elevation.value = i18next.t(this.dictionary.meter, { count: +this.activity.elevation });
+    this.speed.value = i18next.t(this.dictionary.speed, {
+      count: +this.speedStat,
+    });
+    this.time.value = this.changeTimeFormat(this.activity.duration);
+    this.date.element.textContent = changeDateFormat(this.activity.date, this.activity.time);
+  }
+
+  private changeTimeFormat(time: string): string {
+    const splittedTime: string[] = time.split(':');
+    const [hours, minutes] = splittedTime;
+    const hoursTranslated = i18next.t(this.dictionary.hour, { count: +hours });
+    const minutesTranslated = i18next.t(this.dictionary.minute, { count: +minutes });
+    return `${hoursTranslated} ${minutesTranslated}`;
+  }
 
   private checkIfNotFirstComment(comment: PostComment): void {
     if (this.commentsOnPage.length === 0) {
@@ -307,12 +360,18 @@ export default class Post extends BaseComponent<'div'> {
 
     if (!this.isShown) {
       this.updateCommentsNumber(this.commentsAll.length);
+      i18next.on('languageChanged', () => {
+        this.updateCommentsNumber(this.commentsAll.length);
+      });
       this.showAllCommentsElement.element.addEventListener('click', this.showAllComments);
       this.showAllCommentsElement.element.removeEventListener('click', this.hideComments);
       this.isShown = true;
       this.isFirstAppend = false;
     } else {
-      this.showAllCommentsElement.textContent = 'Show recent comments';
+      this.showAllCommentsElement.textContent = i18next.t(this.dictionary.showRecent);
+      i18next.on('languageChanged', () => {
+        this.showAllCommentsElement.element.textContent = i18next.t(this.dictionary.showRecent);
+      });
       this.showAllCommentsElement.element.addEventListener('click', this.hideComments);
       this.showAllCommentsElement.element.removeEventListener('click', this.showAllComments);
       this.isShown = false;
@@ -321,7 +380,7 @@ export default class Post extends BaseComponent<'div'> {
   }
 
   private updateCommentsNumber(number: number): void {
-    this.showAllCommentsElement.textContent = `See all ${number} comments`;
+    this.showAllCommentsElement.element.textContent = i18next.t(this.dictionary.seeAll, { count: number });
   }
 
   private hideComments = (): void => {

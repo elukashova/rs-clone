@@ -58,3 +58,18 @@ export function sortActivitiesByDate(activities: ActivityResponse[]): ActivityRe
   });
   return activitiesToSort.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 }
+
+export function countSpeed(time: string, distance: number): string {
+  const splittedTime: string[] = time.split(':');
+  const [hours, minutes, seconds] = splittedTime;
+  const totalTime: number = (+hours * 3600 + +minutes * 60 + +seconds) / 3600;
+  return (distance / totalTime).toFixed(1);
+}
+
+export function changeDateFormat(dateString: string, time: string): string {
+  return `${new Date(dateString).toLocaleString('en', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  })} at ${time}`;
+}
