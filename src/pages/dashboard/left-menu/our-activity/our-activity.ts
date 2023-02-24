@@ -12,6 +12,8 @@ import { getFirstAndLastDaysOfWeek } from '../../../../utils/utils';
 import { checkDataInLocalStorage } from '../../../../utils/local-storage';
 import { Token } from '../../../../app/loader/loader-requests.types';
 import { updateUser } from '../../../../app/loader/services/user-services';
+import eventEmitter from '../../../../utils/event-emitter';
+import { EventData } from '../../../../utils/event-emitter.types';
 
 export default class OurActivity extends BaseComponent<'div'> {
   private dictionary: Record<string, string> = {
@@ -131,9 +133,12 @@ export default class OurActivity extends BaseComponent<'div'> {
 
   private token: Token | null = checkDataInLocalStorage('userSessionToken');
 
+  private activities: ActivityResponse[];
+
   constructor(parent: HTMLElement, private user: User) {
     super('div', parent, 'our-activity');
     this.storeAllSportSVGs();
+    this.activities = user.activities;
     if (user.sportTypes.length > 0) {
       this.checkServerData(user.sportTypes);
     } else {
@@ -142,10 +147,15 @@ export default class OurActivity extends BaseComponent<'div'> {
     this.highlightCurrentIcon();
     this.setSvgEventListeners();
     this.updateSportActivityData();
+    this.addEventListeners();
+  }
+
+  private addEventListeners(): void {
     this.editBlock.editBtn.element.addEventListener('click', this.activateSportChanging);
     i18next.on('languageChanged', () => {
       this.updateStats();
     });
+    eventEmitter.on('activityRemoved', (data: EventData) => this.updateStatsAfterDeletion(data));
   }
 
   private storeAllSportSVGs(): void {
@@ -412,7 +422,7 @@ export default class OurActivity extends BaseComponent<'div'> {
 
   private updateSportActivityData(): void {
     this.setValuesToNull();
-    const activities: ActivityResponse[] = this.user.activities.filter(
+    const activities: ActivityResponse[] = this.activities.filter(
       (record) => record.sport === `${this.currentIcon?.svg.id}`,
     );
     this.calculateStats(activities);
@@ -494,5 +504,10 @@ export default class OurActivity extends BaseComponent<'div'> {
   private retrieveChosenSports(sportTypes: string[]): string[] {
     const svgToRender: string[] = this.svgAllNames.filter((sport) => sportTypes.includes(sport));
     return svgToRender;
+  }
+
+  private updateStatsAfterDeletion(data: EventData): void {
+    this.activities = this.activities.filter((activity) => activity.id !== data.activityId);
+    this.updateSportActivityData();
   }
 }
