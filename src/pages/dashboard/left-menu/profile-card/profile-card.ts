@@ -40,6 +40,8 @@ export default class ProfileCard extends BaseComponent<'div'> {
 
   private followeesCounter: number = this.user.following.length;
 
+  private activitiesCounter: number = this.user.activities.length;
+
   public followers: ProfileInfo = new ProfileInfo(
     this.dictionary.followers,
     Routes.FindFriends,
@@ -104,6 +106,11 @@ export default class ProfileCard extends BaseComponent<'div'> {
     eventEmitter.on('friendDeleted', () => {
       this.followeesCounter -= 1;
       this.followees.updateScore(this.followeesCounter);
+    });
+
+    eventEmitter.on('activityRemoved', () => {
+      this.activitiesCounter -= 1;
+      this.trainings.updateScore(this.activitiesCounter);
     });
   }
 }
