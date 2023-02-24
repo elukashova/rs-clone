@@ -16,7 +16,8 @@ export type User = {
   following: FriendData[];
   followedBy: FriendData[];
   activities: ActivityResponse[];
-  challenges?: string[];
+  challenges: string[];
+  sportTypes: string[];
 };
 
 export type CommentResponse = {
