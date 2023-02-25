@@ -83,6 +83,12 @@ export default class GoogleMaps {
 
   private elevationChart: boolean = true;
 
+  private badRouteBlock!: HTMLDivElement;
+
+  private okButton!: Button;
+
+  private popup!: google.maps.InfoWindow;
+
   constructor(parent: HTMLElement, center: Coordinates, travelMode: string, elevationChart: boolean) {
     this.mapId = v4();
     this.latLng = center;
@@ -124,7 +130,7 @@ export default class GoogleMaps {
     this.clearButton.element.style.marginTop = '10px';
     this.clearButton.element.style.marginLeft = '20px';
     this.map.controls[google.maps.ControlPosition.TOP_CENTER].push(this.clearButton.element);
-
+    this.renderMessage();
     this.addListeners();
   }
 
@@ -133,6 +139,13 @@ export default class GoogleMaps {
   }
 
   private addListeners(): void {
+    this.okButton.element.addEventListener('click', (event: MouseEvent): void => {
+      event.preventDefault();
+      this.deleteRoute();
+      this.badRouteBlock.classList.add('hidden');
+      console.log(this.badRouteBlock);
+    });
+
     // слушатель добавления маркеров (не более 2)
     this.map.addListener('click', (event: google.maps.MapMouseEvent): void => {
       if (this.markers.length < this.maxMarkerCount) {
@@ -371,22 +384,20 @@ export default class GoogleMaps {
     }
   }
 
+  public renderMessage(): void {
+    this.popup = new google.maps.InfoWindow();
+    this.badRouteBlock = document.createElement('div');
+    this.badRouteBlock.classList.add('google-maps__popup', 'hidden');
+    const text = new BaseComponent('p', this.badRouteBlock, 'google-maps__popup-text');
+    text.element.textContent = this.dictionary.notFoundRoute;
+    this.okButton = new Button(this.badRouteBlock, this.dictionary.ok, 'google-maps__popup-button');
+    this.badRouteBlock.append(this.okButton.element);
+    this.popup.setContent(this.badRouteBlock);
+    this.popup.open(this.map);
+  }
+
   public showMessage(): void {
-    const popup: google.maps.InfoWindow = new google.maps.InfoWindow();
-    const block: HTMLDivElement = document.createElement('div');
-    block.classList.add('google-maps__popup');
-    block.textContent = this.dictionary.notFoundRoute;
-    const button: Button = new Button(block, this.dictionary.ok, 'google-maps__popup-button');
-
-    block.append(button.element);
-    popup.setContent(block);
-    popup.open(this.map);
-
-    button.element.addEventListener('click', (event: MouseEvent): void => {
-      event.preventDefault();
-      this.deleteRoute();
-      block.style.visibility = 'hidden';
-    });
+    this.badRouteBlock.classList.remove('hidden');
   }
 
   public deleteRoute(): void {

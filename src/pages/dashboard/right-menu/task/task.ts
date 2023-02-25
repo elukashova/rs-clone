@@ -47,10 +47,13 @@ export default class Task extends BaseComponent<'div'> {
 
   private user: User;
 
+  public activities: ActivityResponse[];
+
   constructor(parent: HTMLElement, type: string, user: User) {
     super('div', parent, 'task');
     this.type = type;
     this.user = user;
+    this.activities = user.activities;
     this.getTaskName();
     this.renderTask();
   }
@@ -76,24 +79,31 @@ export default class Task extends BaseComponent<'div'> {
       );
       this.progressBox = new BaseComponent('div', this.progressWrapper.element, 'task__progress-box progress-box');
       this.progressBar = new BaseComponent('div', this.progressBox.element, 'task__progress-bar progress-bar');
-      switch (this.type) {
-        case 'yoga':
-          this.checkYoga(this.user.activities);
-          break;
-        case 'running':
-          this.checkRunning(this.user.activities);
-          break;
-        case 'hiking':
-          this.checkHiking(this.user.activities);
-          break;
-        case 'cycling':
-          this.checkCycling(this.user.activities);
-          break;
-        default:
-          break;
-      }
+      this.callCheck();
     } else {
       this.noProgress = new BaseComponent('p', this.taskData.element, 'task__no-progress', this.dictionary.noProgress);
+    }
+  }
+
+  public callCheck(activities?: ActivityResponse[]): void {
+    if (activities) {
+      this.activities = activities;
+    }
+    switch (this.type) {
+      case 'yoga':
+        this.checkYoga(this.activities);
+        break;
+      case 'running':
+        this.checkRunning(this.activities);
+        break;
+      case 'hiking':
+        this.checkHiking(this.activities);
+        break;
+      case 'cycling':
+        this.checkCycling(this.activities);
+        break;
+      default:
+        break;
     }
   }
 

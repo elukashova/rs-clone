@@ -353,6 +353,7 @@ export default class AddActivity extends BaseComponent<'section'> {
       this.map.deleteMap();
       this.map = new GoogleMaps(this.mapDiv.element, { lat: 38.771, lng: -9.058 }, updatedValue, true);
     }
+    console.log(this.map);
   };
 
   private static checkSelect(value: string): string {
@@ -366,13 +367,14 @@ export default class AddActivity extends BaseComponent<'section'> {
 
   private updateInputsFromMap(loadingMap: LoadingTimer): void {
     setTimeout(() => {
-      this.distance.newInputValue = `${this.map.distanceTotal}`;
-      const { hours, minutes, seconds } = this.map.timeTotal;
-      this.durationHours.newInputValue = `${hours}`;
-      this.durationMinutes.newInputValue = `${minutes}`;
-      this.durationSeconds.newInputValue = `${seconds}`;
-      const elevationCount = this.map.elevationTotal.split(',')[0];
-      this.elevation.newInputValue = `${elevationCount}`;
+      this.distance.newInputValue = `${this.map.distanceTotal}` || '0';
+      const temp = { hours: 0, minutes: 0, seconds: 0 };
+      const { hours, minutes, seconds } = this.map.timeTotal || temp;
+      this.durationHours.newInputValue = `${hours}` || '01';
+      this.durationMinutes.newInputValue = `${minutes}` || '00';
+      this.durationSeconds.newInputValue = `${seconds}` || '00';
+      const elevationCount = this.map.elevationTotal.split(',')[0] || '0';
+      this.elevation.newInputValue = `${elevationCount}` || '0';
       loadingMap.deleteLoadingCircle();
     }, 3000);
   }

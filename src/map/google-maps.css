@@ -17,3 +17,8 @@
   width: 30%;
   height: 3em;
 }
+
+.google-maps__popup.hidden {
+  display: none;
+  visibility: hidden;
+}
