@@ -29,7 +29,7 @@ export default class Member extends BaseComponent<'div'> {
 
   public renderMember(): void {
     this.memberPicture = new Picture(this.memberBlock.element, 'member__photo', {
-      src: `./assets/images/team/${this.github}.png`,
+      src: `./assets/images/team/${this.github}.jpg`,
       alt: `Photo of ${this.name}`,
     });
     this.memberData = new BaseComponent('div', this.memberBlock.element, 'member__info');

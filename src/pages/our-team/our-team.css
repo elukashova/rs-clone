@@ -1,5 +1,6 @@
 .our-team {
   width: 90%;
+  padding: 3rem 2rem;
 }
 
 .our-team__container,
@@ -17,12 +18,23 @@
   gap: 5vw;
 }
 
+.our-team__title {
+  text-align: center;
+}
+
+.our-team__project-title {
+  font-size: 1rem;
+  text-align: center;
+}
+
 .our-team__project-svg-block {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   gap: 2em;
+  width: 80%;
+  user-select: none;
 }
 
 .our-team__project-info {
@@ -31,11 +43,11 @@
 }
 
 .our-team__project-svg {
-  height: 4em;
-  width: 4em;
+  height: 3em;
+  width: 3em;
 }
 
 .our-team__project-img {
-  width: 20%;
-  height: min-content;
+  width: auto;
+  height: 1.8rem;
 }
