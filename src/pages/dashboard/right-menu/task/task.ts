@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 import './task.css';
 import BaseComponent from '../../../../components/base-component/base-component';
 import Picture from '../../../../components/base-component/picture/picture';
@@ -88,13 +89,21 @@ export default class Task extends BaseComponent<'div'> {
       if (this.type === 'running') {
         this.checkRunning(this.user.activities);
       }
+      if (this.type === 'yoga') {
+        this.checkYoga(this.user.activities);
+      }
+      if (this.type === 'hiking') {
+        this.checkHiking(this.user.activities);
+      }
+      if (this.type === 'cycling') {
+        this.checkCycling(this.user.activities);
+      }
     } else {
       this.noProgress = new BaseComponent('p', this.taskData.element, 'task__no-progress', this.dictionary.noProgress);
     }
   }
 
   public getTaskName(): void {
-    console.log(this.type);
     switch (this.type) {
       case 'yoga':
         this.taskName = this.dictionary.yogaChallenge;
@@ -132,9 +141,8 @@ export default class Task extends BaseComponent<'div'> {
   }
 
   private checkRunning(activities: ActivityResponse[]): void {
-    console.log(activities);
-    const start: Date = new Date(2022, 2, 1);
-    const end: Date = new Date(2023, 2, 1);
+    const start: Date = new Date(2022, 1, 1);
+    const end: Date = new Date(2023, 1, 1);
     const result = OurActivity.calculateYearDistance(activities, start, end);
     const percent = (result * 100) / 3000;
     this.colorProgress(percent);
@@ -150,5 +158,61 @@ export default class Task extends BaseComponent<'div'> {
       this.progressBarData.element.textContent = '100%';
       this.progressBarData.element.style.color = ProjectColors.Orange;
     }
+  }
+
+  private checkYoga(activities: ActivityResponse[]): void {
+    const start: Date = new Date(2022, 1, 19);
+    const end: Date = new Date(2023, 2, 19);
+    const sports = activities.filter((activity) => activity.sport === 'hiking' || activity.sport === 'walking');
+    let totalTime: number = 0;
+
+    sports.forEach((activity) => {
+      const date = new Date(activity.date);
+      const dateMs = date.getTime();
+      if (dateMs >= start.getTime() && dateMs <= end.getTime()) {
+        const [hours, minutes] = activity.duration.split(':');
+        const totalMinutes = Number(hours) * 60 + Number(minutes);
+        totalTime += Number(totalMinutes);
+      }
+    });
+    const percent = (totalTime * 100) / 567;
+    this.colorProgress(percent);
+  }
+
+  private checkHiking(activities: ActivityResponse[]): void {
+    const start: Date = new Date(2022, 1, 1);
+    const end: Date = new Date(2023, 1, 1);
+    let elevation: number = 0;
+
+    activities.forEach((activity) => {
+      const date = new Date(activity.date);
+      const dateMs = date.getTime();
+
+      if (dateMs >= start.getTime() && dateMs <= end.getTime()) {
+        elevation += Number(activity.elevation);
+      }
+    });
+
+    const percent = (elevation * 100) / 8849;
+    this.colorProgress(percent);
+  }
+
+  private checkCycling(activities: ActivityResponse[]): void {
+    const start: Date = new Date(2022, 1, 27);
+    const end: Date = new Date(2023, 2, 6);
+    const sports = activities.filter((activity) => activity.sport === 'cycling');
+    let counter = 0;
+    const eventWeek: string[] = [];
+    sports.forEach((activity) => {
+      const activityDate = new Date(activity.date);
+      const date = `${activityDate.getDate()},${activityDate.getMonth()},${activityDate.getFullYear()}`;
+      console.log(activityDate, date);
+      if (activityDate >= start && activityDate <= end && !eventWeek.includes(date)) {
+        eventWeek.push(date);
+        counter += 1;
+      }
+    });
+    const percent = (counter * 100) / 7;
+    this.colorProgress(percent);
   }
 }

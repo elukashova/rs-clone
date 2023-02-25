@@ -151,7 +151,7 @@ export default class Challenges extends BaseComponent<'section'> {
       hikingUsers,
       this.dictionary.hikingTitle,
       this.dictionary.hikingDescription,
-      ['03/01/2023', '03/01/2024'],
+      ['02/01/2023', '02/01/2024'],
       true,
     );
 
@@ -175,7 +175,7 @@ export default class Challenges extends BaseComponent<'section'> {
       cyclingUsers,
       this.dictionary.cyclingTitle,
       this.dictionary.cyclingDescription,
-      ['02/25/2023', '03/04/2023'],
+      ['02/27/2023', '03/06/2023'],
       true,
     );
   }
@@ -189,7 +189,7 @@ export default class Challenges extends BaseComponent<'section'> {
       runningUsers,
       this.dictionary.runningTitle,
       this.dictionary.runningDescription,
-      ['03/01/2023', '03/01/2024'],
+      ['02/01/2023', '02/01/2024'],
       true,
     );
 
