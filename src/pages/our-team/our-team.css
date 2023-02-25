@@ -1,3 +1,7 @@
+.our-team {
+  width: 90%;
+}
+
 .our-team__container,
 .our-team__project-info {
   display: flex;
@@ -32,6 +36,6 @@
 }
 
 .our-team__project-img {
-  width: 19%;
+  width: 20%;
   height: min-content;
 }

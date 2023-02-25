@@ -9,6 +9,11 @@ import { ProjectColors } from '../../../../utils/consts';
 import EditBlock from '../../../../components/base-component/edit-block/edit-block';
 import { ActivityResponse, User } from '../../../../app/loader/loader-responses.types';
 import { getFirstAndLastDaysOfWeek } from '../../../../utils/utils';
+import { checkDataInLocalStorage } from '../../../../utils/local-storage';
+import { Token } from '../../../../app/loader/loader-requests.types';
+import { updateUser } from '../../../../app/loader/services/user-services';
+import eventEmitter from '../../../../utils/event-emitter';
+import { EventData } from '../../../../utils/event-emitter.types';
 
 export default class OurActivity extends BaseComponent<'div'> {
   private dictionary: Record<string, string> = {
@@ -124,20 +129,36 @@ export default class OurActivity extends BaseComponent<'div'> {
 
   private yearKmCounter: number = 0;
 
+  private sportTypesForServer: string[] = [];
+
+  private token: Token | null = checkDataInLocalStorage('userSessionToken');
+
+  private activities: ActivityResponse[];
+
   constructor(parent: HTMLElement, private user: User) {
     super('div', parent, 'our-activity');
-    this.renderSportSVGs();
-    this.checkPageLimit();
+    this.storeAllSportSVGs();
+    this.activities = user.activities;
+    if (user.sportTypes.length > 0) {
+      this.checkServerData(user.sportTypes);
+    } else {
+      this.checkPageLimit();
+    }
     this.highlightCurrentIcon();
     this.setSvgEventListeners();
     this.updateSportActivityData();
+    this.addEventListeners();
+  }
+
+  private addEventListeners(): void {
     this.editBlock.editBtn.element.addEventListener('click', this.activateSportChanging);
     i18next.on('languageChanged', () => {
       this.updateStats();
     });
+    eventEmitter.on('activityDeleted', (data: EventData) => this.updateStatsAfterDeletion(data));
   }
 
-  private renderSportSVGs(): void {
+  private storeAllSportSVGs(): void {
     for (let i: number = 0; i < this.svgAllNames.length; i += 1) {
       const svg: Svg = new Svg(
         this.sportsIcons.element,
@@ -157,10 +178,19 @@ export default class OurActivity extends BaseComponent<'div'> {
   private checkPageLimit(): void {
     if (this.allSvgElements.length > this.svgNumberOnPage) {
       const difference: number = this.allSvgElements.length - this.svgNumberOnPage;
-      // eslint-disable-next-line max-len
       const svgToRemove: Svg[] = this.allSvgElements.slice(-difference);
       svgToRemove.forEach((svg) => this.sportsIcons.element.removeChild(svg.svg));
     }
+  }
+
+  private checkServerData(sportTypes: string[]): void {
+    const svgToRender: string[] = this.retrieveChosenSports(sportTypes);
+    this.allSvgElements.forEach((svg) => {
+      if (!svgToRender.includes(svg.svg.id)) {
+        this.sportsIcons.element.removeChild(svg.svg);
+        this.currentSvgElements = this.currentSvgElements.filter((currentSvg) => currentSvg !== svg);
+      }
+    });
   }
 
   private highlightCurrentIcon(): void {
@@ -326,6 +356,7 @@ export default class OurActivity extends BaseComponent<'div'> {
       this.showNoSportsMessage();
       this.resetSportChoiceArea(this.chosenSvgElements);
     }
+    this.updateSportTyperChoiceOnServer(this.chosenSvgElements);
   };
 
   private resetSportChoiceArea(array: Svg[]): void {
@@ -391,7 +422,7 @@ export default class OurActivity extends BaseComponent<'div'> {
 
   private updateSportActivityData(): void {
     this.setValuesToNull();
-    const activities: ActivityResponse[] = this.user.activities.filter(
+    const activities: ActivityResponse[] = this.activities.filter(
       (record) => record.sport === `${this.currentIcon?.svg.id}`,
     );
     this.calculateStats(activities);
@@ -460,5 +491,23 @@ export default class OurActivity extends BaseComponent<'div'> {
     this.elevationCounter = 0;
     this.kmCounter = 0;
     this.yearKmCounter = 0;
+  }
+
+  private updateSportTyperChoiceOnServer(sports: Svg[]): void {
+    this.sportTypesForServer = [];
+    sports.forEach((sport) => this.sportTypesForServer.push(sport.svg.id));
+    if (this.token) {
+      updateUser(this.token, { sportTypes: this.sportTypesForServer }).catch(() => null);
+    }
+  }
+
+  private retrieveChosenSports(sportTypes: string[]): string[] {
+    const svgToRender: string[] = this.svgAllNames.filter((sport) => sportTypes.includes(sport));
+    return svgToRender;
+  }
+
+  private updateStatsAfterDeletion(data: EventData): void {
+    this.activities = this.activities.filter((activity) => activity.id !== data.activityId);
+    this.updateSportActivityData();
   }
 }

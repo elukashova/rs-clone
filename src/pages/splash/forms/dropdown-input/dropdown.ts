@@ -73,7 +73,7 @@ export default class DropdownInput extends Input {
     }
   };
 
-  private clearOptions(): void {
+  public clearOptions(): void {
     this.allOptionsElements.forEach((option) => {
       this.list.element.removeChild(option);
     });

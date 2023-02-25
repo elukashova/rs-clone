@@ -1,6 +1,4 @@
 import { ActivityResponse, FriendData } from '../app/loader/loader-responses.types';
-import { CountryResponse } from '../pages/splash/forms/form.types';
-import { REST_COUNTRIES } from './consts';
 
 export function getClassNames(baseName: string, addName: string | undefined): string {
   return addName ? `${baseName} ${addName}` : baseName;
@@ -59,20 +57,6 @@ export function sortActivitiesByDate(activities: ActivityResponse[]): ActivityRe
     return activity.date;
   });
   return activitiesToSort.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-}
-
-function loadCountryInputOptions(): Promise<CountryResponse[]> {
-  return fetch(REST_COUNTRIES).then((response: Response) => response.json());
-}
-
-export function retrieveCountriesData(): Promise<string[]> {
-  return loadCountryInputOptions().then((countries: CountryResponse[]) => {
-    const names: string[] = countries.reduce((result: string[], country: CountryResponse) => {
-      result.push(country.name.replace(/\(.*?\)/g, '').split(',')[0]);
-      return result;
-    }, []);
-    return names;
-  });
 }
 
 export function countSpeed(time: string, distance: number): string {

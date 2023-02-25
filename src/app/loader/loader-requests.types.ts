@@ -89,6 +89,7 @@ export type UpdateUserData = {
   birth?: string;
   gender?: string;
   challenges?: string[];
+  sportTypes?: string[];
 };
 
 export type UpdateActivity = {

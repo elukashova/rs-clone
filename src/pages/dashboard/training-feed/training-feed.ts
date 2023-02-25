@@ -10,6 +10,7 @@ import { sortActivitiesByDate } from '../../../utils/utils';
 import eventEmitter from '../../../utils/event-emitter';
 import { EventData } from '../../../utils/event-emitter.types';
 import { ActivityResponse, User } from '../../../app/loader/loader-responses.types';
+import { checkDataInLocalStorage } from '../../../utils/local-storage';
 
 export default class TrainingFeed extends BaseComponent<'article'> {
   private dictionary: Record<string, string> = {
@@ -39,13 +40,23 @@ export default class TrainingFeed extends BaseComponent<'article'> {
     id: '',
   };
 
+  private userId: string | null = checkDataInLocalStorage('MyStriversId');
+
+  private activitiesBackup: ActivityResponse[] = [];
+
   // eslint-disable-next-line max-len
   constructor(parent: HTMLElement, private replaceMainCallback: () => void, user: User, postData: ActivityResponse[]) {
     super('article', parent, 'training-feed');
     this.currentUser.username = user.username;
     this.currentUser.avatarUrl = user.avatarUrl;
     this.currentUser.id = user.id;
+    postData.forEach((data) => this.activitiesBackup.push(data));
 
+    this.defineFeedContent(this.activitiesBackup);
+    this.subscribeToEvents();
+  }
+
+  private defineFeedContent(postData: ActivityResponse[]): void {
     this.posts = this.addPosts(postData);
     if (this.posts.length) {
       this.deleteGreetingMessage();
@@ -53,8 +64,6 @@ export default class TrainingFeed extends BaseComponent<'article'> {
     } else {
       this.showGreetingMessage();
     }
-
-    this.subscribeToEvents();
   }
 
   public addPosts(data: ActivityResponse[]): Post[] {
@@ -71,7 +80,8 @@ export default class TrainingFeed extends BaseComponent<'article'> {
         post.appendExistingComments(activity.comments);
       }
       post.postId = activity.id;
-      post.photo.element.src = activity.avatarUrl;
+      // eslint-disable-next-line max-len, prettier/prettier
+      post.photo.element.src = this.userId && this.userId === activity.userId ? this.currentUser.avatarUrl : activity.avatarUrl;
       post.userCommentAvatar.element.src = this.currentUser.avatarUrl;
       post.name.element.textContent = activity.username;
 
@@ -124,15 +134,18 @@ export default class TrainingFeed extends BaseComponent<'article'> {
   }
 
   private subscribeToEvents(): void {
+    eventEmitter.on('friendAdded', (data: EventData) => this.updateTrainingFeed(data));
     eventEmitter.on('friendDeleted', (data: EventData) => this.removeAllFriendPosts(data));
     eventEmitter.on('updateAvatar', (data: EventData) => this.updateAvatarAfterChanging(data));
   }
 
   private removeAllFriendPosts(data: EventData): void {
+    // eslint-disable-next-line max-len
+    this.activitiesBackup = this.activitiesBackup.filter((activity) => activity.userId !== data.friendId);
     this.posts.forEach((post) => {
       if (post.postAuthorId === data.friendId) {
         this.element.removeChild(post.element);
-        this.posts = this.posts.filter((singlePost) => !singlePost.postAuthorId === data.friendId);
+        this.posts = this.posts.filter((singlePost) => singlePost.postAuthorId !== data.friendId);
       }
     });
   }
@@ -144,5 +157,18 @@ export default class TrainingFeed extends BaseComponent<'article'> {
         post.photo.element.src = `${data.url}`;
       }
     });
+  }
+
+  private updateTrainingFeed(data: EventData): void {
+    this.cleanFeed();
+    if (Array.isArray(data.activities)) {
+      data.activities.forEach((activity) => this.activitiesBackup.push(activity));
+      this.defineFeedContent(this.activitiesBackup);
+    }
+  }
+
+  private cleanFeed(): void {
+    this.posts.forEach((post) => this.element.removeChild(post.element));
+    this.posts = [];
   }
 }
