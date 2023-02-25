@@ -11,6 +11,15 @@
   gap: 2em;
 }
 
+.our-team__container {
+  gap: calc(1rem + 2vw);
+  width: 100%;
+  padding: 1.5em 2em;
+  background-color: rgb(255, 255, 255);
+  border-radius: 5px;
+  box-shadow: rgba(33, 33, 33, 0.027) 0px 4px 12px;
+}
+
 .our-team__member-container {
   display: flex;
   justify-content: space-between;
@@ -35,11 +44,6 @@
   gap: 2em;
   width: 80%;
   user-select: none;
-}
-
-.our-team__project-info {
-  margin-top: 2em;
-  margin-bottom: 4em;
 }
 
 .our-team__project-svg {

@@ -7,8 +7,8 @@
 
 .member__photo.icon {
   border-radius: 50%;
-  width: calc(5rem + 4vw);
-  height: calc(5rem + 4vw);
+  width: calc(4rem + 4vw);
+  height: calc(4rem + 4vw);
 }
 
 .member__name,

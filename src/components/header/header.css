@@ -4,7 +4,7 @@
   justify-content: center;
   height: 10vh;
   background-color: rgb(255, 255, 255);
-  box-shadow: rgba(99, 99, 99, 0.048) 0px 2px 8px 0px;
+  box-shadow: rgba(33, 33, 33, 0.1) 0px 4px 12px;
 }
 
 .header-content-wrapper {
@@ -59,9 +59,10 @@
   position: absolute;
   right: 0;
   background-color: #f1f1f1;
+  border-radius: 5px;
   min-width: max-content;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 3;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .header-link-avatar,
@@ -88,12 +89,28 @@
   display: block;
   color: white;
   background-color: #219486;
+  border-radius: 5px;
 }
 
 @media (max-width: 390px) {
+  .header-content-wrapper {
+    width: 100%;
+    gap: 2rem;
+  }
+
+  .header-link-logo {
+    height: 3rem;
+    margin-left: 0.5rem;
+  }
+
+  .header-icon_logo {
+    height: 3rem;
+    width: auto;
+  }
+
   .header-avatar-content,
   .header-add-content {
-    width: 2rem;
+    width: 1.2rem;
     min-width: min-content;
   }
 }

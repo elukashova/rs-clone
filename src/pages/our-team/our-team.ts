@@ -86,6 +86,10 @@ export default class OurTeam extends BaseComponent<'section'> {
     src: './assets/icons/png/google-elevation-api.png',
   });
 
+  private googleStatic = new Picture(this.svgContainer.element, 'our-team__project-img', {
+    src: './assets/icons/png/google-static-api.png',
+  });
+
   private googleSignIn = new Picture(this.svgContainer.element, 'our-team__project-img', {
     src: './assets/icons/png/google-signin.png',
   });
