@@ -63,7 +63,7 @@ export default class RightMenu extends BaseComponent<'aside'> {
 
   private makeRequestAndShowFriends(): void {
     if (this.token) {
-      getNotFriends(this.token).then((users: FriendData[]) => {
+      getNotFriends(this.token).then((users: FriendData[]): void => {
         this.friendsCardsLimit = users.length < 3 ? users.length : 3;
         if (users.length !== 0) {
           this.friendsWrapper = new BaseComponent('div', this.element, 'suggested-friends__wrapper');
@@ -82,7 +82,7 @@ export default class RightMenu extends BaseComponent<'aside'> {
           });
 
           const usersToShow: FriendData[] = provideRandomUsers(users, this.friendsCardsLimit);
-          usersToShow.forEach((user) => {
+          usersToShow.forEach((user: FriendData): void => {
             const card: RandomFriendCard = new RandomFriendCard(user);
             if (this.friendsWrapper) {
               this.friendsWrapper.element.append(card.element);
@@ -112,7 +112,7 @@ export default class RightMenu extends BaseComponent<'aside'> {
         additionalClasses: 'right-menu__link add-challenge__link link',
         attributes: { href: Routes.Challenges },
       });
-      const numInstances = Math.min(this.challenges.length, 3);
+      const numInstances: number = Math.min(this.challenges.length, 3);
       for (let i: number = 0; i < numInstances; i += 1) {
         // eslint-disable-next-line max-len
         this.newChallenge = new Task(this.addChallengeLinkWrapper.element, this.challenges[i], this.user);

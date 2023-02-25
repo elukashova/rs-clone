@@ -170,7 +170,7 @@ export default class Challenge extends BaseComponent<'div'> {
         break;
       case 2:
       case 3:
-        this.avatarData.forEach((data) => this.addAvatar(data));
+        this.avatarData.forEach((data: string): void => this.addAvatar(data));
         break;
       default:
         break;
@@ -178,7 +178,7 @@ export default class Challenge extends BaseComponent<'div'> {
   }
 
   private addAvatar(avatarUrl: string): void {
-    const newAvatar = new Avatar(this.avatarsBlock.element, 'challenge__friend-avatar', {
+    const newAvatar: Avatar = new Avatar(this.avatarsBlock.element, 'challenge__friend-avatar', {
       src: avatarUrl || DefaultUserInfo.DefaultUrl,
     });
   }

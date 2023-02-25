@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable max-lines-per-function */
 import './task.css';
 import BaseComponent from '../../../../components/base-component/base-component';
@@ -130,8 +131,8 @@ export default class Task extends BaseComponent<'div'> {
   private checkRunning(activities: ActivityResponse[]): void {
     const start: Date = new Date(2023, 1, 1);
     const end: Date = new Date(2024, 1, 1);
-    const result = OurActivity.calculateYearDistance(activities, start, end);
-    const percent = Task.getPercents(result, 3000);
+    const result: number = OurActivity.calculateYearDistance(activities, start, end);
+    const percent: number = Task.getPercents(result, 3000);
     this.colorProgress(percent);
   }
 
@@ -155,52 +156,56 @@ export default class Task extends BaseComponent<'div'> {
   }
 
   private checkYoga(activities: ActivityResponse[]): void {
-    const start = new Date(2023, 1, 19);
-    const end = new Date(2023, 2, 19);
-    const sports = activities.filter((activity) => activity.sport === 'hiking' || activity.sport === 'walking');
-    let time = 0;
-    sports.forEach((activity) => {
-      const date = new Date(activity.date);
-      const dateMs = date.getTime();
+    const start: Date = new Date(2023, 1, 19);
+    const end: Date = new Date(2023, 2, 19);
+    const sports: ActivityResponse[] = activities.filter(
+      (activity: ActivityResponse): boolean => activity.sport === 'hiking' || activity.sport === 'walking',
+    );
+    let time: number = 0;
+    sports.forEach((activity: ActivityResponse): void => {
+      const date: Date = new Date(activity.date);
+      const dateMs: number = date.getTime();
       if (dateMs >= start.getTime() && dateMs <= end.getTime()) {
-        const [hours, minutes] = activity.duration.split(':');
-        const totalMinutes = Number(hours) * 60 + Number(minutes);
+        const [hours, minutes]: string[] = activity.duration.split(':');
+        const totalMinutes: number = Number(hours) * 60 + Number(minutes);
         time += Number(totalMinutes);
       }
     });
-    const percent = Task.getPercents(time, 567);
+    const percent: number = Task.getPercents(time, 567);
     this.colorProgress(percent);
   }
 
   private checkHiking(activities: ActivityResponse[]): void {
-    const start = new Date(2023, 1, 1);
-    const end = new Date(2024, 1, 1);
-    let elevation = 0;
-    activities.forEach((activity) => {
-      const date = new Date(activity.date);
-      const dateMs = date.getTime();
+    const start: Date = new Date(2023, 1, 1);
+    const end: Date = new Date(2024, 1, 1);
+    let elevation: number = 0;
+    activities.forEach((activity: ActivityResponse): void => {
+      const date: Date = new Date(activity.date);
+      const dateMs: number = date.getTime();
       if (dateMs >= start.getTime() && dateMs <= end.getTime()) {
         elevation += Number(activity.elevation);
       }
     });
-    const percent = Task.getPercents(elevation, 8849);
+    const percent: number = Task.getPercents(elevation, 8849);
     this.colorProgress(percent);
   }
 
   private checkCycling(activities: ActivityResponse[]): void {
-    const start = new Date(2023, 1, 27);
-    const end = new Date(2023, 2, 6);
-    const sports = activities.filter((activity) => activity.sport === 'cycling');
+    const start: Date = new Date(2023, 1, 27);
+    const end: Date = new Date(2023, 2, 6);
+    const sports: ActivityResponse[] = activities.filter(
+      (activity: ActivityResponse): boolean => activity.sport === 'cycling',
+    );
 
-    const eventWeek = sports.reduce((acc: string[], activity: ActivityResponse) => {
-      const activityDate = new Date(activity.date);
-      const date = `${activityDate.getDate()},${activityDate.getMonth()},${activityDate.getFullYear()}`;
+    const eventWeek: string[] = sports.reduce((acc: string[], activity: ActivityResponse): string[] => {
+      const activityDate: Date = new Date(activity.date);
+      const date: string = `${activityDate.getDate()},${activityDate.getMonth()},${activityDate.getFullYear()}`;
       if (activityDate >= start && activityDate <= end && !acc.includes(date)) {
         acc.push(date);
       }
       return acc;
     }, []);
-    const percent = Task.getPercents(eventWeek.length, 7);
+    const percent: number = Task.getPercents(eventWeek.length, 7);
     this.colorProgress(percent);
   }
 }
