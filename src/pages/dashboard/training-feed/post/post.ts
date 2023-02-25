@@ -413,7 +413,10 @@ export default class Post extends BaseComponent<'div'> {
 
   private deletePostAndActivity = (): void => {
     deleteActivity(this.postId)
-      .then(() => this.element.remove())
+      .then(() => {
+        this.element.remove();
+        eventEmitter.emit('activityDeleted', { activityId: this.activity.id });
+      })
       .catch(() => null);
   };
 

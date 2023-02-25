@@ -10,10 +10,11 @@ import { createUser } from '../../../app/loader/services/user-services';
 import { setDataToLocalStorage } from '../../../utils/local-storage';
 import { GoogleBtnClasses, GoogleBtnTypes } from '../google-button/google-btn.types';
 import GoogleButton from '../google-button/google-btn';
-import { VALID_EMAIL, VALID_NAME, VALID_PASSWORD } from '../../../utils/consts';
+import { COUNTRIES_EN, COUNTRIES_RU, VALID_EMAIL, VALID_NAME, VALID_PASSWORD } from '../../../utils/consts';
 import { InputConflictMessages, ValidityMessages } from './form.types';
-import { convertRegexToPattern, retrieveCountriesData } from '../../../utils/utils';
+import { convertRegexToPattern } from '../../../utils/utils';
 import DropdownInput from './dropdown-input/dropdown';
+import eventEmitter from '../../../utils/event-emitter';
 
 export default class SignupForm extends BaseComponent<'form'> {
   private dictionary: Record<string, string> = {
@@ -116,6 +117,10 @@ export default class SignupForm extends BaseComponent<'form'> {
     this.createCountriesList();
     this.loginLink.element.setAttribute('href', Routes.LogIn);
     this.signupButton.element.addEventListener('click', this.signupBtnCallback);
+    eventEmitter.on('languageChanged', () => {
+      this.countryInput.clearOptions();
+      this.createCountriesList();
+    });
   }
 
   private signupBtnCallback = (e: Event): void => {
@@ -194,8 +199,13 @@ export default class SignupForm extends BaseComponent<'form'> {
   }
 
   private createCountriesList(): void {
-    retrieveCountriesData().then((countriesList: string[]) => {
-      this.countryInput.retrieveDataForDropdown(countriesList);
-    });
+    const currentLanguage: string = localStorage.getItem('i18nextLng')?.toString() || 'en';
+    switch (currentLanguage) {
+      case 'rus':
+        this.countryInput.retrieveDataForDropdown(COUNTRIES_RU);
+        break;
+      default:
+        this.countryInput.retrieveDataForDropdown(COUNTRIES_EN);
+    }
   }
 }

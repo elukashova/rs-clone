@@ -15,10 +15,6 @@ export enum ValidityMessages {
   Time = 'Please provide any number below 59',
 }
 
-export type CountryResponse = {
-  name: string;
-};
-
 export enum InputConflictMessages {
   UserAlreadyExists = 'An account with this email already exists. Please choose another one or ',
   InvalidCredentials = 'Invalid email or password. Please enter valid credentials or ',

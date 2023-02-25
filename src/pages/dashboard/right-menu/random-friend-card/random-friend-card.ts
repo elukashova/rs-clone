@@ -8,7 +8,8 @@ import { checkDataInLocalStorage } from '../../../../utils/local-storage';
 import { addFriend, deleteFriend } from '../../../../app/loader/services/friends-services';
 import eventEmitter from '../../../../utils/event-emitter';
 import { FriendId, Token } from '../../../../app/loader/loader-requests.types';
-import { FriendData } from '../../../../app/loader/loader-responses.types';
+import { ActivityResponse, FriendData } from '../../../../app/loader/loader-responses.types';
+import { EventData } from '../../../../utils/event-emitter.types';
 
 export default class RandomFriendCard extends BaseComponent<'div'> {
   private dictionary: Record<string, string> = {
@@ -51,17 +52,29 @@ export default class RandomFriendCard extends BaseComponent<'div'> {
     friendId: this.user.id,
   };
 
+  private activities: ActivityResponse[];
+
+  private friendId: string;
+
   constructor(private user: FriendData) {
     super('div', undefined, 'suggested-friends__friend');
     this.plusButton.appendSvg(SvgNames.Plus, 'suggested-friends', ProjectColors.Turquoise);
     this.plusButton.element.addEventListener('click', this.addFriendCallback);
+    this.activities = user.activities.slice();
+    this.friendId = user.id;
+    eventEmitter.on('friendDeleted', (data: EventData) => {
+      if (data.friendId === this.friendId && this.isAdded === true) {
+        this.isAdded = false;
+        this.setButtonFunction();
+      }
+    });
   }
 
   private addFriendCallback = (): void => {
     if (this.token) {
       RandomFriendCard.addNewFriend(this.token, this.requestInfo);
       this.isAdded = true;
-      eventEmitter.emit('friendAdded', {});
+      eventEmitter.emit('friendAdded', { activities: this.activities });
       this.setButtonFunction();
     }
   };
@@ -70,7 +83,7 @@ export default class RandomFriendCard extends BaseComponent<'div'> {
     if (this.token) {
       RandomFriendCard.deleteFriend(this.token, this.requestInfo);
       this.isAdded = false;
-      eventEmitter.emit('friendDeleted', {});
+      eventEmitter.emit('friendDeleted', { friendId: this.friendId });
       this.setButtonFunction();
     }
   };

@@ -57,10 +57,10 @@ export default class RightMenu extends BaseComponent<'aside'> {
     super('aside', parent, 'right-menu');
     this.challenges = user.challenges;
     this.doRequestAndRenderChallenges();
-    this.doRequestAndShowFriends();
+    this.makeRequestAndShowFriends();
   }
 
-  private doRequestAndShowFriends(): void {
+  private makeRequestAndShowFriends(): void {
     if (this.token) {
       getNotFriends(this.token).then((users: FriendData[]) => {
         this.friendsCardsLimit = users.length < 3 ? users.length : 3;

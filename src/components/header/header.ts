@@ -134,6 +134,7 @@ export default class Header extends BaseComponent<'header'> {
         default:
           break;
       }
+      eventEmitter.emit('languageChanged', {});
     });
   }
 

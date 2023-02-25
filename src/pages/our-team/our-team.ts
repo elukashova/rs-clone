@@ -75,10 +75,6 @@ export default class OurTeam extends BaseComponent<'section'> {
     style: 'height:3em; width:10em',
   });
 
-  private restCountries = new Picture(this.svgContainer.element, 'our-team__project-img', {
-    src: './assets/icons/png/rest-countries.png',
-  });
-
   private googleMaps = new Picture(this.svgContainer.element, 'our-team__project-img', {
     src: './assets/icons/png/google-maps-api.png',
   });

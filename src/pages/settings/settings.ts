@@ -10,8 +10,8 @@ import DropdownInput from '../splash/forms/dropdown-input/dropdown';
 import { deleteUser, getUser } from '../../app/loader/services/user-services';
 import { User } from '../../app/loader/loader-responses.types';
 import { TextareaTypes } from '../../components/base-component/textarea/editable-textarea/editable-textarea.types';
-import { convertRegexToPattern, retrieveCountriesData } from '../../utils/utils';
-import { ProjectColors, VALID_EMAIL } from '../../utils/consts';
+import { convertRegexToPattern } from '../../utils/utils';
+import { COUNTRIES_EN, COUNTRIES_RU, ProjectColors, VALID_EMAIL } from '../../utils/consts';
 import Svg from '../../components/base-component/svg/svg';
 import SvgNames from '../../components/base-component/svg/svg.types';
 import GenderBlock from './gender-block/gender-block';
@@ -112,6 +112,12 @@ export default class Settings extends BaseComponent<'section'> {
         this.addEventListeners();
       });
     }
+    eventEmitter.on('languageChanged', () => {
+      if (this.country) {
+        this.country.clearOptions();
+        this.createCountriesList();
+      }
+    });
   }
 
   // eslint-disable-next-line max-lines-per-function
@@ -183,11 +189,16 @@ export default class Settings extends BaseComponent<'section'> {
   }
 
   private createCountriesList(): void {
-    retrieveCountriesData().then((countriesList: string[]) => {
-      if (this.country) {
-        this.country.retrieveDataForDropdown(countriesList);
+    const currentLanguage: string = localStorage.getItem('i18nextLng')?.toString() || 'en';
+    if (this.country) {
+      switch (currentLanguage) {
+        case 'rus':
+          this.country.retrieveDataForDropdown(COUNTRIES_RU);
+          break;
+        default:
+          this.country.retrieveDataForDropdown(COUNTRIES_EN);
       }
-    });
+    }
   }
 
   private deleteAccountCallback = (e: Event): void => {
