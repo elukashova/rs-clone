@@ -54,6 +54,11 @@
 .add-activity__input .label,
 .add-activity__label,
 .description-label {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
   text-transform: uppercase;
   font-size: calc(0.5em + 0.4vw);
 }
@@ -69,6 +74,10 @@
   color: #949494;
   transition: all 0.3s;
   width: 100%;
+}
+
+.add-activity__select-wrapper {
+  height: 100%;
 }
 
 .add-activity__input .input-text:focus,

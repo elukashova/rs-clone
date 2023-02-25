@@ -140,6 +140,7 @@ export default class AddActivity extends BaseComponent<'section'> {
   private training = new Select(
     this.trainingContainer.element,
     this.trainingTypes,
+    this.dictionary.training,
     'add-activity',
     'add-activity__select-wrapper',
     { id: 'training' },
@@ -432,15 +433,16 @@ export default class AddActivity extends BaseComponent<'section'> {
   private defineSportForTitle(): string {
     const sport: string = this.training.selectValue;
     let sportType: string;
+    console.log(sport);
 
     switch (sport) {
-      case 'Running' || 'Бег':
+      case 'running':
         sportType = 'run';
         break;
-      case 'Cycling' || 'Велозаезд':
+      case 'cycling':
         sportType = 'ride';
         break;
-      case 'Hiking' || 'Хайкинг':
+      case 'hiking':
         sportType = 'hike';
         break;
       default:
