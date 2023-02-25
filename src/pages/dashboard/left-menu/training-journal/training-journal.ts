@@ -46,7 +46,7 @@ export default class TrainingJournal extends BaseComponent<'div'> {
     } else {
       this.element.append(this.defaultMessage.element);
     }
-    eventEmitter.on('activityRemoved', (data: EventData) => this.updateLastActivity(data));
+    eventEmitter.on('activityDeleted', (data: EventData) => this.updateLastActivity(data));
   }
 
   private showLastActivity(activities: ActivityResponse[]): void {

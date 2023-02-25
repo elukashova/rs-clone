@@ -108,7 +108,7 @@ export default class ProfileCard extends BaseComponent<'div'> {
       this.followees.updateScore(this.followeesCounter);
     });
 
-    eventEmitter.on('activityRemoved', () => {
+    eventEmitter.on('activityDeleted', () => {
       this.activitiesCounter -= 1;
       this.trainings.updateScore(this.activitiesCounter);
     });

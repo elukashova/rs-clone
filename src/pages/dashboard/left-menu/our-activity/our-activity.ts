@@ -155,7 +155,7 @@ export default class OurActivity extends BaseComponent<'div'> {
     i18next.on('languageChanged', () => {
       this.updateStats();
     });
-    eventEmitter.on('activityRemoved', (data: EventData) => this.updateStatsAfterDeletion(data));
+    eventEmitter.on('activityDeleted', (data: EventData) => this.updateStatsAfterDeletion(data));
   }
 
   private storeAllSportSVGs(): void {
