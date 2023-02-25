@@ -50,12 +50,15 @@ export default class RightMenu extends BaseComponent<'aside'> {
 
   private challenges: string[] | undefined;
 
+  public user: User;
+
   /* public myChallenges: string[] | undefined = []; */
 
   // eslint-disable-next-line max-len
   constructor(parent: HTMLElement, private replaceMainCallback: () => void, user: User) {
     super('aside', parent, 'right-menu');
     this.challenges = user.challenges;
+    this.user = user;
     this.doRequestAndRenderChallenges();
     this.doRequestAndShowFriends();
   }
@@ -113,7 +116,8 @@ export default class RightMenu extends BaseComponent<'aside'> {
       });
       const numInstances = Math.min(this.challenges.length, 3);
       for (let i: number = 0; i < numInstances; i += 1) {
-        this.newChallenge = new Task(this.addChallengeLinkWrapper.element, this.challenges[i]);
+        // eslint-disable-next-line max-len
+        this.newChallenge = new Task(this.addChallengeLinkWrapper.element, this.challenges[i], this.user);
         this.challengesAll.push(this.newChallenge);
       }
     }

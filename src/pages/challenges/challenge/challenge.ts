@@ -194,7 +194,6 @@ export default class Challenge extends BaseComponent<'div'> {
   private addListeners(): void {
     this.button.element.addEventListener('click', (): void => {
       this.setButtonFunction();
-      Challenge.subscribeToEvents();
     });
   }
 
@@ -213,9 +212,5 @@ export default class Challenge extends BaseComponent<'div'> {
       /* this.button.element.removeEventListener('click', this.addChallengeCallback);
       this.button.element.addEventListener('click', this.deleteChallengeCallback); */
     }
-  }
-
-  private static subscribeToEvents(): void {
-    eventEmitter.emit('challengesUpdate', {});
   }
 }

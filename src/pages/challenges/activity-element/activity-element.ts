@@ -44,7 +44,6 @@ export default class ActivityBlock extends BaseComponent<'div'> {
       ProjectColors.Grey,
       `${this.svg}-icon challenges-activity__svg`,
     );
-    console.log(this.activityText);
     this.activityParagraph = new BaseComponent('p', this.element, 'challenges-activity__text-type', this.activityText);
   }
 

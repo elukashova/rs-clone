@@ -1,6 +1,9 @@
 import './task.css';
 import BaseComponent from '../../../../components/base-component/base-component';
 import Picture from '../../../../components/base-component/picture/picture';
+import { ActivityResponse, User } from '../../../../app/loader/loader-responses.types';
+import OurActivity from '../../left-menu/our-activity/our-activity';
+import { ProjectColors } from '../../../../utils/consts';
 
 export default class Task extends BaseComponent<'div'> {
   private dictionary: Record<string, string> = {
@@ -42,9 +45,12 @@ export default class Task extends BaseComponent<'div'> {
 
   public noProgress!: BaseComponent<'p'>;
 
-  constructor(parent: HTMLElement, type: string) {
+  private user: User;
+
+  constructor(parent: HTMLElement, type: string, user: User) {
     super('div', parent, 'task');
     this.type = type;
+    this.user = user;
     this.getTaskName();
     this.renderTask();
     /* this.init(photo, name, participants); */
@@ -79,12 +85,16 @@ export default class Task extends BaseComponent<'div'> {
       );
       this.progressBox = new BaseComponent('div', this.progressWrapper.element, 'task__progress-box progress-box');
       this.progressBar = new BaseComponent('div', this.progressBox.element, 'task__progress-bar progress-bar');
+      if (this.type === 'running') {
+        this.checkRunning(this.user.activities);
+      }
     } else {
       this.noProgress = new BaseComponent('p', this.taskData.element, 'task__no-progress', this.dictionary.noProgress);
     }
   }
 
   public getTaskName(): void {
+    console.log(this.type);
     switch (this.type) {
       case 'yoga':
         this.taskName = this.dictionary.yogaChallenge;
@@ -93,7 +103,7 @@ export default class Task extends BaseComponent<'div'> {
         break;
       case 'hiking':
         this.taskName = this.dictionary.hikingChallenge;
-        this.goal = ['8849', '365']; // meters
+        this.goal = ['8849', '365']; // meters elevation
         this.progressInclude = true;
         break;
       case 'running':
@@ -103,7 +113,7 @@ export default class Task extends BaseComponent<'div'> {
         break;
       case 'sloth':
         this.taskName = this.dictionary.slothChallenge;
-        this.goal = ['8849', '365'];
+        this.goal = [];
         this.progressInclude = false;
         break;
       case 'cycling':
@@ -112,12 +122,33 @@ export default class Task extends BaseComponent<'div'> {
         this.progressInclude = true;
         break;
       case 'photo':
-        this.taskName = this.dictionary.photoTitle;
-        this.goal = ['8849', '365'];
+        this.taskName = this.dictionary.photoChallenge;
+        this.goal = [];
         this.progressInclude = false;
         break;
       default:
         break;
+    }
+  }
+
+  private checkRunning(activities: ActivityResponse[]): void {
+    console.log(activities);
+    const start: Date = new Date(2022, 2, 1);
+    const end: Date = new Date(2023, 2, 1);
+    const result = OurActivity.calculateYearDistance(activities, start, end);
+    const percent = (result * 100) / 3000;
+    this.colorProgress(percent);
+  }
+
+  private colorProgress(percent: number): void {
+    if (percent < 100) {
+      this.progressBar.element.style.width = `${percent}%`;
+      this.progressBarData.element.textContent = `${percent.toFixed(1)}%`;
+    } else if (percent >= 100) {
+      this.progressBar.element.style.width = '100%';
+      this.progressBar.element.style.backgroundColor = ProjectColors.Orange;
+      this.progressBarData.element.textContent = '100%';
+      this.progressBarData.element.style.color = ProjectColors.Orange;
     }
   }
 }

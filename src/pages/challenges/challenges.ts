@@ -9,7 +9,6 @@ import { Token } from '../../app/loader/loader-requests.types';
 import { FriendData, User } from '../../app/loader/loader-responses.types';
 import Challenge from './challenge/challenge';
 import { getUser, updateUser } from '../../app/loader/services/user-services';
-import eventEmitter from '../../utils/event-emitter';
 import { Activities, ChallengesTypes } from './types-challenges';
 
 export default class Challenges extends BaseComponent<'section'> {
@@ -113,7 +112,6 @@ export default class Challenges extends BaseComponent<'section'> {
   constructor(parent: HTMLElement) {
     super('section', parent, 'challenges challenges-section');
     this.getFriendsRequest();
-    this.subscribeOnEvent();
   }
 
   private getFriendsRequest(): void {
@@ -250,6 +248,23 @@ export default class Challenges extends BaseComponent<'section'> {
         this.showVisibleChallenges();
       });
     });
+    this.challengesAll.forEach((challenge) => {
+      challenge.button.element.addEventListener('click', () => {
+        const { type } = challenge;
+        if (this.challenges.includes(type)) {
+          this.challenges.splice(this.challenges.indexOf(type), 1);
+        } else {
+          this.challenges.push(type);
+        }
+        this.sendChallenges(this.challenges);
+      });
+    });
+  }
+
+  private sendChallenges(data: string[]): void {
+    if (this.token) {
+      updateUser(this.token, { challenges: data.length === 0 ? [] : data });
+    }
   }
 
   private filterCards(): Challenge[] {
@@ -289,29 +304,5 @@ export default class Challenges extends BaseComponent<'section'> {
 
   private doVisibleChallenge(): void {
     this.challengesAll.forEach((challenge: Challenge): void => challenge.element.classList.remove('hidden'));
-  }
-
-  private subscribeOnEvent(): void {
-    eventEmitter.on('challengesUpdate', (): void => {
-      this.check();
-    });
-  }
-
-  private check(): void {
-    this.challengesForRequest = this.getAllAddedChallenges();
-    this.sendChallenges(this.challengesForRequest);
-  }
-
-  private getAllAddedChallenges(): string[] {
-    const challengeTypes = this.challengesAll
-      .filter((challenge) => challenge.challengeIsAdded === true)
-      .map((challenge) => challenge.type);
-    return challengeTypes;
-  }
-
-  private sendChallenges(data: string[]): void {
-    if (this.token) {
-      updateUser(this.token, { challenges: data.length === 0 ? [] : data });
-    }
   }
 }
