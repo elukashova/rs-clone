@@ -1,7 +1,7 @@
 /* eslint-disable max-lines-per-function */
 /* eslint-disable max-len */
 import './add-activity.css';
-// import i18next from 'i18next';
+import i18next from 'i18next';
 import BaseComponent from '../../components/base-component/base-component';
 import Button from '../../components/base-component/button/button';
 import Select from '../../components/base-component/select/select';
@@ -241,6 +241,11 @@ export default class AddActivity extends BaseComponent<'section'> {
     this.setDefaultTime();
     this.updateTitle();
     this.subscribeOnEvent();
+    i18next.on('languageChanged', () => {
+      console.log(this.setTitle());
+      console.log(this.title.input.element.placeholder);
+      this.updateTitle();
+    });
   }
 
   private collectActivityData(): void {
@@ -258,10 +263,14 @@ export default class AddActivity extends BaseComponent<'section'> {
 
   private setTitle(inputHours?: number): string {
     const hours: number = inputHours || new Date().getHours();
-    if (hours >= 6 && hours <= 11) return `Morning ${this.defineSportForTitle()}`;
-    if (hours >= 12 && hours <= 18) return `Afternoon ${this.defineSportForTitle()}`;
-    if (hours >= 19 && hours <= 23) return `Evening ${this.defineSportForTitle()}`;
-    if (hours >= 0 && hours <= 5) return `Night ${this.defineSportForTitle()}`;
+    const morning = i18next.t(this.dictionary.morning);
+    const afternoon = i18next.t(this.dictionary.afternoon);
+    const evening = i18next.t(this.dictionary.evening);
+    const night = i18next.t(this.dictionary.night);
+    if (hours >= 6 && hours <= 11) return `${morning}} ${this.defineSportForTitle()}`;
+    if (hours >= 12 && hours <= 18) return `${afternoon}${this.defineSportForTitle()}`;
+    if (hours >= 19 && hours <= 23) return `${evening} ${this.defineSportForTitle()}`;
+    if (hours >= 0 && hours <= 5) return `${night} ${this.defineSportForTitle()}`;
     return '';
   }
 
@@ -437,16 +446,16 @@ export default class AddActivity extends BaseComponent<'section'> {
 
     switch (sport) {
       case 'running':
-        sportType = 'run';
+        sportType = i18next.t(this.dictionary.run);
         break;
       case 'cycling':
-        sportType = 'ride';
+        sportType = i18next.t(this.dictionary.ride);
         break;
       case 'hiking':
-        sportType = 'hike';
+        sportType = i18next.t(this.dictionary.hike);
         break;
       default:
-        sportType = 'walk';
+        sportType = i18next.t(this.dictionary.walk);
         break;
     }
     return sportType;
