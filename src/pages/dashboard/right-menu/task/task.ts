@@ -30,8 +30,6 @@ export default class Task extends BaseComponent<'div'> {
 
   public progressWrapper!: BaseComponent<'div'>;
 
-  public participants!: BaseComponent<'span'>;
-
   public progressBox!: BaseComponent<'div'>;
 
   public progressBar!: BaseComponent<'div'>;
@@ -54,8 +52,6 @@ export default class Task extends BaseComponent<'div'> {
     this.user = user;
     this.getTaskName();
     this.renderTask();
-    /* this.init(photo, name, participants); */
-    // this.init();
   }
 
   public renderTask(): void {
@@ -69,13 +65,6 @@ export default class Task extends BaseComponent<'div'> {
 
     this.name = new BaseComponent('span', this.taskData.element, 'task__name', `${this.taskName}`);
 
-    this.participants = new BaseComponent(
-      'span',
-      this.taskData.element,
-      'task__participants',
-      `${this.dictionary.participants}: ${20 || 0}`,
-    );
-
     if (this.progressInclude === true) {
       this.progressWrapper = new BaseComponent('div', this.taskData.element, 'task__progress-wrapper');
       this.progressBarData = new BaseComponent(
@@ -86,17 +75,21 @@ export default class Task extends BaseComponent<'div'> {
       );
       this.progressBox = new BaseComponent('div', this.progressWrapper.element, 'task__progress-box progress-box');
       this.progressBar = new BaseComponent('div', this.progressBox.element, 'task__progress-bar progress-bar');
-      if (this.type === 'running') {
-        this.checkRunning(this.user.activities);
-      }
-      if (this.type === 'yoga') {
-        this.checkYoga(this.user.activities);
-      }
-      if (this.type === 'hiking') {
-        this.checkHiking(this.user.activities);
-      }
-      if (this.type === 'cycling') {
-        this.checkCycling(this.user.activities);
+      switch (this.type) {
+        case 'yoga':
+          this.checkYoga(this.user.activities);
+          break;
+        case 'running':
+          this.checkRunning(this.user.activities);
+          break;
+        case 'hiking':
+          this.checkHiking(this.user.activities);
+          break;
+        case 'cycling':
+          this.checkCycling(this.user.activities);
+          break;
+        default:
+          break;
       }
     } else {
       this.noProgress = new BaseComponent('p', this.taskData.element, 'task__no-progress', this.dictionary.noProgress);
@@ -107,32 +100,26 @@ export default class Task extends BaseComponent<'div'> {
     switch (this.type) {
       case 'yoga':
         this.taskName = this.dictionary.yogaChallenge;
-        this.goal = ['567', '7']; // minutes, 9.27h
         this.progressInclude = true;
         break;
       case 'hiking':
         this.taskName = this.dictionary.hikingChallenge;
-        this.goal = ['8849', '365']; // meters elevation
         this.progressInclude = true;
         break;
       case 'running':
         this.taskName = this.dictionary.runningChallenge;
-        this.goal = ['3000', '365']; // km
         this.progressInclude = true;
         break;
       case 'sloth':
         this.taskName = this.dictionary.slothChallenge;
-        this.goal = [];
         this.progressInclude = false;
         break;
       case 'cycling':
         this.taskName = this.dictionary.cyclingChallenge;
-        this.goal = ['7', '7']; // activity every day
         this.progressInclude = true;
         break;
       case 'photo':
         this.taskName = this.dictionary.photoChallenge;
-        this.goal = [];
         this.progressInclude = false;
         break;
       default:
@@ -141,15 +128,22 @@ export default class Task extends BaseComponent<'div'> {
   }
 
   private checkRunning(activities: ActivityResponse[]): void {
-    const start: Date = new Date(2022, 1, 1);
-    const end: Date = new Date(2023, 1, 1);
+    const start: Date = new Date(2023, 1, 1);
+    const end: Date = new Date(2024, 1, 1);
     const result = OurActivity.calculateYearDistance(activities, start, end);
-    const percent = (result * 100) / 3000;
+    const percent = Task.getPercents(result, 3000);
     this.colorProgress(percent);
   }
 
+  private static getPercents(result: number, total: number): number {
+    return (result * 100) / total;
+  }
+
   private colorProgress(percent: number): void {
-    if (percent < 100) {
+    if (percent === 0) {
+      this.progressBar.element.style.width = '0%';
+      this.progressBarData.element.textContent = '0%';
+    } else if (percent < 100) {
       this.progressBar.element.style.width = `${percent}%`;
       this.progressBarData.element.textContent = `${percent.toFixed(1)}%`;
     } else if (percent >= 100) {
@@ -161,58 +155,52 @@ export default class Task extends BaseComponent<'div'> {
   }
 
   private checkYoga(activities: ActivityResponse[]): void {
-    const start: Date = new Date(2022, 1, 19);
-    const end: Date = new Date(2023, 2, 19);
+    const start = new Date(2023, 1, 19);
+    const end = new Date(2023, 2, 19);
     const sports = activities.filter((activity) => activity.sport === 'hiking' || activity.sport === 'walking');
-    let totalTime: number = 0;
-
+    let time = 0;
     sports.forEach((activity) => {
       const date = new Date(activity.date);
       const dateMs = date.getTime();
       if (dateMs >= start.getTime() && dateMs <= end.getTime()) {
         const [hours, minutes] = activity.duration.split(':');
         const totalMinutes = Number(hours) * 60 + Number(minutes);
-        totalTime += Number(totalMinutes);
+        time += Number(totalMinutes);
       }
     });
-    const percent = (totalTime * 100) / 567;
+    const percent = Task.getPercents(time, 567);
     this.colorProgress(percent);
   }
 
   private checkHiking(activities: ActivityResponse[]): void {
-    const start: Date = new Date(2022, 1, 1);
-    const end: Date = new Date(2023, 1, 1);
-    let elevation: number = 0;
-
+    const start = new Date(2023, 1, 1);
+    const end = new Date(2024, 1, 1);
+    let elevation = 0;
     activities.forEach((activity) => {
       const date = new Date(activity.date);
       const dateMs = date.getTime();
-
       if (dateMs >= start.getTime() && dateMs <= end.getTime()) {
         elevation += Number(activity.elevation);
       }
     });
-
-    const percent = (elevation * 100) / 8849;
+    const percent = Task.getPercents(elevation, 8849);
     this.colorProgress(percent);
   }
 
   private checkCycling(activities: ActivityResponse[]): void {
-    const start: Date = new Date(2022, 1, 27);
-    const end: Date = new Date(2023, 2, 6);
+    const start = new Date(2023, 1, 27);
+    const end = new Date(2023, 2, 6);
     const sports = activities.filter((activity) => activity.sport === 'cycling');
-    let counter = 0;
-    const eventWeek: string[] = [];
-    sports.forEach((activity) => {
+
+    const eventWeek = sports.reduce((acc: string[], activity: ActivityResponse) => {
       const activityDate = new Date(activity.date);
       const date = `${activityDate.getDate()},${activityDate.getMonth()},${activityDate.getFullYear()}`;
-      console.log(activityDate, date);
-      if (activityDate >= start && activityDate <= end && !eventWeek.includes(date)) {
-        eventWeek.push(date);
-        counter += 1;
+      if (activityDate >= start && activityDate <= end && !acc.includes(date)) {
+        acc.push(date);
       }
-    });
-    const percent = (counter * 100) / 7;
+      return acc;
+    }, []);
+    const percent = Task.getPercents(eventWeek.length, 7);
     this.colorProgress(percent);
   }
 }

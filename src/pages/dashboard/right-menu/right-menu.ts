@@ -52,8 +52,6 @@ export default class RightMenu extends BaseComponent<'aside'> {
 
   public user: User;
 
-  /* public myChallenges: string[] | undefined = []; */
-
   // eslint-disable-next-line max-len
   constructor(parent: HTMLElement, private replaceMainCallback: () => void, user: User) {
     super('aside', parent, 'right-menu');
