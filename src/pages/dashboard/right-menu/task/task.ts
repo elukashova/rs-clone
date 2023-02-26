@@ -1,6 +1,11 @@
+/* eslint-disable max-len */
+/* eslint-disable max-lines-per-function */
 import './task.css';
 import BaseComponent from '../../../../components/base-component/base-component';
 import Picture from '../../../../components/base-component/picture/picture';
+import { ActivityResponse, User } from '../../../../app/loader/loader-responses.types';
+import OurActivity from '../../left-menu/our-activity/our-activity';
+import { ProjectColors } from '../../../../utils/consts';
 
 export default class Task extends BaseComponent<'div'> {
   private dictionary: Record<string, string> = {
@@ -26,8 +31,6 @@ export default class Task extends BaseComponent<'div'> {
 
   public progressWrapper!: BaseComponent<'div'>;
 
-  public participants!: BaseComponent<'span'>;
-
   public progressBox!: BaseComponent<'div'>;
 
   public progressBar!: BaseComponent<'div'>;
@@ -42,13 +45,17 @@ export default class Task extends BaseComponent<'div'> {
 
   public noProgress!: BaseComponent<'p'>;
 
-  constructor(parent: HTMLElement, type: string) {
+  private user: User;
+
+  public activities: ActivityResponse[];
+
+  constructor(parent: HTMLElement, type: string, user: User) {
     super('div', parent, 'task');
     this.type = type;
+    this.user = user;
+    this.activities = user.activities;
     this.getTaskName();
     this.renderTask();
-    /* this.init(photo, name, participants); */
-    // this.init();
   }
 
   public renderTask(): void {
@@ -62,13 +69,6 @@ export default class Task extends BaseComponent<'div'> {
 
     this.name = new BaseComponent('span', this.taskData.element, 'task__name', `${this.taskName}`);
 
-    this.participants = new BaseComponent(
-      'span',
-      this.taskData.element,
-      'task__participants',
-      `${this.dictionary.participants}: ${20 || 0}`,
-    );
-
     if (this.progressInclude === true) {
       this.progressWrapper = new BaseComponent('div', this.taskData.element, 'task__progress-wrapper');
       this.progressBarData = new BaseComponent(
@@ -79,8 +79,31 @@ export default class Task extends BaseComponent<'div'> {
       );
       this.progressBox = new BaseComponent('div', this.progressWrapper.element, 'task__progress-box progress-box');
       this.progressBar = new BaseComponent('div', this.progressBox.element, 'task__progress-bar progress-bar');
+      this.callCheck();
     } else {
       this.noProgress = new BaseComponent('p', this.taskData.element, 'task__no-progress', this.dictionary.noProgress);
+    }
+  }
+
+  public callCheck(activities?: ActivityResponse[]): void {
+    if (activities) {
+      this.activities = activities;
+    }
+    switch (this.type) {
+      case 'yoga':
+        this.checkYoga(this.activities);
+        break;
+      case 'running':
+        this.checkRunning(this.activities);
+        break;
+      case 'hiking':
+        this.checkHiking(this.activities);
+        break;
+      case 'cycling':
+        this.checkCycling(this.activities);
+        break;
+      default:
+        break;
     }
   }
 
@@ -88,36 +111,111 @@ export default class Task extends BaseComponent<'div'> {
     switch (this.type) {
       case 'yoga':
         this.taskName = this.dictionary.yogaChallenge;
-        this.goal = ['567', '7']; // minutes, 9.27h
         this.progressInclude = true;
         break;
       case 'hiking':
         this.taskName = this.dictionary.hikingChallenge;
-        this.goal = ['8849', '365']; // meters
         this.progressInclude = true;
         break;
       case 'running':
         this.taskName = this.dictionary.runningChallenge;
-        this.goal = ['3000', '365']; // km
         this.progressInclude = true;
         break;
       case 'sloth':
         this.taskName = this.dictionary.slothChallenge;
-        this.goal = ['8849', '365'];
         this.progressInclude = false;
         break;
       case 'cycling':
         this.taskName = this.dictionary.cyclingChallenge;
-        this.goal = ['7', '7']; // activity every day
         this.progressInclude = true;
         break;
       case 'photo':
-        this.taskName = this.dictionary.photoTitle;
-        this.goal = ['8849', '365'];
+        this.taskName = this.dictionary.photoChallenge;
         this.progressInclude = false;
         break;
       default:
         break;
     }
+  }
+
+  private checkRunning(activities: ActivityResponse[]): void {
+    const start: Date = new Date(2023, 1, 1);
+    const end: Date = new Date(2024, 1, 1);
+    const result: number = OurActivity.calculateYearDistance(activities, start, end);
+    const percent: number = Task.getPercents(result, 3000);
+    this.colorProgress(percent);
+  }
+
+  private static getPercents(result: number, total: number): number {
+    return (result * 100) / total;
+  }
+
+  private colorProgress(percent: number): void {
+    if (percent === 0) {
+      this.progressBar.element.style.width = '0%';
+      this.progressBarData.element.textContent = '0%';
+    } else if (percent < 100) {
+      this.progressBar.element.style.width = `${percent}%`;
+      this.progressBarData.element.textContent = `${percent.toFixed(1)}%`;
+    } else if (percent >= 100) {
+      this.progressBar.element.style.width = '100%';
+      this.progressBar.element.style.backgroundColor = ProjectColors.Orange;
+      this.progressBarData.element.textContent = '100%';
+      this.progressBarData.element.style.color = ProjectColors.Orange;
+    }
+  }
+
+  private checkYoga(activities: ActivityResponse[]): void {
+    const start: Date = new Date(2023, 1, 19);
+    const end: Date = new Date(2023, 2, 19);
+    const sports: ActivityResponse[] = activities.filter(
+      (activity: ActivityResponse): boolean => activity.sport === 'hiking' || activity.sport === 'walking',
+    );
+    let time: number = 0;
+    sports.forEach((activity: ActivityResponse): void => {
+      const date: Date = new Date(activity.date);
+      const dateMs: number = date.getTime();
+      if (dateMs >= start.getTime() && dateMs <= end.getTime()) {
+        const [hours, minutes]: string[] = activity.duration.split(':');
+        const totalMinutes: number = Number(hours) * 60 + Number(minutes);
+        time += Number(totalMinutes);
+      }
+    });
+    const percent: number = Task.getPercents(time, 567);
+    this.colorProgress(percent);
+  }
+
+  private checkHiking(activities: ActivityResponse[]): void {
+    const start: Date = new Date(2023, 1, 1);
+    const end: Date = new Date(2024, 1, 1);
+    let elevation: number = 0;
+    activities.forEach((activity: ActivityResponse): void => {
+      const date: Date = new Date(activity.date);
+      const dateMs: number = date.getTime();
+      if (dateMs >= start.getTime() && dateMs <= end.getTime()) {
+        elevation += Number(activity.elevation);
+      }
+    });
+    const percent: number = Task.getPercents(elevation, 8849);
+    this.colorProgress(percent);
+  }
+
+  private checkCycling(activities: ActivityResponse[]): void {
+    const start: Date = new Date(2023, 1, 27);
+    const end: Date = new Date(2023, 2, 6);
+    const sports: ActivityResponse[] = activities.filter(
+      (activity: ActivityResponse): boolean => activity.sport === 'cycling',
+    );
+
+    const eventWeek: string[] = sports.reduce((acc: string[], activity: ActivityResponse): string[] => {
+      const activityDate: Date = new Date(activity.date);
+      const date: string = `${activityDate.getDate()},${activityDate.getMonth()},${activityDate.getFullYear()}`;
+      if (activityDate >= start && activityDate <= end && !acc.includes(date)) {
+        acc.push(date);
+      }
+      return acc;
+    }, []);
+    const percent: number = Task.getPercents(eventWeek.length, 7);
+    this.colorProgress(percent);
   }
 }

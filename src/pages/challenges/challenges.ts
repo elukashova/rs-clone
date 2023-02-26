@@ -9,7 +9,6 @@ import { Token } from '../../app/loader/loader-requests.types';
 import { FriendData, User } from '../../app/loader/loader-responses.types';
 import Challenge from './challenge/challenge';
 import { getUser, updateUser } from '../../app/loader/services/user-services';
-import eventEmitter from '../../utils/event-emitter';
 import { Activities, ChallengesTypes } from './types-challenges';
 
 export default class Challenges extends BaseComponent<'section'> {
@@ -113,12 +112,11 @@ export default class Challenges extends BaseComponent<'section'> {
   constructor(parent: HTMLElement) {
     super('section', parent, 'challenges challenges-section');
     this.getFriendsRequest();
-    this.subscribeOnEvent();
   }
 
   private getFriendsRequest(): void {
     if (this.token) {
-      getUser(this.token).then((user: User) => {
+      getUser(this.token).then((user: User): void => {
         this.usersData = user;
         if (user.challenges && user.challenges.length) {
           this.challenges = user.challenges;
@@ -145,7 +143,7 @@ export default class Challenges extends BaseComponent<'section'> {
   }
 
   private renderFirstChallenges(data: FriendData[]): void {
-    const hikingUsers = Challenges.checkChallenges(data, ChallengesTypes.Hiking);
+    const hikingUsers: string[] = Challenges.checkChallenges(data, ChallengesTypes.Hiking);
     this.hikingChallenge = new Challenge(
       this.challengesBlock.element,
       ChallengesTypes.Hiking,
@@ -153,11 +151,11 @@ export default class Challenges extends BaseComponent<'section'> {
       hikingUsers,
       this.dictionary.hikingTitle,
       this.dictionary.hikingDescription,
-      ['03/01/2023', '03/01/2024'],
+      ['02/01/2023', '02/01/2024'],
       true,
     );
 
-    const slothUsers = Challenges.checkChallenges(data, ChallengesTypes.Sloth);
+    const slothUsers: string[] = Challenges.checkChallenges(data, ChallengesTypes.Sloth);
     this.slothChallenge = new Challenge(
       this.challengesBlock.element,
       ChallengesTypes.Sloth,
@@ -169,7 +167,7 @@ export default class Challenges extends BaseComponent<'section'> {
       false,
     );
 
-    const cyclingUsers = Challenges.checkChallenges(data, ChallengesTypes.Cycling);
+    const cyclingUsers: string[] = Challenges.checkChallenges(data, ChallengesTypes.Cycling);
     this.cyclingChallenge = new Challenge(
       this.challengesBlock.element,
       ChallengesTypes.Cycling,
@@ -177,13 +175,13 @@ export default class Challenges extends BaseComponent<'section'> {
       cyclingUsers,
       this.dictionary.cyclingTitle,
       this.dictionary.cyclingDescription,
-      ['02/25/2023', '03/04/2023'],
+      ['02/27/2023', '03/06/2023'],
       true,
     );
   }
 
   private renderSecondChallenges(data: FriendData[]): void {
-    const runningUsers = Challenges.checkChallenges(data, ChallengesTypes.Running);
+    const runningUsers: string[] = Challenges.checkChallenges(data, ChallengesTypes.Running);
     this.runningChallenge = new Challenge(
       this.challengesBlock.element,
       ChallengesTypes.Running,
@@ -191,11 +189,11 @@ export default class Challenges extends BaseComponent<'section'> {
       runningUsers,
       this.dictionary.runningTitle,
       this.dictionary.runningDescription,
-      ['03/01/2023', '03/01/2024'],
+      ['02/01/2023', '02/01/2024'],
       true,
     );
 
-    const photoUsers = Challenges.checkChallenges(data, ChallengesTypes.Photo);
+    const photoUsers: string[] = Challenges.checkChallenges(data, ChallengesTypes.Photo);
     this.photoChallenge = new Challenge(
       this.challengesBlock.element,
       ChallengesTypes.Photo,
@@ -207,7 +205,7 @@ export default class Challenges extends BaseComponent<'section'> {
       false,
     );
 
-    const yogaUsers = Challenges.checkChallenges(data, ChallengesTypes.Yoga);
+    const yogaUsers: string[] = Challenges.checkChallenges(data, ChallengesTypes.Yoga);
     this.yogaChallenge = new Challenge(
       this.challengesBlock.element,
       ChallengesTypes.Yoga,
@@ -221,9 +219,8 @@ export default class Challenges extends BaseComponent<'section'> {
   }
 
   private isAddedForChallenges(): void {
-    this.challengesAll.every((challenge) => {
+    this.challengesAll.every((challenge: Challenge): Challenge => {
       if (this.challenges.includes(challenge.type)) {
-        // eslint-disable-next-line no-param-reassign
         challenge.setButtonFunction();
       }
       return challenge;
@@ -232,16 +229,16 @@ export default class Challenges extends BaseComponent<'section'> {
 
   private static checkChallenges(data: FriendData[], challenge: string): string[] {
     const avatars: string[] = [];
-    const filtered = data.filter((user: FriendData) => user.challenges.includes(challenge));
-    filtered.forEach((user: FriendData) => {
+    const filtered: FriendData[] = data.filter((user: FriendData): boolean => user.challenges.includes(challenge));
+    filtered.forEach((user: FriendData): void => {
       avatars.push(user.avatarUrl);
     });
     return avatars;
   }
 
   private addListeners(): void {
-    this.typesAll.forEach((type) => {
-      type.element.addEventListener('click', () => {
+    this.typesAll.forEach((type: ActivityBlock): void => {
+      type.element.addEventListener('click', (): void => {
         if (this.resultTypesAll.includes(type)) {
           this.resultTypesAll.splice(this.resultTypesAll.indexOf(type), 1);
         } else {
@@ -250,6 +247,23 @@ export default class Challenges extends BaseComponent<'section'> {
         this.showVisibleChallenges();
       });
     });
+    this.challengesAll.forEach((challenge: Challenge): void => {
+      challenge.button.element.addEventListener('click', (): void => {
+        const { type }: Challenge = challenge;
+        if (this.challenges.includes(type)) {
+          this.challenges.splice(this.challenges.indexOf(type), 1);
+        } else {
+          this.challenges.push(type);
+        }
+        this.sendChallenges(this.challenges);
+      });
+    });
+  }
+
+  private sendChallenges(data: string[]): void {
+    if (this.token) {
+      updateUser(this.token, { challenges: data.length === 0 ? [] : data });
+    }
   }
 
   private filterCards(): Challenge[] {
@@ -269,7 +283,7 @@ export default class Challenges extends BaseComponent<'section'> {
     this.doVisibleChallenge();
     this.hiddenChallenge();
 
-    const visibleChallenges = this.filterCards();
+    const visibleChallenges: Challenge[] = this.filterCards();
     if (visibleChallenges.length) {
       this.challengesAll.forEach((challenge: Challenge): void => {
         visibleChallenges.forEach((visible: Challenge): void => {
@@ -289,29 +303,5 @@ export default class Challenges extends BaseComponent<'section'> {
 
   private doVisibleChallenge(): void {
     this.challengesAll.forEach((challenge: Challenge): void => challenge.element.classList.remove('hidden'));
-  }
-
-  private subscribeOnEvent(): void {
-    eventEmitter.on('challengesUpdate', (): void => {
-      this.check();
-    });
-  }
-
-  private check(): void {
-    this.challengesForRequest = this.getAllAddedChallenges();
-    this.sendChallenges(this.challengesForRequest);
-  }
-
-  private getAllAddedChallenges(): string[] {
-    const challengeTypes = this.challengesAll
-      .filter((challenge) => challenge.challengeIsAdded === true)
-      .map((challenge) => challenge.type);
-    return challengeTypes;
-  }
-
-  private sendChallenges(data: string[]): void {
-    if (this.token) {
-      updateUser(this.token, { challenges: data.length === 0 ? [] : data });
-    }
   }
 }

@@ -85,8 +85,10 @@ export default class ActivityGraph extends BaseComponent<'div'> {
   }
 
   private highlightCurrentDay(): void {
-    // eslint-disable-next-line max-len, prettier/prettier
-    const index: number = ActivityGraph.getDayIndex() === 0 ? this.allGraphicSpans.length - 1 : ActivityGraph.getDayIndex() - 1;
+    // eslint-disable-next-line max-len, prettier/prettier, operator-linebreak
+    const index: number =
+      // eslint-disable-next-line max-len
+      ActivityGraph.getDayIndex() === 0 ? this.allGraphicSpans.length - 1 : ActivityGraph.getDayIndex() - 1;
     this.allGraphicSpans[index].style.background = ProjectColors.Orange;
   }
 
@@ -112,8 +114,10 @@ export default class ActivityGraph extends BaseComponent<'div'> {
 
   private updateStats(day: Date, km: number): void {
     const height: number = ActivityGraph.calculateGraphData(km);
-    // eslint-disable-next-line max-len, prettier/prettier
-    const dayIndex: number = ActivityGraph.getDayIndex(day) === 0 ? this.allGraphicSpans.length - 1 : ActivityGraph.getDayIndex(day) - 1;
+    // eslint-disable-next-line operator-linebreak
+    const dayIndex: number =
+      // eslint-disable-next-line max-len
+      ActivityGraph.getDayIndex(day) === 0 ? this.allGraphicSpans.length - 1 : ActivityGraph.getDayIndex(day) - 1;
     this.allGraphicSpans[dayIndex].style.height = `calc(${height}em + 0.15vw)`;
   }
 
@@ -135,11 +139,9 @@ export default class ActivityGraph extends BaseComponent<'div'> {
     } else {
       height = km / dayHours < maxEmHeight ? km / dayHours : maxEmHeight;
     }
-
     return Number(height.toFixed(1));
   }
 
-  // eslint-disable-next-line max-lines-per-function
   public calculateDailyActivity(activities: ActivityResponse[]): void {
     this.setHeightToDefault();
     const [currentMonday, currentSunday] = getFirstAndLastDaysOfWeek();

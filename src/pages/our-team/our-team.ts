@@ -4,8 +4,7 @@ import Member from './member/member';
 import Svg from '../../components/base-component/svg/svg';
 import SvgNames from '../../components/base-component/svg/svg.types';
 import Picture from '../../components/base-component/picture/picture';
-/* import Svg from '../../components/base-component/svg/svg';
- */
+
 export default class OurTeam extends BaseComponent<'section'> {
   private dictionary: Record<string, string> = {
     title: 'ourTeam.title',
@@ -20,12 +19,12 @@ export default class OurTeam extends BaseComponent<'section'> {
 
   private title = new BaseComponent('h2', this.formContainer.element, 'our-team__title titles', this.dictionary.title);
 
-  private infoAboutTeam = new BaseComponent(
+  /*   private infoAboutTeam = new BaseComponent(
     'p',
     this.formContainer.element,
     'our-team__full-info',
     this.dictionary.info,
-  );
+  ); */
 
   private photoContainer = new BaseComponent('div', this.formContainer.element, 'our-team__member-container');
 
@@ -85,6 +84,10 @@ export default class OurTeam extends BaseComponent<'section'> {
 
   private googleElevation = new Picture(this.svgContainer.element, 'our-team__project-img', {
     src: './assets/icons/png/google-elevation-api.png',
+  });
+
+  private googleStatic = new Picture(this.svgContainer.element, 'our-team__project-img', {
+    src: './assets/icons/png/google-static-api.png',
   });
 
   private googleSignIn = new Picture(this.svgContainer.element, 'our-team__project-img', {

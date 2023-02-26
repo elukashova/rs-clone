@@ -5,13 +5,15 @@ import NavigationLink from '../../../components/base-component/link/link';
 import RandomFriendCard from './random-friend-card/random-friend-card';
 import { checkDataInLocalStorage } from '../../../utils/local-storage';
 import { Token } from '../../../app/loader/loader-requests.types';
-import { FriendData, User } from '../../../app/loader/loader-responses.types';
+import { ActivityResponse, FriendData, User } from '../../../app/loader/loader-responses.types';
 import { getNotFriends } from '../../../app/loader/services/friends-services';
 import { provideRandomUsers } from '../../../utils/utils';
 import Svg from '../../../components/base-component/svg/svg';
 import SvgNames from '../../../components/base-component/svg/svg.types';
 import { ProjectColors } from '../../../utils/consts';
 import Task from './task/task';
+import { EventData } from '../../../utils/event-emitter.types';
+import eventEmitter from '../../../utils/event-emitter';
 
 export default class RightMenu extends BaseComponent<'aside'> {
   private dictionary: Record<string, string> = {
@@ -50,19 +52,21 @@ export default class RightMenu extends BaseComponent<'aside'> {
 
   private challenges: string[] | undefined;
 
-  /* public myChallenges: string[] | undefined = []; */
+  public user: User;
 
   // eslint-disable-next-line max-len
   constructor(parent: HTMLElement, private replaceMainCallback: () => void, user: User) {
     super('aside', parent, 'right-menu');
     this.challenges = user.challenges;
+    this.user = user;
     this.doRequestAndRenderChallenges();
     this.makeRequestAndShowFriends();
+    this.addListeners();
   }
 
   private makeRequestAndShowFriends(): void {
     if (this.token) {
-      getNotFriends(this.token).then((users: FriendData[]) => {
+      getNotFriends(this.token).then((users: FriendData[]): void => {
         this.friendsCardsLimit = users.length < 3 ? users.length : 3;
         if (users.length !== 0) {
           this.friendsWrapper = new BaseComponent('div', this.element, 'suggested-friends__wrapper');
@@ -81,7 +85,7 @@ export default class RightMenu extends BaseComponent<'aside'> {
           });
 
           const usersToShow: FriendData[] = provideRandomUsers(users, this.friendsCardsLimit);
-          usersToShow.forEach((user) => {
+          usersToShow.forEach((user: FriendData): void => {
             const card: RandomFriendCard = new RandomFriendCard(user);
             if (this.friendsWrapper) {
               this.friendsWrapper.element.append(card.element);
@@ -111,9 +115,10 @@ export default class RightMenu extends BaseComponent<'aside'> {
         additionalClasses: 'right-menu__link add-challenge__link link',
         attributes: { href: Routes.Challenges },
       });
-      const numInstances = Math.min(this.challenges.length, 3);
+      const numInstances: number = Math.min(this.challenges.length, 3);
       for (let i: number = 0; i < numInstances; i += 1) {
-        this.newChallenge = new Task(this.addChallengeLinkWrapper.element, this.challenges[i]);
+        // eslint-disable-next-line max-len
+        this.newChallenge = new Task(this.addChallengeLinkWrapper.element, this.challenges[i], this.user);
         this.challengesAll.push(this.newChallenge);
       }
     }
@@ -136,6 +141,19 @@ export default class RightMenu extends BaseComponent<'aside'> {
       parent: this.addRouteLinkWrapper.element,
       additionalClasses: 'right-menu__link add-route__link link',
       attributes: { href: Routes.AddRoute },
+    });
+  }
+
+  private addListeners(): void {
+    eventEmitter.on('activityDeleted', (data: EventData): void => this.updateData(data));
+  }
+
+  private updateData(data: EventData): void {
+    this.challengesAll.forEach((challenge: Task): void => {
+      challenge.callCheck(
+        // eslint-disable-next-line max-len
+        challenge.activities.filter((activity: ActivityResponse): boolean => activity.id !== data.activityId),
+      );
     });
   }
 }

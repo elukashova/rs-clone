@@ -6,6 +6,12 @@
 }
 
 .member__photo.icon {
-  width: 7em;
-  height: 7em;
+  border-radius: 50%;
+  width: calc(4rem + 4vw);
+  height: calc(4rem + 4vw);
+}
+
+.member__name,
+.member__about {
+  text-align: center;
 }

@@ -450,10 +450,10 @@ export default class OurActivity extends BaseComponent<'div'> {
     this.yearKmCounter = OurActivity.calculateYearDistance(activities);
   }
 
-  private static calculateYearDistance(activities: ActivityResponse[]): number {
+  public static calculateYearDistance(activities: ActivityResponse[], startDate?: Date, endDate?: Date): number {
     const year: number = new Date().getFullYear();
-    const yearStart: Date = new Date(year, 0, 1);
-    const yearEnd: Date = new Date(year, 11, 31);
+    const yearStart: Date = startDate || new Date(year, 0, 1);
+    const yearEnd: Date = endDate || new Date(year, 11, 31);
 
     let distance: number = 0;
 

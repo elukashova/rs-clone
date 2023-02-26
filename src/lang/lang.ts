@@ -330,7 +330,7 @@ i18next.use(LanguageDetector).init({
           ourTeam: 'О нашей команде',
         },
         map: {
-          locationBtn: 'Перейти в указанную локацию',
+          locationBtn: 'В текущую локацию',
           clearBtn: 'Очистить карту',
           elevation: 'Набор высоты (метры)',
           ok: 'Хорошо',
