@@ -67,8 +67,10 @@ body {
 }
 
 .theme-light {
-  --color-background: rgba(222, 222, 222, 0.387);
+  --color-background: rgb(233, 233, 233);
   --color-background-second: #fbfbfe;
+  --color-background-third: #dcdcdc;
+  --color-background-opacity: rgba(214, 214, 214, 0.122);
   --loading-background: #e7e7e7;
   --font-basic: #4a4a4a;
   --font-additional: #a1a1a1;
@@ -76,6 +78,8 @@ body {
 .theme-dark {
   --color-background: #1f2737;
   --color-background-second: #343e4f;
+  --color-background-third: #455268;
+  --color-background-opacity: rgba(24, 24, 24, 0.122);
   --loading-background: #1f2737;
   --font-basic: #d6d6d6;
   --font-additional: #a6a6a6;

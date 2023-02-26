@@ -39,14 +39,15 @@ export default class App {
   private replaceRootBackground = (location: string): void => {
     switch (location) {
       case Routes.SignUp:
-        this.parent.style.backgroundImage = 'url(/assets/backgrounds/signup-background.jpg)';
+        this.main.element.style.backgroundImage = 'url(/assets/backgrounds/signup-background.jpg)';
+        this.main.element.style.backgroundPosition = 'center';
         break;
       case Routes.LogIn:
-        this.parent.style.backgroundImage = 'url(/assets/backgrounds/login-background.jpg)';
+        this.main.element.style.backgroundImage = 'url(/assets/backgrounds/login-background.jpg)';
+        this.main.element.style.backgroundPosition = '30% 20%';
         break;
       default:
-        this.parent.style.backgroundImage = '';
-        this.parent.style.background = '#F6F4F9';
+        this.main.element.style.backgroundImage = '';
     }
   };
 
