@@ -59,6 +59,7 @@ export default class App {
 
   private showModalWindow(url: EventData): void {
     const modal: ModalAvatar = new ModalAvatar(this.parent, url);
+    this.parent.style.overflow = 'hidden';
     modal.element.addEventListener('click', modal.closeModalCallback);
   }
 

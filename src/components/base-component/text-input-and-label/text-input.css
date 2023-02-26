@@ -29,8 +29,8 @@ input[type='search'] {
 
 label > .search-icon {
   position: absolute;
-  top: 57%;
-  left: 10px;
+  top: calc(0.9rem + 0.8em);
+  left: 0.4rem;
   width: 25px;
   height: 25px;
 }

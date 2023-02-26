@@ -35,6 +35,14 @@ button:focus {
   outline: none;
 }
 
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 2rem var(--color-background-opacity) inset !important;
+  box-shadow: 0 0 0 2rem var(--color-background-opacity) inset !important;
+}
+
 html {
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -70,7 +78,8 @@ body {
   --color-background: rgb(233, 233, 233);
   --color-background-second: #fbfbfe;
   --color-background-third: #dcdcdc;
-  --color-background-opacity: rgba(214, 214, 214, 0.122);
+  --color-background-third-opacity: #000000d5;
+  --color-background-opacity: rgba(214, 214, 214, 0.37);
   --loading-background: #e7e7e7;
   --font-basic: #4a4a4a;
   --font-additional: #a1a1a1;
@@ -79,6 +88,7 @@ body {
   --color-background: #1f2737;
   --color-background-second: #343e4f;
   --color-background-third: #455268;
+  --color-background-third-opacity: #000000b0;
   --color-background-opacity: rgba(24, 24, 24, 0.122);
   --loading-background: #1f2737;
   --font-basic: #d6d6d6;
