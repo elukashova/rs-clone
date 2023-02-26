@@ -31,7 +31,7 @@ export default class Header extends BaseComponent<'header'> {
 
   private linksContainer = new BaseComponent('div', this.contentWrapper.element, 'header-icons-container');
 
-  private avatarDropDown = new BaseComponent('div', this.linksContainer.element, 'header-avatar-dropdown');
+  public avatarDropDown = new BaseComponent('div', this.linksContainer.element, 'header-avatar-dropdown');
 
   private avatarIcon = new Avatar(this.avatarDropDown.element, 'header-avatar-icon', {
     src: './assets/images/avatars/default.png',
@@ -68,7 +68,7 @@ export default class Header extends BaseComponent<'header'> {
     attributes: { href: Routes.LogOut },
   });
 
-  private addDropDown = new BaseComponent('div', this.linksContainer.element, 'header-add-dropdown');
+  public addDropDown = new BaseComponent('div', this.linksContainer.element, 'header-add-dropdown');
 
   private addIcon = new Svg(this.addDropDown.element, SvgNames.Plus2, ProjectColors.Turquoise, 'header-add-icon');
 
@@ -131,10 +131,8 @@ export default class Header extends BaseComponent<'header'> {
   public changeLanguage(): void {
     this.languageIcon.element.addEventListener('click', () => {
       const language: string | null = localStorage.getItem('i18nextLng');
-      console.log(language);
       switch (language) {
         case this.languages.en:
-          console.log(this.languages.en);
           i18next.changeLanguage(this.languages.rus);
           break;
         case this.languages.rus:
