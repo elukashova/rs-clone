@@ -1,5 +1,6 @@
 .select {
   appearance: none;
+  background-color: var(--color-background-opacity);
 }
 
 .select .label {
@@ -71,10 +72,10 @@
   width: 100%;
   padding: 0 0.6em;
   overflow-x: hidden;
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
   transition: all 0.3s ease;
   z-index: 1;
-  background: white;
+  background: var(--color-background);
   border-radius: 5px;
   box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
 }

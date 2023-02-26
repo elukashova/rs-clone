@@ -7,6 +7,10 @@
 
 .challenges__container {
   width: 90%;
+  border-radius: 5px;
+  box-shadow: rgba(33, 33, 33, 0.027) 0px 4px 12px;
+  background-color: var(--color-background-second);
+  padding: 1rem 2rem 2rem 2rem;
 }
 
 .challenges__title-wrapper {
@@ -27,7 +31,7 @@
 
 .challenges__challenges-block {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(290px, max-content));
+  grid-template-columns: repeat(auto-fit, minmax(260px, max-content));
   gap: 4rem;
 }
 

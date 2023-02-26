@@ -39,12 +39,14 @@ export default class App {
   private handleSplashStylesCallback = (location: string): void => {
     switch (location) {
       case Routes.SignUp:
-        this.parent.style.backgroundImage = 'url(/assets/backgrounds/signup-background.jpg)';
+        this.main.element.style.backgroundImage = 'url(/assets/backgrounds/signup-background.jpg)';
+        this.main.element.style.backgroundPosition = 'center';
         this.header.avatarDropDown.element.style.display = 'none';
         this.header.addDropDown.element.style.display = 'none';
         break;
       case Routes.LogIn:
-        this.parent.style.backgroundImage = 'url(/assets/backgrounds/login-background.jpg)';
+        this.main.element.style.backgroundImage = 'url(/assets/backgrounds/login-background.jpg)';
+        this.main.element.style.backgroundPosition = '30% 20%';
         this.header.avatarDropDown.element.style.display = 'none';
         this.header.addDropDown.element.style.display = 'none';
         break;

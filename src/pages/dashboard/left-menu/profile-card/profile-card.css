@@ -5,7 +5,8 @@
   align-items: center;
   padding: 4.5em 1em 1em;
   gap: 1em;
-  background: white;
+  box-shadow: rgba(33, 33, 33, 0.027) 0px 4px 12px;
+  background-color: var(--color-background-second);
   border-radius: 5px;
 }
 
@@ -94,7 +95,7 @@
   font-family: 'Work Sans', sans-serif;
   text-align: center;
   border: none;
-  border-bottom: 1px solid white;
+  border-bottom: 1px solid transparent;
   pointer-events: none;
   word-wrap: break-word;
 }
@@ -152,4 +153,9 @@
 
 .profile-info:not(:last-child) {
   border-right: 1px solid #949494;
+}
+
+.profile-card__name.textarea,
+.profile-card__about.textarea {
+  color: var(--font-basic);
 }

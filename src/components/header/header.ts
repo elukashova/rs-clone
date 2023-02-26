@@ -107,16 +107,25 @@ export default class Header extends BaseComponent<'header'> {
     alt: 'Change language',
   });
 
-  private themeIcon = new Picture(this.linksContainer.element, 'header-icon_theme icon', {
-    src: './assets/icons/png/change-theme-icon.png',
-    alt: 'Change theme',
+  private themeWrapper = new BaseComponent('div', this.linksContainer.element, 'header__theme-wrapper');
+
+  private themeSlider = new BaseComponent('label', this.themeWrapper.element, 'header__theme-switch', '', {
+    id: 'switch',
   });
+
+  private themeCheckbox = new BaseComponent('input', this.themeSlider.element, 'header__theme-checkbox', '', {
+    type: 'checkbox',
+    id: 'slider',
+  });
+
+  private themeCircle = new BaseComponent('span', this.themeSlider.element, 'header__theme-circle round', '');
 
   constructor(parent: HTMLElement, private replaceMainCallback: () => void) {
     super('header', parent, 'header');
     this.changeLanguage();
     this.changeTheme();
     this.subscribeToEvents();
+    this.initialThemes();
   }
 
   public changeLanguage(): void {
@@ -137,10 +146,33 @@ export default class Header extends BaseComponent<'header'> {
   }
 
   public changeTheme(): void {
-    this.themeIcon.element.addEventListener('click', () => {
-      console.log('change theme');
-      document.body.classList.toggle('dark-theme');
+    this.themeSlider.element.addEventListener('change', () => {
+      Header.toggleThemes();
     });
+  }
+
+  private initialThemes(): void {
+    if (localStorage.getItem('theme') !== 'theme-dark') {
+      Header.setTheme('theme-light');
+      this.themeCheckbox.element.checked = true;
+    } else {
+      Header.setTheme('theme-dark');
+      this.themeCheckbox.element.checked = false;
+    }
+  }
+
+  private static toggleThemes(): void {
+    console.log(localStorage.getItem('theme'));
+    if (localStorage.getItem('theme') === 'theme-dark') {
+      Header.setTheme('theme-light');
+    } else {
+      Header.setTheme('theme-dark');
+    }
+  }
+
+  private static setTheme(themeName: string): void {
+    localStorage.setItem('theme', themeName);
+    document.body.className = themeName;
   }
 
   public hide(): void {

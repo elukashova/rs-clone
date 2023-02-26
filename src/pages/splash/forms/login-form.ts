@@ -58,11 +58,7 @@ export default class LoginForm extends BaseComponent<'form'> {
 
   public loginButton: Button = new Button(this.element, this.dictionary.logIn, 'login__btn-main btn_main');
 
-  private signUpMessage: BaseComponent<'span'> = new BaseComponent(
-    'span',
-    this.element,
-    'login_message-sigup',
-  ); // не будет реботать
+  private signUpMessage: BaseComponent<'span'> = new BaseComponent('span', this.element, 'login_message-sigup'); // не будет реботать
 
   private notMember: BaseComponent<'span'> = new BaseComponent(
     'span',
@@ -159,11 +155,7 @@ export default class LoginForm extends BaseComponent<'form'> {
   }
 
   private showInvalidCredentialsMessage(): void {
-    const messageContainer: BaseComponent<'span'> = new BaseComponent(
-      'span',
-      undefined,
-      'login__error-message',
-    );
+    const messageContainer: BaseComponent<'span'> = new BaseComponent('span', undefined, 'login__error-message');
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const message: BaseComponent<'span'> = new BaseComponent(

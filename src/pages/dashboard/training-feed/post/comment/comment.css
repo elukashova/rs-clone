@@ -29,7 +29,7 @@
 
 .comment__date {
   font-weight: 300;
-  color: #949494;
+  color: var(--font-additional);
   font-size: calc(0.4em + 0.4vw);
 }
 
@@ -52,6 +52,7 @@
   resize: none;
   overflow: hidden;
   word-wrap: break-word;
+  color: var(--font-additional);
 }
 
 .active-comment {
@@ -105,6 +106,6 @@
 }
 
 .comment__comment-button:disabled {
-  background-color: #90dad1;
+  background-color: var(--post-line);
   pointer-events: none;
 }
