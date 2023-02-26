@@ -1,0 +1,17 @@
+.page-not-found {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  background: white;
+}
+
+.page-not-found__wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.page-not-found__image {
+  width: calc(10% + 35vw);
+  height: calc(10% + 35vw);
+}

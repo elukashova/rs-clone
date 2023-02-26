@@ -21,14 +21,14 @@ import Routes from '../../app/router/router.types';
 export default class Settings extends BaseComponent<'section'> {
   private dictionary: Record<string, string> = {
     // перевести все
-    heading: 'My profile',
-    deleteAccount: 'Delete account',
-    updateAccount: 'Update account',
-    name: 'Name',
-    email: 'Email',
-    dateOfBirth: 'Date of birth',
-    country: 'Country',
-    bio: 'Short bio',
+    heading: 'settings.heading',
+    deleteAccount: 'settings.deleteAccount',
+    updateAccount: 'settings.updateAccount',
+    name: 'settings.name',
+    email: 'settings.email',
+    dateOfBirth: 'settings.dateOfBirth',
+    country: 'settings.country',
+    bio: 'settings.bio',
   };
 
   private token: Token | null = checkDataInLocalStorage('userSessionToken');

@@ -11,6 +11,7 @@ import OurTeam from '../../pages/our-team/our-team';
 import { checkDataInLocalStorage } from '../../utils/local-storage';
 import { Token } from '../loader/loader-requests.types';
 import Settings from '../../pages/settings/settings';
+import Page404 from '../../pages/404/404';
 
 export default class Router {
   private main: Main;
@@ -32,6 +33,8 @@ export default class Router {
   private aboutTeam: OurTeam | null = null;
 
   private settings: Settings | null = null;
+
+  private page404: Page404 | null = null;
 
   private token: Token | null = null;
 
@@ -107,7 +110,8 @@ export default class Router {
         this.main.setContent(this.settings);
         break;
       default:
-        console.log('will be 404 page'); // temporary placeholder
+        this.page404 = new Page404(this.main.element);
+        this.main.setContent(this.page404);
     }
   }
 

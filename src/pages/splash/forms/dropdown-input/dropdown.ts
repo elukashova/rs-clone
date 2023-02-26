@@ -1,4 +1,5 @@
 import './dropdown.css';
+import i18next from 'i18next';
 import BaseComponent from '../../../../components/base-component/base-component';
 import Input from '../../../../components/base-component/text-input-and-label/text-input';
 import { ValidityMessages } from '../form.types';
@@ -112,7 +113,7 @@ export default class DropdownInput extends Input {
     const currentInput: string = this.input.element.value;
     const isMatch: boolean = this.optionsStrings.includes(currentInput);
     if (!isMatch) {
-      this.handleCustomValidity(ValidityMessages.Country);
+      this.handleCustomValidity(i18next.t(ValidityMessages.Country));
       this.showInvalidState();
       this.input.element.addEventListener('input', this.checkValidityCallback);
       return false;

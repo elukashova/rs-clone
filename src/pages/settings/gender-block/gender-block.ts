@@ -13,11 +13,10 @@ export default class GenderBlock extends BaseComponent<'div'> {
   private token: Token | null = checkDataInLocalStorage('userSessionToken');
 
   private dictionary: Record<string, string> = {
-    // перевести все
-    genderTitle: 'Gender',
-    genderDefault: 'Prefer not to say',
-    genderMan: 'Man',
-    genderWoman: 'Woman',
+    genderTitle: 'settings.genderTitle',
+    genderDefault: 'settings.genderDefault',
+    genderMan: 'settings.genderMan',
+    genderWoman: 'settings.genderWoman',
   };
 
   private genderTitle: BaseComponent<'label'> = new BaseComponent(
