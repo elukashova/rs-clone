@@ -304,7 +304,7 @@ export default class GoogleMaps {
     chart.draw(data, {
       height: 150,
       legend: 'none',
-      title: i18next.t(this.dictionary.elevation).toString(),
+      title: i18next.t(`${this.dictionary.elevation}`).toString(),
       colors: [ProjectColors.DarkTurquoise, ProjectColors.Turquoise],
     });
   }
@@ -390,7 +390,7 @@ export default class GoogleMaps {
     this.badRouteBlock = document.createElement('div');
     this.badRouteBlock.classList.add('google-maps__popup', 'hidden');
     const text = new BaseComponent('p', this.badRouteBlock, 'google-maps__popup-text');
-    text.element.textContent = this.dictionary.notFoundRoute;
+    text.textContent = i18next.t(this.dictionary.routeNotFound);
     this.okButton = new Button(this.badRouteBlock, this.dictionary.ok, 'google-maps__popup-button');
     this.badRouteBlock.append(this.okButton.element);
     this.popup.setContent(this.badRouteBlock);
