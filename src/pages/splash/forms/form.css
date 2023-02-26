@@ -5,24 +5,25 @@
   justify-content: center;
   gap: 1em;
   width: calc(20em + 25vw);
-  padding: 3.5em 6em 3.5em;
-  background-color: white;
+  padding: 3rem 5rem 3rem;
+  margin: 1rem;
+  box-shadow: rgba(33, 33, 33, 0.027) 0px 4px 12px;
+  background-color: var(--color-background-second);
   border-radius: 5px;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
 }
 
 .signup__form_header,
 .login__form_header {
   margin: 0;
   padding: 0;
-  font-size: calc(1em + 1vw);
+  font-size: calc(1rem + 0.4vw);
 }
 
 .login-form-message,
 .signup__form-message {
   margin: 0 0 0.5em;
-  color: #949494;
-  font-size: calc(0.5em + 0.7vw);
+  color: var(--font-additional);
+  font-size: calc(0.5em + 0.5vw);
   font-weight: 300;
 }
 

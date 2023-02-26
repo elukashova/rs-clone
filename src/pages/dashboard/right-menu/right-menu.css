@@ -11,7 +11,6 @@
   align-items: center;
   justify-content: center;
   padding: 1em 1em 1em;
-  background: white;
   border-radius: 5px;
 }
 
@@ -19,8 +18,9 @@
 .suggested-friends__wrapper,
 .add-route__wrapper {
   padding: 1.5rem;
-  box-shadow: rgba(183, 183, 183, 0.076) 0px 0px 0px 1px;
-  background-color: rgb(255, 255, 255);
+  border-radius: 5px;
+  box-shadow: rgba(33, 33, 33, 0.027) 0px 4px 12px;
+  background-color: var(--color-background-second);
 }
 
 .add-challenge__wrapper {
@@ -47,7 +47,6 @@
   justify-content: center;
   width: 100%;
   gap: 0.5em;
-  background: white;
   border-radius: 5px;
 }
 

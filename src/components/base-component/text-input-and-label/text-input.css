@@ -1,3 +1,7 @@
+input {
+  background-color: var(--color-background-opacity);
+}
+
 .input > label {
   position: relative;
   display: flex;
@@ -13,13 +17,14 @@
 label > input[type='search'] {
   padding-left: calc(1em + 30px);
   height: 2em;
+  background-color: var(--color-background-opacity);
 }
 
 input[type='search'] {
   width: 8vw;
   height: 30px;
   border-radius: 5px;
-  border: 1px solid #949494;
+  border: 1px solid var(--font-additional);
 }
 
 label > .search-icon {
