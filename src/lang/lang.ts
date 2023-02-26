@@ -226,9 +226,11 @@ i18next.use(LanguageDetector).init({
         ourTeam: {
           title: 'Meet the Big Bug Theory team',
           info: 'We are a team of like-minded people with a positive attitude towards work.',
-          matthewInfo: 'good person',
-          lenaInfo: 'good person',
-          nastyaInfo: 'good person',
+          matthewInfo: 'He is here to chew bubblegum and write code, and he is all out of bubblegum.',
+          lenaInfo:
+            'The almighty hero of the team that never sleeps, but writes code and goes for a hike. Knows frontend, knows backend, and in the matter of fact every other end if you ask her to. ',
+          nastyaInfo:
+            'She is no ordinary programmer but a magician that can take any project and turn it into a work heaven with kittens and rainbows. You need to a new API for your project? She got it. You want some help? She is already on it.',
           useTitle: 'Was used in this project',
         },
         splash: {
@@ -246,6 +248,7 @@ i18next.use(LanguageDetector).init({
             alreadyMember: 'Already a member? ',
             logInHere: 'Log in here',
             signUpHere: 'Sign up here',
+            country: 'Country',
           },
           errors: {
             Name: 'The name must contain two subnames, each at least 3 letters long',
@@ -485,9 +488,11 @@ i18next.use(LanguageDetector).init({
         ourTeam: {
           title: 'Встречаем the Big Bug Theory',
           info: 'Команда единомышленников, которые любят свою работу',
-          matthewInfo: 'хороший человек',
-          lenaInfo: 'хороший человек',
-          nastyaInfo: 'хороший человек',
+          matthewInfo: 'He is here to chew bubblegum and write code, and he is all out of bubblegum.',
+          lenaInfo:
+            'The almighty hero of the team that never sleeps, but writes code and goes for a hike. Knows frontend, knows backend, and in the matter of fact every other end if you ask her to. ',
+          nastyaInfo:
+            'She is no ordinary programmer but a magician that can take any project and turn it into a work heaven with kittens and rainbows. You need to a new API for your project? She got it. You want some help? She is already on it.',
           useTitle: 'В этом проекте было использовано',
         },
         splash: {
@@ -517,6 +522,7 @@ i18next.use(LanguageDetector).init({
             alreadyMember: 'Уже есть аккаунт? ',
             logInHere: 'Войдите в аккаунт',
             signUpHere: 'Зарегистрируйте аккаунт',
+            country: 'Страна',
           },
         },
       },
