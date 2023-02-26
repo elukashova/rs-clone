@@ -28,6 +28,7 @@ export default class SignupForm extends BaseComponent<'form'> {
     password: 'splash.forms.password',
     email: 'splash.forms.email',
     name: 'splash.forms.name',
+    country: 'splash.forms.country',
   };
 
   private formHeader: BaseComponent<'h4'> = new BaseComponent(
@@ -62,7 +63,7 @@ export default class SignupForm extends BaseComponent<'form'> {
     required: '',
   });
 
-  private countryInput: DropdownInput = new DropdownInput(this.element, 'signup', 'Country');
+  private countryInput: DropdownInput = new DropdownInput(this.element, 'signup', this.dictionary.country);
 
   private signupButton: Button = new Button(this.element, this.dictionary.signUp, 'signup__btn-main btn_main', {
     type: 'submit',
