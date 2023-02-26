@@ -53,10 +53,12 @@ i18next.use(LanguageDetector).init({
         },
         map: {
           locationBtn: 'Go to current location',
+          elevationError: "Can't show elevation",
           clearBtn: 'Clear map',
           elevation: 'Elevation (meters)',
-          locationFoundL: 'Location found!',
+          locationFound: 'Location found!',
           routeNotFound: 'Unfortunately, we were unable to find such a route. Do you want to build a different route?',
+          ok: 'OK',
         },
         addActivityPage: {
           heading: 'Add activity',
@@ -204,6 +206,8 @@ i18next.use(LanguageDetector).init({
           challengeOver: 'Sorry, challenge is over',
           acceptButton: 'Accept',
           acceptedButton: 'Accepted',
+          challengeEnd_one: 'There is {{count}} day to the end of the challenge',
+          challengeEnd_other: 'There are {{count}} days to the end of the challenge',
         },
         ourTeam: {
           title: 'Meet the Big Bug Theory team',
@@ -290,7 +294,9 @@ i18next.use(LanguageDetector).init({
           locationBtn: 'Перейти в указанную локацию',
           clearBtn: 'Очистить карту',
           elevation: 'Набор высоты (метры)',
-          locationFoundL: 'Локация найдена!',
+          ok: 'Хорошо',
+          elevationError: 'Нельзя показать набор высоты',
+          locationFound: 'Локация найдена!',
           routeNotFound: 'К сожалению мы не смогли найти данный маршрут. Построить заново?',
         },
         addActivityPage: {
@@ -433,6 +439,9 @@ i18next.use(LanguageDetector).init({
           challengeOver: 'Просим прощения, испытание уже закончилось',
           acceptButton: 'Пройти',
           acceptedButton: 'Добавлено',
+          challengeEnd_one: '{{count}} день до конца испытания',
+          challengeEnd_few: '{{count}} дня до конца испытания',
+          challengeEnd_many: '{{count}} дней до конца испытания',
         },
         ourTeam: {
           title: 'Встречаем the Big Bug Theory',
