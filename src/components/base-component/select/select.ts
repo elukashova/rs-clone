@@ -7,14 +7,9 @@ import SvgNames from '../svg/svg.types';
 import { ProjectColors } from '../../../utils/consts';
 
 export default class Select extends BaseComponent<'div'> {
-  public label: BaseComponent<'label'> = new BaseComponent(
-    'label',
-    this.element,
-    `${this.prefix}__label label`,
-    // 'Type of activity',
-  );
+  public label: BaseComponent<'label'> = new BaseComponent('label', this.element, `${this.prefix}__label label`);
 
-  private title = new BaseComponent('span', this.label.element, '', 'Type of activity');
+  private title = new BaseComponent('span', this.label.element, '');
 
   public select: BaseComponent<'select'> = new BaseComponent(
     'select',
@@ -51,6 +46,7 @@ export default class Select extends BaseComponent<'div'> {
   constructor(
     private parent: HTMLElement,
     options: string[],
+    title: string,
     private prefix: string,
     additionalClasses?: string,
     attributes?: {
@@ -61,6 +57,7 @@ export default class Select extends BaseComponent<'div'> {
     super('div', parent, classes, '', attributes);
 
     this.options = options;
+    this.title.textContent = title;
     this.currentOption = this.setDefaultValue();
     this.currentOption.element.value = i18next.t(this.options[0], { lng: 'en' }).toLowerCase();
 
@@ -151,4 +148,8 @@ export default class Select extends BaseComponent<'div'> {
       });
     });
   }
+
+  // public setTitle(title: string): void {
+  //   this.title.textContent = title;
+  // }
 }
