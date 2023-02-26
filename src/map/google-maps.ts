@@ -123,12 +123,12 @@ export default class GoogleMaps {
     // переменные и слушатель для определения местоположения пользователя по геолокации
     this.locationButton = new Button(document.body, i18next.t('map.locationBtn'));
     this.locationButton.element.style.marginTop = '10px';
-    this.locationButton.element.style.marginLeft = '20%';
+    this.locationButton.element.style.marginRight = '1rem';
     this.map.controls[google.maps.ControlPosition.TOP_CENTER].push(this.locationButton.element);
 
     this.clearButton = new Button(document.body, i18next.t('map.clearBtn'));
     this.clearButton.element.style.marginTop = '10px';
-    this.clearButton.element.style.marginLeft = '20px';
+    this.clearButton.element.style.marginLeft = '1rem';
     this.map.controls[google.maps.ControlPosition.TOP_CENTER].push(this.clearButton.element);
     this.renderMessage();
     this.addListeners();
