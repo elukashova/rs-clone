@@ -20,7 +20,7 @@ export default class App {
 
   constructor(private readonly parent: HTMLElement) {
     this.parent.classList.add('root');
-    this.router = new Router(this.main, this.replaceRootBackground);
+    this.router = new Router(this.main, this.handleSplashStylesCallback);
     this.header = new Header(this.parent, this.router.locationHandler);
     this.parent.append(this.main.element);
     this.footer = new Footer(this.parent, this.router.locationHandler);
@@ -36,17 +36,23 @@ export default class App {
     this.router.locationHandler();
   }
 
-  private replaceRootBackground = (location: string): void => {
+  private handleSplashStylesCallback = (location: string): void => {
     switch (location) {
       case Routes.SignUp:
         this.parent.style.backgroundImage = 'url(/assets/backgrounds/signup-background.jpg)';
+        this.header.avatarDropDown.element.style.display = 'none';
+        this.header.addDropDown.element.style.display = 'none';
         break;
       case Routes.LogIn:
         this.parent.style.backgroundImage = 'url(/assets/backgrounds/login-background.jpg)';
+        this.header.avatarDropDown.element.style.display = 'none';
+        this.header.addDropDown.element.style.display = 'none';
         break;
       default:
         this.parent.style.backgroundImage = '';
         this.parent.style.background = '#F6F4F9';
+        this.header.avatarDropDown.element.style.display = 'inline-block';
+        this.header.addDropDown.element.style.display = 'inline-block';
     }
   };
 
