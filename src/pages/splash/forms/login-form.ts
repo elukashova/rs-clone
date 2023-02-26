@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+import i18next from 'i18next';
 import Routes from '../../../app/router/router.types';
 import { LogIn, Token } from '../../../app/loader/loader-requests.types';
 import { Errors } from '../../../app/loader/loader-responses.types';
@@ -118,8 +119,8 @@ export default class LoginForm extends BaseComponent<'form'> {
 
   private checkInputs = (e: Event): boolean => {
     const conditionsArray: boolean[] = [
-      this.passwordInput.checkInput(ValidityMessages.Password),
-      this.emailInput.checkInput(ValidityMessages.Email),
+      this.passwordInput.checkInput(i18next.t(ValidityMessages.Password)),
+      this.emailInput.checkInput(i18next.t(ValidityMessages.Email)),
     ];
 
     if (conditionsArray.includes(false)) {
@@ -158,19 +159,26 @@ export default class LoginForm extends BaseComponent<'form'> {
   }
 
   private showInvalidCredentialsMessage(): void {
-    const message: BaseComponent<'span'> = new BaseComponent(
+    const messageContainer: BaseComponent<'span'> = new BaseComponent(
       'span',
       undefined,
       'login__error-message',
+    );
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const message: BaseComponent<'span'> = new BaseComponent(
+      'span',
+      messageContainer.element,
+      '',
       InputConflictMessages.InvalidCredentials,
     );
 
     const signUpLink: NavigationLink = new NavigationLink(this.replaceMainCallback, {
       text: this.dictionary.signUp,
-      parent: message.element,
+      parent: messageContainer.element,
       additionalClasses: 'login__link-signup',
     });
     signUpLink.element.setAttribute('href', Routes.SignUp);
-    this.element.insertBefore(message.element, this.loginButton.element);
+    this.element.insertBefore(messageContainer.element, this.loginButton.element);
   }
 }
