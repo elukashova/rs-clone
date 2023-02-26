@@ -141,6 +141,7 @@ export default class Header extends BaseComponent<'header'> {
   public changeTheme(): void {
     this.themeIcon.element.addEventListener('click', () => {
       console.log('change theme');
+      document.body.classList.toggle('dark-theme');
     });
   }
 
