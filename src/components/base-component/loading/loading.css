@@ -4,13 +4,12 @@
   height: 100%;
   position: fixed;
   z-index: 240;
-  background-color: rgb(255, 255, 255);
   transition: all 0.5s ease-in-out;
 }
 
 .loading-background_active {
   opacity: 1;
-  background-color: rgb(255, 255, 255);
+  background-color: var(--loading-background);
   transition: all 0.5s ease-in-out;
 }
 

@@ -5,6 +5,15 @@
   margin: 0 auto;
 }
 
+.not-friends__block-container,
+.friends__block-container {
+  margin: 3rem;
+  padding: 0.5rem 2rem 2rem 2rem;
+  border-radius: 5px;
+  box-shadow: rgba(33, 33, 33, 0.027) 0px 4px 12px;
+  background-color: var(--color-background-second);
+}
+
 .find-friends__container {
   display: flex;
   justify-content: center;
@@ -22,6 +31,7 @@
 .friends__input-search input {
   width: 50%;
   border: 1px solid #8c8c8c;
+  background-color: var(--color-background-second);
 }
 
 .not-friends__input-search label,

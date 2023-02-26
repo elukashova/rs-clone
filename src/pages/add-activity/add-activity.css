@@ -2,7 +2,8 @@
   height: max-content;
   width: 90%;
   margin: 4.5em 0;
-  background-color: #ffffff;
+  box-shadow: rgba(33, 33, 33, 0.027) 0px 4px 12px;
+  background-color: var(--color-background-second);
   border-radius: 5px;
 }
 
@@ -71,7 +72,7 @@
   border: 1px solid #1cbaa7;
   font-size: 1.1em;
   font-family: 'Work Sans', sans-serif;
-  color: #949494;
+  color: var(--font-additional);
   transition: all 0.3s;
   width: 100%;
 }

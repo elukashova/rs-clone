@@ -15,9 +15,9 @@
   gap: calc(1rem + 2vw);
   width: 100%;
   padding: 1.5em 2em;
-  background-color: rgb(255, 255, 255);
-  border-radius: 5px;
   box-shadow: rgba(33, 33, 33, 0.027) 0px 4px 12px;
+  background-color: var(--color-background-second);
+  border-radius: 5px;
 }
 
 .our-team__member-container {

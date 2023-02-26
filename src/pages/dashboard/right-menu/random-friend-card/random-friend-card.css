@@ -33,7 +33,7 @@
   text-align: left;
   font-size: calc(0.6em + 0.3vw);
   font-weight: 300;
-  color: #949494;
+  color: var(--font-additional);
 }
 
 .suggested-friends__btn {
@@ -65,7 +65,3 @@
   width: 2.5em;
   height: 1.3em;
 }
-
-/* .suggested-friends_btn_svg:hover {
-  fill: #219486;
-} */

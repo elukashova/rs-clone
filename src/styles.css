@@ -53,7 +53,7 @@ body {
   font-size: calc(14px + (16 - 14 * 0.7) * ((100vw - 320px) / 1920));
 }
 
-.root {
+body {
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -69,14 +69,16 @@ body {
 .theme-light {
   --color-background: rgba(222, 222, 222, 0.387);
   --color-background-second: #fbfbfe;
-  --font-basic: #000000;
-  --font-additional: #949494;
+  --loading-background: #e7e7e7;
+  --font-basic: #4a4a4a;
+  --font-additional: #a1a1a1;
 }
 .theme-dark {
-  --color-background: #2a354b;
-  --color-background-second: #1f2636;
-  --font-basic: #ffffff;
-  --font-additional: #949494;
+  --color-background: #1f2737;
+  --color-background-second: #343e4f;
+  --loading-background: #1f2737;
+  --font-basic: #d6d6d6;
+  --font-additional: #a6a6a6;
 }
 
 .main {
@@ -85,6 +87,17 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: var(--color-background);
+  font-family: 'Work Sans', sans-serif;
+  color: var(--font-basic);
+}
+
+.main li {
+  list-style-type: none;
+}
+
+.main ul {
+  padding-left: 0;
 }
 
 .map,
