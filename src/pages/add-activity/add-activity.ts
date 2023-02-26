@@ -268,7 +268,7 @@ export default class AddActivity extends BaseComponent<'section'> {
     const evening = i18next.t(this.dictionary.evening);
     const night = i18next.t(this.dictionary.night);
     if (hours >= 6 && hours <= 11) return `${morning}} ${this.defineSportForTitle()}`;
-    if (hours >= 12 && hours <= 18) return `${afternoon}${this.defineSportForTitle()}`;
+    if (hours >= 12 && hours <= 18) return `${afternoon} ${this.defineSportForTitle()}`;
     if (hours >= 19 && hours <= 23) return `${evening} ${this.defineSportForTitle()}`;
     if (hours >= 0 && hours <= 5) return `${night} ${this.defineSportForTitle()}`;
     return '';

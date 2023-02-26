@@ -21,11 +21,11 @@ import eventEmitter from '../utils/event-emitter';
 
 export default class GoogleMaps {
   private dictionary: Record<string, string> = {
-    elevationError: "Can't show elevation", // перевод
-    elevation: 'Elevation (meters)', // перевод
-    locationFound: 'Location found!', // перевод
-    notFoundRoute: 'Unfortunately, we were unable to find such a route. Do you want to build a different route?', // перевод
-    ok: 'OK', // перевод
+    elevationError: 'map.elevationError',
+    elevation: 'map.elevation',
+    locationFound: 'map.locationFound',
+    routeNotFound: 'map.routeNotFound',
+    ok: 'map.ok',
   };
 
   public parentElement: HTMLElement;
@@ -265,7 +265,8 @@ export default class GoogleMaps {
         }
       }
     } catch (error: unknown) {
-      console.log(`${this.dictionary.elevationError}: ${error}`);
+      const message = i18next.t(this.dictionary.elevationError);
+      console.log(`${message}: ${error}`);
     }
   }
 
@@ -290,7 +291,7 @@ export default class GoogleMaps {
     chart.draw(data, {
       height: 150,
       legend: 'none',
-      title: this.dictionary.elevation,
+      title: i18next.t(this.dictionary.elevation).toString(),
       colors: [ProjectColors.DarkTurquoise, ProjectColors.Turquoise],
     });
   }
@@ -351,7 +352,7 @@ export default class GoogleMaps {
             lng: position.coords.longitude,
           };
           this.infoWindow.setPosition(pos);
-          this.infoWindow.setContent(this.dictionary.LocationFound);
+          this.infoWindow.setContent(i18next.t(this.dictionary.locationFound));
           this.infoWindow.open(this.map);
           this.map.setCenter(pos);
         },
@@ -375,7 +376,7 @@ export default class GoogleMaps {
     const popup: google.maps.InfoWindow = new google.maps.InfoWindow();
     const block: HTMLDivElement = document.createElement('div');
     block.classList.add('google-maps__popup');
-    block.textContent = this.dictionary.notFoundRoute;
+    block.textContent = i18next.t(this.dictionary.routeNotFound);
     const button: Button = new Button(block, this.dictionary.ok, 'google-maps__popup-button');
 
     block.append(button.element);

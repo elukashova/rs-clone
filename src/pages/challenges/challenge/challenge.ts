@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable max-lines-per-function */
+import i18next from 'i18next';
 import { Token } from '../../../app/loader/loader-requests.types';
 import { updateUser } from '../../../app/loader/services/user-services';
 import Avatar from '../../../components/base-component/avatar-image/avatar';
@@ -14,10 +15,7 @@ import DefaultUserInfo from '../../dashboard/left-menu/left-menu.types';
 
 export default class Challenge extends BaseComponent<'div'> {
   private dictionary: Record<string, string> = {
-    toEndMany: 'To end of challenge are', // перевод "До конца челленджа"
-    days: 'days', // перевод "дней"
-    toEndOne: 'To end of challenge is', // перевод "До конца челленджа"
-    day: 'day', // перевод "день"
+    challengeEnd: 'challenges.challengeEnd',
     challengeOver: 'challenges.challengeOver',
     acceptButton: 'challenges.acceptButton',
     acceptedButton: 'challenges.acceptedButton',
@@ -100,7 +98,7 @@ export default class Challenge extends BaseComponent<'div'> {
     this.challengeImage = new Picture(this.element, 'challenge__image', {
       src: `../../../assets/images/challenges/${this.type}.jpg`,
     });
-    this.title = new BaseComponent('h4', this.element, 'challenge__title', `${this.titleText}`);
+    this.title = new BaseComponent('h4', this.element, 'challenge__title', this.titleText);
 
     this.descriptionBlock = new BaseComponent('div', this.element, 'challenge__description-block');
 
@@ -117,7 +115,7 @@ export default class Challenge extends BaseComponent<'div'> {
       'p',
       this.descriptionBlock.element,
       'challenge__description',
-      `${this.descriptionText}`,
+      this.descriptionText,
     );
 
     const [start, end]: string[] = this.dateText;
@@ -130,15 +128,12 @@ export default class Challenge extends BaseComponent<'div'> {
         'span',
         this.descriptionBlock.element,
         'challenge__days-to-end',
-        `${this.dictionary.toEndMany} ${dateToEnd} ${this.dictionary.days}.`,
+        i18next.t(this.dictionary.challengeEnd, { count: dateToEnd }).toString(),
       );
-    } else if (dateToEnd === 1) {
-      this.dateToEnd = new BaseComponent(
-        'span',
-        this.descriptionBlock.element,
-        'challenge__days-to-end',
-        `${this.dictionary.toEndOne} ${dateToEnd} ${this.dictionary.day}.`,
-      );
+      i18next.on('languageChanged', () => {
+        // eslint-disable-next-line max-len
+        this.dateToEnd.element.textContent = i18next.t(this.dictionary.challengeEnd, { count: dateToEnd });
+      });
     } else {
       this.dateToEnd = new BaseComponent(
         'span',

@@ -1,3 +1,4 @@
+import i18next from 'i18next';
 import BaseComponent from '../../../components/base-component/base-component';
 import Button from '../../../components/base-component/button/button';
 import NavigationLink from '../../../components/base-component/link/link';
@@ -141,9 +142,9 @@ export default class SignupForm extends BaseComponent<'form'> {
   private checkInputs = (e: Event): boolean => {
     const conditionsArray: boolean[] = [
       this.countryInput.checkIfValidCountry(),
-      this.passwordInput.checkInput(ValidityMessages.Password),
-      this.emailInput.checkInput(ValidityMessages.Email),
-      this.nameInput.checkInput(ValidityMessages.Name),
+      this.passwordInput.checkInput(i18next.t(ValidityMessages.Password)),
+      this.emailInput.checkInput(i18next.t(ValidityMessages.Email)),
+      this.nameInput.checkInput(i18next.t(ValidityMessages.Name)),
     ];
 
     if (conditionsArray.includes(false)) {
@@ -182,20 +183,23 @@ export default class SignupForm extends BaseComponent<'form'> {
   }
 
   private showUserAlreadyRegisteredMessage(): void {
+    const messageContainer: BaseComponent<'span'> = new BaseComponent('span', undefined, 'signup__error-message');
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const message: BaseComponent<'span'> = new BaseComponent(
       'span',
-      undefined,
-      'signup__error-message',
+      messageContainer.element,
+      '',
       InputConflictMessages.UserAlreadyExists,
     );
 
     const logInLink: NavigationLink = new NavigationLink(this.replaceMainCallback, {
       text: this.dictionary.logIn,
-      parent: message.element,
+      parent: messageContainer.element,
       additionalClasses: 'signup__link-login',
     });
     logInLink.element.setAttribute('href', Routes.LogIn);
-    this.element.insertBefore(message.element, this.signupButton.element);
+    this.element.insertBefore(messageContainer.element, this.signupButton.element);
   }
 
   private createCountriesList(): void {
