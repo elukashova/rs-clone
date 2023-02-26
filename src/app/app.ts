@@ -49,7 +49,7 @@ export default class App {
         this.header.removeElementNotDashboard();
         break;
       default:
-        this.parent.style.backgroundImage = '';
+        this.main.element.style.backgroundImage = '';
         this.parent.style.background = '#F6F4F9';
         this.header.appendElementsInDashboard();
     }

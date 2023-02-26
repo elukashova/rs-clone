@@ -34,7 +34,6 @@ export default class Header extends BaseComponent<'header'> {
   public avatarDropDown = new BaseComponent('div', undefined, 'header-avatar-dropdown');
 
   private avatarIcon = new Avatar(this.avatarDropDown.element, 'header-avatar-icon', {
-    src: './assets/images/avatars/default.png',
     alt: 'Your avatar',
   });
 
@@ -103,7 +102,7 @@ export default class Header extends BaseComponent<'header'> {
   });
 
   private languageIcon = new Picture(this.linksContainer.element, 'header-icon_lang icon', {
-    src: './assets/icons/png/change-language-icon.png',
+    src: './assets/icons/png/english.png',
     alt: 'Change language',
   });
 
@@ -127,6 +126,8 @@ export default class Header extends BaseComponent<'header'> {
     this.subscribeToEvents();
     this.initialThemes();
     this.setGridToTwoElements();
+    this.handleLogo();
+    window.addEventListener('resize', this.handleLogo);
   }
 
   public changeLanguage(): void {
@@ -135,9 +136,11 @@ export default class Header extends BaseComponent<'header'> {
       switch (language) {
         case this.languages.en:
           i18next.changeLanguage(this.languages.rus);
+          this.languageIcon.element.src = './assets/icons/png/english.png';
           break;
         case this.languages.rus:
           i18next.changeLanguage(this.languages.en);
+          this.languageIcon.element.src = './assets/icons/png/russian.png';
           break;
         default:
           break;
@@ -218,4 +221,13 @@ export default class Header extends BaseComponent<'header'> {
   public setGridToFourElements(): void {
     this.linksContainer.element.style.gridTemplateColumns = 'repeat(4, 3.5rem)';
   }
+
+  private handleLogo = (): void => {
+    const { innerWidth } = window;
+    if (innerWidth > 640) {
+      this.logoIcon.element.src = './assets/icons/png/logo.png';
+    } else {
+      this.logoIcon.element.src = './assets/icons/png/logo-mobile.png';
+    }
+  };
 }
