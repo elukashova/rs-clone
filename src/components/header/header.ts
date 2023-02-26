@@ -31,7 +31,7 @@ export default class Header extends BaseComponent<'header'> {
 
   private linksContainer = new BaseComponent('div', this.contentWrapper.element, 'header-icons-container');
 
-  public avatarDropDown = new BaseComponent('div', this.linksContainer.element, 'header-avatar-dropdown');
+  public avatarDropDown = new BaseComponent('div', undefined, 'header-avatar-dropdown');
 
   private avatarIcon = new Avatar(this.avatarDropDown.element, 'header-avatar-icon', {
     src: './assets/images/avatars/default.png',
@@ -68,7 +68,7 @@ export default class Header extends BaseComponent<'header'> {
     attributes: { href: Routes.LogOut },
   });
 
-  public addDropDown = new BaseComponent('div', this.linksContainer.element, 'header-add-dropdown');
+  public addDropDown = new BaseComponent('div', undefined, 'header-add-dropdown');
 
   private addIcon = new Svg(this.addDropDown.element, SvgNames.Plus2, ProjectColors.Turquoise, 'header-add-icon');
 
@@ -126,6 +126,7 @@ export default class Header extends BaseComponent<'header'> {
     this.changeTheme();
     this.subscribeToEvents();
     this.initialThemes();
+    this.setGridToTwoElements();
   }
 
   public changeLanguage(): void {
@@ -191,5 +192,30 @@ export default class Header extends BaseComponent<'header'> {
     eventEmitter.on('updateAvatar', (source: EventData) => {
       this.updateProfilePicture(source);
     });
+  }
+
+  public appendElementsInDashboard(): void {
+    this.linksContainer.element.insertBefore(this.addDropDown.element, this.languageIcon.element);
+    this.linksContainer.element.insertBefore(this.avatarDropDown.element, this.addDropDown.element);
+    this.setGridToFourElements();
+  }
+
+  public removeElementNotDashboard(): void {
+    if (this.avatarDropDown.element.parentElement === this.linksContainer.element) {
+      this.linksContainer.element.removeChild(this.avatarDropDown.element);
+    }
+
+    if (this.addDropDown.element.parentElement === this.linksContainer.element) {
+      this.linksContainer.element.removeChild(this.addDropDown.element);
+    }
+    this.setGridToTwoElements();
+  }
+
+  public setGridToTwoElements(): void {
+    this.linksContainer.element.style.gridTemplateColumns = 'repeat(2, 3.5rem)';
+  }
+
+  public setGridToFourElements(): void {
+    this.linksContainer.element.style.gridTemplateColumns = 'repeat(4, 3.5rem)';
   }
 }

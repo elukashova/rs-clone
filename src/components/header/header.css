@@ -31,7 +31,6 @@
 .header-icons-container {
   display: grid;
   align-items: center;
-  grid-template-columns: repeat(4, 3.5rem);
   gap: calc(0.4rem + 0.3vw);
 }
 

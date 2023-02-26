@@ -41,20 +41,17 @@ export default class App {
       case Routes.SignUp:
         this.main.element.style.backgroundImage = 'url(/assets/backgrounds/signup-background.jpg)';
         this.main.element.style.backgroundPosition = 'center';
-        this.header.avatarDropDown.element.style.display = 'none';
-        this.header.addDropDown.element.style.display = 'none';
+        this.header.removeElementNotDashboard();
         break;
       case Routes.LogIn:
         this.main.element.style.backgroundImage = 'url(/assets/backgrounds/login-background.jpg)';
         this.main.element.style.backgroundPosition = '30% 20%';
-        this.header.avatarDropDown.element.style.display = 'none';
-        this.header.addDropDown.element.style.display = 'none';
+        this.header.removeElementNotDashboard();
         break;
       default:
         this.parent.style.backgroundImage = '';
         this.parent.style.background = '#F6F4F9';
-        this.header.avatarDropDown.element.style.display = 'inline-block';
-        this.header.addDropDown.element.style.display = 'inline-block';
+        this.header.appendElementsInDashboard();
     }
   };
 
