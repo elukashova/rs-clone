@@ -61,7 +61,7 @@ export default class TrainingFeed extends BaseComponent<'article'> {
     if (this.posts.length) {
       this.deleteGreetingMessage();
       this.posts.forEach((post) => this.element.append(post.element));
-    } else {
+    } else if (this.element.children.length === 0) {
       this.showGreetingMessage();
     }
   }
@@ -121,6 +121,7 @@ export default class TrainingFeed extends BaseComponent<'article'> {
 
   public deleteGreetingMessage(): void {
     this.message.element.remove();
+    this.buttonContainer?.element.remove();
     this.addTrainingButton?.element.remove();
     this.findFriendsButton?.element.remove();
   }
@@ -148,6 +149,9 @@ export default class TrainingFeed extends BaseComponent<'article'> {
         this.posts = this.posts.filter((singlePost) => singlePost.postAuthorId !== data.friendId);
       }
     });
+    if (this.element.children.length === 0) {
+      this.showGreetingMessage();
+    }
   }
 
   private updateAvatarAfterChanging(data: EventData): void {
