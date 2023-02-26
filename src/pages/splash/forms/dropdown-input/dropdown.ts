@@ -31,7 +31,7 @@ export default class DropdownInput extends Input {
     });
 
     this.input.element.addEventListener('input', this.filterOptionsCallback);
-    this.input.element.addEventListener('blur', this.hideOptionsList);
+    document.addEventListener('click', this.handleClickOutsideInput);
     eventEmitter.on('countryEditButtonsAttached', () => {
       this.changeOkButtonCallback();
     });
@@ -52,7 +52,7 @@ export default class DropdownInput extends Input {
       );
       this.list.element.append(optionElement.element);
       this.allOptionsElements.push(optionElement.element);
-      optionElement.element.addEventListener('click', this.collectInputCallback);
+      this.list.element.addEventListener('click', this.collectInputCallback);
     });
   }
 
@@ -90,6 +90,7 @@ export default class DropdownInput extends Input {
   };
 
   private collectInputCallback = (e: Event): void => {
+    console.log(e.target);
     if (e.target instanceof HTMLLIElement) {
       this.input.element.value = `${e.target.innerText}`;
       this.checkIfValidCountry();
@@ -159,6 +160,12 @@ export default class DropdownInput extends Input {
           }
         })
         .catch(() => null);
+    }
+  };
+
+  private handleClickOutsideInput = (e: Event): void => {
+    if (e.target !== this.element) {
+      this.hideOptionsList();
     }
   };
 }
