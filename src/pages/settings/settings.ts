@@ -20,7 +20,6 @@ import Routes from '../../app/router/router.types';
 
 export default class Settings extends BaseComponent<'section'> {
   private dictionary: Record<string, string> = {
-    // перевести все
     heading: 'settings.heading',
     deleteAccount: 'settings.deleteAccount',
     updateAccount: 'settings.updateAccount',
