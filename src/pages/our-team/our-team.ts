@@ -69,6 +69,11 @@ export default class OurTeam extends BaseComponent<'section'> {
 
   private github = new Svg(this.svgContainer.element, SvgNames.Github, '', 'our-team__project-svg');
 
+  private i18next = new Picture(this.svgContainer.element, 'our-team__project-img', {
+    src: './assets/icons/svg/i18next.svg',
+    style: 'height:3em; width:6em',
+  });
+
   private bcrypt = new Picture(this.svgContainer.element, 'our-team__project-img', {
     src: './assets/icons/png/bcrypt.png',
     style: 'height:3em; width:10em',

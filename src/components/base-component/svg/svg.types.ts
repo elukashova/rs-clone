@@ -46,6 +46,7 @@ enum SvgNames {
   Github = 'github-in-circle',
   Webpack = 'webpack',
   Typescript = 'typescript',
+  i18next = 'i18next',
 }
 
 export default SvgNames;
