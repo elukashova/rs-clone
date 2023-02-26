@@ -78,6 +78,8 @@ export default class GenderBlock extends BaseComponent<'div'> {
     gender: '',
   };
 
+  private currentChoiceTitle: string = '';
+
   constructor(parent: HTMLElement) {
     super('div', parent, 'settings__gender_wrapper');
     this.editBlock.editBtn.element.addEventListener('click', this.showChoiceOptions);
@@ -101,6 +103,9 @@ export default class GenderBlock extends BaseComponent<'div'> {
   private saveCurrentChoice = (e: Event): void => {
     if (e.target instanceof HTMLInputElement) {
       this.currentChoice.gender = e.target.value;
+      // eslint-disable-next-line max-len
+      // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain, @typescript-eslint/no-non-null-assertion
+      this.currentChoiceTitle = e.target.parentElement?.firstChild?.textContent!;
     }
   };
 
@@ -143,7 +148,7 @@ export default class GenderBlock extends BaseComponent<'div'> {
         .then((user: User) => {
           if (user) {
             this.cancelUpdate();
-            this.newCurrentValue = `${this.currentChoice.gender}`;
+            this.newCurrentValue = `${this.currentChoiceTitle}`;
           }
         })
         .catch(() => null);
