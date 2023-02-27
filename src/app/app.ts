@@ -6,6 +6,8 @@ import Routes from './router/router.types';
 import eventEmitter from '../utils/event-emitter';
 import ModalAvatar from '../components/avatar-modal/avatar-modal';
 import { EventData } from '../utils/event-emitter.types';
+import { checkDataInLocalStorage } from '../utils/local-storage';
+import { Token } from './loader/loader-requests.types';
 
 export default class App {
   private header: Header;
@@ -16,9 +18,11 @@ export default class App {
 
   private router: Router;
 
+  private token: Token | null = checkDataInLocalStorage('userSessionToken');
+
   constructor(private readonly parent: HTMLElement) {
     this.parent.classList.add('root');
-    this.router = new Router(this.main, this.handleSplashStylesCallback);
+    this.router = new Router(this.main, this.handleStylesCallback);
     this.header = new Header(this.parent, this.router.locationHandler);
     this.parent.append(this.main.element);
     this.footer = new Footer(this.parent, this.router.locationHandler);
@@ -34,7 +38,7 @@ export default class App {
     this.router.locationHandler();
   }
 
-  private handleSplashStylesCallback = (location: string): void => {
+  private handleStylesCallback = (location: string): void => {
     switch (location) {
       case Routes.SignUp:
         this.main.element.style.backgroundImage = 'url(/assets/backgrounds/signup-background.jpg)';
@@ -47,7 +51,9 @@ export default class App {
         this.header.removeElementNotDashboard();
         break;
       case Routes.AboutTeam:
-        this.header.removeElementNotDashboard();
+        if (!this.token) {
+          this.header.removeElementNotDashboard();
+        }
         break;
       default:
         this.main.element.style.backgroundImage = '';
