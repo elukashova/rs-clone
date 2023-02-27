@@ -84,6 +84,7 @@
 
 .our-activity_btn:hover {
   background: none;
+  animation: wiggle 2s linear infinite;
 }
 
 .our-activity_btn_svg {

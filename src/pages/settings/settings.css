@@ -88,7 +88,7 @@
 .settings__country_label,
 .settings__gender_title {
   text-transform: uppercase;
-  font-size: calc(0.5em + 0.4vw);
+  font-size: calc(0.4rem + 0.5vw);
   white-space: nowrap;
   min-width: calc(5em + 5vw);
 }
@@ -132,7 +132,7 @@
   padding: 0;
   box-sizing: border-box;
   font-family: 'Work Sans', sans-serif;
-  font-size: calc(0.2em + 0.9vw);
+  font-size: calc(0.5rem + 0.5vw);
   color: #949494;
   text-align: start;
   border: none;
@@ -166,13 +166,13 @@
 
 .settings__input_title {
   text-transform: uppercase;
-  font-size: calc(0.5em + 0.4vw);
+  font-size: calc(0.5rem + 0.3vw);
 }
 
 .settings__input .input-text,
 .settings__dropdown .input-text {
   padding: 0;
-  font-size: calc(0.2em + 0.9vw);
+  font-size: calc(0.5rem + 0.5vw);
   font-family: 'Work Sans', sans-serif;
   text-align: start;
   background: none;
@@ -183,7 +183,7 @@
 }
 
 .settings__dropdown .input-text::placeholder {
-  font-size: calc(0.2em + 0.9vw);
+  font-size: calc(0.5rem + 0.3vw);
   font-family: 'Work Sans', sans-serif;
   color: #949494;
 }
@@ -203,7 +203,7 @@
 
 .settings__country-wrapper {
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   align-items: center;
   width: 100%;
   gap: 1em;
@@ -273,5 +273,33 @@
 
   .settings__wrapper {
     width: 100%;
+  }
+
+  .settings__dropdown .input-text {
+    width: min-content;
+  }
+
+  .settings__dropdown {
+    width: min-content;
+  }
+
+  .settings__gender_title {
+    width: 2rem;
+  }
+
+  .settings__gender_current {
+    margin-right: auto;
+  }
+
+  .settings__inputs_name-wrapper,
+  .settings__inputs_bio-wrapper,
+  .settings__input .label,
+  .settings__inputs-wrapper .settings__gender_wrapper {
+    gap: 3rem;
+  }
+
+  .settings__dropdown {
+    margin-right: auto;
+    margin-left: 2rem;
   }
 }

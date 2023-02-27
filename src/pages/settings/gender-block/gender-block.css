@@ -8,13 +8,14 @@
 .settings__gender_title {
   text-transform: uppercase;
   font-size: calc(0.5em + 0.4vw);
+  min-width: calc(4.6em + 5vw);
 }
 
 .settings__gender_current {
   padding-right: 5%;
   width: 60%;
   font-family: 'Work Sans', sans-serif;
-  font-size: calc(0.2em + 0.9vw);
+  font-size: calc(0.5rem + 0.5vw);
   color: #949494;
   text-align: start;
   visibility: visible;

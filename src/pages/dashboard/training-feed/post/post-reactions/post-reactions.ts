@@ -41,17 +41,34 @@ export default class PostReactions extends BaseComponent<'div'> {
     'div',
     this.element,
     'post-reactions__svg-wrapper',
+    '',
+  );
+
+  private likeWrapper: BaseComponent<'div'> = new BaseComponent(
+    'div',
+    this.svgButtonsWrapper.element,
+    'post-reactions__like-wrapper',
+    '',
+    { title: 'Like this post' },
+  );
+
+  private commentWrapper: BaseComponent<'div'> = new BaseComponent(
+    'div',
+    this.svgButtonsWrapper.element,
+    'post-reactions__comment-wrapper',
+    '',
+    { title: 'Comment this post' },
   );
 
   public like: Svg = new Svg(
-    this.svgButtonsWrapper.element,
+    this.likeWrapper.element,
     SvgNames.Like,
     ProjectColors.LightTurquoise,
     'post-reaction__reaction-svg post-reaction__reaction-like',
   );
 
   public comment: Svg = new Svg(
-    this.svgButtonsWrapper.element,
+    this.commentWrapper.element,
     SvgNames.Comment,
     ProjectColors.LightTurquoise,
     'post-reaction__reaction-svg post-reaction__reaction-comment',

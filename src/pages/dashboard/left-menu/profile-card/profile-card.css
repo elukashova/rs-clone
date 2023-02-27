@@ -42,6 +42,12 @@
   fill: #1cbaa7;
 }
 
+.profile-card__photo_btn:hover,
+.profile-card__photo_btn_svg:hover {
+  transition: all 0.5s ease-in-out;
+  scale: 1.02;
+}
+
 .profile-card__name_wrapper,
 .profile-card__about_wrapper {
   display: flex;
@@ -72,6 +78,7 @@
 .profile-card__about_btn:hover {
   background: none;
   background-color: none;
+  animation: wiggle 2s linear infinite;
 }
 
 .profile-card__name_btn_svg,
