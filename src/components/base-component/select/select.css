@@ -1,6 +1,7 @@
 .select {
   appearance: none;
   background-color: var(--color-background-opacity);
+  pointer-events: none;
 }
 
 .select .label {

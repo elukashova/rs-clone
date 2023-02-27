@@ -54,7 +54,7 @@
 }
 
 .challenge__title {
-  font-size: 1rem;
+  font-size: 0.9rem;
 }
 
 .challenge__description,
@@ -63,6 +63,13 @@
 .challenge__days-to-end,
 .challenge__friend {
   font-size: 0.8rem;
+  line-height: 0.9rem;
+}
+
+.challenge__date-start,
+.challenge__date-end,
+.challenge__days-to-end {
+  color: var(--font-additional);
 }
 
 .challenge__date-start,

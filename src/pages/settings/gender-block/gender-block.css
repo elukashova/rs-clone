@@ -2,6 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 1em;
 }
 
 .settings__gender_title {
@@ -11,11 +12,11 @@
 
 .settings__gender_current {
   padding-right: 5%;
-  width: 100%;
+  width: 60%;
   font-family: 'Work Sans', sans-serif;
   font-size: calc(0.2em + 0.9vw);
   color: #949494;
-  text-align: center;
+  text-align: start;
   visibility: visible;
   transform: scaleY(1);
 }
@@ -44,6 +45,7 @@
   width: 0;
   height: 0;
   visibility: hidden;
+  display: none;
   transform: scaleY(0);
 }
 
@@ -64,10 +66,11 @@
   border-radius: 50%;
   border: 1px solid #219486;
   appearance: none;
+  transition: all 0.3s ease-in-out;
 }
 
 .input-radio:checked {
-  background: #ff8d24;
+  background: #219486;
 }
 
 .settings__gender_btn {
