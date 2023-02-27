@@ -240,8 +240,6 @@ export default class AddActivity extends BaseComponent<'section'> {
     this.updateTitle();
     this.subscribeOnEvent();
     i18next.on('languageChanged', () => {
-      console.log(this.setTitle());
-      console.log(this.title.input.element.placeholder);
       this.updateTitle();
     });
   }
@@ -261,11 +259,12 @@ export default class AddActivity extends BaseComponent<'section'> {
 
   private setTitle(inputHours?: number): string {
     const isHike: boolean = this.training.selectValue === 'hiking';
-    const hours: number = inputHours || new Date().getHours();
+    const hours: number = inputHours !== undefined ? inputHours : new Date().getHours();
     const morning = isHike ? i18next.t(this.dictionary.morningHike) : i18next.t(this.dictionary.morning);
     const afternoon = isHike ? i18next.t(this.dictionary.afternoonHike) : i18next.t(this.dictionary.afternoon);
     const evening = isHike ? i18next.t(this.dictionary.eveningHike) : i18next.t(this.dictionary.evening);
     const night = isHike ? i18next.t(this.dictionary.nightHike) : i18next.t(this.dictionary.night);
+
     if (hours >= 6 && hours <= 11) return `${morning} ${this.defineSportForTitle()}`;
     if (hours >= 12 && hours <= 18) return `${afternoon} ${this.defineSportForTitle()}`;
     if (hours >= 19 && hours <= 23) return `${evening} ${this.defineSportForTitle()}`;
@@ -331,8 +330,7 @@ export default class AddActivity extends BaseComponent<'section'> {
     });
 
     this.time.input.element.addEventListener('input', () => {
-      const { value } = this.time.input.element;
-      const hours: string = value.startsWith('0') ? value.slice(0, 1) : value.slice(0, 2);
+      const hours: string = this.getInputHours();
       this.updateTitle(Number(hours));
     });
   }
@@ -345,9 +343,16 @@ export default class AddActivity extends BaseComponent<'section'> {
     });
   }
 
+  private getInputHours(): string {
+    const { value } = this.time.input.element;
+    const [timeSplitted] = value.split(':');
+    return timeSplitted.startsWith('0') ? timeSplitted.slice(1) : timeSplitted.slice(0, 2);
+  }
+
   private selectSportCallback = (): void => {
     this.updateMap();
-    this.updateTitle();
+    const hours: string = this.getInputHours();
+    this.updateTitle(Number(hours));
   };
 
   private updateMap = (): void => {
@@ -362,7 +367,6 @@ export default class AddActivity extends BaseComponent<'section'> {
       this.map.deleteMap();
       this.map = new GoogleMaps(this.mapDiv.element, { lat: 38.771, lng: -9.058 }, updatedValue, true);
     }
-    console.log(this.map);
   };
 
   private static checkSelect(value: string): string {
@@ -436,14 +440,15 @@ export default class AddActivity extends BaseComponent<'section'> {
   }
 
   private updateTitle(hours?: number): void {
-    this.title.input.element.value = hours ? this.setTitle(hours) : this.setTitle();
-    this.title.input.element.placeholder = this.setTitle();
+    this.title.input.element.value = hours !== undefined || hours === 0 ? this.setTitle(hours) : this.setTitle();
+    if (hours === undefined || hours !== 0) {
+      this.title.input.element.placeholder = this.setTitle();
+    }
   }
 
   private defineSportForTitle(): string {
     const sport: string = this.training.selectValue;
     let sportType: string;
-    console.log(sport);
 
     switch (sport) {
       case 'running':
