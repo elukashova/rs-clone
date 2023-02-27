@@ -190,6 +190,7 @@ i18next.use(LanguageDetector).init({
         },
         challenges: {
           participants: 'Participants',
+          friendsInChallenge: 'Friends in challenge: {{count}}',
           noProgress: 'Challenge without progress check',
           hikingChallenge: 'Conquer your Everest',
           runningChallenge: 'The Tour de Valiance',
@@ -460,6 +461,7 @@ i18next.use(LanguageDetector).init({
         },
         challenges: {
           participants: 'Участники',
+          friendsInChallenge: 'Друзей участвуют: {{count}}',
           noProgress: 'В этом испытании прогресс не отслеживается',
           headingChallenges: 'Испытания',
           title: 'Испытания',

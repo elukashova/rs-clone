@@ -19,6 +19,7 @@ export default class Challenge extends BaseComponent<'div'> {
     challengeOver: 'challenges.challengeOver',
     acceptButton: 'challenges.acceptButton',
     acceptedButton: 'challenges.acceptedButton',
+    friendsInChallenge: 'challenges.friendsInChallenge',
   };
 
   private token: Token | null = checkDataInLocalStorage('userSessionToken');
@@ -151,8 +152,13 @@ export default class Challenge extends BaseComponent<'div'> {
         'p',
         this.friendsBlock.element,
         'challenge__friend',
-        `Friends in challenge: ${this.avatarData.length}`,
+        i18next.t(this.dictionary.friendsInChallenge, { count: this.avatarData.length }).toString(),
       );
+      i18next.on('languageChanged', () => {
+        this.friends.element.textContent = i18next
+          .t(this.dictionary.friendsInChallenge, { count: this.avatarData.length })
+          .toString();
+      });
     }
     this.button = new Button(this.element, this.dictionary.acceptButton, 'challenge__button');
     this.addListeners();

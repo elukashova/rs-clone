@@ -82,7 +82,7 @@ export default class Input extends BaseComponent<'div'> {
     this.message = message;
 
     if (validityState.valueMissing) {
-      this.checkInputValidity(ValidityMessages.EmptyValue + this.inputName);
+      this.checkInputValidity(i18next.t(ValidityMessages.EmptyValue) + this.inputName);
       return false;
     }
     if (validityState.typeMismatch || validityState.patternMismatch) {
@@ -175,7 +175,7 @@ export default class Input extends BaseComponent<'div'> {
 
   public updateOkButtonCallback = (): void => {
     if (this.type === InputTypes.Email) {
-      if (!this.checkInput(ValidityMessages.Email)) {
+      if (!this.checkInput(i18next.t(ValidityMessages.Email))) {
         return;
       }
     }
