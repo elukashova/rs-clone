@@ -157,8 +157,8 @@ export default class GenderBlock extends BaseComponent<'div'> {
 
   private cancelUpdate = (): void => {
     this.isUpdate = false;
-    this.radioButtons.element.classList.remove('visible-buttons');
     this.genderCurrentChoice.element.classList.remove('current-hidden');
+    this.radioButtons.element.classList.remove('visible-buttons');
     this.genderCurrentChoice.element.textContent = this.currentValue;
     this.editBlock.editBtn.replaceBtnSvg(SvgNames.Pencil, 'settings__gender', ProjectColors.Grey);
     this.editBlock.removeOkButton();

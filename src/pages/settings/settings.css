@@ -40,7 +40,6 @@
   z-index: 2;
   bottom: 0;
   right: 10px;
-  /* transform: translateX(0) translateY(0); */
   width: 1.5em;
   height: 1.5em;
   padding: 0;
@@ -172,7 +171,6 @@
 
 .settings__input .input-text,
 .settings__dropdown .input-text {
-  height: 2em;
   padding: 0;
   font-size: calc(0.2em + 0.9vw);
   font-family: 'Work Sans', sans-serif;
@@ -237,6 +235,43 @@
   width: 100%;
 }
 
-.settings__about {
-  padding-right: 5%;
+@media (max-width: 1100px) {
+  .settings {
+    width: 70%;
+  }
+
+  .settings__wrapper {
+    width: 80%;
+  }
+}
+
+@media (max-width: 780px) {
+  .settings {
+    width: 80%;
+  }
+
+  .settings__wrapper {
+    width: 80%;
+  }
+}
+
+@media (max-width: 600px) {
+  .settings {
+    width: 90%;
+  }
+
+  .settings__wrapper {
+    width: 85%;
+  }
+}
+
+@media (max-width: 500px) {
+  .settings {
+    width: 90%;
+    padding: 1.5em 0.5em 3em;
+  }
+
+  .settings__wrapper {
+    width: 100%;
+  }
 }
