@@ -24,10 +24,13 @@ export default class DropdownInput extends Input {
 
   private optionsStrings: string[] = [];
 
+  private context: string | null;
+
   constructor(parent: HTMLElement, private prefix: string, text: string) {
     super(parent, `${prefix}__dropdown dropdown-menu`, text, {
-      type: text,
+      type: 'text',
       required: '',
+      'data-id': 'country',
     });
 
     this.input.element.addEventListener('input', this.filterOptionsCallback);
@@ -35,6 +38,8 @@ export default class DropdownInput extends Input {
     eventEmitter.on('countryEditButtonsAttached', () => {
       this.changeOkButtonCallback();
     });
+
+    this.context = this.input.element.getAttribute('data-id');
   }
 
   public retrieveDataForDropdown(options: string[]): void {
@@ -90,7 +95,6 @@ export default class DropdownInput extends Input {
   };
 
   private collectInputCallback = (e: Event): void => {
-    console.log(e.target);
     if (e.target instanceof HTMLLIElement) {
       this.input.element.value = `${e.target.innerText}`;
       this.checkIfValidCountry();
@@ -107,7 +111,7 @@ export default class DropdownInput extends Input {
     const validityState: ValidityState = this.input.element.validity;
 
     if (validityState.valueMissing) {
-      this.checkInputValidity(ValidityMessages.EmptyValue + this.inputName);
+      this.checkInputValidity(i18next.t(ValidityMessages.EmptyValue, { context: this.context }));
       return false;
     }
 
@@ -141,7 +145,6 @@ export default class DropdownInput extends Input {
     if (this.editBlock && this.editBlock.okButton) {
       this.editBlock.okButton.element.removeEventListener('click', this.updateOkButtonCallback);
       this.editBlock.okButton.element.addEventListener('click', this.countriesOkButtonCallback);
-      console.log('here');
     }
   }
 

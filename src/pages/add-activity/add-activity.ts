@@ -240,8 +240,6 @@ export default class AddActivity extends BaseComponent<'section'> {
     this.updateTitle();
     this.subscribeOnEvent();
     i18next.on('languageChanged', () => {
-      console.log(this.setTitle());
-      console.log(this.title.input.element.placeholder);
       this.updateTitle();
     });
   }
@@ -443,7 +441,6 @@ export default class AddActivity extends BaseComponent<'section'> {
   private defineSportForTitle(): string {
     const sport: string = this.training.selectValue;
     let sportType: string;
-    console.log(sport);
 
     switch (sport) {
       case 'running':
