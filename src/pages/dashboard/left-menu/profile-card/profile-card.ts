@@ -70,13 +70,17 @@ export default class ProfileCard extends BaseComponent<'div'> {
     const bio: string = user.bio || '';
     this.render(user.avatarUrl, user.username, bio);
     this.changePhotoButton.element.addEventListener('click', this.changePhotoBtnCallback);
+    // window.addEventListener('resize', this.adjustTextarea);
+    // this.adjustTextarea();
     this.subscribeToEvents();
   }
 
   private render(url: string, name: string, bio: string): void {
     this.photo.element.setAttribute('src', url);
     this.name = new EditableTextarea(this.element, 'profile-card__name', name, TextareaTypes.Username, true);
+    this.name.textarea.element.maxLength = 30;
     this.about = new EditableTextarea(this.element, 'profile-card__about', bio, TextareaTypes.Bio, true);
+    this.about.textarea.element.maxLength = 80;
     if (bio.length === 0) {
       this.about.textarea.element.placeholder = i18next.t(this.dictionary.defaultBio);
     }
@@ -118,4 +122,32 @@ export default class ProfileCard extends BaseComponent<'div'> {
       this.trainings.updateScore(this.activitiesCounter);
     });
   }
+
+  // private adjustTextarea = (): void => {
+  //   const { innerWidth } = window;
+  //   console.log(innerWidth);
+  //   console.log(this.element.clientWidth);
+  //   if (this.element.clientWidth < 325) {
+  //     if (this.about) {
+  //       this.about.textarea.element.rows = 3;
+  //     }
+  //   }
+  //   if (this.element.clientWidth < 230) {
+  //     if (this.name && this.about) {
+  //       this.name.textarea.element.rows = 2;
+  //       this.about.textarea.element.rows = 3;
+  //     }
+  //   }
+  //   if (this.element.clientWidth < 200) {
+  //     if (this.about) {
+  //       this.about.textarea.element.rows = 4;
+  //     }
+  //   }
+  //   if (this.element.clientWidth > 325) {
+  //     if (this.name && this.about) {
+  //       this.name.resizeTextarea();
+  //       this.about.resizeTextarea();
+  //     }
+  //   }
+  // };
 }

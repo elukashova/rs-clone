@@ -134,6 +134,7 @@ export default class Settings extends BaseComponent<'section'> {
       TextareaTypes.Username,
       false,
     );
+    this.name.textarea.element.maxLength = 30;
     this.email = new Input(this.inputsWrapper.element, 'settings__input', this.dictionary.email, {
       value: user.email,
       type: 'email',
