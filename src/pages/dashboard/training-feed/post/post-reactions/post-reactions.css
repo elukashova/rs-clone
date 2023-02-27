@@ -40,7 +40,7 @@
 .post-reactions__likes-number {
   font-weight: 300;
   color: #949494;
-  font-size: calc(0.4em + 0.4vw);
+  font-size: calc(0.5rem + 0.3vw);
 }
 
 .post-reactions__svg-wrapper {
