@@ -43,11 +43,13 @@ export default class App {
       case Routes.SignUp:
         this.main.element.style.backgroundImage = 'url(/assets/backgrounds/signup-background.jpg)';
         this.main.element.style.backgroundPosition = 'center';
+        this.main.element.style.backgroundRepeat = 'no-repeat';
         this.header.removeElementNotDashboard();
         break;
       case Routes.LogIn:
         this.main.element.style.backgroundImage = 'url(/assets/backgrounds/login-background.jpg)';
         this.main.element.style.backgroundPosition = '30% 20%';
+        this.main.element.style.backgroundRepeat = 'no-repeat';
         this.header.removeElementNotDashboard();
         break;
       case Routes.AboutTeam:

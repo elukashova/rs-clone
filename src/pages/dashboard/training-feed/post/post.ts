@@ -393,16 +393,22 @@ export default class Post extends BaseComponent<'div'> {
   public defineButtonBasenOnAuthor(): void {
     if (this.userId) {
       if (this.postAuthorId === this.userId) {
+        const deleteWrapper = new BaseComponent('div', this.userInfo.element, 'post__edit-svg-wrapper', '', {
+          title: 'Delete activity',
+        });
         const deleteActivitySvg: Svg = new Svg(
-          this.userInfo.element,
+          deleteWrapper.element,
           SvgNames.DeletePost,
           ProjectColors.Grey,
           'post__edit-svg',
         );
         deleteActivitySvg.svg.addEventListener('click', this.deletePostAndActivity);
       } else {
+        const unfollowWrapper = new BaseComponent('div', this.userInfo.element, 'post__edit-svg-wrapper', '', {
+          title: 'Unfollow',
+        });
         const unfollowFriendSvg: Svg = new Svg(
-          this.userInfo.element,
+          unfollowWrapper.element,
           SvgNames.Unfollow,
           ProjectColors.Grey,
           'post__edit-svg',

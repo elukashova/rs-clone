@@ -78,6 +78,7 @@
   position: absolute;
   right: 0;
   background-color: var(--color-background-second);
+  box-shadow: rgba(33, 33, 33, 0.212) 0px 4px 12px;
   border-radius: 5px;
   min-width: max-content;
   z-index: 3;
