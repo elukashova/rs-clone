@@ -6,6 +6,7 @@ export default class Page404 extends BaseComponent<'section'> {
 
   private img: BaseComponent<'img'> = new BaseComponent('img', this.imgWrapper.element, 'page-not-found__image', '', {
     src: 'assets/images/404.png',
+    alt: 'not found',
   });
 
   constructor(parent: HTMLElement) {

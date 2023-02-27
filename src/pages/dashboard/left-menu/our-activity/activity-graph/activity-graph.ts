@@ -5,7 +5,6 @@ import { ProjectColors } from '../../../../../utils/consts';
 import { getFirstAndLastDaysOfWeek } from '../../../../../utils/utils';
 import { DailyData } from '../our-activity.types';
 import './activity-graph.css';
-// import moment from 'moment';
 
 export default class ActivityGraph extends BaseComponent<'div'> {
   private dictionary: Record<string, string> = {
@@ -62,7 +61,6 @@ export default class ActivityGraph extends BaseComponent<'div'> {
       this.allDivWrappers.push(divElement.element);
     }
   }
-  // TODO: переделать graphicElement и dayElement в отдельные компоненты. Нельзя перевести
 
   private renderSpans(): void {
     for (let i: number = 0; i < this.allDivWrappers.length; i += 1) {

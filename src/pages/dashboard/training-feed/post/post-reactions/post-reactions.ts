@@ -140,6 +140,7 @@ export default class PostReactions extends BaseComponent<'div'> {
       this.frontAvatar = new Picture(
         this.avatarsWrapper.element,
         'post-reactions__avatar post-reactions__avatar-front',
+        { alt: 'avatar' },
       );
       avatars.push(this.frontAvatar);
     }
@@ -148,12 +149,15 @@ export default class PostReactions extends BaseComponent<'div'> {
       this.middleAvatar = new Picture(
         this.avatarsWrapper.element,
         'post-reactions__avatar post-reactions__avatar-middle',
+        { alt: 'avatar' },
       );
       avatars.push(this.middleAvatar);
     }
 
     if (numberOfAvatars === 3 && this.frontAvatar && this.middleAvatar) {
-      this.backAvatar = new Picture(this.avatarsWrapper.element, 'post-reactions__avatar post-reactions__avatar-back');
+      this.backAvatar = new Picture(this.avatarsWrapper.element, 'post-reactions__avatar post-reactions__avatar-back', {
+        alt: 'avatar',
+      });
 
       avatars.push(this.backAvatar);
     }

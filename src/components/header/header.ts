@@ -124,7 +124,8 @@ export default class Header extends BaseComponent<'header'> {
     window.addEventListener('resize', this.handleLogo);
   }
 
-  public changeLanguage = (): void => {
+  public changeLanguage = (e: Event): void => {
+    e.preventDefault();
     const language: string | null = localStorage.getItem('i18nextLng');
     switch (language) {
       case this.languages.en:

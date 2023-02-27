@@ -19,12 +19,10 @@
   display: flex;
   flex-direction: column;
   gap: calc(1rem + 0.5vw);
-  width: 100%;
 }
 
 .add-activity__form {
   padding: 2% 0 2% 0;
-  width: 100%;
 }
 
 .block-path {
@@ -71,6 +69,14 @@
   text-transform: uppercase;
   font-size: 0.9rem;
   color: var(--font-basic);
+}
+
+.add-activity__input .label span {
+  white-space: nowrap;
+}
+
+.add-activity__input .label .input-text {
+  min-width: 2rem;
 }
 
 .add-activity__input .input-text,
@@ -168,7 +174,7 @@
   width: 100%;
 }
 
-@media (max-width: 500px) {
+@media (max-width: 800px) {
   .add-activity__heading {
     padding-bottom: 1rem;
   }
@@ -177,7 +183,7 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    gap: calc(1rem + 0.5vw);
+    gap: calc(0.5rem + 1vw);
   }
 
   .add-activity__block .add-activity__block-container {
@@ -190,14 +196,44 @@
     height: 2rem;
   }
 
+  .block-duration {
+    display: grid;
+    grid-template-columns: 100%;
+    align-items: flex-end;
+    gap: 0.5em;
+  }
+
   .map-wrapper {
     height: 10rem !important;
   }
 
   .gm-control-active.gm-fullscreen-control {
-    /*  width: 1rem !important; */
     margin: 5px 0 !important;
     height: 20px !important;
     width: 20px !important;
+  }
+
+  .textarea.add-activity__input.input-description .textarea__label .textarea {
+    height: 4rem;
+  }
+
+  .gm-style-iw-d .google-maps__popup {
+    position: relative !important;
+    z-index: 10000 !important;
+    width: 10rem !important;
+    font-size: 0.6rem !important;
+    height: 4rem !important;
+    /* overflow-y: scroll; */
+    padding: 0;
+    margin: 0;
+  }
+
+  .gm-style-iw-a {
+    visibility: visible;
+    top: 3.6rem;
+  }
+
+  .gm-style .gm-style-iw-c {
+    overflow: visible !important;
   }
 }

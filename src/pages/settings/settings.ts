@@ -18,6 +18,7 @@ import GenderBlock from './gender-block/gender-block';
 import eventEmitter from '../../utils/event-emitter';
 import Routes from '../../app/router/router.types';
 import LoadingTimer from '../../components/base-component/loading/loading';
+import { EventData } from '../../utils/event-emitter.types';
 
 export default class Settings extends BaseComponent<'section'> {
   private dictionary: Record<string, string> = {
@@ -85,6 +86,10 @@ export default class Settings extends BaseComponent<'section'> {
         this.createCountriesList();
       }
     });
+
+    eventEmitter.on('updateAvatar', (source: EventData) => {
+      this.updateProfilePicture(source);
+    });
   }
 
   private init(): void {
@@ -110,7 +115,7 @@ export default class Settings extends BaseComponent<'section'> {
     this.settingsWrapper = new BaseComponent('div', this.element, 'settings__wrapper');
     this.heading = new BaseComponent('h2', this.settingsWrapper.element, 'settings__heading', this.dictionary.heading);
     this.avatarWrapper = new BaseComponent('div', this.settingsWrapper.element, 'settings__avatar-wrapper');
-    this.profileImage = new Picture(this.avatarWrapper.element, 'settings__photo');
+    this.profileImage = new Picture(this.avatarWrapper.element, 'settings__photo', { alt: 'profile photo' });
     this.changePhotoButton = new Button(this.avatarWrapper.element, '', 'settings__photo_btn');
     this.changePhotoSVG = new Svg(
       this.changePhotoButton.element,
@@ -210,9 +215,14 @@ export default class Settings extends BaseComponent<'section'> {
       deleteUser(this.token).then(() => {
         localStorage.removeItem('userSessionToken');
         this.token = null;
+        localStorage.clear();
         window.history.pushState({}, '', Routes.SignUp);
         this.replaceMainCallback();
       });
     }
   };
+
+  private updateProfilePicture(url: EventData): void {
+    this.profileImage.element.src = `${url.url}`;
+  }
 }

@@ -85,6 +85,7 @@ export default class AddActivity extends BaseComponent<'section'> {
       pattern: convertRegexToPattern(VALID_NUMBER),
       placeholder: '0',
       value: '0',
+      maxLength: '3',
     },
   );
 
@@ -103,6 +104,7 @@ export default class AddActivity extends BaseComponent<'section'> {
       value: '01',
       placeholder: '01',
       pattern: convertRegexToPattern(VALID_NUMBER),
+      maxLength: '2',
     },
   );
 
@@ -111,6 +113,7 @@ export default class AddActivity extends BaseComponent<'section'> {
     value: '00',
     placeholder: '00',
     pattern: convertRegexToPattern(VALID_TIME),
+    maxLength: '2',
   });
 
   private durationSeconds = new Input(this.durationContainer.element, 'add-activity__input input-seconds', '', {
@@ -118,6 +121,7 @@ export default class AddActivity extends BaseComponent<'section'> {
     value: '00',
     placeholder: '00',
     pattern: convertRegexToPattern(VALID_TIME),
+    maxLength: '2',
   });
 
   private elevationContainer = new BaseComponent('div', this.pathInfoBlock.element, 'add-activity__block-container');
@@ -131,6 +135,7 @@ export default class AddActivity extends BaseComponent<'section'> {
       value: '0',
       placeholder: '0',
       pattern: convertRegexToPattern(VALID_NUMBER),
+      maxLength: '4',
     },
   );
 
@@ -171,6 +176,7 @@ export default class AddActivity extends BaseComponent<'section'> {
 
   private title = new Input(this.titleContainer.element, 'add-activity__input input-title', this.dictionary.title, {
     type: 'text',
+    maxlength: '30',
   });
 
   private descriptionBlock = new BaseComponent(
@@ -192,8 +198,8 @@ export default class AddActivity extends BaseComponent<'section'> {
     this.dictionary.description,
     {
       type: 'textarea',
-      maxlength: '1000',
-      rows: '4',
+      maxlength: '80',
+      rows: '3',
       placeholder: this.dictionary.descriptionPlaceholder,
     },
   );
@@ -322,7 +328,6 @@ export default class AddActivity extends BaseComponent<'section'> {
       }
     });
 
-    // слушатель для селекта
     this.training.optionsAll.forEach((el) => el.addEventListener('click', this.selectSportCallback));
 
     this.map.clearButton.element.addEventListener('click', () => {
@@ -406,11 +411,11 @@ export default class AddActivity extends BaseComponent<'section'> {
 
   private checkNumberInputs = (e: Event): boolean => {
     const conditionsArray: boolean[] = [
-      this.durationHours.checkInput(ValidityMessages.Number),
-      this.durationMinutes.checkInput(ValidityMessages.Time),
-      this.durationMinutes.checkInput(ValidityMessages.Time),
-      this.elevation.checkInput(ValidityMessages.Number),
-      this.distance.checkInput(ValidityMessages.Number),
+      this.durationHours.checkInput(i18next.t(ValidityMessages.Number)),
+      this.durationMinutes.checkInput(i18next.t(ValidityMessages.Time)),
+      this.durationMinutes.checkInput(i18next.t(ValidityMessages.Time)),
+      this.elevation.checkInput(i18next.t(ValidityMessages.Number)),
+      this.distance.checkInput(i18next.t(ValidityMessages.Number)),
     ];
 
     if (conditionsArray.includes(false)) {

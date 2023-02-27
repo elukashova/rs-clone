@@ -123,7 +123,7 @@ export default class EditableTextarea extends BaseComponent<'div'> {
         return;
       }
     } else {
-      this.checkTextarea('');
+      this.textarea.element.removeAttribute('required');
     }
 
     this.resizeTextarea();

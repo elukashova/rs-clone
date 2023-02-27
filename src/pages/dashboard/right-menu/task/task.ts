@@ -64,6 +64,7 @@ export default class Task extends BaseComponent<'div'> {
 
     this.photo = new Picture(this.nameWrapper.element, 'task__photo', {
       src: `../../../../../assets/images/challenges/${this.type}.jpg`,
+      alt: `${this.type}`,
     });
 
     this.taskData = new BaseComponent('div', this.nameWrapper.element, 'task__data');
