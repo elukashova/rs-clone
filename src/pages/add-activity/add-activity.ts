@@ -7,8 +7,7 @@ import Button from '../../components/base-component/button/button';
 import Select from '../../components/base-component/select/select';
 import Input from '../../components/base-component/text-input-and-label/text-input';
 import TextArea from '../../components/base-component/textarea/textarea';
-import SvgNames from '../../components/base-component/svg/svg.types';
-import { ProjectColors, VALID_NUMBER, VALID_TIME } from '../../utils/consts';
+import { VALID_NUMBER, VALID_TIME } from '../../utils/consts';
 import GoogleMaps from '../../map/google-maps';
 import { ActivityRequest, Token } from '../../app/loader/loader-requests.types';
 import { createActivity } from '../../app/loader/services/activity-services';
@@ -84,6 +83,8 @@ export default class AddActivity extends BaseComponent<'section'> {
     {
       type: 'text',
       pattern: convertRegexToPattern(VALID_NUMBER),
+      placeholder: '0',
+      value: '0',
     },
   );
 
@@ -164,17 +165,6 @@ export default class AddActivity extends BaseComponent<'section'> {
     type: 'time',
   });
 
-  private searchContainer = new BaseComponent('div', this.trainingBlock.element, 'add-activity__block');
-
-  private search = new Input(
-    this.searchContainer.element,
-    'add-activity__input input-search',
-    this.dictionary.trainTogether,
-    {
-      type: 'search',
-    },
-  );
-
   private titleBlock = new BaseComponent('div', this.formFieldset.element, 'add-activity__block', '');
 
   private titleContainer = new BaseComponent('div', this.titleBlock.element, 'add-activity__block-container');
@@ -219,7 +209,12 @@ export default class AddActivity extends BaseComponent<'section'> {
 
   private mapDiv: BaseComponent<'div'> = new BaseComponent('div', this.mapBlock.element, 'map', '', { id: 'map' });
 
-  private map = new GoogleMaps(this.mapDiv.element, { lat: 38.771, lng: -9.058 }, google.maps.TravelMode.WALKING, true);
+  private map = new GoogleMaps(
+    this.mapDiv.element,
+    { lat: 47.377472751051535, lng: 8.53673549999999 },
+    google.maps.TravelMode.WALKING,
+    true,
+  );
 
   public saveButton = new Button(this.formElement.element, this.dictionary.save, 'btn-activity');
 
@@ -240,7 +235,6 @@ export default class AddActivity extends BaseComponent<'section'> {
 
   constructor(parent: HTMLElement, private replaceMainCallback: () => void) {
     super('section', parent, 'add-activity add-activity-section');
-    this.search.addSvgIcon(SvgNames.Search, ProjectColors.Grey, 'search');
     this.addListeners();
     this.setDefaultTime();
     this.updateTitle();

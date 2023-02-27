@@ -16,21 +16,22 @@ input {
 
 label > input[type='search'] {
   padding-left: calc(1em + 30px);
-  height: 2em;
+  height: 2.5em;
   background-color: var(--color-background-opacity);
+  border: 1px solid #1cbaa7;
 }
 
 input[type='search'] {
   width: 8vw;
   height: 30px;
   border-radius: 5px;
-  border: 1px solid var(--font-additional);
+  border: 1px solid #1cbaa7;
 }
 
 label > .search-icon {
   position: absolute;
-  top: 57%;
-  left: 10px;
+  top: calc(0.9rem + 0.9em);
+  left: 0.4rem;
   width: 25px;
   height: 25px;
 }

@@ -108,7 +108,7 @@ export default class EditableTextarea extends BaseComponent<'div'> {
     }
   };
 
-  private updateTextAlignment(): void {
+  public updateTextAlignment(): void {
     this.textarea.element.style.textAlign = this.isUpdate === true ? 'left' : 'center';
     this.resizeTextarea();
   }

@@ -1,23 +1,24 @@
 .pagination {
   display: grid;
-  grid-template-columns: 5% 4em 5%;
+  grid-template-columns: calc(1rem + 1vw) 4em calc(1rem + 1vw);
   align-items: center;
   justify-items: center;
-  gap: 0.5em;
+  width: 100%;
+  gap: 0.1em;
 }
 
 .right-svg__block,
 .left-svg__block {
   position: relative;
-  width: 1.5rem;
-  height: 1.5rem;
+  width: calc(1rem + 1vw);
+  height: calc(0.8rem + 0.6vw);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .right-svg,
 .left-svg {
-  position: absolute;
-  top: 0;
-  left: 0.2rem;
   width: 1.5rem;
   height: 1.5rem;
 }
@@ -46,4 +47,21 @@
 .left-svg__block:disabled {
   opacity: 40%;
   pointer-events: none;
+}
+
+@media (max-width: 900px) {
+  .pagination {
+    grid-template-columns: 1rem 4em 1rem;
+  }
+
+  .right-svg__block,
+  .left-svg__block {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .right-svg__block.btn,
+  .left-svg__block.btn {
+    padding: 1%;
+  }
 }

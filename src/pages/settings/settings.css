@@ -5,19 +5,23 @@
   align-items: center;
   margin: 3rem 0 3rem 0;
   padding: 1.5em 2em 3em;
-  box-shadow: rgba(33, 33, 33, 0.027) 0px 4px 12px;
-  background-color: var(--color-background-second);
+  background: var(--color-background-second);
+  box-shadow: rgba(183, 183, 183, 0.076) 0px 0px 0px 1px;
   border-radius: 5px;
 }
 
 .settings__wrapper {
-  width: 60%;
+  width: 70%;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: calc(0.5em + 3vh);
 }
 
 .settings__avatar-wrapper {
+  width: calc(3.5em + 3vw);
+  height: calc(3.5em + 3vw);
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -34,7 +38,9 @@
 .settings__photo_btn {
   position: absolute;
   z-index: 2;
-  transform: translateX(130%) translateY(330%);
+  bottom: 0;
+  right: 10px;
+  /* transform: translateX(0) translateY(0); */
   width: 1.5em;
   height: 1.5em;
   padding: 0;
@@ -57,6 +63,7 @@
   display: flex;
   flex-direction: column;
   gap: calc(0.5em + 1.5vh);
+  width: 90%;
 }
 
 .settings__inputs_name-wrapper,
@@ -79,10 +86,12 @@
 .settings__input span,
 .settings__dropdown .label,
 .settings__bio_label,
-.settings__country_label {
+.settings__country_label,
+.settings__gender_title {
   text-transform: uppercase;
   font-size: calc(0.5em + 0.4vw);
   white-space: nowrap;
+  min-width: calc(5em + 5vw);
 }
 
 .settings__name_btn,
@@ -117,8 +126,8 @@
   fill: #1cbaa7;
 }
 
-.settings__name,
-.settings__about {
+.settings__name.textarea,
+.settings__about.textarea {
   width: 85%;
   margin: 0;
   padding: 0;
@@ -126,7 +135,7 @@
   font-family: 'Work Sans', sans-serif;
   font-size: calc(0.2em + 0.9vw);
   color: #949494;
-  text-align: left;
+  text-align: start;
   border: none;
   border-bottom: 1px solid white;
   pointer-events: none;
@@ -167,7 +176,7 @@
   padding: 0;
   font-size: calc(0.2em + 0.9vw);
   font-family: 'Work Sans', sans-serif;
-  text-align: center;
+  text-align: start;
   background: none;
   border: none;
   border-radius: 6px;
@@ -199,6 +208,7 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  gap: 1em;
 }
 
 .settings__gender_edit-wrapper,
@@ -208,8 +218,8 @@
 }
 
 .settings__dropdown .input-text {
-  width: 100%;
-  text-align: center;
+  width: 60%;
+  text-align: start;
   padding-right: 10%;
 }
 
