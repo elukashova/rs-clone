@@ -23,7 +23,7 @@ export default class Dashboard extends BaseComponent<'section'> {
 
   private token: Token | null = checkDataInLocalStorage('userSessionToken');
 
-  private currentUser: User = {
+  public currentUser: User = {
     id: '',
     username: '',
     email: '',

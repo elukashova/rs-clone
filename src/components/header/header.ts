@@ -11,6 +11,10 @@ import { ProjectColors } from '../../utils/consts';
 import SvgNames from '../base-component/svg/svg.types';
 import eventEmitter from '../../utils/event-emitter';
 import { EventData } from '../../utils/event-emitter.types';
+import { Token } from '../../app/loader/loader-requests.types';
+import { checkDataInLocalStorage } from '../../utils/local-storage';
+import { getUser } from '../../app/loader/services/user-services';
+import { User } from '../../app/loader/loader-responses.types';
 
 export default class Header extends BaseComponent<'header'> {
   private languages: { en: string; rus: string } = { en: 'en', rus: 'rus' };
@@ -119,6 +123,8 @@ export default class Header extends BaseComponent<'header'> {
 
   private themeCircle = new BaseComponent('span', this.themeSlider.element, 'header__theme-circle round', '');
 
+  private token: Token | null = checkDataInLocalStorage('userSessionToken');
+
   constructor(parent: HTMLElement, private replaceMainCallback: () => void) {
     super('header', parent, 'header');
     this.changeLanguage();
@@ -127,6 +133,7 @@ export default class Header extends BaseComponent<'header'> {
     this.initialThemes();
     this.setGridToTwoElements();
     this.handleLogo();
+    this.setAvatar();
     window.addEventListener('resize', this.handleLogo);
   }
 
@@ -229,4 +236,11 @@ export default class Header extends BaseComponent<'header'> {
       this.logoIcon.element.src = './assets/icons/png/logo-mobile.png';
     }
   };
+
+  private setAvatar(): void {
+    if (this.token) {
+      // eslint-disable-next-line no-return-assign
+      getUser(this.token).then((user: User) => (this.avatarIcon.element.src = user.avatarUrl));
+    }
+  }
 }
