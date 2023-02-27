@@ -1,3 +1,4 @@
+import i18next from 'i18next';
 import { Token, UpdateUserData } from '../../../../app/loader/loader-requests.types';
 import { User } from '../../../../app/loader/loader-responses.types';
 import { updateUser } from '../../../../app/loader/services/user-services';
@@ -118,7 +119,7 @@ export default class EditableTextarea extends BaseComponent<'div'> {
 
   private updateOkButtonCallback = (): void => {
     if (this.type === TextareaTypes.Username) {
-      if (!this.checkTextarea(ValidityMessages.Name)) {
+      if (!this.checkTextarea(i18next.t(ValidityMessages.Name))) {
         return;
       }
     } else {
@@ -182,9 +183,12 @@ export default class EditableTextarea extends BaseComponent<'div'> {
 
   private resizeTextarea = (): void => {
     let defaultCols: number;
-    if (this.type === TextareaTypes.Username) {
+    if (this.type === TextareaTypes.Username && this.isDashboard) {
       // eslint-disable-next-line max-len
       defaultCols = !this.isUpdate ? TextareaColsNumber.DefaultName : TextareaColsNumber.IsUpdateName;
+    } else if (this.type === TextareaTypes.Username && !this.isDashboard) {
+      // eslint-disable-next-line max-len
+      defaultCols = !this.isUpdate ? TextareaColsNumber.DefaultName * 2 : TextareaColsNumber.IsUpdateName * 2;
     } else {
       defaultCols = !this.isUpdate ? TextareaColsNumber.DefaultBio : TextareaColsNumber.IsUpdateBio;
     }

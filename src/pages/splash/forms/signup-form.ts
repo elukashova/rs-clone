@@ -49,18 +49,21 @@ export default class SignupForm extends BaseComponent<'form'> {
     type: 'text',
     pattern: convertRegexToPattern(VALID_NAME),
     required: '',
+    'data-id': 'name',
   });
 
   private emailInput: Input = new Input(this.element, 'signup__form-input form-input', this.dictionary.email, {
     type: 'email',
     pattern: convertRegexToPattern(VALID_EMAIL),
     required: '',
+    'data-id': 'email',
   });
 
   private passwordInput: Input = new Input(this.element, 'signup__form-input form-input', this.dictionary.password, {
     type: 'password',
     pattern: convertRegexToPattern(VALID_PASSWORD),
     required: '',
+    'data-id': 'password',
   });
 
   private countryInput: DropdownInput = new DropdownInput(this.element, 'signup', this.dictionary.country);
