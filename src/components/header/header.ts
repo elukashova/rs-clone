@@ -11,6 +11,10 @@ import { ProjectColors } from '../../utils/consts';
 import SvgNames from '../base-component/svg/svg.types';
 import eventEmitter from '../../utils/event-emitter';
 import { EventData } from '../../utils/event-emitter.types';
+import { Token } from '../../app/loader/loader-requests.types';
+import { checkDataInLocalStorage } from '../../utils/local-storage';
+import { getUser } from '../../app/loader/services/user-services';
+import { User } from '../../app/loader/loader-responses.types';
 
 export default class Header extends BaseComponent<'header'> {
   private languages: { en: string; rus: string } = { en: 'en', rus: 'rus' };
@@ -31,10 +35,9 @@ export default class Header extends BaseComponent<'header'> {
 
   private linksContainer = new BaseComponent('div', this.contentWrapper.element, 'header-icons-container');
 
-  public avatarDropDown = new BaseComponent('div', this.linksContainer.element, 'header-avatar-dropdown');
+  public avatarDropDown = new BaseComponent('div', undefined, 'header-avatar-dropdown');
 
   private avatarIcon = new Avatar(this.avatarDropDown.element, 'header-avatar-icon', {
-    src: './assets/images/avatars/default.png',
     alt: 'Your avatar',
   });
 
@@ -68,7 +71,7 @@ export default class Header extends BaseComponent<'header'> {
     attributes: { href: Routes.LogOut },
   });
 
-  public addDropDown = new BaseComponent('div', this.linksContainer.element, 'header-add-dropdown');
+  public addDropDown = new BaseComponent('div', undefined, 'header-add-dropdown');
 
   private addIcon = new Svg(this.addDropDown.element, SvgNames.Plus2, ProjectColors.Turquoise, 'header-add-icon');
 
@@ -103,7 +106,7 @@ export default class Header extends BaseComponent<'header'> {
   });
 
   private languageIcon = new Picture(this.linksContainer.element, 'header-icon_lang icon', {
-    src: './assets/icons/png/change-language-icon.png',
+    src: './assets/icons/png/russian.png',
     alt: 'Change language',
   });
 
@@ -120,12 +123,18 @@ export default class Header extends BaseComponent<'header'> {
 
   private themeCircle = new BaseComponent('span', this.themeSlider.element, 'header__theme-circle round', '');
 
+  private token: Token | null = checkDataInLocalStorage('userSessionToken');
+
   constructor(parent: HTMLElement, private replaceMainCallback: () => void) {
     super('header', parent, 'header');
     this.changeLanguage();
     this.changeTheme();
     this.subscribeToEvents();
     this.initialThemes();
+    this.setGridToTwoElements();
+    this.handleLogo();
+    this.setAvatar();
+    window.addEventListener('resize', this.handleLogo);
   }
 
   public changeLanguage(): void {
@@ -134,9 +143,11 @@ export default class Header extends BaseComponent<'header'> {
       switch (language) {
         case this.languages.en:
           i18next.changeLanguage(this.languages.rus);
+          this.languageIcon.element.src = './assets/icons/png/english.png';
           break;
         case this.languages.rus:
           i18next.changeLanguage(this.languages.en);
+          this.languageIcon.element.src = './assets/icons/png/russian.png';
           break;
         default:
           break;
@@ -162,7 +173,6 @@ export default class Header extends BaseComponent<'header'> {
   }
 
   private static toggleThemes(): void {
-    console.log(localStorage.getItem('theme'));
     if (localStorage.getItem('theme') === 'theme-dark') {
       Header.setTheme('theme-light');
     } else {
@@ -191,5 +201,46 @@ export default class Header extends BaseComponent<'header'> {
     eventEmitter.on('updateAvatar', (source: EventData) => {
       this.updateProfilePicture(source);
     });
+  }
+
+  public appendElementsInDashboard(): void {
+    this.linksContainer.element.insertBefore(this.addDropDown.element, this.languageIcon.element);
+    this.linksContainer.element.insertBefore(this.avatarDropDown.element, this.addDropDown.element);
+    this.setGridToFourElements();
+  }
+
+  public removeElementNotDashboard(): void {
+    if (this.avatarDropDown.element.parentElement === this.linksContainer.element) {
+      this.linksContainer.element.removeChild(this.avatarDropDown.element);
+    }
+
+    if (this.addDropDown.element.parentElement === this.linksContainer.element) {
+      this.linksContainer.element.removeChild(this.addDropDown.element);
+    }
+    this.setGridToTwoElements();
+  }
+
+  public setGridToTwoElements(): void {
+    this.linksContainer.element.style.gridTemplateColumns = 'repeat(2, 3.5rem)';
+  }
+
+  public setGridToFourElements(): void {
+    this.linksContainer.element.style.gridTemplateColumns = 'repeat(4, 3.5rem)';
+  }
+
+  private handleLogo = (): void => {
+    const { innerWidth } = window;
+    if (innerWidth > 640) {
+      this.logoIcon.element.src = './assets/icons/png/logo.png';
+    } else {
+      this.logoIcon.element.src = './assets/icons/png/logo-mobile.png';
+    }
+  };
+
+  private setAvatar(): void {
+    if (this.token) {
+      // eslint-disable-next-line no-return-assign
+      getUser(this.token).then((user: User) => (this.avatarIcon.element.src = user.avatarUrl));
+    }
   }
 }

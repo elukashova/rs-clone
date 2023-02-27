@@ -41,6 +41,10 @@ export default class AddActivity extends BaseComponent<'section'> {
     afternoon: 'addActivityPage.afternoon',
     evening: 'addActivityPage.evening',
     night: 'addActivityPage.night',
+    morningHike: 'addActivityPage.morningHike',
+    afternoonHike: 'addActivityPage.afternoonHike',
+    eveningHike: 'addActivityPage.eveningHike',
+    nightHike: 'addActivityPage.nightHike',
     run: 'addActivityPage.run',
     hike: 'addActivityPage.hike',
     ride: 'addActivityPage.ride',
@@ -256,12 +260,13 @@ export default class AddActivity extends BaseComponent<'section'> {
   }
 
   private setTitle(inputHours?: number): string {
+    const isHike: boolean = this.training.selectValue === 'hiking';
     const hours: number = inputHours || new Date().getHours();
-    const morning = i18next.t(this.dictionary.morning);
-    const afternoon = i18next.t(this.dictionary.afternoon);
-    const evening = i18next.t(this.dictionary.evening);
-    const night = i18next.t(this.dictionary.night);
-    if (hours >= 6 && hours <= 11) return `${morning}} ${this.defineSportForTitle()}`;
+    const morning = isHike ? i18next.t(this.dictionary.morningHike) : i18next.t(this.dictionary.morning);
+    const afternoon = isHike ? i18next.t(this.dictionary.afternoonHike) : i18next.t(this.dictionary.afternoon);
+    const evening = isHike ? i18next.t(this.dictionary.eveningHike) : i18next.t(this.dictionary.evening);
+    const night = isHike ? i18next.t(this.dictionary.nightHike) : i18next.t(this.dictionary.night);
+    if (hours >= 6 && hours <= 11) return `${morning} ${this.defineSportForTitle()}`;
     if (hours >= 12 && hours <= 18) return `${afternoon} ${this.defineSportForTitle()}`;
     if (hours >= 19 && hours <= 23) return `${evening} ${this.defineSportForTitle()}`;
     if (hours >= 0 && hours <= 5) return `${night} ${this.defineSportForTitle()}`;

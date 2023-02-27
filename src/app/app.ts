@@ -1,8 +1,6 @@
 import Footer from '../components/footer/footer';
 import Header from '../components/header/header';
-// import Dashboard from '../pages/dashboard/dashboard';
 import Main from '../pages/main/main-page';
-// import NewRoutePage from '../pages/new-route-page/new-route-page';
 import Router from './router/router';
 import Routes from './router/router.types';
 import eventEmitter from '../utils/event-emitter';
@@ -41,20 +39,20 @@ export default class App {
       case Routes.SignUp:
         this.main.element.style.backgroundImage = 'url(/assets/backgrounds/signup-background.jpg)';
         this.main.element.style.backgroundPosition = 'center';
-        this.header.avatarDropDown.element.style.display = 'none';
-        this.header.addDropDown.element.style.display = 'none';
+        this.header.removeElementNotDashboard();
         break;
       case Routes.LogIn:
         this.main.element.style.backgroundImage = 'url(/assets/backgrounds/login-background.jpg)';
         this.main.element.style.backgroundPosition = '30% 20%';
-        this.header.avatarDropDown.element.style.display = 'none';
-        this.header.addDropDown.element.style.display = 'none';
+        this.header.removeElementNotDashboard();
+        break;
+      case Routes.AboutTeam:
+        this.header.removeElementNotDashboard();
         break;
       default:
-        this.parent.style.backgroundImage = '';
+        this.main.element.style.backgroundImage = '';
         this.parent.style.background = '#F6F4F9';
-        this.header.avatarDropDown.element.style.display = 'inline-block';
-        this.header.addDropDown.element.style.display = 'inline-block';
+        this.header.appendElementsInDashboard();
     }
   };
 
@@ -69,19 +67,4 @@ export default class App {
     this.parent.style.overflow = 'hidden';
     modal.element.addEventListener('click', modal.closeModalCallback);
   }
-
-  // скрипт с ключом для гугл апи
-  /* public static addKey(parent: HTMLElement): BaseComponent<'script'> {
-    const apiKey = 'AIzaSyC90BCUHG7PI6cW9XNex-5bY3Dd44Rqhgs';
-    // получать язык из указанной страны или менять русский/английский при переводе
-    const language = 'en';
-    // eslint-disable-next-line operator-linebreak
-    const srcString = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap&language=${language}&libraries=visualization,geometry`;
-    const script = new BaseComponent('script', parent, '', '', {
-      async: '',
-      defer: '',
-      src: srcString,
-    });
-    return script;
-  } */
 }

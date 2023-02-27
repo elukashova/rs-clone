@@ -60,8 +60,12 @@ export default class TrainingFeed extends BaseComponent<'article'> {
     this.posts = this.addPosts(postData);
     if (this.posts.length) {
       this.deleteGreetingMessage();
-      this.posts.forEach((post) => this.element.append(post.element));
-    } else {
+      this.posts.forEach((post) => {
+        this.element.append(post.element);
+        // eslint-disable-next-line no-param-reassign
+        post.element.style.animation = 'fadeIn 2s ease-out';
+      });
+    } else if (this.element.children.length === 0) {
       this.showGreetingMessage();
     }
   }
@@ -121,6 +125,7 @@ export default class TrainingFeed extends BaseComponent<'article'> {
 
   public deleteGreetingMessage(): void {
     this.message.element.remove();
+    this.buttonContainer?.element.remove();
     this.addTrainingButton?.element.remove();
     this.findFriendsButton?.element.remove();
   }
@@ -144,10 +149,15 @@ export default class TrainingFeed extends BaseComponent<'article'> {
     this.activitiesBackup = this.activitiesBackup.filter((activity) => activity.userId !== data.friendId);
     this.posts.forEach((post) => {
       if (post.postAuthorId === data.friendId) {
+        // eslint-disable-next-line no-param-reassign
+        post.element.style.animation = 'fadeOut 2s ease-in';
         this.element.removeChild(post.element);
         this.posts = this.posts.filter((singlePost) => singlePost.postAuthorId !== data.friendId);
       }
     });
+    if (this.element.children.length === 0) {
+      this.showGreetingMessage();
+    }
   }
 
   private updateAvatarAfterChanging(data: EventData): void {
@@ -168,7 +178,11 @@ export default class TrainingFeed extends BaseComponent<'article'> {
   }
 
   private cleanFeed(): void {
-    this.posts.forEach((post) => this.element.removeChild(post.element));
+    this.posts.forEach((post) => {
+      // eslint-disable-next-line no-param-reassign
+      post.element.style.animation = 'fadeOut 2s ease-in';
+      this.element.removeChild(post.element);
+    });
     this.posts = [];
   }
 }
