@@ -76,7 +76,7 @@ i18next.use(LanguageDetector).init({
         addActivityPage: {
           heading: 'Add activity',
           distance: 'Distance (km)',
-          duration: 'Duration',
+          duration: 'Duration (hr:min:s)',
           elevation: 'Elevation (m)',
           training: 'Type of activity',
           walking: 'Walking',
@@ -351,7 +351,7 @@ i18next.use(LanguageDetector).init({
         addActivityPage: {
           heading: 'Добавить тренировку',
           distance: 'Дистанция (км)',
-          duration: 'Длительность',
+          duration: 'Длительность (ч:мин:сек)',
           elevation: 'Набор высоты (м)',
           training: 'Тип тренировки',
           walking: 'Ходьба',
