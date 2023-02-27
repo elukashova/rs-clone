@@ -51,6 +51,7 @@ export default class NotFriend extends BaseFriend {
   private renderElements(): void {
     this.avatar = new Avatar(this.avatarContainer.element, 'not-friend__avatar', {
       src: this.avatarUrl || './assets/images/avatars/default.png',
+      alt: 'avatar',
     });
     this.userName = new BaseComponent('h4', this.userDataBlock.element, 'not-friend__username', `${this.username}`);
     this.userCountry = new BaseComponent(

@@ -24,7 +24,7 @@ export default class PostComment extends BaseComponent<'div'> {
     now: 'other.comment.now',
   };
 
-  private photo = new Picture(this.element, 'comment__photo');
+  private photo = new Picture(this.element, 'comment__photo', { alt: 'photo' });
 
   private commentWrapper: BaseComponent<'div'> = new BaseComponent('div', this.element, 'comment__wrapper');
 

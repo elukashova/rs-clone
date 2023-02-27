@@ -98,6 +98,7 @@ export default class Challenge extends BaseComponent<'div'> {
   private renderChallenge(): void {
     this.challengeImage = new Picture(this.element, 'challenge__image', {
       src: `../../../assets/images/challenges/${this.type}.jpg`,
+      alt: 'challenge',
     });
     this.title = new BaseComponent('h4', this.element, 'challenge__title', this.titleText);
 

@@ -45,7 +45,7 @@ export default class Post extends BaseComponent<'div'> {
 
   private userInfo = new BaseComponent('div', this.element, 'post__user-info');
 
-  public photo: BaseComponent<'img'> = new Picture(this.userInfo.element, 'post__photo');
+  public photo: BaseComponent<'img'> = new Picture(this.userInfo.element, 'post__photo', { alt: 'post picture' });
 
   private userContainer = new BaseComponent('div', this.userInfo.element, 'post__user-info-container');
 
@@ -97,7 +97,9 @@ export default class Post extends BaseComponent<'div'> {
 
   private textAreaWrapper: BaseComponent<'div'> = new BaseComponent('div', undefined, 'post__add-comment-wrapper');
 
-  public userCommentAvatar: BaseComponent<'img'> = new Picture(this.textAreaWrapper.element, 'post__add-comment-user');
+  public userCommentAvatar: BaseComponent<'img'> = new Picture(this.textAreaWrapper.element, 'post__add-comment-user', {
+    alt: 'user comment avatar',
+  });
 
   private commentArea = new TextArea(this.textAreaWrapper.element, 'post__add-comment', '', {
     maxlength: '200',

@@ -24,6 +24,7 @@ export default class RandomFriendCard extends BaseComponent<'div'> {
 
   private avatar: Picture = new Picture(this.infoWrapper.element, 'suggested-friends__friend_photo', {
     src: this.user.avatarUrl,
+    alt: 'friend photo',
   });
 
   private detailsWrapper: BaseComponent<'div'> = new BaseComponent(

@@ -22,7 +22,7 @@ export default class ProfileCard extends BaseComponent<'div'> {
     defaultBio: 'dashboard.leftMenu.profileCard.defaultBio',
   };
 
-  private photo: Picture = new Picture(this.element, 'profile-card__photo');
+  private photo: Picture = new Picture(this.element, 'profile-card__photo', { alt: 'profile photo' });
 
   private changePhotoButton: Button = new Button(this.element, '', 'profile-card__photo_btn');
 

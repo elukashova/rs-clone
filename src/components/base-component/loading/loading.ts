@@ -7,7 +7,7 @@ export default class LoadingTimer extends BaseComponent<'div'> {
 
   constructor(private parent: HTMLElement) {
     super('div', parent, 'loading-background');
-    this.circle = new Picture(this.element, 'loading-circle', { src: './assets/icons/timer.gif' });
+    this.circle = new Picture(this.element, 'loading-circle', { src: './assets/icons/timer.gif', alt: 'timer' });
   }
 
   public showLoadingCircle(): void {
