@@ -102,7 +102,7 @@ export default class Header extends BaseComponent<'header'> {
   });
 
   private languageIcon = new Picture(this.linksContainer.element, 'header-icon_lang icon', {
-    src: './assets/icons/png/english.png',
+    src: './assets/icons/png/russian.png',
     alt: 'Change language',
   });
 
@@ -166,7 +166,6 @@ export default class Header extends BaseComponent<'header'> {
   }
 
   private static toggleThemes(): void {
-    console.log(localStorage.getItem('theme'));
     if (localStorage.getItem('theme') === 'theme-dark') {
       Header.setTheme('theme-light');
     } else {

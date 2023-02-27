@@ -60,7 +60,11 @@ export default class TrainingFeed extends BaseComponent<'article'> {
     this.posts = this.addPosts(postData);
     if (this.posts.length) {
       this.deleteGreetingMessage();
-      this.posts.forEach((post) => this.element.append(post.element));
+      this.posts.forEach((post) => {
+        this.element.append(post.element);
+        // eslint-disable-next-line no-param-reassign
+        post.element.style.animation = 'fadeIn 2s ease-out';
+      });
     } else if (this.element.children.length === 0) {
       this.showGreetingMessage();
     }
@@ -145,6 +149,8 @@ export default class TrainingFeed extends BaseComponent<'article'> {
     this.activitiesBackup = this.activitiesBackup.filter((activity) => activity.userId !== data.friendId);
     this.posts.forEach((post) => {
       if (post.postAuthorId === data.friendId) {
+        // eslint-disable-next-line no-param-reassign
+        post.element.style.animation = 'fadeOut 2s ease-in';
         this.element.removeChild(post.element);
         this.posts = this.posts.filter((singlePost) => singlePost.postAuthorId !== data.friendId);
       }
@@ -172,7 +178,11 @@ export default class TrainingFeed extends BaseComponent<'article'> {
   }
 
   private cleanFeed(): void {
-    this.posts.forEach((post) => this.element.removeChild(post.element));
+    this.posts.forEach((post) => {
+      // eslint-disable-next-line no-param-reassign
+      post.element.style.animation = 'fadeOut 2s ease-in';
+      this.element.removeChild(post.element);
+    });
     this.posts = [];
   }
 }

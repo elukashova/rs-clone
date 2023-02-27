@@ -75,7 +75,7 @@ export default class LoginForm extends BaseComponent<'form'> {
 
   private user: LogIn = {
     email: '',
-    google: true,
+    google: false,
     password: '',
   };
 
@@ -166,7 +166,7 @@ export default class LoginForm extends BaseComponent<'form'> {
     );
 
     const signUpLink: NavigationLink = new NavigationLink(this.replaceMainCallback, {
-      text: this.dictionary.signUp,
+      text: this.dictionary.signUpHere,
       parent: messageContainer.element,
       additionalClasses: 'login__link-signup',
     });

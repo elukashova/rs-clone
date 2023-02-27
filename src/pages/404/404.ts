@@ -10,6 +10,5 @@ export default class Page404 extends BaseComponent<'section'> {
 
   constructor(parent: HTMLElement) {
     super('section', parent, 'section page-not-found');
-    // this.imgWrapper.element.style.backgroundImage = 'url(../../assets/images/404.jpg)';
   }
 }

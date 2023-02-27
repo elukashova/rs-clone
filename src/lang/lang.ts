@@ -16,7 +16,6 @@ i18next.use(LanguageDetector).init({
           genderWoman: 'Woman',
           heading: 'My profile',
           deleteAccount: 'Delete account',
-          updateAccount: 'Update account',
           name: 'Name',
           email: 'Email',
           dateOfBirth: 'Date of birth',
@@ -63,7 +62,7 @@ i18next.use(LanguageDetector).init({
           challenges: 'Challenges',
         },
         footer: {
-          ourTeam: 'About our team',
+          ourTeam: 'Our team',
         },
         map: {
           locationBtn: 'Go to current location',
@@ -87,7 +86,7 @@ i18next.use(LanguageDetector).init({
           dateAndTime: 'Date and time',
           trainTogether: 'Train together',
           title: 'Name of activity',
-          description: 'Desciption',
+          description: 'Description',
           descriptionPlaceholder: "How'd it go? Share more about your activity!",
           save: 'Save',
           searchIcon: 'search',
@@ -162,8 +161,8 @@ i18next.use(LanguageDetector).init({
           subscribeBtn: 'follow',
           activities: 'Activities',
           notFriendsTitle: 'Find friends',
-          notFriendsSearch: 'Sportsman name',
-          friendsSearch: 'Sportsman name',
+          notFriendsSearch: 'Athlete name',
+          friendsSearch: 'Athlete name',
           friendsTitle: 'My Subscriptions',
           noFriendsMessage:
             'It seems that you have no friends yet. You can find friends on the left side of this page.',
@@ -187,7 +186,7 @@ i18next.use(LanguageDetector).init({
         },
         challenges: {
           participants: 'Participants',
-          noProgress: 'Challenge without progress checking',
+          noProgress: 'Challenge without progress check',
           hikingChallenge: 'Conquer your Everest',
           runningChallenge: 'The Tour de Valiance',
           slothChallenge: 'International Sloth Day',
@@ -201,20 +200,20 @@ i18next.use(LanguageDetector).init({
           typeWalking: 'Walking',
           hikingTitle: 'Conquer your Everest',
           hikingDescription:
-            'Climb to a height of 8,849 meters in a year. Each of your training takes into account the height elevation that has been completed. Your task is to accumulate a height equal to the height of Everest in a year.',
+            'Climb to a height of 8,849 meters in a year. Each of your trainings takes into account the elevation gain that has been completed. Your task is to accumulate a height equal to the height of Everest in a year.',
           slothTitle: 'International Sloth Day',
           slothDescription:
-            'Just relax. Spend the day doing nothing at all! Well... maybe just a little bit of movement to eat deliciously',
+            'Just relax. Spend the day doing nothing at all! Well... maybe just a little bit of movement to find something delicious to eat.',
           cyclingTitle: 'Unbending spirit',
           cyclingDescription:
-            "It can be hard to focus on a goal, but this week will be an exception. Take part in the challenge in which you have to make a trip by cycle every day. Are you ready? Let's go!",
+            "It can be hard to focus on a goal, but this week will be an exception. Take part in a challenge in which you have to take a bike ride every day. Are you ready? Let's go!",
           runningTitle: 'The Tour de Valiance',
           runningDescription:
-            'Do you know The Tour de France - the most famous and most challenging 3,000 km cycle race in the world? Not everyone will be able to ride it, but you have a chance to ride, walk or run its length within a year. Will you accept the challenge?',
+            'Do you know The Tour de France - the most famous and most challenging 3,000 km bicycle race in the world? Not everyone would be able to finish it, but you have a chance to ride, walk or run its length within a year. Will you accept the challenge?',
           photoTitle: 'Like Van Gogh',
           photoDescription:
-            'Launch applications to track your movement and draw a picture (for example, a cat, a heart or maybe "The Starry Night"?) as you move. Tag #striversChallenge on your social media. We will share the coolest track pictures!',
-          yogaTitle: 'Yours hours',
+            'Use GPS tracking to map out your workout route and draw a sketch (for example, a cat, a heart or maybe "The Starry Night"?) as you move. Tag #striversChallenge on your social media. We will share the coolest track drawing!',
+          yogaTitle: 'Your time',
           yogaDescription:
             'Did you know that the first season of Game of Thrones is 9 hours and 27 minutes long? There are people who watched it in a week. Could you allocate the same amount of time for walking per week? We challenge you.',
           challengeOver: 'Sorry, challenge is over',
@@ -226,12 +225,13 @@ i18next.use(LanguageDetector).init({
         ourTeam: {
           title: 'Meet the Big Bug Theory team',
           info: 'We are a team of like-minded people with a positive attitude towards work.',
-          matthewInfo: 'He is here to chew bubblegum and write code, and he is all out of bubblegum.',
+          matthewInfo:
+            "The team's ninja - quiet, focused, and always ready to jump in with a new idea or a good joke. He is here to chew bubblegum and write code, and he is all out of bubblegum.",
           lenaInfo:
-            'The almighty hero of the team that never sleeps, but writes code and goes for a hike. Knows frontend, knows backend, and in the matter of fact every other end if you ask her to. ',
+            'The almighty hero of the team that never sleeps, but writes code (or goes on a hike). Knows frontend, knows backend, and, as a matter of fact, every other end if you ask her to.',
           nastyaInfo:
-            'She is no ordinary programmer but a magician that can take any project and turn it into a work heaven with kittens and rainbows. You need to a new API for your project? She got it. You want some help? She is already on it.',
-          useTitle: 'Was used in this project',
+            'No ordinary coder who can turn any project into a magic world of kittens and rainbows. Need to use a new API for your project? She got it. Need some help? She is here for you.',
+          useTitle: 'What we used in this project',
         },
         splash: {
           forms: {
@@ -243,7 +243,7 @@ i18next.use(LanguageDetector).init({
             email: 'Email address',
             password: 'Password',
             notMember: 'Not a member? ',
-            becomeMember: 'Become a member and enjoy exclusive promotions.',
+            becomeMember: 'Become a member and share your athletic achievements.',
             name: 'Full Name',
             alreadyMember: 'Already a member? ',
             logInHere: 'Log in here',
@@ -275,7 +275,6 @@ i18next.use(LanguageDetector).init({
           genderWoman: 'Женщина',
           heading: 'Мой профиль',
           deleteAccount: 'Удалить аккаунт',
-          updateAccount: 'Обновить аккаунт',
           name: 'Имя',
           email: 'Эл. почта',
           dateOfBirth: 'Дата рождения',
@@ -339,13 +338,13 @@ i18next.use(LanguageDetector).init({
           ok: 'Хорошо',
           elevationError: 'Нельзя показать набор высоты',
           locationFound: 'Локация найдена!',
-          routeNotFound: 'К сожалению мы не смогли найти данный маршрут. Построить заново?',
+          routeNotFound: 'К сожалению, мы не смогли найти данный маршрут. Построить заново?',
         },
         addActivityPage: {
           heading: 'Добавить тренировку',
           distance: 'Дистанция (км)',
           duration: 'Длительность',
-          elevation: 'Подъем (м)',
+          elevation: 'Набор высоты (м)',
           training: 'Тип тренировки',
           walking: 'Ходьба',
           running: 'Бег',
@@ -406,7 +405,7 @@ i18next.use(LanguageDetector).init({
             friendsHeading: 'Рекомендованные друзья',
           },
           trainingFeed: {
-            message: 'У вас нет ничего в Вашей ленте, Вы можете',
+            message: 'Ваша лента пока пуста, Вы можете',
             addActivity: 'Добавить тренировку',
             findFriends: 'Найти друзей',
             post: {
@@ -414,7 +413,7 @@ i18next.use(LanguageDetector).init({
               speed: 'Скорость',
               time: 'Время',
               elevation: 'Высота',
-              commentPlaceholder: 'Введите Ваш комментарий. Максимум 200 символов',
+              commentPlaceholder: 'Добавьте Ваш комментарий (максимум 200 символов)',
               commentBtn: 'Отправить',
               km: 'км',
               m: 'м',
@@ -432,7 +431,7 @@ i18next.use(LanguageDetector).init({
           notFriendsSearch: 'Имя спортсмена',
           friendsSearch: 'Имя спортсмена',
           friendsTitle: 'Мои подписки',
-          noFriendsMessage: 'У вас пока не добавлено ни одного друга. Вы можете найти друзей на левой стороне страницы',
+          noFriendsMessage: 'У вас пока не добавлено ни одного друга. Вы можете найти друзей в левой части страницы',
           allFriendsMessage: 'Вы добавили всех возможных друзей.',
         },
         newRoute: {
@@ -461,26 +460,27 @@ i18next.use(LanguageDetector).init({
           typeCycling: 'Велозаезд',
           typeHiking: 'Хайк',
           typeWalking: 'Ходьба',
-          hikingTitle: 'Покори свой Эверест',
+          hikingTitle: 'Покорите свой Эверест',
           hikingDescription:
-            'Поднимись на высоту 8,849 метров за один год. Каждая законченная тренировка считает высоту подъема и добавляет ее к общему количеству. Ваша задача — за год набрать высоту, равную высоте Эвереста.',
+            'Поднимитесь на высоту 8,849 метров за один год. Каждая законченная тренировка считает высоту подъема и добавляет ее к общему количеству. Ваша задача — за год набрать высоту, равную высоте Эвереста.',
           slothTitle: 'Международный день ленивца',
-          slothDescription: 'Можешь расслабиться. Ничего не делай в этот день! Разве что...пробежка до холодильника?',
+          slothDescription:
+            'Можете расслабиться. Ничего не делайте в этот день! Разве что... пробежка до холодильника?',
           cyclingTitle: 'Несгибаемый дух',
           cyclingDescription:
-            'Бывает сложно сфокусироваться на цели, но только не на этой неделе. В этом испытании тебе нужно совершать велозаезд каждый день. Тебе страшно? Мне нет',
+            'Бывает сложно сфокусироваться на цели, но только не на этой неделе. В этом испытании, вам нужно совершать велозаезд каждый день. Готовы крутить педали? Поехали!',
           runningTitle: 'Тур de Valiance',
           runningDescription:
-            'Если ты знаком с туром de France - самым известным и сложным 3,000 км велозаезде в мире, то знаешь что не каждый способен его пройти, но у тебя есть возможность проехать, пройти или пробежать такое же расстояние за один год. Готов рискнуть?',
+            'Если вы знакомы с туром de France - самым известным и сложным 3,000 км велозаезде в мире, то знаете, что не каждый способен его пройти, но у вас есть возможность проехать, пройти или пробежать это же расстояние за один год. Готовы рискнуть?',
           photoTitle: 'Как Ван Гог',
           photoDescription:
-            'Запусти приложение чтобы отслеживать свои движания и нарисовать картину (на пример кошку, сердечко или "Звезднную Ночь") во время их. Поставь #striversChallenge в своей соц. сети и мы выложим самые классные работы',
-          yogaTitle: 'Ваши часы',
+            'Запустите GPS-трекер, чтобы отследить вашу тренировку и нарисовать картину (например, кошку, сердечко или "Звездную Ночь") во время движения. Поделитесь своей работой в соц.сетях с хештегом #striversChallenge, и мы выложим самые классные работы',
+          yogaTitle: 'Ваш час',
           yogaDescription:
-            'А ты знал что первый сезон Игры Престолов длится 9 часов и 29 минут? Некоторые умудрились посмотреть его за неделю. А сможешь ли ты потратить столько же времени в неделю на ходьбу? Проверим.',
-          challengeOver: 'Просим прощения, испытание уже закончилось',
-          acceptButton: 'Пройти',
-          acceptedButton: 'Добавлено',
+            'А вы знали, что первый сезон Игры Престолов длится 9 часов и 29 минут? Некоторые умудрились посмотреть его за неделю. А сможете ли вы потратить столько же времени в неделю на ходьбу? Проверим!',
+          challengeOver: 'К сожалению, испытание уже закончилось',
+          acceptButton: 'Принять',
+          acceptedButton: 'Вызов принят',
           challengeEnd_one: '{{count}} день до конца испытания',
           challengeEnd_few: '{{count}} дня до конца испытания',
           challengeEnd_many: '{{count}} дней до конца испытания',
@@ -488,19 +488,19 @@ i18next.use(LanguageDetector).init({
         ourTeam: {
           title: 'Встречаем the Big Bug Theory',
           info: 'Команда единомышленников, которые любят свою работу',
-          matthewInfo: 'He is here to chew bubblegum and write code, and he is all out of bubblegum.',
+          matthewInfo:
+            'Истинный ниндзя — спокойный, сосредоточенный и всегда готовый подкинуть новую идею или хорошую шутку. Он здесь, чтобы жевать жвачку и писать код, и... у него закончилась жвачка.',
           lenaInfo:
-            'The almighty hero of the team that never sleeps, but writes code and goes for a hike. Knows frontend, knows backend, and in the matter of fact every other end if you ask her to. ',
+            'Всемогущая героиня команды, которая никогда не спит, а пишет код (или ходит в горные походы). Знает фронтенд, знает бэкенд и вообще любой другой "енд", если вы ее об этом хорошо попросите.',
           nastyaInfo:
-            'She is no ordinary programmer but a magician that can take any project and turn it into a work heaven with kittens and rainbows. You need to a new API for your project? She got it. You want some help? She is already on it.',
+            'Неординарная кодерша, которая может превратить любой проект в волшебный мир котят и радуг. Вам нужна новая API для проекта? Она разберется. Нужно чем-то помочь? Она уже спешит к тебе!',
           useTitle: 'В этом проекте было использовано',
         },
         splash: {
           errors: {
-            Name: 'Имя должно состоять из двух слов, каждое минимум 3 буквы',
+            Name: 'Имя должно состоять из двух слов, по 3 буквы минимум',
             Email: 'Введите правильный адрес почты',
-            Password:
-              'Пароль должен состоять по крайне мере из трех символов, хотя бы одной цифры и одной заглавной буквы',
+            Password: 'Пароль должен состоять минимум из 5 символов, включая одну цифру и одну заглавную букву',
             EmptyValue: 'Введите свое ',
             Country: 'Введите правильное название страны',
             Number: 'Здесь должно быть число',
@@ -513,11 +513,11 @@ i18next.use(LanguageDetector).init({
             logIn: 'Войти',
             accountLoginHeading: 'Регистрация аккаунта',
             accountSignupHeading: 'Войти в аккаунт',
-            loginMessage: 'Если у Вас уже есть аккаунт, можно зайти с помощью почты',
+            loginMessage: 'Если у Вас уже есть аккаунт, введите данные для входа',
             email: 'Эл. почта',
             password: 'Пароль',
-            notMember: 'Нету аккаунта? ',
-            becomeMember: 'Присоединяйтесь и получите доступ к эксклюзивным акциям.',
+            notMember: 'Нет аккаунта? ',
+            becomeMember: 'Присоединяйтесь, чтобы делиться вашими спортивными успехами.',
             name: 'Имя',
             alreadyMember: 'Уже есть аккаунт? ',
             logInHere: 'Войдите в аккаунт',

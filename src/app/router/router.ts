@@ -50,8 +50,10 @@ export default class Router {
     let location: string = pathnameLength === 0 && !this.token ? Routes.SignUp : window.location.pathname;
 
     if (location !== Routes.SignUp && location !== Routes.LogIn && !this.token) {
-      location = Routes.SignUp;
-      window.history.pushState({}, '', Routes.SignUp);
+      if (location !== Routes.AboutTeam) {
+        location = Routes.SignUp;
+        window.history.pushState({}, '', Routes.SignUp);
+      }
     }
 
     if (this.token && (location === Routes.SignUp || location === Routes.LogIn)) {
