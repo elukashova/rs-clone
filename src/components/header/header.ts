@@ -50,13 +50,6 @@ export default class Header extends BaseComponent<'header'> {
     attributes: { href: Routes.Dashboard },
   });
 
-  private myRoutesPageLink = new NavigationLink(this.replaceMainCallback, {
-    text: 'header.myRoutes',
-    parent: this.avatarDropDownContent.element,
-    additionalClasses: 'header-link-avatar link',
-    attributes: { href: Routes.MyRoutes },
-  });
-
   private settingsPageLink = new NavigationLink(this.replaceMainCallback, {
     text: 'header.settings',
     parent: this.avatarDropDownContent.element,
@@ -82,13 +75,6 @@ export default class Header extends BaseComponent<'header'> {
     parent: this.addDropDownContent.element,
     additionalClasses: 'header-link-add link',
     attributes: { href: Routes.AddActivity },
-  });
-
-  private addNewRouteLink = new NavigationLink(this.replaceMainCallback, {
-    text: 'header.addRoute',
-    parent: this.addDropDownContent.element,
-    additionalClasses: 'header-link-add link',
-    attributes: { href: Routes.AddRoute },
   });
 
   private findFriendsLink = new NavigationLink(this.replaceMainCallback, {

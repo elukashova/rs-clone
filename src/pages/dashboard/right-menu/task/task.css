@@ -7,7 +7,7 @@
 
 .task__name-wrapper {
   display: grid;
-  grid-template-columns: 6rem auto;
+  grid-template-columns: calc(1rem + 5vw) auto;
   gap: 1rem;
 }
 
@@ -18,27 +18,26 @@
 }
 
 .task__photo {
-  width: 100%;
+  width: calc(1rem + 5vw);
   height: auto;
 }
 
 .task__name {
   text-align: left;
-  font-size: calc(0.7em + 0.3vw);
-  font-weight: 400;
+  font-size: calc(0.2rem + 0.7vw);
+  font-weight: 500;
   margin-top: 0.3rem;
 }
 
 .task__participants,
 .task__no-progress {
   text-align: left;
-  font-size: calc(0.6em + 0.3vw);
   font-weight: 300;
   color: var(--font-additional);
 }
 
 .task__no-progress {
-  font-size: calc(0.5em + 0.3vw);
+  font-size: calc(0.2rem + 0.55vw);
 }
 
 .task__progress-wrapper {
@@ -61,5 +60,5 @@
 
 .progress-bar-data {
   color: #1cbaa7;
-  font-size: calc(0.7em + 0.3vw);
+  font-size: calc(0.5rem + 0.3vw);
 }
