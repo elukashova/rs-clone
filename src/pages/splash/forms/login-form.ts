@@ -48,17 +48,19 @@ export default class LoginForm extends BaseComponent<'form'> {
     type: 'email',
     required: '',
     pattern: convertRegexToPattern(VALID_EMAIL),
+    'data-id': 'email',
   });
 
   public passwordInput: Input = new Input(this.element, 'login__form-input form-input', this.dictionary.password, {
     type: 'password',
     required: '',
     pattern: convertRegexToPattern(VALID_PASSWORD),
+    'data-id': 'password',
   });
 
   public loginButton: Button = new Button(this.element, this.dictionary.logIn, 'login__btn-main btn_main');
 
-  private signUpMessage: BaseComponent<'span'> = new BaseComponent('span', this.element, 'login_message-sigup'); // не будет реботать
+  private signUpMessage: BaseComponent<'span'> = new BaseComponent('span', this.element, 'login_message-sigup');
 
   private notMember: BaseComponent<'span'> = new BaseComponent(
     'span',
