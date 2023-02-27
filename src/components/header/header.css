@@ -12,7 +12,7 @@
 
 .header-content-wrapper {
   display: grid;
-  grid-template-columns: minmax(100px, max-content) minmax(100px, max-content);
+  grid-template-columns: minmax(80px, max-content) minmax(150px, max-content);
   align-items: center;
   justify-content: space-between;
   height: min-content;
@@ -32,6 +32,7 @@
   display: grid;
   align-items: center;
   gap: calc(0.2rem + 0.3vw);
+  justify-content: flex-end;
 }
 
 .header-avatar-icon,
@@ -180,7 +181,6 @@
 
 @media (max-width: 390px) {
   .header-content-wrapper {
-    width: 100%;
     gap: 2rem;
   }
 

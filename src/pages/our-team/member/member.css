@@ -15,3 +15,18 @@
 .member__about {
   text-align: center;
 }
+
+.member__name {
+  font-size: 1rem;
+}
+
+.member__about {
+  font-size: 0.85rem;
+}
+
+@media (max-width: 638px) {
+  .member__photo.icon {
+    width: calc(6rem + 6vw);
+    height: calc(6rem + 6vw);
+  }
+}

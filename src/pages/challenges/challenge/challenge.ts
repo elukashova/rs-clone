@@ -168,6 +168,11 @@ export default class Challenge extends BaseComponent<'div'> {
         this.avatarData.forEach((data: string): void => this.addAvatar(data));
         break;
       default:
+        this.avatarData.forEach((data: string, index: number): void => {
+          if (index < 3) {
+            this.addAvatar(data);
+          }
+        });
         break;
     }
   }

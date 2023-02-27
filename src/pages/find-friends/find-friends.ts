@@ -42,16 +42,6 @@ export default class Friends extends BaseComponent<'section'> {
 
   private notFriendsPage = 1;
 
-  private findingContainer = new BaseComponent('div', this.element, 'find-friends__container');
-
-  private notFriendsContainer = new BaseComponent('div', this.findingContainer.element, 'not-friends__block-container');
-
-  private notFriendsBlock = new BaseComponent('div', this.notFriendsContainer.element, 'not-friends__block');
-
-  private friendsContainer = new BaseComponent('div', this.findingContainer.element, 'friends__block-container');
-
-  private friendsBlock = new BaseComponent('div', this.friendsContainer.element, 'friends__block');
-
   private token: Token | null = checkDataInLocalStorage('userSessionToken');
 
   private notFriendsPagination!: Pagination;
@@ -65,6 +55,16 @@ export default class Friends extends BaseComponent<'section'> {
   private friendsTitle!: BaseComponent<'h2'>;
 
   private friendsSearch!: Input;
+
+  private findingContainer!: BaseComponent<'div'>;
+
+  private notFriendsContainer!: BaseComponent<'div'>;
+
+  private notFriendsBlock!: BaseComponent<'div'>;
+
+  private friendsContainer!: BaseComponent<'div'>;
+
+  private friendsBlock!: BaseComponent<'div'>;
 
   constructor(parent: HTMLElement) {
     super('section', parent, 'find-friends find-friends-section');
@@ -87,6 +87,16 @@ export default class Friends extends BaseComponent<'section'> {
   }
 
   private renderTitles(): void {
+    this.findingContainer = new BaseComponent('div', this.element, 'find-friends__container');
+
+    this.notFriendsContainer = new BaseComponent('div', this.findingContainer.element, 'not-friends__block-container');
+
+    this.notFriendsBlock = new BaseComponent('div', this.notFriendsContainer.element, 'not-friends__block');
+
+    this.friendsContainer = new BaseComponent('div', this.findingContainer.element, 'friends__block-container');
+
+    this.friendsBlock = new BaseComponent('div', this.friendsContainer.element, 'friends__block');
+
     this.notFriendsTitle = new BaseComponent(
       'h2',
       this.notFriendsBlock.element,

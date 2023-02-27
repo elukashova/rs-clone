@@ -169,6 +169,10 @@
 }
 
 @media (max-width: 500px) {
+  .add-activity__heading {
+    padding-bottom: 1rem;
+  }
+
   .add-activity__block {
     display: flex;
     flex-direction: column;

@@ -40,7 +40,7 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  gap: 0.2rem;
+  gap: calc(0.5rem + 0.4vw);
   width: 100%;
   height: 100%;
   border-radius: 5px;
@@ -143,7 +143,11 @@
   display: none;
 }
 
-@media (max-width: 713px) {
+@media (max-width: 763px) {
+  .challenges__activity {
+    width: calc(6.2rem + 5vw);
+  }
+
   .challenges__challenges-block {
     display: flex;
     flex-direction: column;

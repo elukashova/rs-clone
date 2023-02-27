@@ -225,7 +225,7 @@ export default class Header extends BaseComponent<'header'> {
   }
 
   public setGridToFourElements(): void {
-    this.linksContainer.element.style.gridTemplateColumns = 'repeat(4, 3.5rem)';
+    this.linksContainer.element.style.gridTemplateColumns = 'repeat(4, calc(2rem + 2vw))';
   }
 
   private handleLogo = (): void => {
