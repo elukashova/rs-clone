@@ -5,6 +5,6 @@
 .sections-wrapper {
   display: grid;
   grid-template-columns: 25% 45% 25%;
-  gap: 2em;
-  margin: 3rem 0 3rem 0;
+  gap: calc(1rem + 1vw);
+  margin: 2rem 0 3rem 0;
 }
