@@ -86,5 +86,5 @@ export default class NewRoutePage extends BaseComponent<'section'> {
     this.descent.value = '0 m';
     this.time.value = '0 s';
     this.roadType.value = 'paved road';
-  } // не будет работать
+  }
 }

@@ -40,6 +40,7 @@ export default class Friend extends BaseFriend {
   private renderElements(): void {
     this.avatar = new Avatar(this.avatarContainer.element, 'friend__avatar', {
       src: this.avatarUrl || './assets/images/avatars/default.png',
+      alt: 'avatar',
     });
     this.userName = new BaseComponent('h4', this.userData.element, 'friend__username', `${this.username}`);
     this.userCountry = new BaseComponent('p', this.userData.element, 'friend__user-country', `${this.country}` || '');

@@ -24,7 +24,7 @@ export default class PostComment extends BaseComponent<'div'> {
     now: 'other.comment.now',
   };
 
-  private photo = new Picture(this.element, 'comment__photo');
+  private photo = new Picture(this.element, 'comment__photo', { alt: 'photo' });
 
   private commentWrapper: BaseComponent<'div'> = new BaseComponent('div', this.element, 'comment__wrapper');
 
@@ -152,7 +152,6 @@ export default class PostComment extends BaseComponent<'div'> {
     const interval = intervals.find((int) => int.seconds < seconds);
     if (interval) {
       const count = Math.floor(seconds / interval.seconds);
-      // return `${count} ${interval.text}${count !== 1 ? 's' : ''} ago`;
       return i18next.t(interval.text, { count });
     }
     return i18next.t(this.dictionary.now);
@@ -284,42 +283,4 @@ export default class PostComment extends BaseComponent<'div'> {
       this.textWrapper.element.removeChild(this.commentButton.element);
     }
   }
-
-  //   private activateTextarea = (): void => {
-  //     this.isUpdate = true;
-  //     this.message.element.removeAttribute('disabled');
-  //     this.message.element.focus();
-  //     this.message.element.selectionStart = this.message.element.value.length;
-  //     this.message.element.classList.add('active-comment');
-  //     if (this.editBlock) {
-  //       this.editBlock.editBtn.replaceBtnSvg(SvgNames.CloseThin, 'comment', ProjectColors.Grey);
-  //       this.editBlock.appendOkButton(this.updateOkButtonCallback);
-  //       // eslint-disable-next-line max-len
-  //       this.editBlock.replaceUpdateBtnEventListener(
-  // this.isUpdate, this.cancelUpdate, this.activateTextarea);
-  //     }
-  //   };
-
-  //   private updateOkButtonCallback = (): void => {
-  //     console.log(this.createdAt);
-  //   };
-
-  //   private cancelUpdate = (): void => {
-  //     this.isUpdate = false;
-  //     this.message.element.textContent = this.currentCommentText;
-  //     this.message.element.setAttribute('disabled', '');
-  //     this.message.element.classList.remove('active-comment');
-  //     if (this.editBlock) {
-  //       this.editBlock.editBtn.replaceBtnSvg(SvgNames.Pencil, 'comment', ProjectColors.Grey);
-  //       this.editBlock.removeOkButton();
-  //       // eslint-disable-next-line max-len
-  //       this.editBlock.replaceUpdateBtnEventListener
-  // (this.isUpdate, this.cancelUpdate, this.activateTextarea);
-  //     }
-  //   };
-
-  //   private changeDefaultBehavior = (): void => {
-
-  //   }
-  // }
 }

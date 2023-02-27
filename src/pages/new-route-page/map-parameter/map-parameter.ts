@@ -8,7 +8,6 @@ export default class MapParameter extends BaseComponent<'div'> {
   private _value = new BaseComponent('span', this.element);
 
   constructor(parent: HTMLElement, name?: string) {
-    // const text: string = name || '';
     super('div', parent, 'map-parameter');
     if (name) {
       this._name.element.textContent = i18next.t(name);

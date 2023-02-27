@@ -72,6 +72,7 @@ export default class ModalAvatar extends BaseComponent<'div'> {
     Object.values(AvatarSources).forEach((source) => {
       const avatar: Picture = new Picture(this.avatarsWrapper.element, 'avatars__img', {
         src: source,
+        alt: 'avatar',
       });
       this.allAvatars.push(avatar);
       avatar.element.addEventListener('click', this.selectAvatarCallback);

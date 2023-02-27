@@ -322,7 +322,6 @@ export default class AddActivity extends BaseComponent<'section'> {
       }
     });
 
-    // слушатель для селекта
     this.training.optionsAll.forEach((el) => el.addEventListener('click', this.selectSportCallback));
 
     this.map.clearButton.element.addEventListener('click', () => {

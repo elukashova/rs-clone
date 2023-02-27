@@ -42,7 +42,6 @@ export default class Pagination extends BaseComponent<'div'> {
   }
 
   private countTheTotal(): void {
-    console.log(this.elementsCount);
     if (this.elementsCount === 0) {
       this.totalPages = 1;
     } else {

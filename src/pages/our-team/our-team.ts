@@ -72,31 +72,38 @@ export default class OurTeam extends BaseComponent<'section'> {
   private i18next = new Picture(this.svgContainer.element, 'our-team__project-img', {
     src: './assets/icons/svg/i18next.svg',
     style: 'height:3em; width:6em',
+    alt: 'i18next',
   });
 
   private bcrypt = new Picture(this.svgContainer.element, 'our-team__project-img', {
     src: './assets/icons/png/bcrypt.png',
     style: 'height:3em; width:10em',
+    alt: 'bcrypt',
   });
 
   private googleMaps = new Picture(this.svgContainer.element, 'our-team__project-img', {
     src: './assets/icons/png/google-maps-api.png',
+    atl: 'google maps',
   });
 
   private googleDirections = new Picture(this.svgContainer.element, 'our-team__project-img', {
     src: './assets/icons/png/google-directions-api.png',
+    alt: 'google directions',
   });
 
   private googleElevation = new Picture(this.svgContainer.element, 'our-team__project-img', {
     src: './assets/icons/png/google-elevation-api.png',
+    alt: 'google elevation',
   });
 
   private googleStatic = new Picture(this.svgContainer.element, 'our-team__project-img', {
     src: './assets/icons/png/google-static-api.png',
+    alt: 'google statistic',
   });
 
   private googleSignIn = new Picture(this.svgContainer.element, 'our-team__project-img', {
     src: './assets/icons/png/google-signin.png',
+    alt: 'google sign in',
   });
 
   constructor(parent: HTMLElement) {
