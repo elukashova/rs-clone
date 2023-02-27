@@ -1,3 +1,4 @@
+import i18next from 'i18next';
 import { Token, UpdateUserData } from '../../../../app/loader/loader-requests.types';
 import { User } from '../../../../app/loader/loader-responses.types';
 import { updateUser } from '../../../../app/loader/services/user-services';
@@ -115,7 +116,7 @@ export default class EditableTextarea extends BaseComponent<'div'> {
 
   private updateOkButtonCallback = (): void => {
     if (this.type === TextareaTypes.Username) {
-      if (!this.checkTextarea(ValidityMessages.Name)) {
+      if (!this.checkTextarea(i18next.t(ValidityMessages.Name))) {
         return;
       }
     } else {

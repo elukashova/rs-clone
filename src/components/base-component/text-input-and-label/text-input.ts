@@ -39,6 +39,8 @@ export default class Input extends BaseComponent<'div'> {
 
   public type: string;
 
+  private context: string | null;
+
   public token: Token | null = checkDataInLocalStorage('userSessionToken');
 
   constructor(
@@ -55,14 +57,15 @@ export default class Input extends BaseComponent<'div'> {
     if (text) {
       this.title = new BaseComponent('span', this.label.element, '', i18next.t(text).toString());
       this.setInputContent(text);
+      this.inputName = i18next.t(text).toLowerCase();
     }
     this.input = new BaseComponent('input', this.label.element, 'input-text', '', attributes);
     this.type = this.input.element.type;
-    this.inputName = this.label.element.innerText.toLowerCase();
     if (attributes && attributes.placeholder) {
       this.input.element.placeholder = i18next.t(attributes.placeholder);
       this.setInputPlaceholder(attributes.placeholder);
     }
+    this.context = this.input.element.getAttribute('data-id');
   }
 
   public verify(): boolean {
@@ -82,7 +85,7 @@ export default class Input extends BaseComponent<'div'> {
     this.message = message;
 
     if (validityState.valueMissing) {
-      this.checkInputValidity(i18next.t(ValidityMessages.EmptyValue) + this.inputName);
+      this.checkInputValidity(i18next.t(ValidityMessages.EmptyValue, { context: this.context }));
       return false;
     }
     if (validityState.typeMismatch || validityState.patternMismatch) {
@@ -130,7 +133,6 @@ export default class Input extends BaseComponent<'div'> {
   }
 
   public set placeholder(content: string) {
-    console.log(content, i18next.t(content));
     this.input.element.placeholder = i18next.t(content);
   }
 
