@@ -209,15 +209,10 @@ export default class Challenge extends BaseComponent<'div'> {
       this.button.element.style.backgroundColor = ProjectColors.Orange;
       this.button.textContent = this.dictionary.acceptedButton;
       this.challengeIsAdded = true;
-      // Надо добавить отправку челленджей юзера на сервер
-      /* this.button.element.removeEventListener('click', this.deleteChallengeCallback);
-      this.button.element.addEventListener('click', this.addChallengeCallback); */
     } else {
       this.button.element.style.backgroundColor = ProjectColors.Turquoise;
       this.button.textContent = this.dictionary.acceptButton;
       this.challengeIsAdded = false;
-      /* this.button.element.removeEventListener('click', this.addChallengeCallback);
-      this.button.element.addEventListener('click', this.deleteChallengeCallback); */
     }
   }
 }

@@ -259,7 +259,6 @@ export default class Post extends BaseComponent<'div'> {
     }
   };
 
-  // Метод вывода статичной карты
   public async initStaticMap(activity: ActivityResponse): Promise<void> {
     if (activity.route && activity.route.startPoint && activity.route.endPoint) {
       this.map = new BaseComponent('div', undefined, 'map');

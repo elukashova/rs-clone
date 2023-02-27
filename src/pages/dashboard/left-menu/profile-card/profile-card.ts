@@ -73,7 +73,6 @@ export default class ProfileCard extends BaseComponent<'div'> {
     this.subscribeToEvents();
   }
 
-  // temp comment
   private render(url: string, name: string, bio: string): void {
     this.photo.element.setAttribute('src', url);
     this.name = new EditableTextarea(this.element, 'profile-card__name', name, TextareaTypes.Username, true);

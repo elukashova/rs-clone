@@ -152,7 +152,6 @@ export default class PostComment extends BaseComponent<'div'> {
     const interval = intervals.find((int) => int.seconds < seconds);
     if (interval) {
       const count = Math.floor(seconds / interval.seconds);
-      // return `${count} ${interval.text}${count !== 1 ? 's' : ''} ago`;
       return i18next.t(interval.text, { count });
     }
     return i18next.t(this.dictionary.now);

@@ -8,5 +8,3 @@ export type DailyData = {
   date: string;
   distance: number;
 };
-
-// export default StatsKeys;
