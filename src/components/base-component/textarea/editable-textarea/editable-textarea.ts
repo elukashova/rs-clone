@@ -57,7 +57,12 @@ export default class EditableTextarea extends BaseComponent<'div'> {
     this.addEventListeners();
     this.defineMaxLength();
     this.resizeTextarea();
-    this.updateTextAlignment();
+
+    if (!this.isDashboard) {
+      this.textarea.element.style.textAlign = 'left';
+    } else {
+      this.updateTextAlignment();
+    }
   }
 
   private addEventListeners(): void {
@@ -79,9 +84,7 @@ export default class EditableTextarea extends BaseComponent<'div'> {
     this.textarea.element.selectionStart = this.textarea.element.value.length;
     this.editBlock.editBtn.replaceBtnSvg(SvgNames.CloseThin, this.classes, ProjectColors.Grey);
     this.editBlock.appendOkButton(this.updateOkButtonCallback);
-    if (this.isDashboard === true) {
-      this.updateTextAlignment();
-    }
+    this.updateTextAlignment();
     // eslint-disable-next-line max-len
     this.editBlock.replaceUpdateBtnEventListener(this.isUpdate, this.cancelUpdate, this.activateTextarea);
   };
@@ -94,7 +97,7 @@ export default class EditableTextarea extends BaseComponent<'div'> {
     this.editBlock.removeOkButton();
     // eslint-disable-next-line max-len
     this.editBlock.replaceUpdateBtnEventListener(this.isUpdate, this.cancelUpdate, this.activateTextarea);
-    if (this.isDashboard === true) {
+    if (this.isDashboard) {
       this.updateTextAlignment();
     }
     this.resizeTextarea();

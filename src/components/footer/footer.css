@@ -28,8 +28,28 @@
 
 .footer-links .link,
 .icon.footer-github-logo {
-  max-width: calc(1.8rem + 2vw);
+  max-width: calc(1.2rem + 2vw);
   height: auto;
+}
+
+.footer-links .elukashova {
+  transform: translateX(-2.5%);
+}
+
+.footer-links .trickypie {
+  transform: translateX(-5%);
+}
+
+.trickypie,
+.elukashova,
+.matthewthewizzard {
+  transition: transform 0.3s;
+}
+
+.trickypie:hover,
+.elukashova:hover,
+.matthewthewizzard:hover {
+  transform: scale(1.05);
 }
 
 .footer-about-team {

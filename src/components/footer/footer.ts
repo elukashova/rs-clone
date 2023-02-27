@@ -30,21 +30,21 @@ export default class Footer extends BaseComponent<'footer'> {
     'matthewthewizzard',
   );
 
-  private matthewCat = new Picture(this.matthewLink.element, 'footer-github-logo', {
+  private matthewCat = new Picture(this.matthewLink.element, 'footer-github-logo gihub-matthew', {
     src: '../assets/icons/png/github-left.png',
     alt: "Matthew's github",
   });
 
   private elenaLink = new ExternalLink(this.linksContainer.element, 'https://github.com/elukashova', 'elukashova');
 
-  private lenaCat = new Picture(this.elenaLink.element, 'footer-github-logo', {
-    src: '../assets/icons/png/github-left.png',
+  private lenaCat = new Picture(this.elenaLink.element, 'footer-github-logo github-lena', {
+    src: '../assets/icons/png/github-center.png',
     alt: "Lena's github",
   });
 
   private nastyaLink = new ExternalLink(this.linksContainer.element, 'https://github.com/TrickyPie', 'trickypie');
 
-  private nastyaCat = new Picture(this.nastyaLink.element, 'footer-github-logo', {
+  private nastyaCat = new Picture(this.nastyaLink.element, 'footer-github-logo github-nastya', {
     src: '../assets/icons/png/github-right.png',
     alt: "Nastya's github",
   });
