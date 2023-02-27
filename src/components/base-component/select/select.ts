@@ -100,7 +100,10 @@ export default class Select extends BaseComponent<'div'> {
     if (e.target instanceof HTMLLIElement) {
       const value = e.target.getAttribute('value');
       if (value) this.currentOption.element.value = value;
-      this.currentOption.element.textContent = `${e.target.textContent}`;
+      const parent = e.target.parentElement;
+      const typesList = parent ? [...parent.children] : [];
+      const targetIndex = typesList.indexOf(e.target);
+      this.currentOption.textContent = this.options[targetIndex];
       this.hideOptionsList();
     }
   };
@@ -148,8 +151,4 @@ export default class Select extends BaseComponent<'div'> {
       });
     });
   }
-
-  // public setTitle(title: string): void {
-  //   this.title.textContent = title;
-  // }
 }

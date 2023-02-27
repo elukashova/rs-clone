@@ -1,4 +1,5 @@
 import './profile-card.css';
+import i18next from 'i18next';
 import BaseComponent from '../../../../components/base-component/base-component';
 import ProfileInfo from './profile-card-info';
 import Svg from '../../../../components/base-component/svg/svg';
@@ -18,7 +19,7 @@ export default class ProfileCard extends BaseComponent<'div'> {
     followers: 'dashboard.leftMenu.profileCard.followers',
     followees: 'dashboard.leftMenu.profileCard.followees',
     activities: 'dashboard.leftMenu.profileCard.activities',
-    defaultBio: 'Share something about youself', // перевести
+    defaultBio: 'dashboard.leftMenu.profileCard.defaultBio',
   };
 
   private photo: Picture = new Picture(this.element, 'profile-card__photo');
@@ -78,8 +79,13 @@ export default class ProfileCard extends BaseComponent<'div'> {
     this.name = new EditableTextarea(this.element, 'profile-card__name', name, TextareaTypes.Username, true);
     this.about = new EditableTextarea(this.element, 'profile-card__about', bio, TextareaTypes.Bio, true);
     if (bio.length === 0) {
-      this.about.textarea.element.placeholder = this.dictionary.defaultBio;
+      this.about.textarea.element.placeholder = i18next.t(this.dictionary.defaultBio);
     }
+    i18next.on('languageChanged', () => {
+      if (this.about) {
+        this.about.textarea.element.placeholder = i18next.t(this.dictionary.defaultBio);
+      }
+    });
     this.profileScore = new BaseComponent('div', this.element, 'profile-card__info');
     // eslint-disable-next-line prettier/prettier, max-len
     this.profileScore.element.append(this.followers.element, this.followees.element, this.trainings.element);
