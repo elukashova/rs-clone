@@ -142,7 +142,6 @@ export default class GoogleMaps {
       event.preventDefault();
       this.deleteRoute();
       this.badRouteBlock.classList.add('hidden');
-      console.log(this.badRouteBlock);
     });
 
     // слушатель добавления маркеров (не более 2)

@@ -284,42 +284,4 @@ export default class PostComment extends BaseComponent<'div'> {
       this.textWrapper.element.removeChild(this.commentButton.element);
     }
   }
-
-  //   private activateTextarea = (): void => {
-  //     this.isUpdate = true;
-  //     this.message.element.removeAttribute('disabled');
-  //     this.message.element.focus();
-  //     this.message.element.selectionStart = this.message.element.value.length;
-  //     this.message.element.classList.add('active-comment');
-  //     if (this.editBlock) {
-  //       this.editBlock.editBtn.replaceBtnSvg(SvgNames.CloseThin, 'comment', ProjectColors.Grey);
-  //       this.editBlock.appendOkButton(this.updateOkButtonCallback);
-  //       // eslint-disable-next-line max-len
-  //       this.editBlock.replaceUpdateBtnEventListener(
-  // this.isUpdate, this.cancelUpdate, this.activateTextarea);
-  //     }
-  //   };
-
-  //   private updateOkButtonCallback = (): void => {
-  //     console.log(this.createdAt);
-  //   };
-
-  //   private cancelUpdate = (): void => {
-  //     this.isUpdate = false;
-  //     this.message.element.textContent = this.currentCommentText;
-  //     this.message.element.setAttribute('disabled', '');
-  //     this.message.element.classList.remove('active-comment');
-  //     if (this.editBlock) {
-  //       this.editBlock.editBtn.replaceBtnSvg(SvgNames.Pencil, 'comment', ProjectColors.Grey);
-  //       this.editBlock.removeOkButton();
-  //       // eslint-disable-next-line max-len
-  //       this.editBlock.replaceUpdateBtnEventListener
-  // (this.isUpdate, this.cancelUpdate, this.activateTextarea);
-  //     }
-  //   };
-
-  //   private changeDefaultBehavior = (): void => {
-
-  //   }
-  // }
 }
