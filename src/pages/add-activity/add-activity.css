@@ -1,25 +1,24 @@
 .add-activity-section {
-  height: max-content;
+  height: min-content;
   width: 90%;
-  margin: 4.5em 0;
+  margin: 2em 0;
   box-shadow: rgba(33, 33, 33, 0.027) 0px 4px 12px;
   background-color: var(--color-background-second);
   border-radius: 5px;
 }
 
 .add-activity__container {
-  padding: 3% 10%;
+  padding: calc(1rem + 2vw) calc(2rem + 2vw);
 }
 
 .add-activity__heading {
   padding: 0;
-  font-size: calc(0.8em + 1vw);
 }
 
 .add-activity__fieldset {
   display: flex;
   flex-direction: column;
-  gap: 2em;
+  gap: calc(1rem + 0.5vw);
   width: 100%;
 }
 
@@ -31,18 +30,25 @@
 .block-path {
   display: grid;
   grid-template-columns: 1fr 2fr 1fr;
+  align-items: flex-end;
   gap: 6%;
 }
 
 .block-type {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 6%;
 }
 
-.block-duration,
 .block-time {
   display: flex;
+  align-items: flex-end;
+  gap: 0.5em;
+}
+
+.block-duration {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   align-items: flex-end;
   gap: 0.5em;
 }
@@ -54,27 +60,38 @@
 
 .add-activity__input .label,
 .add-activity__label,
-.description-label {
+.description-label,
+.input-description .textarea__label span,
+.map__title {
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
   text-transform: uppercase;
-  font-size: calc(0.5em + 0.4vw);
+  font-size: 0.9rem;
+  color: var(--font-basic);
 }
 
 .add-activity__input .input-text,
 .add-activity__select {
   height: 2em;
-  padding: 0 0.3em;
+  padding: 0.3em;
   border-radius: 6px;
   border: 1px solid #1cbaa7;
-  font-size: 1.1em;
+  font-size: 0.9rem;
   font-family: 'Work Sans', sans-serif;
   color: var(--font-additional);
   transition: all 0.3s;
   width: 100%;
+}
+
+.textarea > label > .textarea::placeholder,
+.add-activity__input .input-text::placeholder,
+.add-activity__select::placeholder {
+  color: var(--font-additional);
+  font-size: 0.9rem;
+  padding: 0.3em 0;
 }
 
 .add-activity__select-wrapper {
@@ -146,12 +163,37 @@
   gap: 0.3em;
 }
 
-.map__title {
-  text-transform: uppercase;
-  font-size: calc(0.5em + 0.4vw);
-}
-
 .btn-activity {
   margin-top: 3%;
   width: 100%;
+}
+
+@media (max-width: 500px) {
+  .add-activity__block {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: calc(1rem + 0.5vw);
+  }
+
+  .add-activity__block .add-activity__block-container {
+    width: 100%;
+  }
+
+  .btn-activity {
+    margin-top: 3%;
+    width: 100%;
+    height: 2rem;
+  }
+
+  .map-wrapper {
+    height: 10rem !important;
+  }
+
+  .gm-control-active.gm-fullscreen-control {
+    /*  width: 1rem !important; */
+    margin: 5px 0 !important;
+    height: 20px !important;
+    width: 20px !important;
+  }
 }

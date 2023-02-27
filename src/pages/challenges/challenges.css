@@ -32,14 +32,15 @@
 .challenges__challenges-block {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, max-content));
-  gap: 4rem;
+  gap: 3rem;
+  width: 100%;
 }
 
 .challenge {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  gap: 0.3rem;
+  gap: 0.2rem;
   width: 100%;
   height: 100%;
   border-radius: 5px;
@@ -47,13 +48,13 @@
 
 .challenge__image {
   width: 100%;
-  max-width: 400px;
+  max-width: 20rem;
   height: auto;
   border-radius: 5px;
 }
 
 .challenge__title {
-  font-size: 1rem;
+  font-size: 0.9rem;
 }
 
 .challenge__description,
@@ -62,6 +63,13 @@
 .challenge__days-to-end,
 .challenge__friend {
   font-size: 0.8rem;
+  line-height: 0.9rem;
+}
+
+.challenge__date-start,
+.challenge__date-end,
+.challenge__days-to-end {
+  color: var(--font-additional);
 }
 
 .challenge__date-start,
@@ -133,4 +141,13 @@
 
 .hidden {
   display: none;
+}
+
+@media (max-width: 713px) {
+  .challenges__challenges-block {
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+    width: 100%;
+  }
 }

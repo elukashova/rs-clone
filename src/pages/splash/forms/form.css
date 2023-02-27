@@ -4,8 +4,9 @@
   flex-direction: column;
   justify-content: center;
   gap: 1em;
-  width: calc(20em + 25vw);
-  padding: 3rem 5rem 3rem;
+  width: calc(20em + 20vw);
+  height: max-content;
+  padding: 2.5rem 4rem 2.5rem;
   margin: 1rem;
   box-shadow: rgba(33, 33, 33, 0.027) 0px 4px 12px;
   background-color: var(--color-background-second);
@@ -35,14 +36,17 @@
   border: 1px solid #1cbaa7;
   font-size: 1.1em;
   font-family: 'Work Sans', sans-serif;
+  font-size: calc(0.5em + 0.4vw);
   color: #949494;
   transition: all 0.3s;
+  background-color: var(--color-background-opacity);
 }
 
 .form-input .input-text:focus,
 .signup__dropdown_input:focus {
   border: 1px solid #219486;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+  background-color: var(--color-background);
 }
 
 .form-input .label,

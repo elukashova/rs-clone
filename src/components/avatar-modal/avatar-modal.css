@@ -1,22 +1,23 @@
 .avatars__background {
   display: flex;
-  background-color: rgba(255, 255, 255, 0.7);
+  background-color: var(--color-background-third-opacity);
   width: 100%;
   height: 100%;
   z-index: 20;
   position: fixed;
+  z-index: 30;
   align-items: center;
   justify-content: center;
-  transition: all ease 1s;
+  transition: all 1s ease-in-out;
 }
 
 .avatars__modal {
-  background: #90dad1;
+  background: var(--color-background);
   opacity: 1;
   display: flex;
   align-items: center;
   justify-content: space-around;
-  position: absolute;
+
   height: 55%;
   width: 60%;
   position: absolute;
@@ -29,7 +30,8 @@
 .avatars__heading {
   line-height: 1.5em;
   margin: 0;
-  font-size: calc(0.8em + 1vw);
+  font-size: calc(0.4em + 1vw);
+  color: var(--font-basic);
 }
 
 .avatars__imgs-wpapper {
@@ -38,7 +40,7 @@
   grid-template-rows: repeat(2, 1fr);
   width: 90%;
   height: 70%;
-  background: white;
+  background: var(--color-background-second);
   align-items: center;
   justify-items: center;
   border-radius: 5px;
@@ -49,14 +51,17 @@
 .avatars__img {
   width: calc(1em + 5.5vw);
   height: calc(1em + 5.5vw);
-  transition: transform 0.5s;
   transition: border 0.3s;
-  transition: box-shadow 0.3s;
   border-radius: 50%;
+  cursor: pointer;
+  border: 3px solid transparent;
+  transition: transform 0.5s;
+  transition: box-shadow 0.3s;
 }
 
 .avatars__img:hover {
   transform: scale(1.05);
+  transition: all 0.3s;
 }
 
 .avatars__img:active {
@@ -66,7 +71,8 @@
 }
 
 .current-avatar {
-  border: 5px solid #ffae0b;
+  background-color: #1cbaa7;
+  border: 3px solid #ffae0b;
   box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
   pointer-events: none;
 }
@@ -95,4 +101,27 @@
 .avatars__button-cancel_svg:hover,
 .avatars__button-ok_svg:hover {
   fill: #219486;
+}
+
+@media (max-width: 700px) {
+  .avatars__modal {
+    height: max-content;
+    width: 60%;
+    gap: 1rem;
+    padding-top: 2em;
+    padding-bottom: 2em;
+    margin: 1rem;
+  }
+
+  .avatars__imgs-wpapper {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    width: 90%;
+    height: max-content;
+  }
+
+  .avatars__img {
+    width: calc(2em + 5.5vw);
+    height: calc(2em + 5.5vw);
+  }
 }

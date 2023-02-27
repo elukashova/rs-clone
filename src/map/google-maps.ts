@@ -128,7 +128,6 @@ export default class GoogleMaps {
 
     this.clearButton = new Button(document.body, i18next.t('map.clearBtn'));
     this.clearButton.element.style.marginTop = '10px';
-    this.clearButton.element.style.marginLeft = '1rem';
     this.map.controls[google.maps.ControlPosition.TOP_CENTER].push(this.clearButton.element);
     this.renderMessage();
     this.addListeners();
@@ -305,7 +304,12 @@ export default class GoogleMaps {
       height: 150,
       legend: 'none',
       title: i18next.t(`${this.dictionary.elevation}`).toString(),
-      colors: [ProjectColors.DarkTurquoise, ProjectColors.Turquoise],
+      colors: [ProjectColors.Turquoise],
+      backgroundColor: localStorage.getItem('theme') === 'theme-dark' ? '#455268' : '#dcdcdc',
+      titleTextStyle: {
+        color: localStorage.getItem('theme') === 'theme-dark' ? '#d6d6d6' : '#4a4a4a',
+        fontName: 'sans-serif',
+      },
     });
   }
 

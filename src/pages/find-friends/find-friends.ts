@@ -305,13 +305,7 @@ export default class Friends extends BaseComponent<'section'> {
   }
 
   private addPaginationForFriends(): void {
-    this.friendsPagination = new Pagination(
-      this.friendsContainer,
-      'not-friends__pagination',
-      1,
-      4,
-      this.friendsAll.length,
-    );
+    this.friendsPagination = new Pagination(this.friendsContainer, 'friends__pagination', 1, 4, this.friendsAll.length);
   }
 
   private addNotFoundForFriends(): void {
