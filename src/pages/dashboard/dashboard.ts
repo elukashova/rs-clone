@@ -11,8 +11,11 @@ import { transformNameFormat } from '../../utils/utils';
 import AvatarSources from '../../components/avatar-modal/avatar-modal.types';
 import { Token, UpdateUserData } from '../../app/loader/loader-requests.types';
 import { ActivityResponse, User } from '../../app/loader/loader-responses.types';
+import LoadingTimer from '../../components/base-component/loading/loading';
 
 export default class Dashboard extends BaseComponent<'section'> {
+  public loadingTimer = new LoadingTimer(document.body);
+
   private leftMenu!: LeftMenu;
 
   private trainingFeed!: TrainingFeed;
@@ -43,6 +46,18 @@ export default class Dashboard extends BaseComponent<'section'> {
 
   constructor(private replaceMainCallback: () => void) {
     super('section', undefined, 'dashboard section');
+    this.init();
+  }
+
+  private init(): void {
+    this.loadingTimer.showLoadingCircle();
+    setTimeout(() => {
+      this.doRequest();
+      this.loadingTimer.deleteLoadingCircle();
+    }, 3000);
+  }
+
+  private doRequest(): void {
     if (this.token) {
       getUser(this.token).then((user: User) => {
         console.log(`Ваш токен для тестов: ${this.token?.token}`);
@@ -50,7 +65,7 @@ export default class Dashboard extends BaseComponent<'section'> {
           ...user,
         };
         this.setUserInfo(user);
-        this.leftMenu = new LeftMenu(this.currentUser, replaceMainCallback);
+        this.leftMenu = new LeftMenu(this.currentUser, this.replaceMainCallback);
         const relevantActivities: ActivityResponse[] = Dashboard.collectAllActivities(user);
         this.trainingFeed = new TrainingFeed(
           this.dashboardWrapper.element,
