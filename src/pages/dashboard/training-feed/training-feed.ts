@@ -142,6 +142,7 @@ export default class TrainingFeed extends BaseComponent<'article'> {
     eventEmitter.on('friendAdded', (data: EventData) => this.updateTrainingFeed(data));
     eventEmitter.on('friendDeleted', (data: EventData) => this.removeAllFriendPosts(data));
     eventEmitter.on('updateAvatar', (data: EventData) => this.updateAvatarAfterChanging(data));
+    eventEmitter.on('activityDeleted', () => this.checkIfLastActivity());
   }
 
   private removeAllFriendPosts(data: EventData): void {
@@ -184,5 +185,11 @@ export default class TrainingFeed extends BaseComponent<'article'> {
       this.element.removeChild(post.element);
     });
     this.posts = [];
+  }
+
+  private checkIfLastActivity(): void {
+    if (this.element.children.length === 0) {
+      this.showGreetingMessage();
+    }
   }
 }

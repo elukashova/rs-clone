@@ -215,6 +215,7 @@ export default class Settings extends BaseComponent<'section'> {
       deleteUser(this.token).then(() => {
         localStorage.removeItem('userSessionToken');
         this.token = null;
+        localStorage.clear();
         window.history.pushState({}, '', Routes.SignUp);
         this.replaceMainCallback();
       });

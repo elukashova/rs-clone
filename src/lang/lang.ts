@@ -256,7 +256,7 @@ i18next.use(LanguageDetector).init({
             country: 'Country',
           },
           errors: {
-            Name: 'The name must contain two subnames, each at least 3 letters long',
+            Name: 'The name must contain two subnames in latin letters, each at least 3 letters long',
             Email: 'Please, provide a valid email',
             Password: 'The password must contain a minimum of 5 characters, including 1 digit and 1 uppercase letter',
             EmptyValue_country: 'Please, enter your country',
@@ -511,7 +511,7 @@ i18next.use(LanguageDetector).init({
         },
         splash: {
           errors: {
-            Name: 'Имя должно состоять из двух слов, по 3 буквы минимум',
+            Name: 'Имя должно содержать латинские буквы, состоять из двух слов, по 3 буквы минимум',
             Email: 'Введите правильный адрес почты',
             Password: 'Пароль должен состоять минимум из 5 символов, включая одну цифру и одну заглавную букву',
             // EmptyValue: 'Введите свое ',
