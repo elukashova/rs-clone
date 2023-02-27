@@ -1,10 +1,124 @@
 .dashboard {
   width: 90%;
+  display: flex;
+  justify-content: center;
 }
 
 .sections-wrapper {
   display: grid;
   grid-template-columns: 25% 45% 25%;
+  justify-content: center;
   gap: calc(1rem + 1vw);
-  margin: 2rem 0 3rem 0;
+  margin: 2.5rem 0 3rem 0;
+}
+
+@media (max-width: 1285px) {
+  .dashboard {
+    width: 95%;
+  }
+
+  .sections-wrapper {
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .sections-wrapper .right-menu {
+    display: none;
+  }
+
+  .sections-wrapper {
+    display: grid;
+    grid-template-columns: 30% 65%;
+    justify-content: center;
+    gap: calc(1rem + 1vw);
+    margin: 2.5rem 0 3rem 0;
+  }
+}
+
+@media (max-width: 612px) {
+  .profile-card .profile-card__info {
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: repeat(3, auto);
+    gap: calc(0.2rem + 0.2vw);
+  }
+
+  .profile-card .profile-card__info .profile-info {
+    flex-direction: row;
+    align-items: flex-end;
+  }
+
+  .profile-card .profile-card__info .profile-info:not(:last-child) {
+    border-right: 1px solid transparent;
+    /* border-left: 1px solid #949494; */
+  }
+
+  .nav-link.profile-info__link {
+    border-right: 1px solid #949494;
+    padding-right: 0.3rem;
+  }
+
+  .profile-info .profile-info__score {
+    height: auto;
+    padding: 0;
+    vertical-align: bottom;
+  }
+}
+
+@media (max-width: 900px) {
+  .sections-wrapper .right-menu {
+    display: none;
+  }
+
+  .sections-wrapper {
+    display: grid;
+    grid-template-columns: 30% 65%;
+    justify-content: center;
+    gap: calc(1rem + 1vw);
+    margin: 2.5rem 0 3rem 0;
+  }
+}
+
+@media (max-width: 612px) {
+  .profile-card .profile-card__info {
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: repeat(3, auto);
+    gap: calc(0.2rem + 0.2vw);
+  }
+
+  .profile-card .profile-card__info .profile-info {
+    flex-direction: row;
+    align-items: flex-end;
+  }
+
+  .profile-card .profile-card__info .profile-info:not(:last-child) {
+    border-right: 1px solid transparent;
+    /* border-left: 1px solid #949494; */
+  }
+
+  .nav-link.profile-info__link {
+    border-right: 1px solid #949494;
+    padding-right: 0.3rem;
+  }
+
+  .profile-info .profile-info__score {
+    height: auto;
+    padding: 0;
+    vertical-align: bottom;
+  }
+}
+
+@media (max-width: 513px) {
+  .sections-wrapper .left-menu {
+    display: none;
+  }
+  .sections-wrapper {
+    display: grid;
+    grid-template-columns: 100%;
+    justify-content: center;
+    gap: calc(1rem + 1vw);
+    margin: 2.5rem 0 3rem 0;
+  }
 }

@@ -18,6 +18,7 @@ import GenderBlock from './gender-block/gender-block';
 import eventEmitter from '../../utils/event-emitter';
 import Routes from '../../app/router/router.types';
 import LoadingTimer from '../../components/base-component/loading/loading';
+import { EventData } from '../../utils/event-emitter.types';
 
 export default class Settings extends BaseComponent<'section'> {
   private dictionary: Record<string, string> = {
@@ -84,6 +85,10 @@ export default class Settings extends BaseComponent<'section'> {
         this.country.clearOptions();
         this.createCountriesList();
       }
+    });
+
+    eventEmitter.on('updateAvatar', (source: EventData) => {
+      this.updateProfilePicture(source);
     });
   }
 
@@ -215,4 +220,8 @@ export default class Settings extends BaseComponent<'section'> {
       });
     }
   };
+
+  private updateProfilePicture(url: EventData): void {
+    this.profileImage.element.src = `${url.url}`;
+  }
 }

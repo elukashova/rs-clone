@@ -138,7 +138,7 @@ i18next.use(LanguageDetector).init({
             tasks: {
               participants: 'participants',
             },
-            addNewRoute: 'Add new route',
+            addNewRoute: 'Add activity',
             friendsHeading: 'Suggested friends',
           },
           trainingFeed: {
@@ -214,13 +214,13 @@ i18next.use(LanguageDetector).init({
             "It can be hard to focus on a goal, but this week will be an exception. Take part in a challenge in which you have to take a bike ride every day. Are you ready? Let's go!",
           runningTitle: 'The Tour de Valiance',
           runningDescription:
-            'Do you know The Tour de France - the most famous and most challenging 3,000 km bicycle race in the world? Not everyone would be able to finish it, but you have a chance to ride, walk or run its length within a year. Will you accept the challenge?',
+            "Take on the Tour de Valiance challenge! Ride, walk, or run for its 3,000 km within a year. It's the most famous and most challenging bicycle race in the world - can you finish it?",
           photoTitle: 'Like Van Gogh',
           photoDescription:
-            'Use GPS tracking to map out your workout route and draw a sketch (for example, a cat, a heart or maybe "The Starry Night"?) as you move. Tag #striversChallenge on your social media. We will share the coolest track drawing!',
+            'Take on the #striversChallenge and use GPS tracking to map out your workout route and draw a sketch as you move! Tag #striversChallenge and show off your creative side - the coolest track drawing will be shared!',
           yogaTitle: 'Your time',
           yogaDescription:
-            'Did you know that the first season of Game of Thrones is 9 hours and 27 minutes long? There are people who watched it in a week. Could you allocate the same amount of time for walking per week? We challenge you.',
+            'Take on the #GoTWalkingChallenge and dedicate 9 hours and 27 minutes to walking every week - the same amount of time needed to watch the first season of Game of Thrones! Can you do it?',
           challengeOver: 'Sorry, challenge is over',
           acceptButton: 'Accept',
           acceptedButton: 'Accepted',
@@ -413,7 +413,7 @@ i18next.use(LanguageDetector).init({
             tasks: {
               participants: 'участников',
             },
-            addNewRoute: 'Добавить новый маршрут',
+            addNewRoute: 'Добавить тренировку',
             friendsHeading: 'Рекомендованные друзья',
           },
           trainingFeed: {
@@ -475,22 +475,22 @@ i18next.use(LanguageDetector).init({
           typeWalking: 'Ходьба',
           hikingTitle: 'Покорите свой Эверест',
           hikingDescription:
-            'Поднимитесь на высоту 8,849 метров за один год. Каждая законченная тренировка считает высоту подъема и добавляет ее к общему количеству. Ваша задача — за год набрать высоту, равную высоте Эвереста.',
+            'Поднимитесь на высоту 8,849 метров за один год. Каждая законченная тренировка учитывает высоту подъема и добавляет ее к общему количеству. Ваша задача — за год набрать высоту, равную высоте Эвереста.',
           slothTitle: 'Международный день ленивца',
           slothDescription:
-            'Можете расслабиться. Ничего не делайте в этот день! Разве что... пробежка до холодильника?',
+            'Можете расслабиться. Ничего не делайте в этот день! Разве что... пробежаться до холодильника?',
           cyclingTitle: 'Несгибаемый дух',
           cyclingDescription:
             'Бывает сложно сфокусироваться на цели, но только не на этой неделе. В этом испытании, вам нужно совершать велозаезд каждый день. Готовы крутить педали? Поехали!',
           runningTitle: 'Тур de Valiance',
           runningDescription:
-            'Если вы знакомы с туром de France - самым известным и сложным 3,000 км велозаезде в мире, то знаете, что не каждый способен его пройти, но у вас есть возможность проехать, пройти или пробежать это же расстояние за один год. Готовы рискнуть?',
+            'Прими участие в челлендже Тур de Valiance, где вам предстоит проехать, пройти или пробежать 3000 км за один год. Задача не из простых - сможешь закончить ее?',
           photoTitle: 'Как Ван Гог',
           photoDescription:
-            'Запустите GPS-трекер, чтобы отследить вашу тренировку и нарисовать картину (например, кошку, сердечко или "Звездную Ночь") во время движения. Поделитесь своей работой в соц.сетях с хештегом #striversChallenge, и мы выложим самые классные работы',
-          yogaTitle: 'Ваш час',
+            'Примите вызов #striversChallenge и используйте GPS-трекинг, чтобы отметить маршрут вашей тренировки и нарисовать скетч, пока вы двигаетесь! Отметьте нас тегом #striversChallenge и покажите свою творческую сторону - лучшие попадут в нашу ленту!',
+          yogaTitle: 'Твое время',
           yogaDescription:
-            'А вы знали, что первый сезон Игры Престолов длится 9 часов и 29 минут? Некоторые умудрились посмотреть его за неделю. А сможете ли вы потратить столько же времени в неделю на ходьбу? Проверим!',
+            'А вы знали, что первый сезон Игры Престолов длится 9 часов и 29 минут? Некоторые умудрились посмотреть его за неделю. А сможете ли вы всего за неделю набрать то же количество времени в тренировках? Проверим!',
           challengeOver: 'К сожалению, испытание уже закончилось',
           acceptButton: 'Принять',
           acceptedButton: 'Вызов принят',

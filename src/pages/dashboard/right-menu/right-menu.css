@@ -30,11 +30,12 @@
 }
 
 .link.right-menu__link {
-  font-size: calc(0.7em + 0.3vw);
+  font-size: calc(0.3rem + 0.6vw);
   text-transform: uppercase;
   font-weight: 500;
   color: #ff8d24;
   font-family: 'Montserrat', sans-serif;
+  text-align: center;
 }
 
 .link.add-challenge__link {
@@ -78,6 +79,6 @@
 .suggested-friends__icon-wrapper,
 .add-challenge__icon-wrapper,
 .add-challenge__icon {
-  width: 2.5rem;
-  height: 2.5rem;
+  width: calc(1rem + 1vw);
+  height: calc(1rem + 1vw);
 }

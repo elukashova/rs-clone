@@ -140,7 +140,7 @@ export default class RightMenu extends BaseComponent<'aside'> {
       text: this.dictionary.addNewRoute,
       parent: this.addRouteLinkWrapper.element,
       additionalClasses: 'right-menu__link add-route__link link',
-      attributes: { href: Routes.AddRoute },
+      attributes: { href: Routes.AddActivity },
     });
   }
 

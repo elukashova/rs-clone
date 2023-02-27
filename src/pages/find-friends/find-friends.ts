@@ -74,8 +74,8 @@ export default class Friends extends BaseComponent<'section'> {
   private init(): void {
     this.loadingTimer.showLoadingCircle();
     setTimeout(() => {
-      this.loadingTimer.deleteLoadingCircle();
       this.renderPage();
+      this.loadingTimer.deleteLoadingCircle();
     }, 3000);
   }
 
