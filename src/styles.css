@@ -46,6 +46,7 @@ input:-webkit-autofill:active {
 html {
   scrollbar-width: none;
   -ms-overflow-style: none;
+  transition: all 0.5s ease-in;
 }
 
 html::-webkit-scrollbar {
@@ -102,8 +103,9 @@ body {
   flex-direction: column;
   align-items: center;
   background-color: var(--color-background);
-  font-family: 'Work Sans', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   color: var(--font-basic);
+  transition: all 0.5s ease-in;
 }
 
 .main li {

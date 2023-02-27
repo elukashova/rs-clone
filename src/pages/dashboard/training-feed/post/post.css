@@ -63,13 +63,13 @@
 }
 
 .post__name {
-  text-transform: uppercase;
-  font-size: calc(0.7em + 0.5vw);
+  font-size: calc(0.4rem + 0.6vw);
 }
 
 .post__data-place {
-  font-weight: 300;
   color: var(--font-additional);
+  font-size: calc(0.5rem + 0.3vw);
+  font-weight: 400;
 }
 
 .post__edit-svg {
@@ -111,7 +111,7 @@
 }
 
 .post__activity-title {
-  font-size: calc(0.7em + 0.5vw);
+  font-size: calc(0.6rem + 0.3vw);
   font-weight: 600;
 }
 
@@ -149,8 +149,12 @@
   width: 25%;
 }
 
+.post__data-title + span {
+  font-size: calc(0.5rem + 0.3vw);
+}
+
 .post__data-title {
-  font-size: calc(0.5em + 0.5vw);
+  font-size: calc(0.3rem + 0.4vw);
   text-transform: uppercase;
   font-weight: 400;
   color: #ff8d24;

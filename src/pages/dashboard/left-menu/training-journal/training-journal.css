@@ -4,7 +4,7 @@
   align-items: center;
   flex-direction: column;
   gap: 1em;
-  padding: 1em 3em;
+  padding: 1em;
   box-shadow: rgba(33, 33, 33, 0.027) 0px 4px 12px;
   background-color: var(--color-background-second);
   border-radius: 5px;
@@ -12,14 +12,16 @@
 
 .training-journal__heading {
   margin: 0;
-  font-size: calc(0.7em + 0.3vw);
+  font-size: calc(0.3rem + 0.6vw);
   text-transform: uppercase;
   font-weight: 500;
   color: #ff8d24;
+  text-align: center;
+  width: 90%;
 }
 
 .training-journal__info-wrapper {
-  width: 100%;
+  width: 90%;
   display: flex;
   flex-direction: column;
   gap: 1em;
@@ -38,7 +40,9 @@
 
 .training-journal__activity_name,
 .training-journal__activity_date {
-  font-size: calc(0.7em + 0.3vw);
+  font-family: 'Montserrat', sans-serif;
+  font-size: calc(0.5rem + 0.3vw);
+  color: var(--font-basic);
 }
 
 .training-journal__default-message {

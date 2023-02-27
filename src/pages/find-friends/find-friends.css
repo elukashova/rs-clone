@@ -85,6 +85,13 @@
   display: none;
 }
 
+.not-friend__activity-text {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  gap: 0.3rem;
+}
+
 .not-friends__block-container,
 .friends__block-container {
   display: flex;
@@ -93,8 +100,8 @@
   align-items: center;
   width: 80%;
   gap: calc(0.1rem + 0.1vw);
-  margin: calc(1em + 1vw);
-  padding: 0.5rem calc(1em + 1vw) calc(1em + 1vw) calc(1em + 1vw);
+  margin: calc(1em + 1vw) calc(1em + 1vw) 1em calc(1em + 1vw);
+  padding: 0.4rem calc(1em + 1vw) calc(1em + 1vw) calc(1em + 1vw);
   border-radius: 5px;
   box-shadow: rgba(33, 33, 33, 0.027) 0px 4px 12px;
   background-color: var(--color-background-second);

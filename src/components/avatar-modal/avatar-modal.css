@@ -66,13 +66,13 @@
 
 .avatars__img:active {
   transform: scale(1);
-  border: 3px solid #ffae0b;
+  border: 3px solid #ff8d24;
   box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
 }
 
 .current-avatar {
   background-color: #1cbaa7;
-  border: 3px solid #ffae0b;
+  border: 5px solid #ff8d24;
   box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
   pointer-events: none;
 }

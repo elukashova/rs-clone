@@ -10,6 +10,7 @@ import { FriendData, User } from '../../app/loader/loader-responses.types';
 import Challenge from './challenge/challenge';
 import { getUser, updateUser } from '../../app/loader/services/user-services';
 import { Activities, ChallengesTypes } from './types-challenges';
+import LoadingTimer from '../../components/base-component/loading/loading';
 
 export default class Challenges extends BaseComponent<'section'> {
   private dictionary: Record<string, string> = {
@@ -39,59 +40,9 @@ export default class Challenges extends BaseComponent<'section'> {
 
   public challengesAll: Challenge[] = [];
 
-  private formContainer = new BaseComponent('div', this.element, 'challenges__container');
-
-  private titleWrapper = new BaseComponent('div', this.formContainer.element, 'challenges__title-wrapper');
-
-  private challengeTitle = new BaseComponent(
-    'h2',
-    this.titleWrapper.element,
-    'challenges__title titles',
-    this.dictionary.title,
-  );
-
-  private typeOfChallenge = new BaseComponent('div', this.titleWrapper.element, 'challenges__types-block');
-
-  private allTypes = new ActivityBlock(
-    this.typeOfChallenge.element,
-    SvgNames.Star,
-    this.dictionary.typeAll,
-    'challenges__all challenges__activity',
-  );
-
-  private running = new ActivityBlock(
-    this.typeOfChallenge.element,
-    SvgNames.Running,
-    this.dictionary.typeRunning,
-    'challenges__running challenges__activity',
-  );
-
-  private cycling = new ActivityBlock(
-    this.typeOfChallenge.element,
-    SvgNames.Cycling,
-    this.dictionary.typeCycling,
-    'challenges__cycling challenges__activity',
-  );
-
-  private hiking = new ActivityBlock(
-    this.typeOfChallenge.element,
-    SvgNames.Hiking,
-    this.dictionary.typeHiking,
-    'challenges__hiking challenges__activity',
-  );
-
-  private walking = new ActivityBlock(
-    this.typeOfChallenge.element,
-    SvgNames.Walking,
-    this.dictionary.typeWalking,
-    'challenges__walking challenges__activity',
-  );
-
   private typesAll: ActivityBlock[] = [];
 
   private resultTypesAll: ActivityBlock[] = [];
-
-  private challengesBlock = new BaseComponent('div', this.formContainer.element, 'challenges__challenges-block');
 
   private hikingChallenge!: Challenge;
 
@@ -109,9 +60,39 @@ export default class Challenges extends BaseComponent<'section'> {
 
   private challengesForRequest: string[] = [];
 
+  private formContainer!: BaseComponent<'div'>;
+
+  private titleWrapper!: BaseComponent<'div'>;
+
+  private challengeTitle!: BaseComponent<'h2'>;
+
+  private typeOfChallenge!: BaseComponent<'div'>;
+
+  private allTypes!: ActivityBlock;
+
+  private running!: ActivityBlock;
+
+  private cycling!: ActivityBlock;
+
+  private hiking!: ActivityBlock;
+
+  private walking!: ActivityBlock;
+
+  private challengesBlock!: BaseComponent<'div'>;
+
+  public loadingTimer = new LoadingTimer(document.body);
+
   constructor(parent: HTMLElement) {
     super('section', parent, 'challenges challenges-section');
-    this.getFriendsRequest();
+    this.init();
+  }
+
+  private init(): void {
+    this.loadingTimer.showLoadingCircle();
+    setTimeout(() => {
+      this.getFriendsRequest();
+      this.loadingTimer.deleteLoadingCircle();
+    }, 3000);
   }
 
   private getFriendsRequest(): void {
@@ -128,6 +109,7 @@ export default class Challenges extends BaseComponent<'section'> {
   }
 
   private renderPage(data: FriendData[]): void {
+    this.renderTypes();
     this.renderFirstChallenges(data);
     this.renderSecondChallenges(data);
     this.challengesAll = [
@@ -142,7 +124,51 @@ export default class Challenges extends BaseComponent<'section'> {
     this.isAddedForChallenges();
   }
 
+  // eslint-disable-next-line max-lines-per-function
+  private renderTypes(): void {
+    this.formContainer = new BaseComponent('div', this.element, 'challenges__container');
+    this.titleWrapper = new BaseComponent('div', this.formContainer.element, 'challenges__title-wrapper');
+    this.challengeTitle = new BaseComponent(
+      'h2',
+      this.titleWrapper.element,
+      'challenges__title titles',
+      this.dictionary.title,
+    );
+    this.typeOfChallenge = new BaseComponent('div', this.titleWrapper.element, 'challenges__types-block');
+    this.allTypes = new ActivityBlock(
+      this.typeOfChallenge.element,
+      SvgNames.Star,
+      this.dictionary.typeAll,
+      'challenges__all challenges__activity',
+    );
+    this.running = new ActivityBlock(
+      this.typeOfChallenge.element,
+      SvgNames.Running,
+      this.dictionary.typeRunning,
+      'challenges__running challenges__activity',
+    );
+    this.cycling = new ActivityBlock(
+      this.typeOfChallenge.element,
+      SvgNames.Cycling,
+      this.dictionary.typeCycling,
+      'challenges__cycling challenges__activity',
+    );
+    this.hiking = new ActivityBlock(
+      this.typeOfChallenge.element,
+      SvgNames.Hiking,
+      this.dictionary.typeHiking,
+      'challenges__hiking challenges__activity',
+    );
+    this.walking = new ActivityBlock(
+      this.typeOfChallenge.element,
+      SvgNames.Walking,
+      this.dictionary.typeWalking,
+      'challenges__walking challenges__activity',
+    );
+  }
+
   private renderFirstChallenges(data: FriendData[]): void {
+    this.challengesBlock = new BaseComponent('div', this.formContainer.element, 'challenges__challenges-block');
     const hikingUsers: string[] = Challenges.checkChallenges(data, ChallengesTypes.Hiking);
     this.hikingChallenge = new Challenge(
       this.challengesBlock.element,

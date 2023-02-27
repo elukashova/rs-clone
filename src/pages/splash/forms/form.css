@@ -86,3 +86,16 @@
 .login__error-message {
   font-size: calc(0.5em + 0.5vw);
 }
+
+@media (max-width: 416px) {
+  .login-form,
+  .signup-form {
+    width: calc(15em + 20vw);
+    padding: calc(1em + 1vw) calc(2em + 1vw);
+    margin: calc(1em + 1vw);
+  }
+
+  .sign_in_btn_wrapper {
+    margin-bottom: 1rem;
+  }
+}

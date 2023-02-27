@@ -62,9 +62,9 @@ export default class ModalAvatar extends BaseComponent<'div'> {
   }
 
   public closeModalCallback = (e: Event): void => {
+    this.root.style.overflow = 'visible';
     if (e.currentTarget === e.target) {
       this.root.removeChild(this.element);
-      this.root.style.overflow = 'visible';
     }
   };
 

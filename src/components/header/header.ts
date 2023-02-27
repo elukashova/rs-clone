@@ -127,33 +127,40 @@ export default class Header extends BaseComponent<'header'> {
 
   constructor(parent: HTMLElement, private replaceMainCallback: () => void) {
     super('header', parent, 'header');
-    this.changeLanguage();
+    this.changeLanguageIcon();
     this.changeTheme();
     this.subscribeToEvents();
     this.initialThemes();
     this.setGridToTwoElements();
     this.handleLogo();
     this.setAvatar();
+    this.languageIcon.element.addEventListener('click', this.changeLanguage);
     window.addEventListener('resize', this.handleLogo);
   }
 
-  public changeLanguage(): void {
-    this.languageIcon.element.addEventListener('click', () => {
-      const language: string | null = localStorage.getItem('i18nextLng');
-      switch (language) {
-        case this.languages.en:
-          i18next.changeLanguage(this.languages.rus);
-          this.languageIcon.element.src = './assets/icons/png/english.png';
-          break;
-        case this.languages.rus:
-          i18next.changeLanguage(this.languages.en);
-          this.languageIcon.element.src = './assets/icons/png/russian.png';
-          break;
-        default:
-          break;
-      }
-      eventEmitter.emit('languageChanged', {});
-    });
+  public changeLanguage = (): void => {
+    const language: string | null = localStorage.getItem('i18nextLng');
+    switch (language) {
+      case this.languages.en:
+        i18next.changeLanguage(this.languages.rus);
+        break;
+      case this.languages.rus:
+        i18next.changeLanguage(this.languages.en);
+        break;
+      default:
+        break;
+    }
+    this.changeLanguageIcon();
+    eventEmitter.emit('languageChanged', {});
+  };
+
+  private changeLanguageIcon(language?: string): void {
+    const lang: string | null = language || localStorage.getItem('i18nextLng');
+    if (lang === 'en') {
+      this.languageIcon.element.src = './assets/icons/png/russian.png';
+    } else {
+      this.languageIcon.element.src = './assets/icons/png/english.png';
+    }
   }
 
   public changeTheme(): void {
@@ -225,7 +232,7 @@ export default class Header extends BaseComponent<'header'> {
   }
 
   public setGridToFourElements(): void {
-    this.linksContainer.element.style.gridTemplateColumns = 'repeat(4, 3.5rem)';
+    this.linksContainer.element.style.gridTemplateColumns = 'repeat(4, calc(2rem + 2vw))';
   }
 
   private handleLogo = (): void => {

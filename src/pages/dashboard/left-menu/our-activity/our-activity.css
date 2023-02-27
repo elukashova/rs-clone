@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.4em;
+  gap: calc(0.3rem + 0.5vw);
   padding: 1em;
   box-shadow: rgba(33, 33, 33, 0.027) 0px 4px 12px;
   background-color: var(--color-background-second);
@@ -28,7 +28,7 @@
 .our-activity__icons_header {
   text-transform: uppercase;
   color: #ff8d24;
-  font-size: calc(0.5em + 0.3vw);
+  font-size: calc(0.3rem + 0.6vw);
   font-weight: 400;
 }
 
@@ -51,8 +51,8 @@
 }
 
 .our-activity__svg {
-  width: calc(0.8em + 1.3vw);
-  height: calc(0.8em + 1.3vw);
+  width: calc(0.8em + 1vw);
+  height: calc(0.8em + 1vw);
   transition: fill 0.3s;
   cursor: pointer;
 }
@@ -109,7 +109,7 @@
 .our-activity__year-header {
   padding: 0;
   margin: 0;
-  font-size: calc(0.7em + 0.3vw);
+  font-size: calc(0.3rem + 0.6vw);
   text-transform: uppercase;
   font-weight: 500;
   color: #ff8d24;
@@ -118,7 +118,7 @@
 .our-activity__week-km,
 .our-activity__year-km {
   font-weight: 400;
-  font-size: calc(0.6em + 0.5vw);
+  font-size: calc(0.5rem + 0.3vw);
 }
 
 .our-activity__statistics {
@@ -148,6 +148,6 @@
 
 .our-activity__time,
 .our-activity__elevation {
-  font-size: calc(0.7em + 0.3vw);
-  font-weight: 300;
+  font-weight: 400;
+  font-size: calc(0.5rem + 0.3vw);
 }

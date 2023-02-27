@@ -58,7 +58,12 @@ export default class EditableTextarea extends BaseComponent<'div'> {
     this.addEventListeners();
     this.defineMaxLength();
     this.resizeTextarea();
-    this.updateTextAlignment();
+
+    if (!this.isDashboard) {
+      this.textarea.element.style.textAlign = 'left';
+    } else {
+      this.updateTextAlignment();
+    }
   }
 
   private addEventListeners(): void {
@@ -80,9 +85,7 @@ export default class EditableTextarea extends BaseComponent<'div'> {
     this.textarea.element.selectionStart = this.textarea.element.value.length;
     this.editBlock.editBtn.replaceBtnSvg(SvgNames.CloseThin, this.classes, ProjectColors.Grey);
     this.editBlock.appendOkButton(this.updateOkButtonCallback);
-    if (this.isDashboard === true) {
-      this.updateTextAlignment();
-    }
+    this.updateTextAlignment();
     // eslint-disable-next-line max-len
     this.editBlock.replaceUpdateBtnEventListener(this.isUpdate, this.cancelUpdate, this.activateTextarea);
   };
@@ -95,7 +98,7 @@ export default class EditableTextarea extends BaseComponent<'div'> {
     this.editBlock.removeOkButton();
     // eslint-disable-next-line max-len
     this.editBlock.replaceUpdateBtnEventListener(this.isUpdate, this.cancelUpdate, this.activateTextarea);
-    if (this.isDashboard === true) {
+    if (this.isDashboard) {
       this.updateTextAlignment();
     }
     this.resizeTextarea();
@@ -180,9 +183,12 @@ export default class EditableTextarea extends BaseComponent<'div'> {
 
   private resizeTextarea = (): void => {
     let defaultCols: number;
-    if (this.type === TextareaTypes.Username) {
+    if (this.type === TextareaTypes.Username && this.isDashboard) {
       // eslint-disable-next-line max-len
       defaultCols = !this.isUpdate ? TextareaColsNumber.DefaultName : TextareaColsNumber.IsUpdateName;
+    } else if (this.type === TextareaTypes.Username && !this.isDashboard) {
+      // eslint-disable-next-line max-len
+      defaultCols = !this.isUpdate ? TextareaColsNumber.DefaultName * 2 : TextareaColsNumber.IsUpdateName * 2;
     } else {
       defaultCols = !this.isUpdate ? TextareaColsNumber.DefaultBio : TextareaColsNumber.IsUpdateBio;
     }
