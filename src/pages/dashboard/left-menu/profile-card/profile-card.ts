@@ -22,7 +22,7 @@ export default class ProfileCard extends BaseComponent<'div'> {
     defaultBio: 'dashboard.leftMenu.profileCard.defaultBio',
   };
 
-  private photo: Picture = new Picture(this.element, 'profile-card__photo');
+  private photo: Picture = new Picture(this.element, 'profile-card__photo', { alt: 'profile photo' });
 
   private changePhotoButton: Button = new Button(this.element, '', 'profile-card__photo_btn');
 
@@ -73,7 +73,6 @@ export default class ProfileCard extends BaseComponent<'div'> {
     this.subscribeToEvents();
   }
 
-  // temp comment
   private render(url: string, name: string, bio: string): void {
     this.photo.element.setAttribute('src', url);
     this.name = new EditableTextarea(this.element, 'profile-card__name', name, TextareaTypes.Username, true);
