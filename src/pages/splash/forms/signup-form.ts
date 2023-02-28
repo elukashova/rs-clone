@@ -50,6 +50,7 @@ export default class SignupForm extends BaseComponent<'form'> {
     pattern: convertRegexToPattern(VALID_NAME),
     required: '',
     'data-id': 'name',
+    maxLength: '30',
   });
 
   private emailInput: Input = new Input(this.element, 'signup__form-input form-input', this.dictionary.email, {

@@ -5,7 +5,7 @@ export enum TextareaTypes {
 
 export enum TextareaLength {
   Default = '50',
-  Bio = '150',
+  Bio = '80',
 }
 
 export enum TextareaColsNumber {

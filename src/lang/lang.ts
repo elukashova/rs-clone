@@ -76,7 +76,7 @@ i18next.use(LanguageDetector).init({
         addActivityPage: {
           heading: 'Add activity',
           distance: 'Distance (km)',
-          duration: 'Duration (hr:min:s)',
+          duration: 'Duration (hh:mm:ss)',
           elevation: 'Elevation (m)',
           training: 'Type of activity',
           walking: 'Walking',
@@ -124,7 +124,7 @@ i18next.use(LanguageDetector).init({
               followers: 'followers',
               followees: 'following',
               activities: 'activities',
-              defaultBio: 'Share something about youself',
+              defaultBio: 'Share something about yourself',
             },
             trainingJournal: {
               heading: 'Last activity',
