@@ -122,32 +122,4 @@ export default class ProfileCard extends BaseComponent<'div'> {
       this.trainings.updateScore(this.activitiesCounter);
     });
   }
-
-  // private adjustTextarea = (): void => {
-  //   const { innerWidth } = window;
-  //   console.log(innerWidth);
-  //   console.log(this.element.clientWidth);
-  //   if (this.element.clientWidth < 325) {
-  //     if (this.about) {
-  //       this.about.textarea.element.rows = 3;
-  //     }
-  //   }
-  //   if (this.element.clientWidth < 230) {
-  //     if (this.name && this.about) {
-  //       this.name.textarea.element.rows = 2;
-  //       this.about.textarea.element.rows = 3;
-  //     }
-  //   }
-  //   if (this.element.clientWidth < 200) {
-  //     if (this.about) {
-  //       this.about.textarea.element.rows = 4;
-  //     }
-  //   }
-  //   if (this.element.clientWidth > 325) {
-  //     if (this.name && this.about) {
-  //       this.name.resizeTextarea();
-  //       this.about.resizeTextarea();
-  //     }
-  //   }
-  // };
 }

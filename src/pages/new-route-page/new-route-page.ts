@@ -1,7 +1,6 @@
 import './new-route-page.css';
 import BaseComponent from '../../components/base-component/base-component';
 import Input from '../../components/base-component/text-input-and-label/text-input';
-import Select from '../../components/base-component/select/select';
 import Button from '../../components/base-component/button/button';
 import MapParameter from './map-parameter/map-parameter';
 
@@ -35,7 +34,8 @@ export default class NewRoutePage extends BaseComponent<'section'> {
     placeholder: this.dictionary.searchPlaceholder,
   });
 
-  public routeType = new Select(this.optionsContainer.element, this.routeTypes, 'new-route-page__select');
+  // public routeType = new Select(this.optionsContainer.element, this.routeTypes,
+  // 'new-route-page__select');
 
   private buttonContainer = new BaseComponent('div', this.optionsContainer.element, 'new-route-page__buttons');
 

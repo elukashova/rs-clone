@@ -12,8 +12,6 @@
   transition: transform 0.3s ease;
 }
 
-/* .dropdown_list-wrapper */
-
 .visible {
   opacity: 1;
   transform: scaleY(1);

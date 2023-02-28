@@ -1,10 +1,7 @@
 import { PRODUCTION_ENV } from '../../utils/consts';
 import { RequestData, Token, LoadRequest, Methods, FriendId, UpdateRequestData } from './loader-requests.types';
-// import { DEVELOPMENT_ENV } from '../../utils/consts';
 
 export default class Loader {
-  // DEVELOPMENT_ENV
-  // PRODUCTION_ENV
   private static server: string = PRODUCTION_ENV;
 
   private static errorHandler(response: Response): Response {
