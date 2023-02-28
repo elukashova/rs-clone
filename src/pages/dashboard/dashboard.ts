@@ -125,6 +125,7 @@ export default class Dashboard extends BaseComponent<'section'> {
       .then((user: User) => {
         if (user) {
           eventEmitter.emit('updateAvatar', { url: user.avatarUrl });
+          setDataToLocalStorage(user.avatarUrl, 'UserAvatarUrl');
         }
       })
       .catch(() => null);
