@@ -8,7 +8,7 @@ import SvgNames from '../base-component/svg/svg.types';
 import { Token, UpdateUserData } from '../../app/loader/loader-requests.types';
 import { User } from '../../app/loader/loader-responses.types';
 import { updateUser } from '../../app/loader/services/user-services';
-import { checkDataInLocalStorage } from '../../utils/local-storage';
+import { checkDataInLocalStorage, setDataToLocalStorage } from '../../utils/local-storage';
 import eventEmitter from '../../utils/event-emitter';
 import { EventData } from '../../utils/event-emitter.types';
 
@@ -107,6 +107,7 @@ export default class ModalAvatar extends BaseComponent<'div'> {
         .then((user: User) => {
           if (user) {
             eventEmitter.emit('updateAvatar', { url: user.avatarUrl });
+            setDataToLocalStorage(user.avatarUrl, 'UserAvatarUrl');
             this.cancelButtonCallback();
           }
         })
