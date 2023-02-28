@@ -16,7 +16,7 @@
 }
 
 .google-maps__popup .google-maps__popup-text {
-  color: var(--color-background-third);
+  color: black !important;
 }
 
 .google-maps__popup-button {
