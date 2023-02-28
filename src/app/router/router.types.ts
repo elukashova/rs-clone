@@ -5,7 +5,7 @@ enum Routes {
   Dashboard = '/dashboard',
   Challenges = '/challenges',
   MyRoutes = '/routes',
-  MyRoute = '/routes-route', // тут должен добавляться id карты к пути
+  MyRoute = '/routes-route',
   Settings = '/settings',
   AddActivity = '/add-activity',
   AddRoute = '/add-route',

@@ -56,13 +56,6 @@ export enum Methods {
   Delete = 'DELETE',
 }
 
-export enum SportType { // используется только в мок - удалить потом
-  RUNNING = 'running',
-  HIKING = 'hiking',
-  WALKING = 'walking',
-  CYCLING = 'cycling',
-}
-
 export type ActivityRequest = {
   time: string;
   date: string;
