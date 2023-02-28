@@ -72,9 +72,10 @@
   .sections-wrapper .left-menu {
     display: none;
   }
+
   .sections-wrapper {
     display: grid;
-    grid-template-columns: 100%;
+    grid-template-columns: 90%;
     justify-content: center;
     gap: calc(1rem + 1vw);
     margin: 2.5rem 0 3rem 0;

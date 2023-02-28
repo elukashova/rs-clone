@@ -198,7 +198,7 @@ export default class AddActivity extends BaseComponent<'section'> {
     this.dictionary.description,
     {
       type: 'textarea',
-      maxlength: '80',
+      maxlength: '200',
       rows: '3',
       placeholder: this.dictionary.descriptionPlaceholder,
     },

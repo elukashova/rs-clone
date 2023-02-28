@@ -82,3 +82,55 @@
   transform: translateY(0);
   transition: all 0.4s ease-in-out;
 }
+
+.post__activity-description,
+.post__activity-title {
+  width: 25rem;
+  word-wrap: break-word;
+}
+
+@media (max-width: 1500px) {
+  .post__activity-description,
+  .post__activity-title {
+    width: calc(10rem + 11vw);
+    word-wrap: break-word;
+  }
+}
+
+@media (max-width: 1000px) {
+  .post__user-info {
+    grid-template-columns: 1fr 8fr 0.1fr;
+  }
+
+  .post__name {
+    width: calc(5rem + 6vw);
+    word-wrap: break-word;
+  }
+
+  .post__activity-description,
+  .post__activity-title {
+    width: calc(6rem + 8vw);
+    word-wrap: break-word;
+  }
+}
+
+@media (max-width: 900px) {
+  .post__activity-description {
+    width: calc(12rem + 12vw);
+    word-wrap: break-word;
+  }
+}
+
+@media (max-width: 561px) {
+  .post__activity-description {
+    width: calc(10rem + 10vw);
+    word-wrap: break-word;
+  }
+}
+
+@media (max-width: 350px) {
+  .post__activity-description {
+    width: calc(8rem + 10vw);
+    word-wrap: break-word;
+  }
+}

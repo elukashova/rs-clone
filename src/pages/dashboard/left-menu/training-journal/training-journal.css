@@ -32,6 +32,7 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
+  gap: calc(0.5rem + 0.3vw);
 }
 
 .training-journal__info {
@@ -52,6 +53,8 @@
 
 .training-journal__activity_name {
   font-weight: 400;
+  width: 10vw;
+  word-wrap: break-word;
 }
 
 .training-journal__activity_date {

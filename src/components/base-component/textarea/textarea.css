@@ -24,6 +24,5 @@
 }
 
 .textarea.add-activity__input.input-description .textarea__label .textarea {
-  overflow-y: scroll;
   height: max-content;
 }
