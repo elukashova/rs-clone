@@ -147,6 +147,8 @@ export default class Post extends BaseComponent<'div'> {
 
   public activity: ActivityResponse;
 
+  private userAvatar: string | null = checkDataInLocalStorage('UserAvatarUrl');
+
   constructor(userId: string, activity: ActivityResponse) {
     super('div', undefined, 'post');
     this.postAuthorId = userId;
@@ -244,7 +246,9 @@ export default class Post extends BaseComponent<'div'> {
       this.isLiked = false;
       this.reactions.likesCounter -= 1;
     }
-    this.updateLikesCounter([], this.userCommentAvatar.element.src);
+    if (this.userAvatar) {
+      this.updateLikesCounter([], this.userAvatar);
+    }
     this.updateLikeColor();
     if (this.token) {
       updateActivity(this.postId, { kudos: this.isLiked }, this.token).catch(() => null);

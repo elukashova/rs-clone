@@ -83,6 +83,8 @@ export default class Dashboard extends BaseComponent<'section'> {
     transformNameFormat(user.username);
     this.currentUser.username = transformNameFormat(user.username);
     this.currentUser.avatarUrl = user.avatarUrl || AvatarSources.Default;
+    eventEmitter.emit('updateAvatar', { avatarUrl: this.currentUser.avatarUrl });
+    setDataToLocalStorage(this.currentUser.avatarUrl, 'UserAvatarUrl');
     this.currentUser.bio = user.bio || '';
     setDataToLocalStorage(user.id, 'MyStriversId');
 
