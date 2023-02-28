@@ -4,7 +4,7 @@
   flex-direction: column;
   align-items: center;
   margin: 3rem 0 3rem 0;
-  padding: 1.5em 2em 3em;
+  padding: 1.5em 2em 1.5em;
   background: var(--color-background-second);
   box-shadow: rgba(183, 183, 183, 0.076) 0px 0px 0px 1px;
   border-radius: 5px;
@@ -88,7 +88,7 @@
 .settings__country_label,
 .settings__gender_title {
   text-transform: uppercase;
-  font-size: calc(0.5em + 0.4vw);
+  font-size: calc(0.4rem + 0.5vw);
   white-space: nowrap;
   min-width: calc(5em + 5vw);
 }
@@ -96,8 +96,8 @@
 .settings__name_btn,
 .settings__about_btn,
 .settings__input_btn {
-  width: 1.5em;
-  height: 1.5em;
+  width: 2em;
+  height: 2em;
   padding: 0;
   border-radius: 50%;
   outline: none;
@@ -109,13 +109,14 @@
 .settings__input_btn:hover {
   background: none;
   background-color: none;
+  animation: wiggle 2s linear infinite;
 }
 
 .settings__name_btn_svg,
 .settings__about_btn_svg,
 .settings__input_btn_svg {
-  width: calc(0.35em + 0.25vw);
-  height: calc(0.35em + 0.25vw);
+  width: calc(0.4em + 0.4vw);
+  height: calc(0.4em + 0.4vw);
   transition: fill 0.3s;
 }
 
@@ -132,7 +133,7 @@
   padding: 0;
   box-sizing: border-box;
   font-family: 'Work Sans', sans-serif;
-  font-size: calc(0.2em + 0.9vw);
+  font-size: calc(0.5rem + 0.5vw);
   color: #949494;
   text-align: start;
   border: none;
@@ -166,13 +167,13 @@
 
 .settings__input_title {
   text-transform: uppercase;
-  font-size: calc(0.5em + 0.4vw);
+  font-size: calc(0.5rem + 0.3vw);
 }
 
 .settings__input .input-text,
 .settings__dropdown .input-text {
   padding: 0;
-  font-size: calc(0.2em + 0.9vw);
+  font-size: calc(0.5rem + 0.5vw);
   font-family: 'Work Sans', sans-serif;
   text-align: start;
   background: none;
@@ -183,7 +184,7 @@
 }
 
 .settings__dropdown .input-text::placeholder {
-  font-size: calc(0.2em + 0.9vw);
+  font-size: calc(0.5rem + 0.3vw);
   font-family: 'Work Sans', sans-serif;
   color: #949494;
 }
@@ -203,7 +204,7 @@
 
 .settings__country-wrapper {
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   align-items: center;
   width: 100%;
   gap: 1em;
@@ -273,5 +274,33 @@
 
   .settings__wrapper {
     width: 100%;
+  }
+
+  .settings__dropdown .input-text {
+    width: min-content;
+  }
+
+  .settings__dropdown {
+    width: min-content;
+  }
+
+  .settings__gender_title {
+    width: 2rem;
+  }
+
+  .settings__gender_current {
+    margin-right: auto;
+  }
+
+  .settings__inputs_name-wrapper,
+  .settings__inputs_bio-wrapper,
+  .settings__input .label,
+  .settings__inputs-wrapper .settings__gender_wrapper {
+    gap: 3rem;
+  }
+
+  .settings__dropdown {
+    margin-right: auto;
+    margin-left: 2rem;
   }
 }

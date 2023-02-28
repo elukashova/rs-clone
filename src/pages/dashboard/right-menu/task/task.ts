@@ -59,6 +59,7 @@ export default class Task extends BaseComponent<'div'> {
   }
 
   public renderTask(): void {
+    console.log(this.activities);
     this.nameWrapper = new BaseComponent('div', this.element, 'task__name-wrapper');
 
     this.photo = new Picture(this.nameWrapper.element, 'task__photo', {
@@ -76,7 +77,7 @@ export default class Task extends BaseComponent<'div'> {
         'span',
         this.progressWrapper.element,
         'task__progress-bar-data progress-bar-data',
-        '50%',
+        '0%',
       );
       this.progressBox = new BaseComponent('div', this.progressWrapper.element, 'task__progress-box progress-box');
       this.progressBar = new BaseComponent('div', this.progressBox.element, 'task__progress-bar progress-bar');
@@ -152,6 +153,7 @@ export default class Task extends BaseComponent<'div'> {
   }
 
   private colorProgress(percent: number): void {
+    console.log(percent);
     if (percent === 0) {
       this.progressBar.element.style.width = '0%';
       this.progressBarData.element.textContent = '0%';

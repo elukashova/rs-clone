@@ -47,6 +47,7 @@
 
 .training-journal__default-message {
   align-self: center;
+  font-size: calc(0.4em + 0.4vw);
 }
 
 .training-journal__activity_name {

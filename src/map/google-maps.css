@@ -4,13 +4,19 @@
   align-items: center;
   justify-content: center;
   gap: 1em;
-  width: 100%;
-  height: 8em;
+  width: max-content;
+  height: max-content;
   padding: 2%;
   transform: translateY(1em);
   background-color: #ffffff;
+  color: var(--color-background-third);
   border-radius: 5px;
   font-size: 1em;
+  margin: 1rem;
+}
+
+.google-maps__popup .google-maps__popup-text {
+  color: var(--color-background-third);
 }
 
 .google-maps__popup-button {

@@ -41,6 +41,7 @@
   font-weight: 300;
   color: #949494;
   font-size: calc(0.5rem + 0.3vw);
+  margin-left: calc(0.7em + 0.8vw);
 }
 
 .post-reactions__svg-wrapper {
@@ -54,6 +55,13 @@
   width: calc(0.6em + 0.8vw);
   height: calc(0.45em + 0.8vw);
   margin-bottom: 0.1em;
+  transform: rotate(10deg);
+  transition: all 0.4s ease-in-out;
+}
+
+.post-reaction__reaction-like:hover {
+  transform: rotate(0deg);
+  transition: all 0.4s ease-in-out;
 }
 
 .post-reaction__reaction-comment {
@@ -65,8 +73,12 @@
 .post-reaction__reaction-svg {
   transition: fill 0.3s;
   cursor: pointer;
+  transform: translateY(2px);
+  transition: all 0.4s ease-in-out;
 }
 
 .post-reaction__reaction-svg:hover {
   fill: #1cbaa7;
+  transform: translateY(0);
+  transition: all 0.4s ease-in-out;
 }

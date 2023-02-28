@@ -354,6 +354,7 @@ export default class GoogleMaps {
   public catchLocationError(browserHasGeolocation: boolean, pos: google.maps.LatLng): void {
     this.infoWindow.setPosition(pos);
     this.infoWindow.setContent(browserHasGeolocation ? GeoErrors.Service : GeoErrors.Browser);
+
     this.infoWindow.open(this.map);
   }
 
