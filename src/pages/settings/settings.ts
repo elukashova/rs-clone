@@ -214,9 +214,10 @@ export default class Settings extends BaseComponent<'section'> {
     e.preventDefault();
     if (this.token) {
       deleteUser(this.token).then(() => {
-        localStorage.removeItem('userSessionToken');
         this.token = null;
-        localStorage.clear();
+        localStorage.removeItem('userSessionToken');
+        localStorage.removeItem('MyStriversId');
+        localStorage.removeItem('UserAvatarUrl');
         window.history.pushState({}, '', Routes.SignUp);
         this.replaceMainCallback();
       });

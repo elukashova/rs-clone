@@ -75,6 +75,7 @@ export default class Dashboard extends BaseComponent<'section'> {
         );
         this.rightMenu = new RightMenu(this.dashboardWrapper.element, this.replaceMainCallback, user);
         this.dashboardWrapper.element.insertBefore(this.leftMenu.element, this.trainingFeed.element);
+        eventEmitter.on('friendAdded', () => this.updateTrainingFeed());
       });
     }
   }
@@ -83,8 +84,8 @@ export default class Dashboard extends BaseComponent<'section'> {
     transformNameFormat(user.username);
     this.currentUser.username = transformNameFormat(user.username);
     this.currentUser.avatarUrl = user.avatarUrl || AvatarSources.Default;
-    eventEmitter.emit('updateAvatar', { avatarUrl: this.currentUser.avatarUrl });
     setDataToLocalStorage(this.currentUser.avatarUrl, 'UserAvatarUrl');
+    eventEmitter.emit('updateAvatar', { avatarUrl: this.currentUser.avatarUrl });
     this.currentUser.bio = user.bio || '';
     setDataToLocalStorage(user.id, 'MyStriversId');
 
@@ -129,5 +130,16 @@ export default class Dashboard extends BaseComponent<'section'> {
         }
       })
       .catch(() => null);
+  }
+
+  private updateTrainingFeed(): void {
+    if (this.trainingFeed) {
+      if (this.token) {
+        getUser(this.token).then((user: User) => {
+          const relevantActivities: ActivityResponse[] = Dashboard.collectAllActivities(user);
+          this.trainingFeed.updateTrainingFeed(relevantActivities);
+        });
+      }
+    }
   }
 }

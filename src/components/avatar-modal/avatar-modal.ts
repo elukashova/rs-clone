@@ -106,8 +106,8 @@ export default class ModalAvatar extends BaseComponent<'div'> {
       ModalAvatar.updateUser(this.token, { avatarUrl: this.currentAvatarUrl })
         .then((user: User) => {
           if (user) {
-            eventEmitter.emit('updateAvatar', { url: user.avatarUrl });
             setDataToLocalStorage(user.avatarUrl, 'UserAvatarUrl');
+            eventEmitter.emit('updateAvatar', { url: user.avatarUrl });
             this.cancelButtonCallback();
           }
         })

@@ -63,6 +63,8 @@ export default class Router {
 
     if (location === Routes.LogOut) {
       localStorage.removeItem('userSessionToken');
+      localStorage.removeItem('MyStriversId');
+      localStorage.removeItem('UserAvatarUrl');
       this.token = null;
       location = Routes.LogIn;
       window.history.pushState({}, '', Routes.LogIn);
