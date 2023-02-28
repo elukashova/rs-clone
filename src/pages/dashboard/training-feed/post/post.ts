@@ -316,6 +316,9 @@ export default class Post extends BaseComponent<'div'> {
   private handleCommentArea = (): void => {
     if (!this.isReadyToComment) {
       this.element.append(this.textAreaWrapper.element);
+      if (this.userAvatar) {
+        this.userCommentAvatar.element.src = this.userAvatar;
+      }
       this.addCommentButton.element.disabled = true;
       this.isReadyToComment = true;
     } else {
