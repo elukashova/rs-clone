@@ -220,16 +220,15 @@
   .gm-style-iw-d .google-maps__popup {
     position: relative !important;
     z-index: 10000 !important;
-    width: 10rem !important;
-    font-size: 0.6rem !important;
+    width: 7rem !important;
+    font-size: 0.4rem !important;
     height: 4rem !important;
-    /* overflow-y: scroll; */
-    padding: 0;
+    flex-direction: column;
+    padding: 5px;
     margin: 0;
   }
 
   .gm-style-iw-a {
-    visibility: visible;
     top: 3.6rem;
   }
 
