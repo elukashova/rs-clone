@@ -139,7 +139,6 @@ export default class TrainingFeed extends BaseComponent<'article'> {
   }
 
   private subscribeToEvents(): void {
-    eventEmitter.on('friendAdded', (data: EventData) => this.updateTrainingFeed(data));
     eventEmitter.on('friendDeleted', (data: EventData) => this.removeAllFriendPosts(data));
     eventEmitter.on('updateAvatar', (data: EventData) => this.updateAvatarAfterChanging(data));
     eventEmitter.on('activityDeleted', () => this.checkIfLastActivity());
@@ -170,12 +169,10 @@ export default class TrainingFeed extends BaseComponent<'article'> {
     });
   }
 
-  private updateTrainingFeed(data: EventData): void {
+  public updateTrainingFeed(data: ActivityResponse[]): void {
     this.cleanFeed();
-    if (Array.isArray(data.activities)) {
-      data.activities.forEach((activity) => this.activitiesBackup.push(activity));
-      this.defineFeedContent(this.activitiesBackup);
-    }
+    this.activitiesBackup = data.slice();
+    this.defineFeedContent(this.activitiesBackup);
   }
 
   private cleanFeed(): void {

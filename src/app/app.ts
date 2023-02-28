@@ -44,6 +44,7 @@ export default class App {
         this.main.element.style.backgroundImage = 'url(/assets/backgrounds/signup-background.jpg)';
         this.main.element.style.backgroundPosition = 'center';
         this.main.element.style.backgroundRepeat = 'no-repeat';
+        this.main.element.style.backgroundSize = 'cover';
         this.header.removeElementNotDashboard();
         break;
       case Routes.LogIn:

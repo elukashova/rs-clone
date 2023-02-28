@@ -163,6 +163,7 @@ export default class Post extends BaseComponent<'div'> {
     this.commentArea.element.addEventListener('input', this.handleCommentButton);
     this.addCommentButton.element.addEventListener('click', this.postComment);
     eventEmitter.on('commentDeleted', (data: EventData) => this.updateCommentsAfterDeletion(data));
+    eventEmitter.on('updateAvatar', (data: EventData) => this.updateAvatarAfterChanging(data));
     this.setStatsForPost();
     this.changeDateFormat(this.activity.date, this.activity.time);
     i18next.on('languageChanged', () => {
@@ -494,5 +495,10 @@ export default class Post extends BaseComponent<'div'> {
       this.updateCommentsNumber(this.commentsAll.length);
       this.element.appendChild(this.showAllCommentsElement.element);
     }
+  }
+
+  private updateAvatarAfterChanging(data: EventData): void {
+    this.userCommentAvatar.element.src = `${data.url}`;
+    this.userAvatar = `${data.url}`;
   }
 }
