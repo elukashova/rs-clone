@@ -414,10 +414,14 @@ export default class OurActivity extends BaseComponent<'div'> {
   }
 
   private updateStats(): void {
-    this.totalWeeklyKm.element.textContent = i18next.t(this.dictionary.km, { count: this.kmCounter });
+    this.totalWeeklyKm.element.textContent = i18next.t(this.dictionary.km, {
+      count: Number(this.kmCounter.toFixed(1)),
+    });
     this.time.element.textContent = i18next.t(this.dictionary.hour, { count: this.hoursCounter });
     this.elevation.element.innerHTML = i18next.t(this.dictionary.meterArrow, { count: this.elevationCounter });
-    this.totalYearlyKm.element.textContent = i18next.t(this.dictionary.km, { count: this.yearKmCounter });
+    this.totalYearlyKm.element.textContent = i18next.t(this.dictionary.km, {
+      count: Number(this.kmCounter.toFixed(1)),
+    });
   }
 
   private updateSportActivityData(): void {
