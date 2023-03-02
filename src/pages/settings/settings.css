@@ -1,0 +1,306 @@
+.settings {
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 3rem 0 3rem 0;
+  padding: 1.5em 2em 1.5em;
+  background: var(--color-background-second);
+  box-shadow: rgba(183, 183, 183, 0.076) 0px 0px 0px 1px;
+  border-radius: 5px;
+}
+
+.settings__wrapper {
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(0.5em + 3vh);
+}
+
+.settings__avatar-wrapper {
+  width: calc(3.5em + 3vw);
+  height: calc(3.5em + 3vw);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.settings__photo {
+  width: calc(3.5em + 3vw);
+  height: calc(3.5em + 3vw);
+  background-color: #219486;
+  border: 5px solid #219486;
+  border-radius: 50%;
+}
+
+.settings__photo_btn {
+  position: absolute;
+  z-index: 2;
+  bottom: 0;
+  right: 15%;
+  width: 1.5em;
+  height: 1.5em;
+  padding: 0;
+  border-radius: 50%;
+  outline: none;
+}
+
+.settings__photo_btn_svg {
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 50%;
+  transition: fill 0.3s;
+}
+
+.settings__photo_btn_svg:hover {
+  fill: #1cbaa7;
+}
+
+.settings__inputs-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: calc(0.5em + 1.5vh);
+  width: 90%;
+}
+
+.settings__inputs_name-wrapper,
+.settings__inputs_bio-wrapper {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 1em;
+}
+
+.settings__name_wrapper,
+.settings__about_wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 95%;
+}
+
+.settings__name_label,
+.settings__input span,
+.settings__dropdown .label,
+.settings__bio_label,
+.settings__country_label,
+.settings__gender_title {
+  text-transform: uppercase;
+  font-size: calc(0.4rem + 0.5vw);
+  white-space: nowrap;
+  min-width: calc(5em + 5vw);
+}
+
+.settings__name_btn,
+.settings__about_btn,
+.settings__input_btn {
+  width: 2em;
+  height: 2em;
+  padding: 0;
+  border-radius: 50%;
+  outline: none;
+  background: none;
+}
+
+.settings__name_btn:hover,
+.settings__about_btn:hover,
+.settings__input_btn:hover {
+  background: none;
+  background-color: none;
+  animation: wiggle 2s linear infinite;
+}
+
+.settings__name_btn_svg,
+.settings__about_btn_svg,
+.settings__input_btn_svg {
+  width: calc(0.4em + 0.4vw);
+  height: calc(0.4em + 0.4vw);
+  transition: fill 0.3s;
+}
+
+.settings__name_btn_svg:hover,
+.settings__about_btn_svg:hover,
+.settings__input_btn_svg:hover {
+  fill: #1cbaa7;
+}
+
+.settings__name.textarea,
+.settings__about.textarea {
+  width: 85%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Work Sans', sans-serif;
+  font-size: calc(0.5rem + 0.5vw);
+  color: #949494;
+  text-align: start;
+  border: none;
+  border-bottom: 1px solid white;
+  pointer-events: none;
+  word-wrap: break-word;
+}
+
+.settings__name:disabled,
+.settings__about:disabled {
+  width: 90%;
+}
+
+.settings__input {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1em;
+}
+
+.settings__input .label,
+.settings__dropdown .label {
+  width: 100%;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1em;
+}
+
+.settings__input_title {
+  text-transform: uppercase;
+  font-size: calc(0.5rem + 0.3vw);
+}
+
+.settings__input .input-text,
+.settings__dropdown .input-text {
+  padding: 0;
+  font-size: calc(0.5rem + 0.5vw);
+  font-family: 'Work Sans', sans-serif;
+  text-align: start;
+  background: none;
+  border: none;
+  border-radius: 6px;
+  color: #949494;
+  width: 100%;
+}
+
+.settings__dropdown .input-text::placeholder {
+  font-size: calc(0.5rem + 0.3vw);
+  font-family: 'Work Sans', sans-serif;
+  color: #949494;
+}
+
+.settings__input .input-text::-webkit-calendar-picker-indicator {
+  filter: invert(55%);
+}
+
+.settings__input_edit-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.settings__input-date .input-text:disabled {
+  padding-right: 10%;
+}
+
+.settings__country-wrapper {
+  display: flex;
+  /* justify-content: space-between; */
+  align-items: center;
+  width: 100%;
+  gap: 1em;
+}
+
+.settings__gender_edit-wrapper,
+.settings__input_edit-wrapper {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.settings__dropdown .input-text {
+  width: 60%;
+  text-align: start;
+  padding-right: 10%;
+}
+
+.settings__btn-delete {
+  width: 50%;
+  align-self: center;
+}
+
+.settings__dropdown {
+  width: 100%;
+}
+
+.settings__dropdown_list-wrapper,
+.settings__dropdown_list {
+  width: 100%;
+}
+
+@media (max-width: 1100px) {
+  .settings {
+    width: 70%;
+  }
+
+  .settings__wrapper {
+    width: 80%;
+  }
+}
+
+@media (max-width: 780px) {
+  .settings {
+    width: 80%;
+  }
+
+  .settings__wrapper {
+    width: 80%;
+  }
+}
+
+@media (max-width: 600px) {
+  .settings {
+    width: 90%;
+  }
+
+  .settings__wrapper {
+    width: 85%;
+  }
+}
+
+@media (max-width: 500px) {
+  .settings {
+    width: 90%;
+    padding: 1.5em 0.5em 3em;
+  }
+
+  .settings__wrapper {
+    width: 100%;
+  }
+
+  .settings__dropdown .input-text {
+    width: min-content;
+  }
+
+  .settings__dropdown {
+    width: min-content;
+  }
+
+  .settings__gender_title {
+    width: 2rem;
+  }
+
+  .settings__gender_current {
+    margin-right: auto;
+  }
+
+  .settings__inputs_name-wrapper,
+  .settings__inputs_bio-wrapper,
+  .settings__input .label,
+  .settings__inputs-wrapper .settings__gender_wrapper {
+    gap: 3rem;
+  }
+
+  .settings__dropdown {
+    margin-right: auto;
+    margin-left: 2rem;
+  }
+}

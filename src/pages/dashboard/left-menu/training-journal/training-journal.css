@@ -1,0 +1,75 @@
+.training-journal {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 1em;
+  padding: 1em;
+  box-shadow: rgba(33, 33, 33, 0.027) 0px 4px 12px;
+  background-color: var(--color-background-second);
+  border-radius: 5px;
+}
+
+.training-journal__heading {
+  margin: 0;
+  font-size: calc(0.3rem + 0.6vw);
+  text-transform: uppercase;
+  font-weight: 500;
+  color: #ff8d24;
+  text-align: center;
+  width: 90%;
+}
+
+.training-journal__info-wrapper {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  align-items: center;
+}
+
+.training-journal__activity-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: calc(0.5rem + 0.3vw);
+}
+
+.training-journal__info {
+  border-bottom: 1px solid var(--font-additional);
+}
+
+.training-journal__activity_name,
+.training-journal__activity_date {
+  font-family: 'Montserrat', sans-serif;
+  font-size: calc(0.5rem + 0.3vw);
+  color: var(--font-basic);
+}
+
+.training-journal__default-message {
+  align-self: center;
+  font-size: calc(0.4em + 0.4vw);
+}
+
+.training-journal__activity_name {
+  font-weight: 400;
+  width: 10vw;
+  word-wrap: break-word;
+}
+
+.training-journal__activity_date {
+  font-weight: 300;
+}
+
+.training-journal__link {
+  text-transform: uppercase;
+  font-size: calc(0.7em + 0.2vw);
+  text-decoration: none;
+  color: #1cbaa7;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.training-journal__link:hover {
+  color: #219486;
+}

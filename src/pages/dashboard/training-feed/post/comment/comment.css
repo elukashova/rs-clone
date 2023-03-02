@@ -1,0 +1,114 @@
+.comment {
+  display: grid;
+  grid-template-columns: 3.5em 1fr;
+  gap: 0.5em;
+}
+
+.comment__info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.comment__photo {
+  height: calc(0.8em + 1.3vw);
+  width: calc(0.8em + 1.3vw);
+  justify-self: center;
+}
+
+.comment__wrapper {
+  display: grid;
+  grid-template-rows: calc(0.4em + 0.6vw) auto calc(0.6em + 0.5vw);
+  gap: 0.3em;
+}
+
+.comment__name {
+  font-weight: 500;
+  font-size: calc(0.3em + 0.6vw);
+}
+
+.comment__date {
+  font-weight: 300;
+  color: var(--font-additional);
+  font-size: calc(0.5rem + 0.3vw);
+}
+
+.comment__text-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.comment__message {
+  width: 85%;
+  box-sizing: border-box;
+  border: none;
+  font-weight: 300;
+  font-size: calc(0.5rem + 0.3vw);
+  font-family: 'Work Sans', sans-serif;
+  background: none;
+  resize: none;
+  overflow: hidden;
+  word-wrap: break-word;
+  color: var(--font-additional);
+}
+
+.active-comment {
+  border: 1px solid #949494;
+  border-radius: 5px;
+  padding: 0.3em;
+  caret-color: #ff8d24;
+}
+
+.comment__icons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.comment__icons span {
+  height: calc(0.5em + 0.5vw);
+}
+
+.comment__like {
+  display: block;
+  width: calc(0.5em + 0.5vw);
+  height: calc(0.5em + 0.5vw);
+  margin-bottom: 0.5em;
+  cursor: pointer;
+  transition: fill 0.3s;
+}
+
+.comment__like:hover {
+  fill: #219486;
+}
+
+.comment__icons-editing {
+  display: flex;
+  gap: 0.5em;
+}
+
+.comment__delete-svg,
+.comment__edit-svg {
+  width: calc(0.3em + 0.3vw);
+  height: calc(0.3em + 0.3vw);
+  cursor: pointer;
+  transition: fill 0.3s;
+}
+
+.comment__delete-svg:hover,
+.comment__edit-svg:hover {
+  fill: #219486;
+}
+
+.comment__comment-button {
+  align-self: flex-start;
+  padding: 0.4em 0.4em;
+  font-size: calc(0.5em + 0.3vw);
+}
+
+.comment__comment-button:disabled {
+  background-color: var(--post-line);
+  pointer-events: none;
+}

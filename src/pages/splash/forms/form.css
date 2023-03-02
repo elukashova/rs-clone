@@ -1,0 +1,101 @@
+.login-form,
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1em;
+  width: calc(20em + 20vw);
+  height: max-content;
+  padding: 2.5rem 4rem 2.5rem;
+  margin: 1rem;
+  box-shadow: rgba(33, 33, 33, 0.027) 0px 4px 12px;
+  background-color: var(--color-background-second);
+  border-radius: 5px;
+}
+
+.signup__form_header,
+.login__form_header {
+  margin: 0;
+  padding: 0;
+  font-size: calc(1rem + 0.4vw);
+}
+
+.login-form-message,
+.signup__form-message {
+  margin: 0 0 0.5em;
+  color: var(--font-additional);
+  font-size: calc(0.5em + 0.5vw);
+  font-weight: 300;
+}
+
+.form-input .input-text,
+.signup__dropdown_input {
+  height: 2.6em;
+  padding: 0 0.6em;
+  border-radius: 6px;
+  border: 1px solid #1cbaa7;
+  font-size: 1.1em;
+  font-family: 'Work Sans', sans-serif;
+  font-size: calc(0.5em + 0.4vw);
+  color: #949494;
+  transition: all 0.3s;
+  background-color: var(--color-background-opacity);
+}
+
+.form-input .input-text:focus,
+.signup__dropdown_input:focus {
+  border: 1px solid #219486;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+  background-color: var(--color-background);
+}
+
+.form-input .label,
+.signup__dropdown .label {
+  text-transform: uppercase;
+  font-size: calc(0.5em + 0.4vw);
+}
+
+.signup__buttons-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.signup__message-login,
+.login_message-sigup {
+  align-self: center;
+  font-size: calc(0.5em + 0.5vw);
+}
+
+.invalid .input-text {
+  border: 1px solid red;
+  outline: 0;
+}
+
+.invalid .input-text:focus {
+  border: 1px solid red;
+  outline: 0;
+}
+
+.signup__login-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.signup__error-message,
+.login__error-message {
+  font-size: calc(0.5em + 0.5vw);
+}
+
+@media (max-width: 416px) {
+  .login-form,
+  .signup-form {
+    width: calc(15em + 20vw);
+    padding: calc(1em + 1vw) calc(2em + 1vw);
+    margin: calc(1em + 1vw);
+  }
+
+  .sign_in_btn_wrapper {
+    margin-bottom: 1rem;
+  }
+}

@@ -1,0 +1,136 @@
+.post-reactions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.post-reactions__counter-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.post-reactions__counter-avatars {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.post-reactions__avatar {
+  height: calc(0.5em + 0.8vw);
+  width: calc(0.5em + 0.8vw);
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
+.post-reactions__avatar-front {
+  z-index: 3;
+}
+
+.post-reactions__avatar-middle {
+  z-index: 2;
+  transform: translateX(-50%);
+}
+
+.post-reactions__avatar-back {
+  z-index: 1;
+  transform: translateX(-100%);
+}
+
+.post-reactions__likes-number {
+  font-weight: 300;
+  color: #949494;
+  font-size: calc(0.5rem + 0.3vw);
+  margin-left: calc(0.7em + 0.8vw);
+}
+
+.post-reactions__svg-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.6em;
+}
+
+.post-reaction__reaction-like {
+  width: calc(0.6em + 0.8vw);
+  height: calc(0.45em + 0.8vw);
+  margin-bottom: 0.1em;
+  transform: rotate(10deg);
+  transition: all 0.4s ease-in-out;
+}
+
+.post-reaction__reaction-like:hover {
+  transform: rotate(0deg);
+  transition: all 0.4s ease-in-out;
+}
+
+.post-reaction__reaction-comment {
+  width: calc(0.6em + 0.8vw);
+  height: calc(0.75em + 0.8vw);
+  margin-top: 0.1em;
+}
+
+.post-reaction__reaction-svg {
+  transition: fill 0.3s;
+  cursor: pointer;
+  transform: translateY(2px);
+  transition: all 0.4s ease-in-out;
+}
+
+.post-reaction__reaction-svg:hover {
+  fill: #1cbaa7;
+  transform: translateY(0);
+  transition: all 0.4s ease-in-out;
+}
+
+.post__activity-description,
+.post__activity-title {
+  width: 25rem;
+  word-wrap: break-word;
+}
+
+@media (max-width: 1500px) {
+  .post__activity-description,
+  .post__activity-title {
+    width: calc(10rem + 11vw);
+    word-wrap: break-word;
+  }
+}
+
+@media (max-width: 1000px) {
+  .post__user-info {
+    grid-template-columns: 1fr 8fr 0.1fr;
+  }
+
+  .post__name {
+    width: calc(5rem + 6vw);
+    word-wrap: break-word;
+  }
+
+  .post__activity-description,
+  .post__activity-title {
+    width: calc(6rem + 8vw);
+    word-wrap: break-word;
+  }
+}
+
+@media (max-width: 900px) {
+  .post__activity-description {
+    width: calc(12rem + 12vw);
+    word-wrap: break-word;
+  }
+}
+
+@media (max-width: 561px) {
+  .post__activity-description {
+    width: calc(10rem + 10vw);
+    word-wrap: break-word;
+  }
+}
+
+@media (max-width: 350px) {
+  .post__activity-description {
+    width: calc(8rem + 10vw);
+    word-wrap: break-word;
+  }
+}

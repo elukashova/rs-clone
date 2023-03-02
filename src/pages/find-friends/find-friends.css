@@ -1,0 +1,220 @@
+.find-friends-section {
+  display: flex;
+  justify-content: center;
+  width: 90%;
+  margin: 0 auto;
+}
+
+.find-friends__container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  justify-items: center;
+  gap: calc(1em + 0.5vw);
+  width: 98%;
+}
+
+.not-friends__title,
+.friends__title {
+  margin: 4% 0 2% 0;
+}
+
+.friends__block,
+.not-friends__block {
+  width: 100%;
+  padding: 0 calc(2rem + 0.5vw);
+}
+
+.not-friends__input-search input,
+.friends__input-search input {
+  width: 88%;
+  border: 1px solid #8c8c8c;
+  background-color: var(--color-background-second);
+}
+
+.not-friends__input-search label,
+.friends__input-search label {
+  font-size: 0.9rem;
+}
+
+.not-friends__element,
+.friends__element {
+  display: grid;
+  grid-template-columns: calc(2.5em + 2.5vw) 35% calc(3em + 4vw);
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.3em;
+  width: 90%;
+  height: max-content;
+  margin: calc(0.7rem + 0.7vw) 0 calc(0.7rem + 0.7vw) 0;
+}
+
+.friend__username,
+.not-friend__username,
+.friend__activity-data,
+.not-friend__activity-data,
+.not-friends__not-found,
+.friends__not-found {
+  font-size: 0.8rem;
+}
+
+.friend__user-country,
+.not-friend__user-country {
+  font-size: 0.8rem;
+}
+
+.not-friend__avatar-container,
+.not-friend__avatar,
+.friend__avatar-container,
+.friend__avatar {
+  width: calc(2em + 2.5vw);
+  height: calc(2em + 2.5vw);
+}
+
+.not-friends__not-found,
+.friends__not-found {
+  margin: 2em 0;
+}
+
+.not-friends__element.hidden,
+.friends__element.hidden {
+  display: none;
+}
+
+.not-friends__element.hidden-user,
+.friends__element.hidden-user {
+  display: none;
+}
+
+.not-friend__activity-text {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  gap: 0.3rem;
+}
+
+.not-friends__block-container,
+.friends__block-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 80%;
+  gap: calc(0.1rem + 0.1vw);
+  margin: calc(1em + 1vw) calc(1em + 1vw) 1em calc(1em + 1vw);
+  padding: 0.4rem calc(1em + 1vw) calc(1em + 1vw) calc(1em + 1vw);
+  border-radius: 5px;
+  box-shadow: rgba(33, 33, 33, 0.027) 0px 4px 12px;
+  background-color: var(--color-background-second);
+}
+
+.not-friend__user-data {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.not-friend__button {
+  width: calc(3em + 4vw);
+}
+
+.friend__button {
+  width: calc(3em + 4vw);
+  background-color: #949494;
+}
+
+.friend__button:hover {
+  background-color: #ff8d24;
+}
+
+.friends__block-container .friends__pagination.pagination,
+.not-friends__block-container .not-friends__pagination.pagination {
+  align-self: flex-start;
+  width: 100%;
+  padding: 0 calc(2rem + 0.5vw);
+}
+
+@media (max-width: 1200px) {
+  .find-friends-section {
+    width: 100%;
+  }
+
+  .not-friends__block,
+  .friends__block {
+    padding: 0.5%;
+  }
+
+  .not-friends__element,
+  .friends__element {
+    display: grid;
+    grid-template-columns: calc(2.5em + 2.5vw) 35% calc(3em + 4vw);
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.3em;
+    width: 90%;
+    height: max-content;
+    margin: calc(0.7rem + 0.7vw) 0 calc(0.7rem + 0.7vw) 0;
+  }
+
+  .not-friends__block-container .not-friends__pagination.pagination,
+  .friends__block-container .friends__pagination.pagination {
+    padding: 0;
+  }
+}
+
+@media (max-width: 780px) {
+  .find-friends__container {
+    width: 90%;
+    gap: 1rem;
+  }
+
+  .not-friends__block-container,
+  .friends__block-container {
+    width: 100%;
+  }
+
+  .not-friends__block-container,
+  .friends__block-container {
+    margin: calc(1em + 1vw) 0;
+  }
+
+  .not-friends__input-search input,
+  .friends__input-search input {
+    width: 100%;
+  }
+
+  .not-friends__element,
+  .friends__element {
+    display: grid;
+    grid-template-columns: calc(2.5em + 2.5vw) 35% calc(3em + 4vw);
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.3em;
+    width: 100%;
+    height: max-content;
+    margin: calc(0.7rem + 0.7vw) 0 calc(0.7rem + 0.7vw) 0;
+  }
+}
+
+@media (max-width: 540px) {
+  .find-friends__container {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .not-friends__block-container,
+  .friends__block-container {
+    margin: calc(1em + 1vw) 0 0 0;
+  }
+
+  .not-friends__element,
+  .friends__element {
+    width: 97%;
+    grid-template-columns: calc(2.5em + 2.5vw) 40% auto;
+  }
+
+  .friends__block-container {
+    margin-bottom: calc(1em + 1vw);
+  }
+}

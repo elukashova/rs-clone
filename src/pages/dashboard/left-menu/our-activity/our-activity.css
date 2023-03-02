@@ -1,0 +1,154 @@
+.our-activity {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(0.3rem + 0.5vw);
+  padding: 1em;
+  box-shadow: rgba(33, 33, 33, 0.027) 0px 4px 12px;
+  background-color: var(--color-background-second);
+  border-radius: 4px;
+}
+
+.our-activity__icons {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 5px;
+}
+
+.our-activity__icons-header-wrapper {
+  width: 95%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.our-activity__icons_header {
+  text-transform: uppercase;
+  color: #ff8d24;
+  font-size: calc(0.3rem + 0.6vw);
+  font-weight: 400;
+}
+
+.our-activity__icons-wrapper {
+  display: flex;
+  width: 100%;
+  height: 3em;
+  justify-content: space-around;
+  align-items: center;
+  transition: box-shadow 0.3s;
+}
+
+.highlighted {
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+}
+
+.highlighted .our-activity__svg {
+  width: calc(0.5em + 1vw);
+  height: calc(0.5em + 1vw);
+}
+
+.our-activity__svg {
+  width: calc(0.8em + 1vw);
+  height: calc(0.8em + 1vw);
+  transition: fill 0.3s;
+  cursor: pointer;
+}
+
+.activity__svg-0 {
+  order: 1;
+}
+
+.activity__svg-1 {
+  order: 2;
+}
+
+.activity__svg-2 {
+  order: 3;
+}
+
+.activity__svg-3 {
+  order: 4;
+}
+
+.our-activity_btn {
+  width: 1.5em;
+  height: 1em;
+  padding: 0;
+  border-radius: 50%;
+  outline: none;
+  background: none;
+}
+
+.our-activity_btn:hover {
+  background: none;
+  animation: wiggle 2s linear infinite;
+}
+
+.our-activity_btn_svg {
+  width: calc(0.4em + 0.4vw);
+  height: calc(0.4em + 0.4vw);
+  transition: fill 0.3s;
+}
+
+.our-activity__svg:hover,
+.our-activity_btn_svg:hover {
+  fill: #1cbaa7;
+}
+
+.our-activity__week-wrapper,
+.our-activity__year-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  align-items: center;
+}
+
+.our-activity__week-header,
+.our-activity__year-header {
+  padding: 0;
+  margin: 0;
+  font-size: calc(0.3rem + 0.6vw);
+  text-transform: uppercase;
+  font-weight: 500;
+  color: #ff8d24;
+}
+
+.our-activity__week-km,
+.our-activity__year-km {
+  font-weight: 400;
+  font-size: calc(0.5rem + 0.3vw);
+}
+
+.our-activity__statistics {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 1em;
+  padding-bottom: 1em;
+  border-bottom: 0.1em solid #90dad1;
+}
+
+.our-activity__graph {
+  width: 100%;
+  height: 50px;
+}
+
+.our-activity__time-container {
+  display: flex;
+  justify-content: space-around;
+  align-self: center;
+  width: 80%;
+}
+
+.disabled {
+  pointer-events: none;
+}
+
+.our-activity__time,
+.our-activity__elevation {
+  font-weight: 400;
+  font-size: calc(0.5rem + 0.3vw);
+}

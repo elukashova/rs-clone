@@ -1,0 +1,30 @@
+.google-maps__popup {
+  visibility: visible;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+  width: max-content;
+  height: max-content;
+  padding: 2%;
+  transform: translateY(1em);
+  background-color: #ffffff;
+  color: var(--color-background-third);
+  border-radius: 5px;
+  font-size: 1em;
+  margin: 1rem;
+}
+
+.google-maps__popup .google-maps__popup-text {
+  color: black !important;
+}
+
+.google-maps__popup-button {
+  width: 30%;
+  height: 3em;
+}
+
+.google-maps__popup.hidden {
+  display: none;
+  visibility: hidden;
+}

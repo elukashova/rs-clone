@@ -1,0 +1,238 @@
+.add-activity-section {
+  height: min-content;
+  width: 90%;
+  margin: 2em 0;
+  box-shadow: rgba(33, 33, 33, 0.027) 0px 4px 12px;
+  background-color: var(--color-background-second);
+  border-radius: 5px;
+}
+
+.add-activity__container {
+  padding: calc(1rem + 2vw) calc(2rem + 2vw);
+}
+
+.add-activity__heading {
+  padding: 0;
+}
+
+.add-activity__fieldset {
+  display: flex;
+  flex-direction: column;
+  gap: calc(1rem + 0.5vw);
+}
+
+.add-activity__form {
+  padding: 2% 0 2% 0;
+}
+
+.block-path {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  align-items: flex-end;
+  gap: 6%;
+}
+
+.block-type {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6%;
+}
+
+.block-time {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5em;
+}
+
+.block-duration {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: flex-end;
+  gap: 0.5em;
+}
+
+.add-activity__input,
+.add-activity__select {
+  width: 100%;
+}
+
+.add-activity__input .label,
+.add-activity__label,
+.description-label,
+.input-description .textarea__label span,
+.map__title {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  color: var(--font-basic);
+}
+
+.add-activity__input .label span {
+  white-space: nowrap;
+}
+
+.add-activity__input .label .input-text {
+  min-width: 2rem;
+}
+
+.add-activity__input .input-text,
+.add-activity__select {
+  height: 2em;
+  padding: 0.3em;
+  border-radius: 6px;
+  border: 1px solid #1cbaa7;
+  font-size: 0.9rem;
+  font-family: 'Work Sans', sans-serif;
+  color: var(--font-additional);
+  transition: all 0.3s;
+  width: 100%;
+}
+
+.textarea > label > .textarea::placeholder,
+.add-activity__input .input-text::placeholder,
+.add-activity__select::placeholder {
+  color: var(--font-additional);
+  font-size: 0.9rem;
+  padding: 0.3em 0;
+}
+
+.add-activity__select-wrapper {
+  height: 100%;
+}
+
+.add-activity__input .input-text:focus,
+.add-activity__select:focus {
+  border: 1px solid #219486;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+}
+
+.invalid .input-text {
+  border: 1px solid red;
+  outline: 0;
+}
+
+.invalid .input-text:focus {
+  border: 1px solid red;
+  outline: 0;
+}
+
+.description-block {
+  width: 100%;
+}
+
+.description-textarea {
+  padding: 0.3em;
+  font-size: 1.1em;
+  font-weight: 300;
+  font-family: 'Work Sans', sans-serif;
+  border: 1px solid #1cbaa7;
+  border-radius: 5px;
+}
+
+.add-activity__input.input-description {
+  width: 100%;
+}
+
+.input-description input {
+  height: 20px;
+}
+
+.input-time .input-text::-webkit-calendar-picker-indicator,
+.input-date .input-text::-webkit-calendar-picker-indicator {
+  filter: invert(55%);
+}
+
+.input-time .input-text::-webkit-inner-spin-button,
+.input-date .input-text::-webkit-inner-spin-button {
+  display: none;
+}
+
+.input-time .input-text::-webkit-datetime-edit-fields-wrapper {
+  display: flex;
+}
+
+.input-search {
+  position: relative;
+}
+
+.search-icon {
+  position: absolute;
+}
+
+.map_container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3em;
+}
+
+.btn-activity {
+  margin-top: 3%;
+  width: 100%;
+}
+
+@media (max-width: 800px) {
+  .add-activity__heading {
+    padding-bottom: 1rem;
+  }
+
+  .add-activity__block {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: calc(0.5rem + 1vw);
+  }
+
+  .add-activity__block .add-activity__block-container {
+    width: 100%;
+  }
+
+  .btn-activity {
+    margin-top: 3%;
+    width: 100%;
+    height: 2rem;
+  }
+
+  .block-duration {
+    display: grid;
+    grid-template-columns: 100%;
+    align-items: flex-end;
+    gap: 0.5em;
+  }
+
+  .map-wrapper {
+    height: 10rem !important;
+  }
+
+  .gm-control-active.gm-fullscreen-control {
+    margin: 5px 0 !important;
+    height: 20px !important;
+    width: 20px !important;
+  }
+
+  .textarea.add-activity__input.input-description .textarea__label .textarea {
+    height: 4rem;
+  }
+
+  .gm-style-iw-d .google-maps__popup {
+    position: relative !important;
+    z-index: 10000 !important;
+    width: 7rem !important;
+    font-size: 0.4rem !important;
+    height: 4rem !important;
+    flex-direction: column;
+    padding: 5px;
+    margin: 0;
+  }
+
+  .gm-style-iw-a {
+    top: 3.6rem;
+  }
+
+  .gm-style .gm-style-iw-c {
+    overflow: visible !important;
+  }
+}

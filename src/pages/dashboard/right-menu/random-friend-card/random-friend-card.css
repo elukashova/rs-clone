@@ -1,0 +1,67 @@
+.suggested-friends__friend {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  width: 100%;
+}
+
+.suggested-friends__info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.suggested-friends__friend_photo {
+  height: 3.5em;
+  width: 3.5em;
+}
+
+.suggested-friends__info_details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2em;
+}
+
+.suggested-friends__info_name {
+  text-align: left;
+  font-size: calc(0.2rem + 0.7vw);
+  font-weight: 500;
+}
+
+.suggested-friends__info_country {
+  text-align: left;
+  font-size: calc(0.2rem + 0.55vw);
+  font-weight: 300;
+  color: var(--font-additional);
+}
+
+.suggested-friends__btn {
+  width: 2.5em;
+  height: 2.5em;
+  padding: 0;
+  border-radius: 50%;
+  outline: none;
+  background: none;
+}
+
+.suggested-friends__btn-active .suggested-friends_btn_svg {
+  fill: #ff8d24;
+  transform: rotate(45deg);
+  transition: all 0.3s;
+}
+
+.suggested-friends__btn:hover {
+  background: none;
+}
+
+.suggested-friends_btn_svg {
+  width: 2.5em;
+  height: 2.5em;
+  transition: all 0.3s;
+}
+
+.close-btn {
+  width: 2.5em;
+  height: 1.3em;
+}

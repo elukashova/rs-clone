@@ -1,0 +1,18 @@
+.page-not-found {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--color-background-second);
+}
+
+.page-not-found__wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.page-not-found__image {
+  width: calc(10% + 25vw);
+  height: min-content;
+}

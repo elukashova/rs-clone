@@ -1,0 +1,18 @@
+.training-feed {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  width: 100%;
+  box-shadow: rgba(33, 33, 33, 0.027) 0px 4px 12px;
+  justify-self: center;
+}
+
+.training-feed__buttons {
+  display: flex;
+  gap: 5px;
+}
+
+.training-feed__buttons > .btn {
+  text-decoration: none;
+}

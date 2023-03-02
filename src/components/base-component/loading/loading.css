@@ -1,0 +1,29 @@
+.loading-background {
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  z-index: 240;
+  transition: all 0.5s ease-in-out;
+}
+
+.loading-background_active {
+  opacity: 1;
+  background-color: var(--loading-background);
+  transition: all 0.5s ease-in-out;
+}
+
+.loading-circle {
+  opacity: 0;
+  width: 7rem;
+  height: auto;
+  position: fixed;
+  z-index: 250;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.loading-circle_active {
+  opacity: 1;
+}

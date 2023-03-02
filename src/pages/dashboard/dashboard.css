@@ -1,0 +1,93 @@
+.dashboard {
+  width: 90%;
+  display: flex;
+  justify-content: center;
+}
+
+.sections-wrapper {
+  display: grid;
+  grid-template-columns: 23vw 40vw 23vw;
+  justify-content: space-between;
+  gap: calc(1rem + 1vw);
+  margin: 2.5rem 0 3rem 0;
+}
+
+@media (max-width: 1285px) {
+  .dashboard {
+    width: 95%;
+  }
+
+  .sections-wrapper {
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .sections-wrapper .right-menu {
+    display: none;
+  }
+
+  .sections-wrapper {
+    display: grid;
+    grid-template-columns: 28vw 63vw;
+    justify-content: center;
+    gap: calc(1rem + 1vw);
+    margin: 2.5rem 0 3rem 0;
+  }
+}
+
+@media (max-width: 612px) {
+  .profile-card .profile-card__info {
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: repeat(3, auto);
+    gap: calc(0.2rem + 0.2vw);
+  }
+
+  .profile-card .profile-card__info .profile-info {
+    flex-direction: row;
+    align-items: flex-end;
+  }
+
+  .profile-card .profile-card__info .profile-info:not(:last-child) {
+    border-right: 1px solid transparent;
+  }
+
+  .nav-link.profile-info__link {
+    border-right: 1px solid #949494;
+    padding-right: 0.3rem;
+  }
+
+  .profile-info .profile-info__score {
+    height: auto;
+    padding: 0;
+    vertical-align: bottom;
+  }
+  .our-activity__statistics .our-activity__graph {
+    gap: 10px;
+  }
+}
+
+@media (max-width: 513px) {
+  .sections-wrapper .left-menu {
+    display: none;
+  }
+
+  .sections-wrapper {
+    display: grid;
+    grid-template-columns: 90%;
+    justify-content: center;
+    gap: calc(1rem + 1vw);
+    margin: 2.5rem 0 3rem 0;
+  }
+
+  .post .post__add-comment-wrapper {
+    gap: calc(0.7rem + 0.4vw);
+    grid-template-columns: 3.5em 10fr 1fr;
+  }
+
+  .post .post__add-comment-wrapper .icon.post__add-comment-user {
+    height: calc(1em + 1.3vw);
+    width: calc(1em + 1.3vw);
+  }
+}
